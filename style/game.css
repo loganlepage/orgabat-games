@@ -1,0 +1,14 @@
+html, body, #gameDiv  {
+    height: 100%;
+    width: 100%;
+}
+
+html {
+    background: lightgrey;
+}
+body {
+    margin:0;
+}
+#gameDiv {
+    overflow: hidden;
+}
