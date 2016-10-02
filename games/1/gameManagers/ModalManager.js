@@ -50,13 +50,13 @@ Game.Manager.ModalManager = class ModalManager {
             "big_infobulle": {
                 type: "big_infobulle",
                 includeBackground: false,
-                fixedToCamera: true,
+                fixedToCamera: false,
                 vCenter: false,
                 hCenter: false,
                 itemsArr: [
                     {
                         type: "image",
-                        content: "big_infobulle",
+                        content: "big_infobulle_right",
                         contentScale: Game.SCALE
                     },
                     {
@@ -66,7 +66,7 @@ Game.Manager.ModalManager = class ModalManager {
                         fontSize: 28 * Game.SCALE,
                         color: "0x5F4D21",
                         offsetY: 25 * Game.SCALE,
-                        offsetX: 40 * Game.SCALE
+                        offsetX: 40 * Game.SCALE,
                     },
                     {
                         type: "text",
@@ -127,6 +127,11 @@ Game.Manager.ModalManager = class ModalManager {
                     {
                         type: "image",
                         content: "bouton_a",
+                        contentScale: Game.SCALE * (2/3)
+                    },
+                    {
+                        type: "image",
+                        content: "bouton_e",
                         contentScale: Game.SCALE * (2/3)
                     }
                 ]

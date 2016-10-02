@@ -44,9 +44,8 @@ Game.Abstract.AbstractGameObject = class AbstractGameObject {
         return this.objectInCollision;
     }
     objectCollision(o) {
-        if(o.object.sprite === undefined) return;
-
-        this.objectInCollision = o.object.sprite;
+        if(o.sprite === undefined && o.class === 'gameObject') return;
+        this.objectInCollision = o.sprite;
         this.objectInitialDistance = Phaser.Math.distance(
             this.objectInCollision.position.x, this.objectInCollision.position.y,
             this.sprite.position.x, this.sprite.position.y);

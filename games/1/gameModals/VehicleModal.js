@@ -18,10 +18,19 @@ Game.Modal.VehicleModal = class VehicleModal extends Game.Abstract.AbstractGameM
 
     infoBox() {
         let modalName = this.modals.infobox['infoBox'].modal;
-        Game.modals.update({type: "x", value: this.obj.sprite.position.x
-        + this.obj.sprite.width * (1 - this.obj.sprite.anchor.x) + 10 * Game.SCALE}, modalName, -1);
-        Game.modals.update({type: "y", value: this.obj.sprite.position.y
-        - this.obj.sprite.height * (1 - this.obj.sprite.anchor.x) + 10 * Game.SCALE}, modalName, -1);
+        let bg = this.game.modals[modalName].children[0], dir = 'left';
+        dir = this.outerRightToSpriteIsPossible(this.obj.sprite, 10 * Game.SCALE, bg) ? 'right' : 'left';
+        if(dir === 'right')
+            Game.modals.update({type: "x", value: this.getOuterRightToSprite(this.obj.sprite) + 10 * Game.SCALE}, modalName, -1);
+        else
+            Game.modals.update({type: "x", value: this.getOuterLeftToSprite(this.obj.sprite, bg) - 10 * Game.SCALE}, modalName, -1);
+        let moveThis = [1, 2, 3, 4];
+        for (let i in moveThis) {
+            let child = this.game.modals[modalName].children[i];
+            Game.modals.update({type: "xFromBase", value: dir === 'left' ? (-10 * Game.SCALE) : 0}, modalName, moveThis[i]);
+        }
+        Game.modals.update({type: "image", value: `${this.modals.infobox['infoBox'].pattern}_${dir}`}, modalName, 0);
+        Game.modals.update({type: "y", value: this.getInnerTopToSprite(this.obj.sprite) + 10 * Game.SCALE}, modalName, -1);
         Game.modals.update({type: "text", value: this.properties.name}, modalName, 1);
         Game.modals.update({type: "text", value: this.properties.description + '\n'
         + "Sa taille est de " + this.properties.size }, modalName, 2);
@@ -67,6 +76,19 @@ Game.Modal.VehicleModal = class VehicleModal extends Game.Abstract.AbstractGameM
         Game.modals.update({type: "x", value: window.innerWidth - 310 * Game.SCALE}, modalName, -1);
         Game.modals.update({type: "y", value: window.innerHeight - 90 * Game.SCALE}, modalName, -1);
         Game.modals.update({type: "text", value: "Le vehicule est plein !"}, modalName, 1);
+        Game.modals.show(modalName);
+        Game.modals.count(2, function () {
+            Game.modals.hide(modalName);
+        });
+    }
+
+    static beCareful(str) {
+        let text = str !== undefined ? `${str} ` : '';
+        let modalName = "robot_infobulle";
+        Game.modals.update({type: "image", value: "alert_infobulle"}, modalName, 0);
+        Game.modals.update({type: "x", value: window.innerWidth - 310 * Game.SCALE}, modalName, -1);
+        Game.modals.update({type: "y", value: window.innerHeight - 90 * Game.SCALE}, modalName, -1);
+        Game.modals.update({type: "text", value: `Attention ${text}!`}, modalName, 1);
         Game.modals.show(modalName);
         Game.modals.count(2, function () {
             Game.modals.hide(modalName);

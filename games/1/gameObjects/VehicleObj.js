@@ -30,6 +30,10 @@ Game.Object.VehicleObj = class VehicleObj extends Game.Abstract.AbstractGameObje
         this.speed = properties.speed * Game.SCALE;
         this.speedRotate = properties.speedRotate * Game.SCALE;
         this.properties = properties;
+        this.loading = game.add.sprite(0, 0, 'charge');
+        this.sprite.addChild(this.loading);
+        this.loading.anchor.set(this.properties.loading_x, this.properties.loading_y);
+        this.loading.visible = false;
         this.driver = null;
     }
 
@@ -112,10 +116,41 @@ Game.Object.VehicleObj = class VehicleObj extends Game.Abstract.AbstractGameObje
                         Game.Modal.VehicleModal.cantUseInfoBox();
                     break;
                 case "material":
-                    let material = this.objectInCollision.obj.getRessource(this.container.getSizeLeft());
-                    this.container.addItem(material.name, material.amount);
-                    if(material.amount > 0 && this.container.getSizeLeft() === 0)
-                        Game.Modal.VehicleModal.containerIsFull();
+                    if(this.keys.bool["E"].state) return;
+                    let materialAmount = this.objectInCollision.obj.properties.amount;
+                    let wantAmount = this.container.getSizeLeft() > materialAmount ? materialAmount : this.container.getSizeLeft();
+                    this.objectInCollision.obj.getRessource(wantAmount, function(name, amount) {
+                        this.container.addItem(name, amount);
+                        if(amount > 0 && this.container.getSizeLeft() === 0)
+                            Game.Modal.VehicleModal.containerIsFull();
+                        if(this.container.getSizeUsed() > 0)
+                            this.loading.visible = true;
+                    }.bind(this));
+                    break;
+                case "tool":
+                    if(this.keys.bool["E"].state) return;
+                    let needed = this.objectInCollision.obj.properties.needed;
+                    console.log(needed);
+                    this.objectInCollision.obj.setRessource(this.container.getSumOf(needed), function(name, amount) {
+                        this.container.delItem(needed, amount);
+                        if(this.container.getSizeUsed() === 0)
+                            this.loading.visible = false;
+                    }.bind(this));
+                    break;
+                default:
+                    break;
+            }
+        }
+        if(this.keys.bool["E"].state) {
+            switch(this.objectInCollision.obj.type) {
+                case "material":
+                    if(this.keys.bool["A"].state) return;
+                    let needed = this.objectInCollision.key;
+                    this.objectInCollision.obj.setRessource(this.container.getSumOf(needed), function(name, amount) {
+                        this.container.delItem(needed, amount);
+                        if(this.container.getSizeUsed() === 0)
+                            this.loading.visible = false;
+                    }.bind(this));
                     break;
                 default:
                     break;
@@ -123,11 +158,23 @@ Game.Object.VehicleObj = class VehicleObj extends Game.Abstract.AbstractGameObje
         }
     }
     objectCollision(o) {
-        super.objectCollision(o);
-        switch(this.objectInCollision.obj.type) {
-            case "character":
+        switch(o.object.class) {
+            case 'gameObject':
+                super.objectCollision(o.object);
                 if(this.collisionEventEnabled)
-                    this.modal.infoBox();
+                    switch(this.objectInCollision.obj.type) {
+                        case 'character':
+                            this.modal.infoBox();
+                            break;
+                        case 'vehicle':
+                            Game.Modal.VehicleModal.beCareful('aux véhicules');
+                            break;
+                        default:
+                            break;
+                    }
+                break;
+            case 'layer':
+                Game.Modal.VehicleModal.beCareful('aux murs');
                 break;
             default:
                 break;

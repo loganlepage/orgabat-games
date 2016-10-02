@@ -41,6 +41,8 @@ Game.State.playState = {
 
         this.game.physics.p2.setBoundsToWorld(true, true, true, true, false);
         this.game.physics.p2.updateBoundsCollisionGroup();
+
+        this.gameRules.init();
     },
 
     initMap: function() {
@@ -66,11 +68,10 @@ Game.State.playState = {
 
     addVehicles: function() {
         Game.vehicleGroup = new Game.Group.VehicleGroup(game, this.layers[1], Game.Config.data.entities.vehicles);
-        let self = this;
         Game.vehicleGroup.forEach(function(item) {
-            item.obj.vehicleMountedEvent.add(self, "follow");
-            item.obj.vehicleUnmountedEvent.add(self, "follow");
-        });
+            item.obj.vehicleMountedEvent.add(this, "follow");
+            item.obj.vehicleUnmountedEvent.add(this, "follow");
+        }.bind(this));
         this.game.world.add(Game.vehicleGroup);
     },
     addPlayer: function() {
@@ -103,11 +104,30 @@ Game.State.playState = {
     update: function() {
         this.game.forceSingleUpdate = true;
     },
-
     render: function() {
         if(Game.Config.data.developer.debug) {
             this.game.time.advancedTiming = true; //SEE FPS
             this.game.debug.text(game.time.fps, 2, 14, "#00ff00");
+        }
+    },
+
+
+    /*
+     * Game Rules
+     */
+    gameRules: {
+        depotIsFullEventCalled: false,
+        init: function() {
+            //Le but du jeu est de remplir le dépot avec les 9 charges du mortier
+            //Si le dépot est plein, alors le jeu est gagné.
+            Game.toolGroup.forEach(function(tool) {
+                if(tool.name === 'depot')
+                    tool.obj.toolIsFullEvent.add(this, "depotIsFullEvent")
+            }.bind(this));
+        },
+        depotIsFullEvent: function() {
+            if(this.depotIsFullEventCalled) return;
+            game.state.start('win');
         }
     }
 };

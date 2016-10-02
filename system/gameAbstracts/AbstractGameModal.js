@@ -18,10 +18,10 @@ Game.Abstract.AbstractGameModal = class AbstractGameModal {
     createWithPattern(pattern, type, name) {
         if(this.modals[type] === undefined) throw new Error(`type '${type}' inexistant`);
         if(this.modals[type][name] !== undefined) throw new Error(`nom '${name}' existant`);
-        Game.modals.createWithPattern(pattern, `${type}_${name}_${this.obj.sprite.name}`);
+        Game.modals.createWithPattern(pattern, `${type}_${name}_${this.obj.sprite.key}`);
         this.modals[type][name] = {
             pattern: pattern,
-            modal: `${pattern}_${type}_${name}_${this.obj.sprite.name}`,
+            modal: `${pattern}_${type}_${name}_${this.obj.sprite.key}`,
             type: type};
     }
 
@@ -34,6 +34,9 @@ Game.Abstract.AbstractGameModal = class AbstractGameModal {
         Game.modals.hide(`${this.modals.fixed[name].modal}`);
     }
 
+    getSize(item) {
+        return item._frame.right * Game.SCALE;
+    }
     getAlignCenterX(reference, item) {
         return reference._frame.centerX * Game.SCALE - item.width / 2;
     }
@@ -45,5 +48,17 @@ Game.Abstract.AbstractGameModal = class AbstractGameModal {
     }
     getAlignBottomY(reference, item) {
         return reference._frame.bottom * Game.SCALE - item.height;
+    }
+    getOuterRightToSprite(sprite) {
+        return sprite.position.x + sprite.width * (1 - sprite.anchor.x);
+    }
+    getOuterLeftToSprite(sprite, item) {
+        return sprite.position.x - sprite.width * (1 - sprite.anchor.x) - item._frame.right * Game.SCALE;
+    }
+    getInnerTopToSprite(sprite) {
+        return sprite.position.y - sprite.height * (1 - sprite.anchor.x)
+    }
+    outerRightToSpriteIsPossible(sprite, offsetX, item) {
+        return this.getOuterRightToSprite(sprite) + offsetX + this.getSize(item) < this.game.width;
     }
 };

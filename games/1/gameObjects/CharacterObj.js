@@ -26,7 +26,7 @@ Game.Object.CharacterObj = class CharacterObj extends Game.Abstract.AbstractGame
         this.keys.addEvent(this, "moveTo", Phaser.Keyboard.RIGHT,   {name: "right",  axe: "x", signe: +1});
         this.keys.addEvent(this, "moveTo", Phaser.Keyboard.UP,      {name: "up",     axe: "y", signe: -1});
         this.keys.addEvent(this, "moveTo", Phaser.Keyboard.DOWN,    {name: "down",   axe: "y", signe: +1});
-        this.keys.addBool("A"); this.keys.addBool("Z");
+        this.keys.addBool("A"); this.keys.addBool("Z"); this.keys.addBool("E");
 
         Game.vehicleGroup.forEach((vehicle) => {
             vehicle.obj.vehicleMountedEvent.add(this, "onVehicleMount");
@@ -64,7 +64,7 @@ Game.Object.CharacterObj = class CharacterObj extends Game.Abstract.AbstractGame
     }
     objectCollision(o) {
         if( this.vehicleInUse.object !== null ) return;
-        super.objectCollision(o);
+        super.objectCollision(o.object);
     }
 
     /**

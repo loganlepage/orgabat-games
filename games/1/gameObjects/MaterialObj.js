@@ -35,19 +35,29 @@ Game.Object.MaterialObj = class MaterialObj extends Game.Abstract.AbstractGameOb
     /**
      * Ressource comportements
      */
-    getRessource(amount) {
-        if(this.properties.amount >= amount) {
-            this.properties.amount -= amount;
-            this.modal.updateAmount(this.properties.amount);
-            return {'name': this.sprite.name, 'amount': amount};
-        } return {'name': this.sprite.name, 'amount': 0};
+    getRessource(amount, cb) {
+        let cbZero = () => { cb(this.sprite.key, 0); };
+        let cbAmount = () => { cb(this.sprite.key, amount); };
+        if(this.properties.amount < amount) return cbZero();
+        this.properties.amount -= amount;
+        this.modal.updateAmount(this.properties.amount);
+        return cbAmount();
+    }
+
+    /**
+     * Ressource comportements
+     */
+    setRessource(amount, cb) {
+        this.properties.amount += amount;
+        this.modal.updateAmount(this.properties.amount);
+        return cb(this.sprite.key, amount);
     }
 
     /**
      * Add comportements to an Object collided
      */
     objectCollision(o) {
-        super.objectCollision(o);
+        super.objectCollision(o.object);
         switch(this.objectInCollision.obj.type) {
             case "character":
                 this.modal.infoBox();

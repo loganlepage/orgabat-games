@@ -18,7 +18,7 @@ Game.Sprite.ToolSpr = class ToolSpr extends Game.Abstract.AbstractGameSprite {
         this.game.physics.p2.enable(this, Game.Config.data.developer.debug);
         this.body.setCollisionGroup(Game.CollisionGroup.tool);
         this.body.collides(Game.CollisionGroup.vehicle, this.objectCollision, this);
-        this.body.collides(Game.CollisionGroup.player, this.objectCollision, this)
+        this.body.collides(Game.CollisionGroup.player, this.objectCollision, this);
         this.body.static = true;
     }
 };

@@ -8,16 +8,6 @@ Game.System.Inventary = class Inventary {
         this.items = (items === undefined) ? [] : items;
     }
 
-    addItem(name, amount, callback) {
-        if(!this.isMaterialExist(name)) throw new Error(`Material "${name}" inexistant.`);
-        if(amount === undefined) amount = 1;
-        if(this.items[name] === undefined) this.items[name] = {'amount': 0};
-        if(this.getSizeLeft() >= amount)
-            this.items[name].amount += amount;
-        else
-            throw new Error('Inventaire plein.');
-    }
-
     isMaterialExist(name) {
         let founded = false;
         for(let key in Game.Config.data.entities.materials) {
@@ -25,11 +15,36 @@ Game.System.Inventary = class Inventary {
         } return founded;
     }
 
-    getSizeLeft() {
+    addItem(name, amount) {
+        if(!this.isMaterialExist(name)) throw new Error(`Material "${name}" inexistant.`);
+        if(amount === undefined) amount = 1;
+        if(amount === 0) return;
+        if(this.items[name] === undefined) this.items[name] = {'amount': 0};
+        if(this.getSizeLeft() >= amount)
+            this.items[name].amount += amount;
+        else
+            throw new Error('Inventaire plein.');
+    }
+
+    delItem(name, amount) {
+        if(amount === undefined) amount = 1;
+        if(amount === 0) return;
+        if(this.items[name] !== undefined)
+            this.items[name].amount -= amount;
+    }
+
+    getSumOf(name) {
+        return this.items[name] !== undefined ? this.items[name].amount : 0;
+    }
+
+    getSizeUsed() {
         let sizeUsed = 0;
-        for(let key in this.items) {
+        for(let key in this.items)
             sizeUsed += this.items[key].amount;
-        }
-        return (this.size - sizeUsed);
+        return sizeUsed;
+    }
+
+    getSizeLeft() {
+        return (this.size - this.getSizeUsed());
     }
 };

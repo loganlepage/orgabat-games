@@ -22,7 +22,7 @@ Game.Sprite.VehicleSpr = class VehicleSpr extends Game.Abstract.AbstractGameSpri
         this.body.collides(Game.CollisionGroup.player, this.objectCollision, this);
         this.body.collides(Game.CollisionGroup.tool, this.objectCollision, this);
         this.body.collides(Game.CollisionGroup.material, this.objectCollision, this);
-        this.body.collides(Game.CollisionGroup.layer);
+        this.body.collides(Game.CollisionGroup.layer, this.wallCollision, this);
         this.body.static = true;
     }
 };

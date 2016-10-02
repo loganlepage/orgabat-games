@@ -4,8 +4,8 @@ Game.Vendor = Game.Vendor || {};
 Game.Vendor.Modal = function (game) {
 
     /**
-    * Use: https://github.com/netgfx/phaser_modals/blob/master/examples/example1/js/index.js
-    */
+     * Use: https://github.com/netgfx/phaser_modals/blob/master/examples/example1/js/index.js
+     */
 
     var _this = this;
 
@@ -28,7 +28,7 @@ Game.Vendor.Modal = function (game) {
             var fixedToCamera = options.fixedToCamera || false;
             /**var vPadding = options.vPadding || 20;*/
 
-            /////////////////////////////////////////////////////////////////////
+                /////////////////////////////////////////////////////////////////////
 
             var modal;
             var modalGroup = game.add.group();
@@ -171,7 +171,8 @@ Game.Vendor.Modal = function (game) {
                 modalLabel["lockPosition"] = lockPosition;
                 modalLabel._offsetX = offsetX;
                 modalLabel._offsetY = offsetY;
-
+                modalLabel.baseX = offsetX;
+                modalLabel.baseY = offsetY;
 
                 if (callback !== false && itemType !== "button") {
                     modalLabel.inputEnabled = true;
@@ -204,7 +205,12 @@ Game.Vendor.Modal = function (game) {
                 if(index >= 0) {
                     item = modal.getChildAt(index);
                     if (item.contentType === "text") {
-                        item[prop.type] = prop.value;
+                        if(prop.type === 'xFromBase')
+                            item._offsetX = item.baseX + prop.value;
+                        else if(prop.type === 'yFromBase')
+                            item._offsetY = item.baseY + prop.value;
+                        else
+                            item[prop.type] = prop.value;
                         item.update();
                         if (item.lockPosition === true){ }
                         else {
@@ -222,8 +228,12 @@ Game.Vendor.Modal = function (game) {
                     } else if (item.contentType === "image") {
                         if(prop.type === "x" || prop.type === "y")
                             item.position[prop.type] = prop.value;
-                        if(prop.type == "image")
+                        else if(prop.type == "image")
                             item.loadTexture(prop.value);
+                        else if(prop.type === 'xFromBase')
+                            item.x = item.baseX + prop.value;
+                        else if(prop.type === 'yFromBase')
+                            item.y = item.baseY + prop.value;
                         else
                             item[prop.type] = prop.value;
                     }
