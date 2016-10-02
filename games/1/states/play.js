@@ -121,8 +121,10 @@ Game.State.playState = {
             //Le but du jeu est de remplir le dépot avec les 9 charges du mortier
             //Si le dépot est plein, alors le jeu est gagné.
             Game.toolGroup.forEach(function(tool) {
-                if(tool.name === 'depot')
+                if(tool.key === 'depot') {
                     tool.obj.toolIsFullEvent.add(this, "depotIsFullEvent")
+                }
+
             }.bind(this));
         },
         depotIsFullEvent: function() {

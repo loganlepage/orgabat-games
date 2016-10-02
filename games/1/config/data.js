@@ -62,7 +62,7 @@ Game.Config.data = {
                 //idea, if you want to improve the code
                 //role: {make: {result: {type: "materials", name: "mortier"}, need: {liants: 1, sable: 1, gravier: 1}}}
             }},
-            {name: "depot", x: 8, y: 17, prop: {name: "Dépôt", modalDirection: "top", needed: "mortier", amount: 0, amountMax: 9}}
+            {name: "depot", x: 8, y: 7, prop: {name: "Dépôt", modalDirection: "top", needed: "mortier", amount: 0, amountMax: 9}}
         ],
         assets: [
             //parent: game

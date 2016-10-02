@@ -130,7 +130,6 @@ Game.Object.VehicleObj = class VehicleObj extends Game.Abstract.AbstractGameObje
                 case "tool":
                     if(this.keys.bool["E"].state) return;
                     let needed = this.objectInCollision.obj.properties.needed;
-                    console.log(needed);
                     this.objectInCollision.obj.setRessource(this.container.getSumOf(needed), function(name, amount) {
                         this.container.delItem(needed, amount);
                         if(this.container.getSizeUsed() === 0)
