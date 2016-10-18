@@ -25,13 +25,18 @@ Game.Abstract.AbstractGameModal = class AbstractGameModal {
             type: type};
     }
 
+    isShowing(name, type) {
+        if(this.modals[type] === undefined) throw new Error(`type '${type}' inexistant`);
+        if(this.modals[type][name] === undefined) throw new Error(`nom '${name}' inexistant`);
+        return Game.modals.isShowing(this.modals[type][name].modal);
+    }
     hideInfobox(name) {
         if(this.modals.infobox[name] === undefined) throw new Error(`infobox '${name}' inexistante`);
-        Game.modals.hide(`${this.modals.infobox[name].modal}`);
+        Game.modals.hide(this.modals.infobox[name].modal);
     }
     hideFixed(name) {
         if(this.modals.fixed[name] === undefined) throw new Error(`fixed '${name}' inexistante`);
-        Game.modals.hide(`${this.modals.fixed[name].modal}`);
+        Game.modals.hide(this.modals.fixed[name].modal);
     }
 
     getSize(item) {

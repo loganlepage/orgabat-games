@@ -8,7 +8,7 @@ Game.Manager = Game.Manager || {};
 Game.Manager.ModalManager = class ModalManager {
     constructor(game) {
         this.modal = new Game.Vendor.Modal(game);
-        this.isShowing = {};
+        this.modals = {};
         this.createModals();
     }
 
@@ -17,19 +17,30 @@ Game.Manager.ModalManager = class ModalManager {
      */
     show(name, fixed) {
         if(fixed === undefined) fixed = false;
-        if(this.isShowing[name] !== undefined && this.isShowing[name].state) return;
-        for(let modal in this.isShowing)
-            if(this.isShowing[modal].state && !this.isShowing[modal].fixed) {
-                this.modal.hideModal(modal);
-                this.isShowing[modal].state = false;
+        if(this.modals[name] !== undefined && this.modals[name].state) return;
+        for(let name in this.modals)
+            if(this.modals[name].state && !this.modals[name].fixed) {
+                this.modal.hideModal(name);
+                this.modals[name].state = false;
             }
         this.modal.showModal(name);
-        this.isShowing[name] = {state: true, fixed: fixed};
+        this.modals[name] = {state: true, fixed: fixed};
+    }
+    infoboxAreHided() {
+        let hided = true;
+        for(let name in this.modals)
+            if(this.modals[name].state && !this.modals[name].fixed)
+                hided = false;
+        return hided;
+    }
+    isShowing(name) {
+        if(this.modals[name] === undefined) return false;
+        return this.modals[name].state;
     }
     hide(name) {
-        if((this.isShowing[name] !== undefined && !this.isShowing[name].state) || this.isShowing[name] === undefined) return;
+        if((this.modals[name] !== undefined && !this.modals[name].state) || this.modals[name] === undefined) return;
         this.modal.hideModal(name);
-        this.isShowing[name].state = false;
+        this.modals[name].state = false;
     }
     update(value, type, index) {
         this.modal.updateModalValue(value, type, index);
@@ -135,6 +146,47 @@ Game.Manager.ModalManager = class ModalManager {
                         contentScale: Game.SCALE * (2/3)
                     }
                 ]
+            },
+            "left_robot_infobulle": {
+                type:"left_robot_infobulle",
+                includeBackground: false,
+                fixedToCamera: true,
+                vCenter: false,
+                hCenter: false,
+                itemsArr: [
+                    {
+                        type: "image",
+                        content: "small_info_infobulle",
+                        contentScale: Game.SCALE
+                    },
+                    {
+                        type: "text",
+                        content: "{content}",
+                        fontFamily: "Arial",
+                        fontSize: 12 * Game.SCALE,
+                        color: "0x5F4D21",
+                        offsetY: 20 * Game.SCALE,
+                        offsetX: 55 * Game.SCALE
+                    },
+                    {
+                        type : "text",
+                        content: "X",
+                        fontSize: 12 * Game.SCALE,
+                        color: "0x5F4D21",
+                        offsetY: 10 * Game.SCALE,
+                        offsetX: 182 * Game.SCALE,
+                        callback: function() {
+                            Game.modals.modal.hideModal(this.type);
+                        }
+                    },
+                    {
+                        type: "image",
+                        content: "bouton_z",
+                        contentScale: Game.SCALE,
+                        offsetY: 10 * Game.SCALE,
+                        offsetX: 10 * Game.SCALE
+                    },
+                ]
             }
         }
     };
@@ -171,7 +223,7 @@ Game.Manager.ModalManager = class ModalManager {
                     color: "0x5F4D21",
                     offsetY: 10 * Game.SCALE,
                     offsetX: 272 * Game.SCALE,
-                    callback: function(){
+                    callback: () => {
                         this.modal.hideModal("robot_infobulle");
                     }
                 }

@@ -54,7 +54,7 @@ Game.Object.MaterialObj = class MaterialObj extends Game.Abstract.AbstractGameOb
     }
 
     /**
-     * Add comportements to an Object collided
+     * Add events comportements
      */
     objectCollision(o) {
         super.objectCollision(o.object);
@@ -65,5 +65,12 @@ Game.Object.MaterialObj = class MaterialObj extends Game.Abstract.AbstractGameOb
             default:
                 break;
         }
+    }
+    mouseOver() {
+        if(!Game.modals.infoboxAreHided() || this.modal.isShowing('infoBox', 'fixed')) return;
+        this.modal.infoBox();
+    }
+    mouseOut() {
+        this.modal.hideInfobox('infoBox');
     }
 };

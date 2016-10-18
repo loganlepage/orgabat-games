@@ -41,7 +41,6 @@ Game.State.playState = {
 
         this.game.physics.p2.setBoundsToWorld(true, true, true, true, false);
         this.game.physics.p2.updateBoundsCollisionGroup();
-
         this.gameRules.init();
     },
 

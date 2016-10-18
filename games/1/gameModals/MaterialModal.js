@@ -14,11 +14,10 @@ Game.Modal.MaterialModal = class MaterialModal extends Game.Abstract.AbstractGam
     }
 
     changeVehicleState(vehicle) {
-        if(vehicle !== null && this.properties.amount !== undefined && this.properties.amount > 0) {
+        if(vehicle !== null && this.properties.amount !== undefined && this.properties.amount > 0)
             this.fixedInfoBox(this.properties.amount);
-        } else {
+        else
             this.hideFixed('infoBox');
-        }
     }
 
 
@@ -51,7 +50,7 @@ Game.Modal.MaterialModal = class MaterialModal extends Game.Abstract.AbstractGam
     }
 
     fixedInfoBox(amountText) {
-        let modalName = `${this.modals.fixed['infoBox'].modal}`;
+        let modalName = this.modals.fixed['infoBox'].modal;
         let dir = this.properties.modalDirection;
         let bg = this.game.modals[modalName].children[0];
         let title = this.game.modals[modalName].children[1];

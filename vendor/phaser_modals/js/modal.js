@@ -173,6 +173,7 @@ Game.Vendor.Modal = function (game) {
                 modalLabel._offsetY = offsetY;
                 modalLabel.baseX = offsetX;
                 modalLabel.baseY = offsetY;
+                modalLabel.type = options.type;
 
                 if (callback !== false && itemType !== "button") {
                     modalLabel.inputEnabled = true;

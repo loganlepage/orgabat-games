@@ -27,14 +27,16 @@ Game.Object.VehicleObj = class VehicleObj extends Game.Abstract.AbstractGameObje
      * Config & initialize
      */
     configure(properties) {
-        this.speed = properties.speed * Game.SCALE;
-        this.speedRotate = properties.speedRotate * Game.SCALE;
+        this.speed = properties.speed * Game.SCALE * 500; //500: convert to km/h in game
+        this.speedRotate = properties.speedRotate * Game.SCALE * 2; //2: convert to tr/min in game
         this.properties = properties;
         this.loading = game.add.sprite(0, 0, 'charge');
         this.sprite.addChild(this.loading);
         this.loading.anchor.set(this.properties.loading_x, this.properties.loading_y);
         this.loading.visible = false;
+        this.sprite.body.damping = 1;
         this.driver = null;
+        Game.Modal.VehicleModal.useMe();
     }
 
     /**
@@ -55,8 +57,6 @@ Game.Object.VehicleObj = class VehicleObj extends Game.Abstract.AbstractGameObje
         if(this.stopProcess) return;
         this.startProcess = true;
         this.keys = keys;
-        this.playerSpeed = player.obj.speed;
-        player.body.setCollisionGroup(Game.CollisionGroup.disabled);
         player.body.collideWorldBounds = false;
         this.sprite.body.static = false;
         this.sprite.body.fixedRotation = false;
@@ -68,9 +68,9 @@ Game.Object.VehicleObj = class VehicleObj extends Game.Abstract.AbstractGameObje
         this.sprite.anchor.setTo(0.5, 0.5); //don't change when vehicle is mounted
         player.idle("up");
         this.driver = player;
-        if(!Game.Modal.VehicleModal.howDropInfoBoxFired)
-            Game.Modal.VehicleModal.howDropInfoBox();
+        this.modal.fixedDropInfoBox();
 
+        this.initializedAnimation = false;
         this.vehicleMountedEvent.fire(this);
         setTimeout(() => {
             this.vehicleStartedEvent.fire(this);
@@ -90,9 +90,9 @@ Game.Object.VehicleObj = class VehicleObj extends Game.Abstract.AbstractGameObje
         this.driver.scale.setTo(Game.SCALE);
         this.driver.anchor.set(0.5, 0.5);
         this.driver.reset(x, y);
-        this.driver.body.setCollisionGroup(Game.CollisionGroup.player);
         this.driver.body.collideWorldBounds = true;
         let driver = this.driver; this.driver = null;
+        this.modal.hideFixed('infoBox');
         Game.Modal.VehicleModal.droppedInfoBox();
 
         this.vehicleStopedEvent.fire(driver.obj);
@@ -105,7 +105,7 @@ Game.Object.VehicleObj = class VehicleObj extends Game.Abstract.AbstractGameObje
     }
 
     /**
-     * Add comportements to an Object collided
+     * Add events comportements
      */
     objectCollisionUpdate() {
         if(!super.objectCollisionUpdate()) return; //if not collision, break
@@ -163,7 +163,7 @@ Game.Object.VehicleObj = class VehicleObj extends Game.Abstract.AbstractGameObje
                 if(this.collisionEventEnabled)
                     switch(this.objectInCollision.obj.type) {
                         case 'character':
-                            this.modal.infoBox();
+                            this.modal.infoBox(VehicleObj.COLLIDED);
                             break;
                         case 'vehicle':
                             Game.Modal.VehicleModal.beCareful('aux véhicules');
@@ -179,21 +179,37 @@ Game.Object.VehicleObj = class VehicleObj extends Game.Abstract.AbstractGameObje
                 break;
         }
     }
+    mouseOver() {
+        if(super.objectCollisionUpdate() && this.objectInCollision.obj.type === 'character') return;
+        if(!Game.modals.infoboxAreHided()) return;
+        this.modal.infoBox(VehicleObj.UNCOLLIDED);
+    }
+    mouseOut() {
+        if(super.objectCollisionUpdate() && this.objectInCollision.obj.type === 'character') return;
+        this.modal.hideInfobox('infoBox');
+    }
 
     /**
      * Move
      */
     moveUpdate(){
-        this.driver.body.setZeroVelocity(); // force player to don't move by default
+        if(!this.initializedAnimation) {
+            this.driver.idle(this.properties.use);
+            this.initializedAnimation = true;
+        }
+       // this.driver.body.setZeroVelocity(); // force player to don't move by default
+        if(this.keys.event[Phaser.Keyboard.UP].state || this.keys.event[Phaser.Keyboard.DOWN].state)
+            this.modal.hideInfobox('infoBox');
+        let speed = this.speed * (this.properties.use === 'up' ? 1 : -1);
         if(this.keys.event[Phaser.Keyboard.UP].state)
-            this.sprite.body.thrust(this.playerSpeed);
+            this.sprite.body.thrust(speed);
         else if (this.keys.event[Phaser.Keyboard.DOWN].state)
-            this.sprite.body.reverse(this.playerSpeed);
-        else
-            this.sprite.body.setZeroVelocity();
+            this.sprite.body.reverse(speed);
+        /*else
+            this.sprite.body.setZeroVelocity();*/
         if(!this.keys.event[Phaser.Keyboard.LEFT].state && !this.keys.event[Phaser.Keyboard.RIGHT].state)
             this.sprite.body.setZeroRotation();
-        VehicleObj.constrainVelocity(this.sprite, this.speed);
+      //  VehicleObj.constrainVelocity(this.sprite, this.speed);
     }
     moveTo(keycode, keystate){
         if(keystate) {
@@ -201,10 +217,14 @@ Game.Object.VehicleObj = class VehicleObj extends Game.Abstract.AbstractGameObje
                 this.sprite.body.rotateLeft(this.speedRotate);
             if(this.keys.event[keycode].info.name == "right")
                 this.sprite.body.rotateRight(this.speedRotate);
-            if(this.properties.walkToMove) this.driver.walk("up");
-            else this.driver.idle("up");
+
+            if(this.properties.walkToMove) {
+                if(this.keys.event[keycode].info.name == "up") this.driver.walk(this.properties.use);
+                else if(this.keys.event[keycode].info.name == "down") this.driver.walk('up');
+            }
+            else this.driver.idle(this.properties.use);
         } else
-            this.driver.idle("up");
+            this.driver.idle(this.properties.use);
     }
 
     /**

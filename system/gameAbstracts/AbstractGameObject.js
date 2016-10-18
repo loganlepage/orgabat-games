@@ -22,6 +22,8 @@ Game.Abstract.AbstractGameObject = class AbstractGameObject {
         this.objectInitialDistance = null;
         this.collisionEventEnabled = true;
         this.sprite.objectCollisionEvent.add(this, "objectCollision");
+        this.sprite.mouseOverEvent.add(this, "mouseOver");
+        this.sprite.mouseOutEvent.add(this, "mouseOut");
     }
     addModal(modal) {
         this.modal = modal;
@@ -50,4 +52,11 @@ Game.Abstract.AbstractGameObject = class AbstractGameObject {
             this.objectInCollision.position.x, this.objectInCollision.position.y,
             this.sprite.position.x, this.sprite.position.y);
     }
+    mouseOver(){}
+    mouseOut(){}
 };
+
+Object.assign(Game.Abstract.AbstractGameObject, {
+    get COLLIDED() { return true; },
+    get UNCOLLIDED() { return false; }
+});

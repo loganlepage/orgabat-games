@@ -47,7 +47,7 @@ Game.Object.ToolObj = class ToolObj extends Game.Abstract.AbstractGameObject {
     }
 
     /**
-     * Add comportements to an Object collided
+     * Add events comportements
      */
     objectCollision(o) {
         super.objectCollision(o.object);
@@ -58,6 +58,13 @@ Game.Object.ToolObj = class ToolObj extends Game.Abstract.AbstractGameObject {
             default:
                 break;
         }
+    }
+    mouseOver() {
+        if(!Game.modals.infoboxAreHided() || this.modal.isShowing('infoBox', 'fixed')) return;
+        this.modal.infoBox();
+    }
+    mouseOut() {
+        this.modal.hideInfobox('infoBox');
     }
 };
 

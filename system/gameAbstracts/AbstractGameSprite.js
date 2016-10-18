@@ -9,8 +9,13 @@ Game.Abstract.AbstractGameSprite = class AbstractGameSprite extends Phaser.Sprit
     constructor(game, x, y, name, gameObject) {
         super(game, x, y, name);
         this.objectCollisionEvent = new Game.Utils.EventHandler();
+        this.mouseOverEvent = new Game.Utils.EventHandler();
+        this.mouseOutEvent = new Game.Utils.EventHandler();
         this.scale.set(Game.SCALE);
         this.obj = gameObject;
+        this.inputEnabled = true;
+        this.events.onInputOver.add(this.mouseOver, this);
+        this.events.onInputOut.add(this.mouseOut, this);
     }
 
     /**
@@ -25,7 +30,12 @@ Game.Abstract.AbstractGameSprite = class AbstractGameSprite extends Phaser.Sprit
         obj2.class = 'layer';
         this.objectCollision(obj1, obj2);
     }
-
+    mouseOver(sprite) {
+        this.mouseOverEvent.fire(sprite);
+    }
+    mouseOut(sprite) {
+        this.mouseOutEvent.fire(sprite);
+    }
     update() {
         if(this.obj.update !== undefined)
             this.obj.update();
