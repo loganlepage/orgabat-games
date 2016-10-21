@@ -3,7 +3,7 @@ var Game = Game || {};
 Game.Manager = Game.Manager || {};
 
 /**
- * Constructor for a new modalManager (called by play state)
+ * Constructor for a new modalManager (called by play state) (edit: pas utilisé en fait)
  */
 Game.Manager.KeyboardManager = class KeyboardManager {
     constructor(name) {
