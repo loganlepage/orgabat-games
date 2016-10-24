@@ -1,4 +1,4 @@
-let game = new Phaser.Game('100%', '100%', Phaser.WEBGL, "gameDiv");
+let game = new Phaser.Game('100%', '100%', Phaser.CANVAS, "gameDiv");
 
 // Add each game states
 game.state.add('boot', Game.State.bootState);
