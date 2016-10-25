@@ -110,7 +110,6 @@ Game.Vendor.Modal = function (game) {
                 var graphicW = item.graphicWidth || 200;
                 var graphicH = item.graphicHeight || 200;
                 var lockPosition = item.lockPosition || false;
-
                 modalLabel = null;
 
                 if (itemType === "text" || itemType === "bitmapText") {

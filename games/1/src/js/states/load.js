@@ -9,24 +9,24 @@ Game.State.loadState = {
     // Called before
     preload: function() {
         //this.load.onLoadComplete.addOnce(this.onLoadComplete, this);
-        this.game.stage.backgroundColor = '#000000';
+        this.game.stage.backgroundColor = '#FFFFFF';
         this.showLoadingText();
         this.loadAssets();
     },
 
     loadAssets: function(){
-        game.load.tilemap('map', game_path + '/assets/tilemaps/maps/map.json', null, Phaser.Tilemap.TILED_JSON);
+        this.game.load.tilemap('map', game_path + '/assets/tilemaps/maps/map.json', null, Phaser.Tilemap.TILED_JSON);
         for(let i in Game.Config.data.entities.assets)
-            game.load.image(Game.Config.data.entities.assets[i].name, game_path +
+            this.game.load.image(Game.Config.data.entities.assets[i].name, game_path +
                 '/assets/sprites/' + Game.Config.data.entities.assets[i].file);
         for(let i in Game.Config.data.tilesmap.assets)
-            game.load.image(Game.Config.data.tilesmap.assets[i].name, game_path +
+            this.game.load.image(Game.Config.data.tilesmap.assets[i].name, game_path +
                 '/assets/tilemaps/tiles/' + Game.Config.data.tilesmap.assets[i].file);
         for(let i in Game.Config.data.modals.assets)
-            game.load.image(Game.Config.data.modals.assets[i].name, game_path +
+            this.game.load.image(Game.Config.data.modals.assets[i].name, game_path +
                 '/assets/modals/' + Game.Config.data.modals.assets[i].file);
 
-        game.load.spritesheet('player', game_path + '/assets/sprites/george.png', 32, 32, 16);
+        this.game.load.spritesheet('player', game_path + '/assets/sprites/george.png', 32, 32, 16);
     },
 
     showLoadingText: function(){
@@ -38,13 +38,12 @@ Game.State.loadState = {
 
         //  Our font + size
         text.font = 'Arial';
-        text.fontWeight = 'bold';
         text.fontSize = 70;
-        text.fill = '#ffffff';
+        text.fill = '#272727';
     },
 
     create: function() {
         // Calling the menu state
-        game.state.start('menu');
+        this.game.state.start('menu');
     }
 };

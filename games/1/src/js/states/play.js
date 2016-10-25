@@ -41,7 +41,7 @@ Game.State.playState = {
 
         this.game.physics.p2.setBoundsToWorld(true, true, true, true, false);
         this.game.physics.p2.updateBoundsCollisionGroup();
-        this.gameRules.init();
+        this.start();
     },
 
     initMap: function() {
@@ -66,7 +66,7 @@ Game.State.playState = {
     },
 
     addVehicles: function() {
-        Game.vehicleGroup = new Game.Group.VehicleGroup(game, this.layers[1], Game.Config.data.entities.vehicles);
+        Game.vehicleGroup = new Game.Group.VehicleGroup(this.game, this.layers[1], Game.Config.data.entities.vehicles);
         Game.vehicleGroup.forEach(function(item) {
             item.obj.vehicleMountedEvent.add(this, "follow");
             item.obj.vehicleUnmountedEvent.add(this, "follow");
@@ -75,10 +75,9 @@ Game.State.playState = {
     },
     addPlayer: function() {
         this.player = new Game.Object.CharacterObj(this.game, this.layers[1], Game.Config.data.entities.player.x, Game.Config.data.entities.player.y);
-        this.game.camera.follow(this.player.sprite);
     },
     addTools: function() {
-        Game.toolGroup = new Game.Group.ToolGroup(game, this.layers[1], Game.Config.data.entities.tools);
+        Game.toolGroup = new Game.Group.ToolGroup(this.game, this.layers[1], Game.Config.data.entities.tools);
         Game.vehicleGroup.forEach(function(vehicle) {
             Game.toolGroup.forEach(function(tool) {
                 vehicle.obj.vehicleStartedEvent.add(tool.obj, "onVehicleStart");
@@ -87,7 +86,7 @@ Game.State.playState = {
         });
     },
     addMaterials: function() {
-        Game.materialGroup = new Game.Group.MaterialGroup(game, this.layers[1], Game.Config.data.entities.materials);
+        Game.materialGroup = new Game.Group.MaterialGroup(this.game, this.layers[1], Game.Config.data.entities.materials);
         Game.vehicleGroup.forEach(function(vehicle) {
             Game.materialGroup.forEach(function(material) {
                 vehicle.obj.vehicleStartedEvent.add(material.obj, "onVehicleStart");
@@ -100,13 +99,11 @@ Game.State.playState = {
         this.game.camera.follow(object.sprite);
     },
 
-    update: function() {
-        this.game.forceSingleUpdate = true;
-    },
+    update: function() {},
     render: function() {
         if(Game.Config.data.developer.debug) {
             this.game.time.advancedTiming = true; //SEE FPS
-            this.game.debug.text(game.time.fps, 2, 14, "#00ff00");
+            this.game.debug.text(this.game.time.fps, 2, 14, "#00ff00");
         }
     },
 
@@ -114,21 +111,32 @@ Game.State.playState = {
     /*
      * Game Rules
      */
-    gameRules: {
-        depotIsFullEventCalled: false,
-        init: function() {
-            //Le but du jeu est de remplir le dépot avec les 9 charges du mortier
-            //Si le dépot est plein, alors le jeu est gagné.
-            Game.toolGroup.forEach(function(tool) {
-                if(tool.key === 'depot') {
-                    tool.obj.toolIsFullEvent.add(this, "depotIsFullEvent")
-                }
+    start: function() {
+        /*var fade = this.game.add.graphics(0, 0);
+        fade.lineStyle(0).beginFill(0xFFFFFF, 1).drawRect(0, 0, this.game.camera.width, this.game.camera.height).endFill();
+        fade.alpha = 0; fade.fixedToCamera = true;
+        let t1 = this.game.add.tween(this.game.camera).to( { y: 500 }, 1500, Phaser.Easing.Quadratic.InOut, false, 500);
+        let t2 = this.game.add.tween(fade).to( { alpha: 1 }, 500, Phaser.Easing.Linear.None, false, 500);
+        let t3 = this.game.add.tween(fade).to( { alpha: 0 }, 500, Phaser.Easing.Linear.None, true, 100);
+        t1.chain(t2).start();
+        t2.onComplete.add(() => {
+            this.camera.y = 0;
+            t3.start().onComplete.add(() => {
+                this.follow(this.player);
+            })
+        });*/
+        this.game.camera.y = this.game.camera.height;
+        let t1 = this.game.add.tween(this.game.camera).to( { y: this.player.sprite.y - window.innerHeight / 2 }, 1500, Phaser.Easing.Quadratic.InOut, false, 800);
+        t1.start().onComplete.add(() => {
+            this.follow(this.player);
+            if(this.game.infoCanvas.state.current == "info")
+                this.game.infoCanvas.state.getCurrentState().awakeGabator();
+        });
 
-            }.bind(this));
-        },
-        depotIsFullEvent: function() {
-            if(this.depotIsFullEventCalled) return;
-            game.state.start('win');
-        }
+        //Si le dépot est plein, alors le jeu est gagné.
+        Game.toolGroup.forEach((tool) => { if(tool.key === 'depot')
+             tool.obj.toolIsFullEvent.add(this, "depotIsFullEvent")
+        });
+        this.depotIsFullEvent = () => { this.game.state.start('win') }
     }
 };

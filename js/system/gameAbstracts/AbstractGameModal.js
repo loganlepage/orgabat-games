@@ -40,25 +40,27 @@ Game.Abstract.AbstractGameModal = class AbstractGameModal {
     }
 
     getSize(item) {
-        return item._frame.right * Game.SCALE;
+        return item._frame.right * Game.Manager.ModalScale;
     }
     getAlignCenterX(reference, item) {
-        return reference._frame.centerX * Game.SCALE - item.width / 2;
+        return reference._frame.centerX * Game.Manager.ModalScale - item.width / 2;
     }
     getAlignRightX(reference, item) {
-        return reference._frame.right * Game.SCALE - item.width;
+        return reference._frame.right * Game.Manager.ModalScale - item.width;
     }
     getAlignCenterY(reference, item) {
-        return reference._frame.centerY * Game.SCALE - item.height / 2;
+        return reference._frame.centerY * Game.Manager.ModalScale - item.height / 2;
     }
     getAlignBottomY(reference, item) {
-        return reference._frame.bottom * Game.SCALE - item.height;
+        return reference._frame.bottom * Game.Manager.ModalScale - item.height;
     }
-    getOuterRightToSprite(sprite) {
-        return sprite.position.x + sprite.width * (1 - sprite.anchor.x);
+    getOuterRightToSprite(sprite, offset) {
+        offset = offset ? offset : 0;
+        return sprite.position.x + sprite.width * (1 - sprite.anchor.x) + offset * Game.Manager.ModalScale;
     }
-    getOuterLeftToSprite(sprite, item) {
-        return sprite.position.x - sprite.width * (1 - sprite.anchor.x) - item._frame.right * Game.SCALE;
+    getOuterLeftToSprite(sprite, item, offset) {
+        offset = offset ? offset : 0;
+        return sprite.position.x - sprite.width * (1 - sprite.anchor.x) - ( item._frame.right + offset ) * Game.Manager.ModalScale;
     }
     getInnerTopToSprite(sprite) {
         return sprite.position.y - sprite.height * (1 - sprite.anchor.x)

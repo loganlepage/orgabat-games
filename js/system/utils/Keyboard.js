@@ -44,7 +44,7 @@ Game.Utils.Keyboard = class Keyboard extends Phaser.Keyboard {
      */
     addEvent(instance, method, code, info) {
         this.event[code] = {
-            event: game.input.keyboard.addKey(Keyboard.getKey(code)),
+            event: this.game.input.keyboard.addKey(Keyboard.getKey(code)),
             get state(){ return this.event.isDown },
             instance: instance, method: method };
         if(info !== null) this.event[code].info = info;

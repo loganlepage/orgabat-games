@@ -9,7 +9,7 @@ Game.Config.data = {
     developer: {
         debug: false
     },
-    canvasParent: "gameDiv",
+    canvasParent: "#gameDiv",
     tilesmap: {
         name: "map",
         calques: ["Background", "Midground"],

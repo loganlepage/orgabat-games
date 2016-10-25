@@ -1,14 +1,34 @@
-html, body, #gameDiv  {
+html, body, #game {
     height: 100%;
     width: 100%;
+    overflow:hidden;
 }
 
 html {
-    background: lightgrey;
+    background: white;
 }
 body {
     margin:0;
 }
-#gameDiv {
-    overflow: hidden;
+#game > *{
+    display:inline-block;
+    height: 100%;
+    border-radius: 6px;
+    overflow:hidden;
+}
+
+#info-canvas {
+    width: 250px;
+    position: absolute;
+}
+#info-canvas canvas {
+    top: 0;
+    position: absolute;
+}
+
+#info-progress-bar {
+    position:relative;
+    display:block;
+    padding:15px;
+    z-index:1;
 }

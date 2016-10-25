@@ -14,23 +14,12 @@ Game.System.TilemapLayer = class TilemapLayer extends Phaser.TilemapLayer {
         }
         super(game, tilemap, index, game.width, game.height);
         group.add(this);
-
-        let sWidth = this.game.width / this.game.baseWidth;
-        let sHeight = this.game.height / this.game.baseHeight;
-        let ratio;
-        if(this.game.baseHeight * sWidth > this.game.height) {
-            this.setScale(sWidth);
-            if(sWidth < 1) {
-                ratio = 1 - sWidth + 1;
-                this.resize(game.width  + game.width * ratio, game.height + game.height * ratio );
-            }
-        } else {
-            this.setScale(sHeight);
-            ratio = 1 - sHeight + 1;
-            this.resize(game.width  + game.width * ratio, game.height + game.height * ratio );
-        }
+        this.scaleTo(1);
+    }
+    scaleTo(s) {
+        let scale = Game.SCALE * s;
+        this.setScale(scale);
+        this.resize(this.game.width + this.game.width / scale, this.game.height + this.game.height / scale );
         this.resizeWorld();
     }
-
-
 };

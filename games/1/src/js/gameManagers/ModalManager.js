@@ -5,8 +5,11 @@ Game.Manager = Game.Manager || {};
 /**
  * Constructor for a new modalManager (called by play state)
  */
+
 Game.Manager.ModalManager = class ModalManager {
     constructor(game) {
+        Game.Manager.ModalScale = Game.SCALE * 0.9;
+        this.game = game;
         this.modal = new Game.Vendor.Modal(game);
         this.modals = {};
         this.createModals();
@@ -46,7 +49,7 @@ Game.Manager.ModalManager = class ModalManager {
         this.modal.updateModalValue(value, type, index);
     }
     count(duration, callback) {
-        let _timer = game.time.create(false);
+        let _timer = this.game.time.create(false);
         _timer.start();
         _timer.onComplete.add(callback);
         _timer.repeat(Phaser.Timer.SECOND, duration, function(){}, this);
@@ -68,42 +71,42 @@ Game.Manager.ModalManager = class ModalManager {
                     {
                         type: "image",
                         content: "big_infobulle_right",
-                        contentScale: Game.SCALE
+                        contentScale: Game.Manager.ModalScale,
                     },
                     {
                         type: "text",
                         content: "{title}",
                         fontFamily: "Arial",
-                        fontSize: 28 * Game.SCALE,
+                        fontSize: 28 * Game.Manager.ModalScale,
                         color: "0x5F4D21",
-                        offsetY: 25 * Game.SCALE,
-                        offsetX: 40 * Game.SCALE,
+                        offsetY: 25 * Game.Manager.ModalScale,
+                        offsetX: 40 * Game.Manager.ModalScale,
                     },
                     {
                         type: "text",
                         content: "{content}",
                         fontFamily: "Arial",
-                        fontSize: 14 * Game.SCALE,
+                        fontSize: 14 * Game.Manager.ModalScale,
                         color: "0x5F4D21",
-                        offsetY: 85 * Game.SCALE,
-                        offsetX: 40 * Game.SCALE,
+                        offsetY: 85 * Game.Manager.ModalScale,
+                        offsetX: 40 * Game.Manager.ModalScale,
                         align: "left"
                     },
                     {
                         type: "image",
                         content: "bouton_a",
-                        contentScale: Game.SCALE / 2,
-                        offsetY: 130 * Game.SCALE,
-                        offsetX: 265 * Game.SCALE
+                        contentScale: Game.Manager.ModalScale * 0.6,
+                        offsetY: 129 * Game.Manager.ModalScale,
+                        offsetX: 263 * Game.Manager.ModalScale
                     },
                     {
                         type: "text",
                         content: "utiliser",
                         fontFamily: "Arial",
-                        fontSize: 12 * Game.SCALE,
+                        fontSize: 12 * Game.Manager.ModalScale,
                         color: "0x5F4D21",
-                        offsetY: 132 * Game.SCALE,
-                        offsetX: 289 * Game.SCALE
+                        offsetY: 132 * Game.Manager.ModalScale,
+                        offsetX: 289 * Game.Manager.ModalScale
                     }
                 ]
             },
@@ -117,33 +120,33 @@ Game.Manager.ModalManager = class ModalManager {
                     {
                         type: "image",
                         content: "small_infobulle_top",
-                        contentScale: Game.SCALE
+                        contentScale: Game.Manager.ModalScale
                     },
                     {
                         type: "text",
                         content: "{name}",
                         fontFamily: "Arial",
-                        fontSize: 14 * Game.SCALE,
+                        fontSize: 14 * Game.Manager.ModalScale,
                         color: "0x5F4D21",
-                        offsetY: 25 * Game.SCALE
+                        offsetY: 25 * Game.Manager.ModalScale
                     },
                     {
                         type: "text",
                         content: "",
                         fontFamily: "Arial",
-                        fontSize: 14 * Game.SCALE,
+                        fontSize: 14 * Game.Manager.ModalScale,
                         color: "0x5F4D21",
-                        offsetY: 25 * Game.SCALE
+                        offsetY: 25 * Game.Manager.ModalScale
                     },
                     {
                         type: "image",
                         content: "bouton_a",
-                        contentScale: Game.SCALE * (2/3)
+                        contentScale: Game.Manager.ModalScale * (2/3)
                     },
                     {
                         type: "image",
                         content: "bouton_e",
-                        contentScale: Game.SCALE * (2/3)
+                        contentScale: Game.Manager.ModalScale * (2/3)
                     }
                 ]
             },
@@ -157,24 +160,24 @@ Game.Manager.ModalManager = class ModalManager {
                     {
                         type: "image",
                         content: "small_info_infobulle",
-                        contentScale: Game.SCALE
+                        contentScale: Game.Manager.ModalScale
                     },
                     {
                         type: "text",
                         content: "{content}",
                         fontFamily: "Arial",
-                        fontSize: 12 * Game.SCALE,
+                        fontSize: 12 * Game.Manager.ModalScale,
                         color: "0x5F4D21",
-                        offsetY: 20 * Game.SCALE,
-                        offsetX: 55 * Game.SCALE
+                        offsetY: 20 * Game.Manager.ModalScale,
+                        offsetX: 55 * Game.Manager.ModalScale
                     },
                     {
                         type : "text",
                         content: "X",
-                        fontSize: 12 * Game.SCALE,
+                        fontSize: 12 * Game.Manager.ModalScale,
                         color: "0x5F4D21",
-                        offsetY: 10 * Game.SCALE,
-                        offsetX: 182 * Game.SCALE,
+                        offsetY: 10 * Game.Manager.ModalScale,
+                        offsetX: 182 * Game.Manager.ModalScale,
                         callback: function() {
                             Game.modals.modal.hideModal(this.type);
                         }
@@ -182,9 +185,9 @@ Game.Manager.ModalManager = class ModalManager {
                     {
                         type: "image",
                         content: "bouton_z",
-                        contentScale: Game.SCALE,
-                        offsetY: 10 * Game.SCALE,
-                        offsetX: 10 * Game.SCALE
+                        contentScale: Game.Manager.ModalScale,
+                        offsetY: 10 * Game.Manager.ModalScale,
+                        offsetX: 10 * Game.Manager.ModalScale
                     },
                 ]
             }
@@ -205,24 +208,24 @@ Game.Manager.ModalManager = class ModalManager {
                 {
                     type: "image",
                     content: "info_infobulle",
-                    contentScale: Game.SCALE
+                    contentScale: Game.Manager.ModalScale
                 },
                 {
                     type: "text",
                     content: "{content}",
                     fontFamily: "Arial",
-                    fontSize: 12 * Game.SCALE,
+                    fontSize: 12 * Game.Manager.ModalScale,
                     color: "0x5F4D21",
-                    offsetY: 35 * Game.SCALE,
-                    offsetX: 85 * Game.SCALE
+                    offsetY: 35 * Game.Manager.ModalScale,
+                    offsetX: 85 * Game.Manager.ModalScale
                 },
                 {
                     type : "text",
                     content: "X",
-                    fontSize: 12 * Game.SCALE,
+                    fontSize: 12 * Game.Manager.ModalScale,
                     color: "0x5F4D21",
-                    offsetY: 10 * Game.SCALE,
-                    offsetX: 272 * Game.SCALE,
+                    offsetY: 10 * Game.Manager.ModalScale,
+                    offsetX: 272 * Game.Manager.ModalScale,
                     callback: () => {
                         this.modal.hideModal("robot_infobulle");
                     }
@@ -239,15 +242,15 @@ Game.Manager.ModalManager = class ModalManager {
                     type: "image",
                     content: "modalBG",
                     offsetY: 0,
-                    contentScale: Game.SCALE
+                    contentScale: Game.Manager.ModalScale
                 },
                 {
                     type : "text",
                     content: "X",
-                    fontSize: 46 * Game.SCALE,
+                    fontSize: 46 * Game.Manager.ModalScale,
                     color: "0x000000",
-                    offsetY: -110 * Game.SCALE,
-                    offsetX: 230 * Game.SCALE,
+                    offsetY: -110 * Game.Manager.ModalScale,
+                    offsetX: 230 * Game.Manager.ModalScale,
                     callback() {
                         Game.modals.modal.hideModal("modal5");
                     }
@@ -256,17 +259,17 @@ Game.Manager.ModalManager = class ModalManager {
                     type: "text",
                     content: "{title}",
                     fontFamily: "Arial",
-                    fontSize: 42 * Game.SCALE,
+                    fontSize: 42 * Game.Manager.ModalScale,
                     color: "0x5F4D21",
-                    offsetY: -70 * Game.SCALE
+                    offsetY: -70 * Game.Manager.ModalScale
                 },
                 {
                     type: "text",
                     content: "{content}",
                     fontFamily: "Arial",
-                    fontSize: 26 * Game.SCALE,
+                    fontSize: 26 * Game.Manager.ModalScale,
                     color: "0x5F4D21",
-                    offsetY: 30 * Game.SCALE,
+                    offsetY: 30 * Game.Manager.ModalScale,
                     textAlign: "right"
                 }
             ]
