@@ -2,8 +2,19 @@
 var Game = Game || {};
 Game.System = Game.System || {};
 
-//see https://github.com/photonstorm/phaser/blob/v2.4.4/src/tilemap/Tilemap.js
+/**
+ * Tilemap layer class
+ * see https://github.com/photonstorm/phaser/blob/v2.4.4/src/tilemap/Tilemap.js
+ * @type {TilemapLayer}
+ */
 Game.System.TilemapLayer = class TilemapLayer extends Phaser.TilemapLayer {
+    /**
+     * Constructor for a new Tilemap layer
+     * @param game
+     * @param tilemap
+     * @param layer
+     * @param group
+     */
     constructor(game, tilemap, layer, group) {
         if (group === undefined) group = game.world;
         let index = layer;
@@ -16,6 +27,11 @@ Game.System.TilemapLayer = class TilemapLayer extends Phaser.TilemapLayer {
         group.add(this);
         this.scaleTo(1);
     }
+
+    /**
+     * Scale the world with the tilemap
+     * @param s
+     */
     scaleTo(s) {
         let scale = Game.SCALE * s;
         this.setScale(scale);

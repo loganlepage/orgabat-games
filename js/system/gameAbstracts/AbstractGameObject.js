@@ -3,7 +3,8 @@ var Game = Game || {};
 Game.Abstract = Game.Abstract || {};
 
 /**
- * abstract gameObject (parent for all gameObjects)
+ * Abstract gameObject (parent for all gameObjects)
+ * @type {AbstractGameObject}
  */
 Game.Abstract.AbstractGameObject = class AbstractGameObject {
     constructor(game, layer, type) {
@@ -12,9 +13,7 @@ Game.Abstract.AbstractGameObject = class AbstractGameObject {
         this.type = type;
     }
 
-    /**
-     * Initialize a sprite & modal
-     */
+    /** Initialize a sprite & modal */
     addSprite(sprite) {
         this.sprite = sprite;
         this.game.add.existing(this.sprite);
@@ -29,9 +28,7 @@ Game.Abstract.AbstractGameObject = class AbstractGameObject {
         this.modal = modal;
     }
 
-    /**
-     * Object collision
-     */
+    /** Object collision */
     objectCollisionUpdate() {
         if(this.objectInCollision === null) return;
         let actualDistance = Phaser.Math.distance(
@@ -56,6 +53,7 @@ Game.Abstract.AbstractGameObject = class AbstractGameObject {
     mouseOut(){}
 };
 
+/** Static properties */
 Object.assign(Game.Abstract.AbstractGameObject, {
     get COLLIDED() { return true; },
     get UNCOLLIDED() { return false; }

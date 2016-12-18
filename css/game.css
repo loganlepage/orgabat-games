@@ -17,18 +17,25 @@ body {
     overflow:hidden;
 }
 
-#info-canvas {
+#gabator-canvas {
     width: 250px;
     position: absolute;
 }
-#info-canvas canvas {
+#gabator-canvas canvas {
     top: 0;
     position: absolute;
 }
 
-#info-progress-bar {
+#gabator-progress-bar {
     position:relative;
     display:block;
-    padding:15px;
+    padding:0 15px;
     z-index:1;
+}
+#gabator-progress-bar span {
+    font-style:italic;
+}
+#gabator-progress-bar .progress {
+    margin-bottom: 8px;
+    height: 12px;
 }

@@ -3,18 +3,11 @@ Game.Vendor = Game.Vendor || {};
 
 Game.Vendor.Modal = function (game) {
 
-    /**
-     * Use: https://github.com/netgfx/phaser_modals/blob/master/examples/example1/js/index.js
-     */
-
+    /** Use: https://github.com/netgfx/phaser_modals/blob/master/examples/example1/js/index.js */
     var _this = this;
-
     game.modals = {};
-
     return {
-
         createModal: function (options) {
-
             var type = options.type || ''; // must be unique
             var includeBackground = options.includeBackground; // maybe not optional
             var backgroundColor = options.backgroundColor || "0x000000";
@@ -27,9 +20,7 @@ Game.Vendor.Modal = function (game) {
             var itemsArr = options.itemsArr || [];
             var fixedToCamera = options.fixedToCamera || false;
             /**var vPadding = options.vPadding || 20;*/
-
                 /////////////////////////////////////////////////////////////////////
-
             var modal;
             var modalGroup = game.add.group();
             if (fixedToCamera === true) {

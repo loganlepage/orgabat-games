@@ -2,12 +2,26 @@
 var Game = Game || {};
 Game.System = Game.System || {};
 
+/**
+ * An inventary system
+ * @type {Inventary}
+ */
 Game.System.Inventary = class Inventary {
+    /**
+     * Constructor for a new inventary
+     * @param containerSize
+     * @param items
+     */
     constructor(containerSize, items) {
         this.size = (containerSize === undefined) ? null : containerSize;
         this.items = (items === undefined) ? [] : items;
     }
 
+    /**
+     * Return true if the material {name} exist in the config
+     * @param name
+     * @returns {boolean}
+     */
     isMaterialExist(name) {
         let founded = false;
         for(let key in Game.Config.data.entities.materials) {
@@ -15,6 +29,11 @@ Game.System.Inventary = class Inventary {
         } return founded;
     }
 
+    /**
+     * Add an item
+     * @param name
+     * @param amount
+     */
     addItem(name, amount) {
         if(!this.isMaterialExist(name)) throw new Error(`Material "${name}" inexistant.`);
         if(amount === undefined) amount = 1;
@@ -26,6 +45,11 @@ Game.System.Inventary = class Inventary {
             throw new Error('Inventaire plein.');
     }
 
+    /**
+     * Remove item
+     * @param name
+     * @param amount
+     */
     delItem(name, amount) {
         if(amount === undefined) amount = 1;
         if(amount === 0) return;
@@ -33,10 +57,19 @@ Game.System.Inventary = class Inventary {
             this.items[name].amount -= amount;
     }
 
+    /**
+     * Return current amount for an item
+     * @param name
+     * @returns {*}
+     */
     getSumOf(name) {
         return this.items[name] !== undefined ? this.items[name].amount : 0;
     }
 
+    /**
+     * Return sum of all items with their amount
+     * @returns {number}
+     */
     getSizeUsed() {
         let sizeUsed = 0;
         for(let key in this.items)
@@ -44,6 +77,10 @@ Game.System.Inventary = class Inventary {
         return sizeUsed;
     }
 
+    /**
+     * Return the size left
+     * @returns {number}
+     */
     getSizeLeft() {
         return (this.size - this.getSizeUsed());
     }

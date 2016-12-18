@@ -3,7 +3,8 @@ var Game = Game || {};
 Game.Abstract = Game.Abstract || {};
 
 /**
- * abstract modal (parent for all gameModals)
+ * Abstract modal (parent for all gameModals)
+ * @type {AbstractGameModal}
  */
 Game.Abstract.AbstractGameModal = class AbstractGameModal {
     constructor(properties, materialObj, game) {

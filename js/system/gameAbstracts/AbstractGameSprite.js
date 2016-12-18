@@ -3,7 +3,8 @@ var Game = Game || {};
 Game.Abstract = Game.Abstract || {};
 
 /**
- * abstract gameObject (parent for all gameSprites)
+ * Abstract gameObject (parent for all gameSprites)
+ * @type {AbstractGameSprite}
  */
 Game.Abstract.AbstractGameSprite = class AbstractGameSprite extends Phaser.Sprite {
     constructor(game, x, y, name, gameObject) {
@@ -18,9 +19,7 @@ Game.Abstract.AbstractGameSprite = class AbstractGameSprite extends Phaser.Sprit
         this.events.onInputOut.add(this.mouseOut, this);
     }
 
-    /**
-     * Events
-     */
+    /** Events */
     objectCollision(obj1, obj2) {
         obj1.class = obj1.class === undefined ? 'gameObject' : obj1.class;
         obj2.class = obj2.class === undefined ? 'gameObject' : obj2.class;
