@@ -1,6 +1,6 @@
 'use strict';
-var Game = Game || {};
-Game.Utils = Game.Utils || {};
+var MyPhaser = MyPhaser || {};
+MyPhaser.Utils = MyPhaser.Utils || {};
 
 const KEYDOWN = true;
 const KEYUP = false;
@@ -8,7 +8,7 @@ const KEYUP = false;
  * Keyboard controller
  * @type {Keyboard}
  */
-Game.Utils.Keyboard = class Keyboard extends Phaser.Keyboard {
+MyPhaser.Utils.Keyboard = class Keyboard extends Phaser.Keyboard {
 
     /**
      * Constructor for a new keyboard
@@ -98,7 +98,7 @@ Game.Utils.Keyboard = class Keyboard extends Phaser.Keyboard {
 };
 
 /** Static properties */
-Object.assign(Game.Utils.Keyboard, {
+Object.assign(MyPhaser.Utils.Keyboard, {
     KEYDOWN: true,
     KEYUP: false
 });

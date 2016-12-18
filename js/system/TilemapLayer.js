@@ -1,13 +1,12 @@
 'use strict';
-var Game = Game || {};
-Game.System = Game.System || {};
+var MyPhaser = MyPhaser || {};
 
 /**
  * Tilemap layer class
  * see https://github.com/photonstorm/phaser/blob/v2.4.4/src/tilemap/Tilemap.js
  * @type {TilemapLayer}
  */
-Game.System.TilemapLayer = class TilemapLayer extends Phaser.TilemapLayer {
+MyPhaser.TilemapLayer = class TilemapLayer extends Phaser.TilemapLayer {
     /**
      * Constructor for a new Tilemap layer
      * @param game

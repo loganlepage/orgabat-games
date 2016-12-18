@@ -1,12 +1,12 @@
 'use strict';
-var Game = Game || {};
-Game.Utils = Game.Utils || {};
+var MyPhaser = MyPhaser || {};
+MyPhaser.Utils = MyPhaser.Utils || {};
 
 /**
  * Position in the grid
  * @type {Position}
  */
-Game.Utils.Position = class Position {
+MyPhaser.Utils.Position = class Position {
 
     /**
      * Constructor for a new position

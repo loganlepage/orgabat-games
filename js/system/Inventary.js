@@ -1,12 +1,11 @@
 'use strict';
-var Game = Game || {};
-Game.System = Game.System || {};
+var MyPhaser = MyPhaser || {};
 
 /**
  * An inventary system
  * @type {Inventary}
  */
-Game.System.Inventary = class Inventary {
+MyPhaser.Inventary = class Inventary {
     /**
      * Constructor for a new inventary
      * @param containerSize

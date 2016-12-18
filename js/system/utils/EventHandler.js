@@ -1,12 +1,12 @@
 'use strict';
-var Game = Game || {};
-Game.Utils = Game.Utils || {};
+var MyPhaser = MyPhaser || {};
+MyPhaser.Utils = MyPhaser.Utils || {};
 
 /**
  * Delegate event
  * @type {EventHandler}
  */
-Game.Utils.EventHandler = class EventHandler {
+MyPhaser.Utils.EventHandler = class EventHandler {
     /** Constructor for a new event handler */
     constructor() {
         this.calls = [];
