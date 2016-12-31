@@ -1,0 +1,38 @@
+html, body, #game {
+    height: 100%;
+    width: 100%;
+    overflow:hidden;
+}
+
+html { background: white; }
+body { margin:0; }
+#game > *{
+    display:inline-block;
+    height: 100%;
+    border-radius: 6px;
+    overflow:hidden;
+}
+
+#gabator-canvas {
+    width: 250px;
+    position: absolute;
+}
+#gabator-canvas canvas {
+    top: 0;
+    position: absolute;
+}
+
+#gabator-panel {
+    position:relative;
+    display:block;
+    padding:0 15px;
+    z-index:1;
+}
+#gabator-panel h4 { text-align:right; }
+#gabator-panel > * { padding-bottom:5px; }
+#gabator-panel span { font-style:italic; }
+#gabator-panel .disabled { display:none!important; }
+#gabator-panel .progress {
+    margin-bottom:8px;
+    height:12px;
+}

@@ -1,0 +1,23 @@
+{
+  "name": "orgabat-games-system",
+  "version": "1.0.0",
+  "description": "Module de jeu pour Orgabat - Classes system",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/loganlepage/orgabat-games-system.git"
+  },
+  "keywords": [
+    "phaser",
+    "js"
+  ],
+  "author": "Logan Lepage",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/loganlepage/orgabat-games-system/issues"
+  },
+  "homepage": "https://github.com/loganlepage/orgabat-games-system#readme"
+}
