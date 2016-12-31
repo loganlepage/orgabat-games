@@ -1,3 +1,6 @@
 [submodule "libs/games/1"]
 	path = libs/games/1
 	url = https://github.com/loganlepage/orgabat-games-supply-1
+[submodule "libs/system"]
+	path = libs/system
+	url = https://github.com/loganlepage/orgabat-games-system
