@@ -21,8 +21,8 @@ var production = process.argv.indexOf("--production") > -1;
 module.exports = {
     /** nos points d'entrée, par clé */
     entry: {
-        '1': "./src/api/games/1/main.js", // Jeu 1
-        '2': "./src/api/games/2/main.js" // Test
+        '1': "./src/games/1/main.js", // Jeu 1
+        '2': "./src/games/2/main.js" // Test
     },
     /** description de nos sorties */
     output: {
