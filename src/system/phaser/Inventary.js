@@ -1,10 +1,12 @@
 'use strict';
+import Type from '../utils/Type';
 
 /** An inventary system */
 export default class Inventary {
     /**
      * Constructor for a new inventary
      * @param containerSize
+     * @param data
      * @param items
      */
     constructor(containerSize, data, items) {
@@ -34,7 +36,7 @@ export default class Inventary {
         if(!this.isMaterialExist(name)) throw new Error(`Material "${name}" inexistant.`);
         if(amount === undefined) amount = 1;
         if(amount === 0) return;
-        if(this.items[name] === undefined) this.items[name] = {'amount': 0};
+        if(!Type.isExist(this.items[name])) this.items[name] = {amount: 0};
         if(this.getSizeLeft() >= amount)
             this.items[name].amount += amount;
         else
@@ -59,7 +61,7 @@ export default class Inventary {
      * @returns {*}
      */
     getSumOf(name) {
-        return this.items[name] !== undefined ? this.items[name].amount : 0;
+        return Type.isExist(this.items[name]) ? this.items[name].amount : 0;
     }
 
     /**

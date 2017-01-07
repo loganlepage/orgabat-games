@@ -1,12 +1,14 @@
 "use strict";
 import Config from '../../config/data';
 import GameObject from 'system/phaser/GameObject';
-import CharacterSprite from './CharacterSprite';
+import PlayerSprite from './PlayerSprite';
 import Position from 'system/phaser/utils/Position';
 import Keyboard from 'system/phaser/utils/Keyboard';
 
-/** Character Object (include sprite and keys) */
-export default class Character extends GameObject {
+import Vehicle from '../Vehicle/Vehicle';
+
+/** Player Object (include sprite and keys) */
+export default class Player extends GameObject {
 
     /**
      * Constructor for a new character object
@@ -16,8 +18,8 @@ export default class Character extends GameObject {
      * @param y
      */
     constructor(game, layer, x, y) {
-        super(game, layer, "character");
-        this.addSprite(new CharacterSprite(game, Position.getPixelAt(x), Position.getPixelAt(y), this));
+        super(game, layer);
+        this.addSprite(new PlayerSprite(game, Position.getPixelAt(x), Position.getPixelAt(y), this.type, this));
         this.configure();
         this.ready = true;
     }
@@ -45,18 +47,18 @@ export default class Character extends GameObject {
     /** Update, not called when the player mount a vehicle */
     update() {
         if(!this.ready) return;
+        super.update();
         this.objectCollisionUpdate();
         this.moveUpdate();
     }
 
     /** Add comportements to an Object collided */
     objectCollisionUpdate() {
-        if(!super.objectCollisionUpdate()) return; //if not collision, break
+        if(this.objectInCollision === null) return; //if not collision, break
         if(this.keys.bool["A"].state) {
-            switch(this.objectInCollision.obj.type) {
-                case "vehicle":
+            switch(this.objectInCollision.sprite.obj.type) {
+                case Vehicle.name:
                     this.setVehicle(this.objectInCollision);
-                    this.objectInCollision.obj.modal.hideInfobox('infoBox');
                     this.objectInCollision = null;
                     break;
                 default:
@@ -64,20 +66,20 @@ export default class Character extends GameObject {
             }
         }
     }
-    objectCollision(o) {
+    onCollisionBegin(o) {
         if( this.vehicleInUse.object !== null ) return;
-        super.objectCollision(o.object);
+        super.onCollisionBegin(o.object);
     }
 
     /** Start vehicle */
     setVehicle(vehicle) {
         if(this.vehicleInUse.object !== null) return;
-        if(vehicle.obj.startProcess === true) return;
+        if(vehicle.sprite.obj.startProcess === true) return;
         this.isMoving = false;
-        vehicle.obj.startBy(this.sprite, this.keys);
+        vehicle.sprite.obj.startBy(this.sprite, this.keys);
     }
     onVehicleMount(vehicle) { this.vehicleInUse.object = vehicle; }
-    onVehicleStart() { this.vehicleInUse.started = true;}
+    onVehicleStart() { this.vehicleInUse.started = true; }
     onVehicleStop() { this.vehicleInUse.started = false; }
     onVehicleUnmount() { this.vehicleInUse.object = null; }
 

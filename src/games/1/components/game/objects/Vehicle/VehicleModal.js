@@ -1,13 +1,14 @@
 "use strict";
-import Modal from 'system/phaser/Modal';
-import DescriptionInfobox from 'system/phaser/modals/DescriptionInfobox';
-import {DescriptionInfoboxLeft, DescriptionInfoboxRight} from 'system/phaser/modals/DescriptionInfobox';
+import Vehicle from './Vehicle';
+import GameModal from 'system/phaser/GameModal';
+import DescriptionTooltip from 'system/phaser/modals/DescriptionTooltip';
 import SmallFeedback from 'system/phaser/modals/SmallFeedback';
-import {Manager} from 'system/phaser/Xmodal';
+import Feedback from 'system/phaser/modals/Feedback';
+import {TooltipManager, StackManager} from 'system/phaser/Modal';
 import Type from 'system/utils/Type';
 
 /** Vehicle Modal (called by the tool gameObject) */
-export default class VehicleModal extends Modal {
+export default class VehicleModal extends GameModal {
 
     /**
      * Constructor for a new vehicle modal
@@ -16,108 +17,74 @@ export default class VehicleModal extends Modal {
      * @param game
      */
     constructor(properties, vehicleObj, game) {
-        super(properties, vehicleObj, game);
-        //pattern - type - name
-        this.createWithPattern('big_infobulle', 'infobox', 'infoBox');
-        this.createWithPattern('left_robot_infobulle', 'fixed', 'infoBox');
+        super(game);
+        this.properties = properties;
+        this.obj = vehicleObj;
 
-        this.infobox = new DescriptionInfobox({items: {
+        this.tooltip = new DescriptionTooltip({items: {
             title: { text: this.properties.name },
             description: { text: this.properties.description + '\n'
             + "Sa taille est de " + this.properties.size }
-        }}, Manager, this.game);
+        }}, TooltipManager, this.game);
 
+        this.drop = new SmallFeedback({}, StackManager, this.game);
+        this.drop.items.closeButton.events.onInputDown.add(() => {
+            this.drop.toggle(GameModal.HIDDEN, {stack:'BOTTOM_LEFT'});
+        });
 
-        this.smallFeedback = new SmallFeedback({}, Manager, this.game);
+        this.dropped = new Feedback({}, StackManager, this.game);
+        this.cantUse = new Feedback({}, StackManager, this.game);
+        this.containerFull = new Feedback({}, StackManager, this.game);
     }
 
     /** ------------------------------------------
      * Modals
      * ------------------------------------------ */
 
-    infoBox(params) {
-        try {
-            Type.isBoolean(params.visible, true);
-            !Type.isExist(params.isPlayerCollide) || Type.isBoolean(params.isPlayerCollide, true);
-            !Type.isExist(params.fixed) || Type.isBoolean(params.fixed, true);
-        } catch (e) {
-            console.error(e.name + ": " + e.message);
-        }
-
-        if(params.visible) {
-            this.infobox.items.useButton.visible = params.isPlayerCollide;
-            let dir = this.outerRightToSpriteIsPossible(this.obj.sprite, this.game.modalScale(10), this.infobox.items.bg) ? 'right' : 'left';
-            this.infobox.y =  this.getInnerTopToSprite(this.obj.sprite) + this.game.modalScale(10);
+    tooltipHandler(visible, isCollide = false, controls, fixed, force) {
+        if(visible) {
+            this.tooltip.items.useButton.visible = isCollide;
+            const dir = this.isPossibleToOuterRightToSprite(this.obj.sprite, this.game.modalScale(10), this.tooltip.items.bg) ? 'right' : 'left';
+            this.tooltip.y =  this.getInnerTopToSprite(this.obj.sprite) + this.game.modalScale(10);
             if(dir === 'right') {
-                this.infobox.x = this.getOuterRightToSprite(this.obj.sprite, 10);
-                new DescriptionInfoboxRight(this.infobox);
+                this.tooltip.x = this.getOuterRightToSprite(this.obj.sprite, 10);
+                this.tooltip.setRight();
             } else {
-                this.infobox.x = this.getOuterLeftToSprite(this.obj.sprite, this.infobox.items.bg, 10);
-                new DescriptionInfoboxLeft(this.infobox);
+                this.tooltip.x = this.getOuterLeftToSprite(this.obj.sprite, this.tooltip.items.bg, 10);
+                this.tooltip.setLeft();
             }
         }
-        this.infobox.toggle(params.visible, {fixed: Type.isExist(params.fixed) ? params.fixed : false});
+        this.tooltip.toggle(visible, {controls: controls, fixed: fixed, force: force});
     }
     
-    fixedDropInfoBox() {
-     /*   this.smallFeedback.x = this.game.modalScale(10);
-        this.smallFeedback.y = this.game.canvas.height - this.game.modalScale(60);
-        this.smallFeedback.toggle(true, {fixed: true});
-
-        return;
-        let modalName = this.modals.fixed['infoBox'].modal;
-        this.game.modals.update({type: "x", value: 10 * this.game.Manager.ModalScale}, modalName, -1);
-        this.game.modals.update({type: "y", value: this.game.canvas.height - 60 * this.game.Manager.ModalScale}, modalName, -1);
-        this.game.modals.update({type: "text", value: "pour ne plus utiliser."}, modalName, 1);
-        this.game.modals.show(modalName, true);*/
+    howDropFeedback(visible = true) {
+        if(visible)
+            this.drop.items.text.text = 'pour ne plus utiliser.';
+        this.drop.toggle(visible, {stack:'BOTTOM_LEFT'});
     }
 
-    static droppedInfoBox() {
-      /*  let modalName = "robot_infobulle";
-        this.game.modals.update({type: "image", value: "info_infobulle"}, modalName, 0);
-        this.game.modals.update({type: "x", value: this.game.game.canvas.width - 310 * this.game.Manager.ModalScale}, modalName, -1);
-        this.game.modals.update({type: "y", value: this.game.game.canvas.height - 90 * this.game.Manager.ModalScale}, modalName, -1);
-        this.game.modals.update({type: "text", value: "Vous venez de quitter le véhicule."}, modalName, 1);
-        this.game.modals.show(modalName);
-        this.game.modals.count(2, function() { this.game.modals.hide(modalName); });*/
+    droppedFeedback() {
+        this.dropped.setInfo('Vous venez de quitter le véhicule.');
+        this.dropped.toggle(GameModal.VISIBLE, {stack:'BOTTOM_RIGHT'});
+        window.setTimeout(() => this.dropped.toggle(GameModal.HIDDEN, {stack:'BOTTOM_RIGHT'}), 2000);
     }
 
-    static cantUseInfoBox() {
-       /* let modalName = "robot_infobulle";
-        this.game.modals.update({type: "image", value: "alert_infobulle"}, modalName, 0);
-        this.game.modals.update({type: "x", value: this.game.game.canvas.width - 310 * this.game.Manager.ModalScale}, modalName, -1);
-        this.game.modals.update({type: "y", value: this.game.game.canvas.height - 90 * this.game.Manager.ModalScale}, modalName, -1);
-        this.game.modals.update({type: "text", value: "Quittez l'outil actuel avant."}, modalName, 1);
-        this.game.modals.show(modalName);
-        this.game.modals.count(2, function () {
-            this.game.modals.hide(modalName);
-        });*/
+    cantUseFeedback() {
+        this.cantUse.setInfo("Quittez l'outil actuel avant.");
+        this.cantUse.toggle(GameModal.VISIBLE, {stack:'BOTTOM_RIGHT'});
+        window.setTimeout(() => this.cantUse.toggle(GameModal.HIDDEN, {stack:'BOTTOM_RIGHT'}), 2000);
     }
 
-    static containerIsFull() {
-       /* let modalName = "robot_infobulle";
-        this.game.modals.update({type: "image", value: "alert_infobulle"}, modalName, 0);
-        this.game.modals.update({type: "x", value: this.game.game.canvas.width - 310 * this.game.Manager.ModalScale}, modalName, -1);
-        this.game.modals.update({type: "y", value: this.game.game.canvas.height - 90 * this.game.Manager.ModalScale}, modalName, -1);
-        this.game.modals.update({type: "text", value: "Le vehicule est plein !"}, modalName, 1);
-        this.game.modals.show(modalName);
-        this.game.modals.count(2, function () {
-            this.game.modals.hide(modalName);
-        });*/
+    containerFullFeedback() {
+        this.containerFull.setInfo('Le vehicule est plein !');
+        this.containerFull.toggle(GameModal.VISIBLE, {stack:'BOTTOM_RIGHT'});
+        window.setTimeout(() => this.containerFull.toggle(GameModal.HIDDEN, {stack:'BOTTOM_RIGHT'}), 2000);
     }
 
-    static beCareful(str) {
-      /*  let text = str !== undefined ? `${str} ` : '';
-        let modalName = "robot_infobulle";
-        this.game.modals.update({type: "image", value: "alert_infobulle"}, modalName, 0);
-        this.game.modals.update({type: "x", value: this.game.game.canvas.width - 310 * this.game.Manager.ModalScale}, modalName, -1);
-        this.game.modals.update({type: "y", value: this.game.game.canvas.height - 90 * this.game.Manager.ModalScale}, modalName, -1);
-        this.game.modals.update({type: "text", value: `Attention ${text}!`}, modalName, 1);
-        this.game.modals.show(modalName);
-        this.game.modals.count(2, function () {
-            this.game.modals.hide(modalName);
-        });*/
+    carefulFeedback(text) {
+        const careful = new Feedback({}, StackManager, this.game);
+        careful.setAlert(`Attention ${text}!`);
+        careful.toggle(GameModal.VISIBLE, {stack:'BOTTOM_RIGHT'});
+        window.setTimeout(() => careful.toggle(GameModal.HIDDEN, {stack:'BOTTOM_RIGHT'}), 2000);
     }
-
-
 };

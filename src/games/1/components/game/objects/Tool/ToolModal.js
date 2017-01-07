@@ -1,8 +1,11 @@
 "use strict";
-import Modal from 'system/phaser/Modal';
+import GameModal from 'system/phaser/GameModal';
+import SmallDescriptionTooltip from 'system/phaser/modals/SmallDescriptionTooltip';
+import {TooltipManager} from 'system/phaser/Modal';
+import Type from 'system/utils/Type';
 
 /** Tool Modal (called by the tool gameObject) */
-export default class ToolModal extends Modal {
+export default class ToolModal extends GameModal {
 
     /**
      * Constructor for a new tool modal
@@ -11,18 +14,12 @@ export default class ToolModal extends Modal {
      * @param game
      */
     constructor(properties, toolObj, game) {
-        super(properties, toolObj, game);
-        //pattern - type - name
-        this.createWithPattern('small_infobulle', 'infobox', 'infoBox');
-        this.createWithPattern('small_infobulle', 'fixed', 'infoBox');
-    }
-
-    changeVehicleState(vehicle) {
-        if(vehicle !== null && this.properties.amount !== undefined) {
-            this.fixedInfoBox(this.properties.amount);
-        } else {
-            this.hideFixed('infoBox');
-        }
+        super(game);
+        this.properties = properties;
+        this.obj = toolObj;
+        this.tooltip = new SmallDescriptionTooltip({items: {
+            name: { text: this.properties.name }
+        }}, TooltipManager, this, this.game);
     }
 
 
@@ -30,65 +27,20 @@ export default class ToolModal extends Modal {
      * Modals
      * ------------------------------------------ */
 
-    infoBox() {
-     /*   let modalName = `${this.modals.infobox['infoBox'].modal}`;
-        let dir = this.properties.modalDirection;
-        let bg = this.game.modals[modalName].children[0];
-        let title = this.game.modals[modalName].children[1];
-
-        this.game.modals.update({type: "visible", value: false}, modalName, 4); //Hide button E
-        this.game.modals.update({type: "visible", value: false}, modalName, 3); //Hide button A
-        this.game.modals.update({type: "x", value: this.obj.sprite.x - bg._frame.centerX * this.game.Manager.ModalScale}, modalName, -1);
-        this.game.modals.update({type: "image", value: `${this.modals.infobox['infoBox'].pattern}_${dir}`}, modalName, 0);
-        if(dir === "bottom")
-            this.game.modals.update({type: "y", value: this.obj.sprite.y
-            + this.obj.sprite.height * (1 - this.obj.sprite.anchor.x)}, modalName, -1);
-        if(dir === "top")
-            this.game.modals.update({type: "y", value: this.obj.sprite.y
-            - this.obj.sprite.height * (1 - this.obj.sprite.anchor.x) - bg._frame.height * this.game.Manager.ModalScale}, modalName, -1);
-
-        this.game.modals.update({type: "text", value: this.properties.name}, modalName, 1);
-        this.game.modals.update({type: "text", value: ""}, modalName, 2);
-        this.game.modals.update({type: "_offsetX", value: this.getAlignCenterX(bg, title)}, modalName, 1);
-        this.game.modals.update({type: "_offsetY", value: this.getAlignCenterY(bg, title) + (dir === "top" ? -3 : 9) * this.game.Manager.ModalScale}, modalName, 1);
-        this.game.modals.show(modalName);*/
-    }
-
-    fixedInfoBox(amountText) {
-      /*  let modalName = `${this.modals.fixed['infoBox'].modal}`;
-        let dir = this.properties.modalDirection;
-        let bg = this.game.modals[modalName].children[0];
-        let title = this.game.modals[modalName].children[1];
-        let amount = this.game.modals[modalName].children[2];
-        let take = this.game.modals[modalName].children[3];
-
-        this.game.modals.update({type: "visible", value: false}, modalName, 4); //Hide button E
-        this.game.modals.update({type: "visible", value: true}, modalName, 3);
-        this.game.modals.update({type: "x", value: this.obj.sprite.x - bg._frame.centerX * this.game.Manager.ModalScale}, modalName, -1);
-        this.game.modals.update({type: "image", value: `${this.modals.fixed['infoBox'].pattern}_${dir}`}, modalName, 0);
-        if(dir === "bottom")
-            this.game.modals.update({type: "y", value: this.obj.sprite.y
-            + this.obj.sprite.height * (1 - this.obj.sprite.anchor.x)}, modalName, -1);
-        if(dir === "top")
-            this.game.modals.update({type: "y", value: this.obj.sprite.y
-            - this.obj.sprite.height * (1 - this.obj.sprite.anchor.x) - bg._frame.height * this.game.Manager.ModalScale}, modalName, -1);
-
-        this.game.modals.update({type: "text", value: this.properties.name}, modalName, 1);
-        this.updateAmount(amountText);
-
-        this.game.modals.update({type: "_offsetX", value: 12 * this.game.Manager.ModalScale}, modalName, 1);
-        this.game.modals.update({type: "_offsetY", value: ((dir === "top" ? 25 : 37) - 10) * this.game.Manager.ModalScale}, modalName, 1);
-        this.game.modals.update({type: "_offsetX", value: 12 * this.game.Manager.ModalScale}, modalName, 2);
-        this.game.modals.update({type: "_offsetY", value: ((dir === "top" ? 25 : 37) + 10) * this.game.Manager.ModalScale}, modalName, 2);
-
-        this.game.modals.update({type: "x", value: this.getAlignRightX(bg, take) - 10 * this.game.Manager.ModalScale}, modalName, 3);
-        this.game.modals.update({type: "y", value: this.getAlignCenterY(bg, title) + (dir === "top" ? -3 : 9) * this.game.Manager.ModalScale}, modalName, 3);
-        this.game.modals.show(modalName, true);*/
-    }
-
-    updateAmount(amount) {
-       /* let modalName = `${this.modals.fixed['infoBox'].modal}`;
-        let str = amount > 0 ? `contient ${amount}` : 'vide';
-        this.game.modals.update({type: "text", value: str}, modalName, 2);*/
+    tooltipHandler(visible, controls, fixed, force) {
+        if(visible) {
+            const dir = this.properties.modalDirection;
+            this.tooltip.x = this.getOuterCenterXToSprite(this.obj.sprite, this.tooltip.items.bg);
+            if(dir === "bottom") {
+                this.tooltip.y = this.getOuterBottomToSprite(this.obj.sprite);
+                this.tooltip.setBottom();
+            } else {
+                this.tooltip.y = this.getOuterTopToSprite(this.obj.sprite, this.tooltip.items.bg);
+                this.tooltip.setTop();
+            }
+        }
+        Type.isExist(this.properties.amount) && Type.isNumber(this.properties.amount.current)
+        && this.properties.amount.current > 0 ? this.tooltip.setAmount(this.properties.amount.current) : this.tooltip.delAmount();
+        this.tooltip.toggle(visible, {controls: controls, fixed: fixed, force: force});
     }
 };

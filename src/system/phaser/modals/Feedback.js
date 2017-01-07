@@ -3,7 +3,7 @@ import Type from 'system/utils/Type';
 import Modal from 'system/phaser/Modal';
 
 /** Feedback Modal */
-export default class SmallFeedback extends Modal {
+export default class Feedback extends Modal {
 
     /**
      * Constructor for a new modal
@@ -12,7 +12,16 @@ export default class SmallFeedback extends Modal {
      * @param game
      */
     constructor(data, manager, game) {
-        super(Type.deepMerge(SmallFeedback.pattern, data), manager, game);
+        super(Type.deepMerge(Feedback.pattern, data), manager, game);
+    }
+
+    setAlert(text = 'Attention !') {
+        this.items.bg.loadTexture('alert_feedback');
+        this.items.text.text = text;
+    }
+    setInfo(text = '{content}') {
+        this.items.bg.loadTexture('info_feedback');
+        this.items.text.text = text;
     }
 
     static get pattern() {
@@ -22,36 +31,18 @@ export default class SmallFeedback extends Modal {
             items: {
                 bg: {
                     type: "sprite",
-                    key: "small_feedback"
-                },
-                image: {
-                    type: "sprite",
-                    y: 10,
-                    x: 10,
-                    key: "bouton_z",
+                    key: "info_feedback"
                 },
                 text: {
                     type: "text",
-                    x: 55,
-                    y: 20,
+                    x: 85,
+                    y: 35,
                     text: "{content}",
                     style: {
                         fill: "#5F4D21",
                         fontFamily: "Arial",
                         fontSize: 12
                     }
-                },
-                closeButton: {
-                    type : "text",
-                    x: 182,
-                    y: 10,
-                    text: "X",
-                    style: {
-                        fill: "#5F4D21",
-                        fontFamily: "Arial",
-                        fontSize: 12
-                    },
-                    props: { inputEnabled: true }
                 }
             }
         }

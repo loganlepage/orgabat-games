@@ -1,9 +1,9 @@
 "use strict";
 import Config from '../../config/data';
-import Sprite from 'system/phaser/Sprite';
+import GameSprite from 'system/phaser/GameSprite';
 
 /** Tool Sprite (called by the tool gameObject) */
-export default class ToolSprite extends Sprite {
+export default class ToolSprite extends GameSprite {
 
     /**
      * Constructor for a new tool sprite
@@ -22,8 +22,8 @@ export default class ToolSprite extends Sprite {
     setPhysics() {
         this.game.physics.p2.enable(this, Config.developer.debug);
         this.body.setCollisionGroup(this.game.CollisionGroup.tool);
-        this.body.collides(this.game.CollisionGroup.vehicle, this.objectCollision, this);
-        this.body.collides(this.game.CollisionGroup.player, this.objectCollision, this);
+        this.body.collides(this.game.CollisionGroup.vehicle, this.onCollision, this);
+        this.body.collides(this.game.CollisionGroup.player, this.onCollision, this);
         this.body.static = true;
     }
 };

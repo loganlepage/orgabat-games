@@ -2,6 +2,8 @@
 import {State, Tilemap} from 'phaser';
 import Config from '../config/data';
 
+import Player from '../objects/Player/Player';
+
 /** State to load the game (image, tilemap, spritesheet...) */
 export default class Load extends State {
 
@@ -36,7 +38,7 @@ export default class Load extends State {
         for(let i in Config.modals.assets)
             this.game.load.image(Config.modals.assets[i].name, `${assets_path}modals/${Config.modals.assets[i].file}`);
 
-        this.game.load.spritesheet('player', `${assets_path}sprites/george.png`, 32, 32, 16);
+        this.game.load.spritesheet(Player.name, `${assets_path}sprites/george.png`, 32, 32, 16);
     }
 
     /** Called when the state must be created */

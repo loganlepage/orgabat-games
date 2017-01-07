@@ -44,19 +44,19 @@ export default {
             }
         ],
         materials: [
-            {name: "parpaings", x: 13, y: 2, prop: {name: "Parpaings", modalDirection: "bottom", amount: 0}},
-            {name: "liants", x: 16, y: 2, prop: {name: "Liants", modalDirection: "bottom", amount: 0}},
-            {name: "sable", x: 7, y: 10, prop: {name: "Sable", modalDirection: "top", amount: 0}},
-            {name: "gravier", x: 10, y: 10, prop: {name: "Gravier", modalDirection: "top", amount: 0}},
-            {name: "mortier", x: 16, y: 10, prop: {name: "Mortier", modalDirection: "top", amount: 9}}
+            {name: "parpaings", x: 13, y: 2, prop: {name: "Parpaings", modalDirection: "bottom"}},
+            {name: "liants", x: 16, y: 2, prop: {name: "Liants", modalDirection: "bottom"}},
+            {name: "sable", x: 7, y: 10, prop: {name: "Sable", modalDirection: "top"}},
+            {name: "gravier", x: 10, y: 10, prop: {name: "Gravier", modalDirection: "top"}},
+            {name: "mortier", x: 16, y: 10, prop: {name: "Mortier", modalDirection: "top", amount: {current:9}}}
         ],
         tools: [
             {name: "betonniere", x: 13, y: 10, prop: {
                 name: "Bétonnière", modalDirection: "top"
-                //idea, if you want to improve the code
+                //idea, if we want to improve the code
                 //role: {make: {result: {type: "materials", name: "mortier"}, need: {liants: 1, sable: 1, gravier: 1}}}
             }},
-            {name: "depot", x: 8, y: 17, prop: {name: "Dépôt", modalDirection: "top", needed: "mortier", amount: 0, amountMax: 9}}
+            {name: "depot", x: 8, y: 7/*17*/, prop: {name: "Dépôt", modalDirection: "top", needed: "mortier", amount: {current:0, max:9}}}
         ],
         assets: [
             //parent: game
@@ -78,14 +78,13 @@ export default {
 
     modals: {
         assets: [
-            {name: "modalBG", file: "popup.png"},
-            {name: "big_infobulle_left", file: "big_infobulle_left.png"},
-            {name: "big_infobulle_right", file: "big_infobulle_right.png"},
-            {name: "small_infobulle_top", file: "small_infobulle_top.png"},
-            {name: "small_infobulle_bottom", file: "small_infobulle_bottom.png"},
-            {name: "info_infobulle", file: "info_infobulle.png", source: "http://albaland.fr/medias/pictogrammes/PICTO_1304683213.jpg"},
-            {name: "alert_infobulle", file: "alert_infobulle.png", source: "https://www.groupeer.fr/imgs/picto-alert.png"},
-            {name: "small_info_infobulle", file: "small_info_infobulle.png"},
+            {name: "big_tooltip_left", file: "big_tooltip_left.png"},
+            {name: "big_tooltip_right", file: "big_tooltip_right.png"},
+            {name: "small_tooltip_top", file: "small_tooltip_top.png"},
+            {name: "small_tooltip_bottom", file: "small_tooltip_bottom.png"},
+            {name: "info_feedback", file: "info_feedback.png", source: "http://albaland.fr/medias/pictogrammes/PICTO_1304683213.jpg"},
+            {name: "alert_feedback", file: "alert_feedback.png", source: "https://www.groupeer.fr/imgs/picto-alert.png"},
+            {name: "small_feedback", file: "small_feedback.png"},
             {name: "bouton_a", file: "bouton_a.png"},
             {name: "bouton_z", file: "bouton_z.png"},
             {name: "bouton_e", file: "bouton_e.png"}

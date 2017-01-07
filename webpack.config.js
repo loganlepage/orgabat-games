@@ -39,7 +39,7 @@ module.exports = {
     resolve: {
         /** On ajoute un alias vers nos bibliothèques pour le require */
         alias: {
-            'system': path.resolve("./src/api/system"),
+            'system': path.resolve("./src/system"),
             'phaser': path.join(phaserModule, 'build/custom/phaser-split.js'),
             'pixi': path.join(phaserModule, 'build/custom/pixi.js'),
             'p2': path.join(phaserModule, 'build/custom/p2.js')

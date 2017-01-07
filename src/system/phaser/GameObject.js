@@ -1,13 +1,14 @@
 'use strict';
 import {Math} from 'phaser';
+import EventHandler from '../utils/EventHandler';
 import Type from '../utils/Type';
 
 /** Abstract gameObject (parent for all gameObjects) */
 export default class GameObject {
-    constructor(game, layer, type) {
+    constructor(game, layer) {
         this.game = game;
         this.layer = layer;
-        this.type = type;
+        this.type = this.constructor.name;
     }
 
     /** @returns {boolean} */
@@ -22,39 +23,53 @@ export default class GameObject {
         this.objectInCollision = null;
         this.objectInitialDistance = null;
         this.collisionEventEnabled = true;
-        this.sprite.objectCollisionEvent.add(this, "objectCollision");
+        this.collisionEndEvent = new EventHandler();
+        this.collisionEndEvent.add(this, "onCollisionEnd");
+        this.sprite.collisionEvent.add(this, "onCollisionBegin");
         this.sprite.mouseOverEvent.add(this, "mouseOver");
         this.sprite.mouseOutEvent.add(this, "mouseOut");
     }
     addModal(modal) {
         this.modal = modal;
     }
+    update() {
+        this.refreshObjectInCollision();
+    }
+
+    /** @returns {number} */
+    get MAX_COLLIDE_DISTANCE() { return 25 * this.game.SCALE; }
+    /** @returns {number} */
+    get objectCurrentDistance() { return Math.distance(
+        this._oic.sprite.position.x, this._oic.sprite.position.y,
+        this.sprite.position.x, this.sprite.position.y
+    )}
+    refreshObjectInCollision() {
+        if(Type.isExist(this._oic) && this.objectCurrentDistance > this.objectInitialDistance + this.MAX_COLLIDE_DISTANCE) {
+            const object = this._oic; this._oic = null;
+            this.onCollisionEnd(object);
+        }
+    }
 
     /** Object collision */
-    objectCollisionUpdate() {
-        if(this.objectInCollision === null) return;
-        let actualDistance = Math.distance(
-            this.objectInCollision.position.x, this.objectInCollision.position.y,
-            this.sprite.position.x, this.sprite.position.y);
-        if(actualDistance > this.objectInitialDistance + 25 * this.game.SCALE &&
-            this.collisionEventEnabled) {
-            if(Type.isExist(this.objectInCollision.obj.modal))
-                this.objectInCollision.obj.modal.infoBox({visible: false, isPlayerCollide: Object.UNCOLLIDED, fixed: true});
-            this.objectInCollision = null;
+    get objectInCollision() {
+        this.refreshObjectInCollision();
+        return this._oic;
+    }
+    set objectInCollision(object) {
+        this._oic = object;
+        if(Type.isExist(this._oic)) {
+            this.objectInitialDistance = this.objectCurrentDistance;
         }
-        return this.objectInCollision;
     }
-    objectCollision(o) {
+    onCollisionBegin(o) {
         if(o.sprite === undefined && o.class === 'gameObject') return;
-        this.objectInCollision = o.sprite;
-        this.objectInitialDistance = Math.distance(
-            this.objectInCollision.position.x, this.objectInCollision.position.y,
-            this.sprite.position.x, this.sprite.position.y);
+        this.objectInCollision = o;
     }
+    onCollisionEnd(s){}
     mouseOver(){}
     mouseOut(){}
 
-    isCollidWith(collider, type) {
-        return Type.isExist(collider) && this.objectInCollision.obj.type === type
+    isCollidWith(type, o = this.objectInCollision) {
+        return Type.isExist(o) && o.sprite.obj.type === type;
     }
 }

@@ -1,9 +1,9 @@
 "use strict";
 import Config from '../../config/data';
-import Sprite from 'system/phaser/Sprite';
+import GameSprite from 'system/phaser/GameSprite';
 
-/** Character Sprite (called by the character gameObject) */
-export default class CharacterSprite extends Sprite {
+/** Player Sprite (called by the character gameObject) */
+export default class PlayerSprite extends GameSprite {
 
     /**
      * Constructor for a new character sprite
@@ -12,8 +12,8 @@ export default class CharacterSprite extends Sprite {
      * @param y
      * @param characterObj
      */
-    constructor(game, x, y, characterObj) {
-        super(game, x, y, "player", characterObj);
+    constructor(game, x, y, name, characterObj) {
+        super(game, x, y, name, characterObj);
         this.setPhysics();
         this.setAnimations();
     }
@@ -24,9 +24,9 @@ export default class CharacterSprite extends Sprite {
         this.body.fixedRotation = true;
         this.body.setCollisionGroup(this.game.CollisionGroup.player);
         this.body.addRectangle(this.body.width, this.body.height, 0, 0);
-        this.body.collides(this.game.CollisionGroup.vehicle, this.objectCollision, this);
-        this.body.collides(this.game.CollisionGroup.tool, this.objectCollision, this);
-        this.body.collides(this.game.CollisionGroup.material, this.objectCollision, this);
+        this.body.collides(this.game.CollisionGroup.vehicle, this.onCollision, this);
+        this.body.collides(this.game.CollisionGroup.tool, this.onCollision, this);
+        this.body.collides(this.game.CollisionGroup.material, this.onCollision, this);
         this.body.collides(this.game.CollisionGroup.layer);
     }
     setAnimations() {

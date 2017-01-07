@@ -2,23 +2,22 @@
 import Type from '../../utils/Type';
 
 /** Collection of Phaser Canvas objects. */
-export default class CanvasCollection {
-    static getCanvas(name) {
-        console.log(this._canvas, name);
+export default class PhaserManager {
+    static get(name) {
         if(Type.isExist(this._canvas[name]))
             return this._canvas[name];
     }
-    static addCanvas(name, canvas) {
+    static add(name, canvas) {
         if(!Type.isExist(this._canvas[name]))
             this._canvas[name] = canvas;
     }
-    static delCanvas(name) {
+    static del(name) {
         if(Type.isExist(this._canvas[name]))
             delete this._canvas[name];
     }
 };
 
 /** Static properties */
-Object.assign(CanvasCollection, {
+Object.assign(PhaserManager, {
     _canvas: {}
 });

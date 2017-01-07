@@ -1,13 +1,18 @@
 "use strict";
-import Phaser from 'phaser';
 import Config from '../../config/data';
 import GameObject from 'system/phaser/GameObject';
 import VehicleSprite from './VehicleSprite';
 import VehicleModal from './VehicleModal';
+import GameModal from 'system/phaser/GameModal';
 import Position from 'system/phaser/utils/Position';
 import Inventary from 'system/phaser/Inventary';
 import EventHandler from 'system/utils/EventHandler';
 import Keyboard from 'system/phaser/utils/Keyboard';
+import Type from 'system/utils/Type';
+
+import Material from '../Material/Material';
+import Player from '../Player/Player';
+import Tool from '../Tool/Tool';
 
 /** Vehicle Object (include sprite and modals) */
 export default class Vehicle extends GameObject {
@@ -22,7 +27,7 @@ export default class Vehicle extends GameObject {
      * @param y
      */
     constructor(game, layer, name, properties, x, y) {
-        super(game, layer, "vehicle");
+        super(game, layer);
         this.vehicleMountedEvent = new EventHandler();
         this.vehicleUnmountedEvent = new EventHandler();
         this.vehicleStartedEvent = new EventHandler();
@@ -50,15 +55,6 @@ export default class Vehicle extends GameObject {
         this.driver = null;
     }
 
-    /** Update */
-    update() {
-        if(!this.ready || this.driver === null) return;
-        this.objectCollisionUpdate();
-        this.moveUpdate();
-        if(this.keys.bool["Z"].state && this.driver !== null && this.driver.obj.vehicleInUse.object !== null)
-            this.stop();
-    }
-
     /** Start & stop vehicle */
     startBy(player, keys){
         if(this.stopProcess) return;
@@ -75,8 +71,8 @@ export default class Vehicle extends GameObject {
         this.sprite.anchor.setTo(0.5, 0.5); //don't change when vehicle is mounted
         player.idle("up");
         this.driver = player;
-        this.modal.fixedDropInfoBox();
-        this.modal.infoBox({visible: false, fixed: true});
+        this.modal.howDropFeedback();
+        this.modal.tooltipHandler(GameModal.HIDDEN, false, GameModal.FIXED);
 
         this.initializedAnimation = false;
         this.vehicleMountedEvent.fire(this);
@@ -100,103 +96,115 @@ export default class Vehicle extends GameObject {
         this.driver.reset(x, y);
         this.driver.body.collideWorldBounds = true;
         let driver = this.driver; this.driver = null;
-        //this.modal.hideFixed('infoBox');
-       // this.game.Object.VehicleModal.droppedInfoBox();
+        this.modal.howDropFeedback(GameModal.HIDDEN);
+        this.modal.droppedFeedback();
 
         this.vehicleStopedEvent.fire(driver.obj);
         setTimeout(() => {
-            driver.obj.objectCollision({object: this.sprite.body});
+            driver.obj.onCollisionBegin({object: this.sprite.body});
             this.collisionEventEnabled = true;
             this.vehicleUnmountedEvent.fire(driver.obj);
             this.stopProcess = false;
         }, 200);
     }
 
+    /** Update */
+    update() {
+        if(!this.ready) return;
+        super.update();
+        if(this.driver === null) return;
+        this.objectCollisionUpdate();
+        this.moveUpdate();
+        if(this.keys.bool["Z"].state && this.driver.obj.vehicleInUse.object !== null)
+            this.stop();
+    }
+
     /** Add events comportements */
     objectCollisionUpdate() {
-        if(!super.objectCollisionUpdate()) return; //if not collision, break
+        if(this.objectInCollision === null) return; //if not collision, break
         if(this.keys.bool["A"].state) {
-            switch(this.objectInCollision.obj.type) {
-                case "vehicle":
-                    if(this.driver !== null)
-                   //     this.game.Object.VehicleModal.cantUseInfoBox();
+            switch(this.objectInCollision.sprite.obj.type) {
+                case Vehicle.name:
+                    this.modal.cantUseFeedback();
                     break;
-                case "material":
+                case Material.name:
                     if(this.keys.bool["E"].state) return;
-                    let materialAmount = this.objectInCollision.obj.properties.amount;
-                    let wantAmount = this.container.getSizeLeft() > materialAmount ? materialAmount : this.container.getSizeLeft();
-                    this.objectInCollision.obj.getRessource(wantAmount, function(name, amount) {
+                    if(!(Type.isExist(this.objectInCollision.sprite.obj.properties.amount)
+                        && Type.isExist(this.objectInCollision.sprite.obj.properties.amount.current)
+                        && this.objectInCollision.sprite.obj.properties.amount.current > 0)) return;
+                    const materialAmount = this.objectInCollision.sprite.obj.properties.amount.current;
+                    const wantAmount = this.container.getSizeLeft() > materialAmount ? materialAmount : this.container.getSizeLeft();
+                    this.objectInCollision.sprite.obj.getRessource(wantAmount, (name, amount) => {
                         this.container.addItem(name, amount);
                         if(amount > 0 && this.container.getSizeLeft() === 0)
-                      //      this.game.Object.VehicleModal.containerIsFull();
+                            this.modal.containerFullFeedback();
                         if(this.container.getSizeUsed() > 0)
                             this.loading.visible = true;
-                    }.bind(this));
+                    });
                     break;
-                case "tool":
+                case Tool.name:
                     if(this.keys.bool["E"].state) return;
-                    let needed = this.objectInCollision.obj.properties.needed;
-                    this.objectInCollision.obj.setRessource(this.container.getSumOf(needed), function(name, amount) {
+                    let needed = this.objectInCollision.sprite.obj.properties.needed;
+                    this.objectInCollision.sprite.obj.setRessource(this.container.getSumOf(needed), (name, amount) => {
                         this.container.delItem(needed, amount);
                         if(this.container.getSizeUsed() === 0)
                             this.loading.visible = false;
-                    }.bind(this));
+                    });
                     break;
                 default:
                     break;
             }
         }
         if(this.keys.bool["E"].state) {
-            switch(this.objectInCollision.obj.type) {
-                case "material":
+            switch(this.objectInCollision.sprite.obj.type) {
+                case Material.name:
                     if(this.keys.bool["A"].state) return;
-                    let needed = this.objectInCollision.key;
-                    this.objectInCollision.obj.setRessource(this.container.getSumOf(needed), function(name, amount) {
+                    let needed = this.objectInCollision.sprite.key;
+                    this.objectInCollision.sprite.obj.setRessource(this.container.getSumOf(needed), (name, amount) => {
                         this.container.delItem(needed, amount);
                         if(this.container.getSizeUsed() === 0)
                             this.loading.visible = false;
-                    }.bind(this));
+                    });
                     break;
                 default:
                     break;
             }
         }
     }
-    objectCollision(o) {
+    onCollisionBegin(o) {
         switch(o.object.class) {
             case 'gameObject':
-                super.objectCollision(o.object);
+                super.onCollisionBegin(o.object);
                 if(this.collisionEventEnabled)
-                    switch(this.objectInCollision.obj.type) {
-                        case 'character':
-                            //this.modal.infoBox(true, Vehicle.COLLIDED);
-                            this.modal.infoBox({visible: true, isPlayerCollide: Vehicle.COLLIDED, fixed: true});
+                    switch(this.objectInCollision.sprite.obj.type) {
+                        case Player.name:
+                            this.modal.tooltipHandler(GameModal.VISIBLE, Vehicle.COLLIDED, GameModal.CONTROLS_DISABLED, null, GameModal.FORCE);
                             break;
-                        case 'vehicle':
-                        //    this.game.Object.VehicleModal.beCareful('aux véhicules');
+                        case Vehicle.name:
+                            if(Type.isExist(this.driver))
+                                this.modal.carefulFeedback('aux véhicules');
                             break;
                         default:
                             break;
                     }
                 break;
             case 'layer':
-            //    this.game.Object.VehicleModal.beCareful('aux murs');
+                this.modal.carefulFeedback('aux murs');
                 break;
             default:
                 break;
         }
     }
+    onCollisionEnd(o) {
+        if(super.isCollidWith(Player.name, o)) {
+            this.modal.tooltipHandler(GameModal.HIDDEN, null, GameModal.CONTROLS_ENABLED);
+        }
+    }
     mouseOver() {
-        this.modal.infoBox({
-            visible: true,
-            isPlayerCollide: (super.isCollidWith( super.objectCollisionUpdate(), 'character' )),
-        });
+        this.modal.tooltipHandler(GameModal.VISIBLE, super.isCollidWith(Player.name));
     }
     mouseOut() {
-        this.modal.infoBox({
-            visible: false,
-            isPlayerCollide: (super.isCollidWith( super.objectCollisionUpdate(), 'character' ))
-        });
+        this.modal.tooltipHandler(GameModal.HIDDEN);
     }
 
     /** Move */

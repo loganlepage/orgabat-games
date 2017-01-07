@@ -2,11 +2,11 @@
 import Phaser from 'phaser';
 import EventHandler from '../utils/EventHandler';
 
-/** Abstract gameObject (parent for all gameSprites) */
-export default class Sprite extends Phaser.Sprite {
+/** Abstract gameSprite (parent for all gameSprites) */
+export default class GameSprite extends Phaser.Sprite {
     constructor(game, x, y, name, gameObject) {
         super(game, x, y, name);
-        this.objectCollisionEvent = new EventHandler();
+        this.collisionEvent = new EventHandler();
         this.mouseOverEvent = new EventHandler();
         this.mouseOutEvent = new EventHandler();
         this.scale.set(game.SCALE);
@@ -17,14 +17,14 @@ export default class Sprite extends Phaser.Sprite {
     }
 
     /** Events */
-    objectCollision(obj1, obj2) {
+    onCollision(obj1, obj2) {
         obj1.class = obj1.class === undefined ? 'gameObject' : obj1.class;
         obj2.class = obj2.class === undefined ? 'gameObject' : obj2.class;
-        this.objectCollisionEvent.fire({me: obj1, object: obj2});
+        this.collisionEvent.fire({me: obj1, object: obj2});
     }
     wallCollision(obj1, obj2) {
         obj2.class = 'layer';
-        this.objectCollision(obj1, obj2);
+        this.onCollision(obj1, obj2);
     }
     mouseOver(sprite) {
         this.mouseOverEvent.fire(sprite);

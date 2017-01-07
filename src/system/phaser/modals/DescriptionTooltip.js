@@ -1,35 +1,10 @@
 "use strict";
 import Type from 'system/utils/Type';
-import Modal from 'system/phaser/Xmodal';
+import Modal from 'system/phaser/Modal';
 
-/** Decorator to turn the infobox in left direction */
-export class DescriptionInfoboxLeft {
-    constructor(modal) {
-        try { Type.isInstanceOf(modal, DescriptionInfobox, true); }
-        catch (e) { console.error(e.name + ": " + e.message); }
 
-        modal.items.bg.loadTexture(`big_infobulle_left`);
-        ['title', 'description', 'useButton'].forEach((key) => {
-            modal.items[key].x = modal.game.modalScale(modal.data.items[key].x - 12);
-        });
-    }
-}
-
-/** Decorator to turn the infobox in right direction */
-export class DescriptionInfoboxRight {
-    constructor(modal) {
-        try { Type.isInstanceOf(modal, DescriptionInfobox, true); }
-        catch (e) { console.error(e.name + ": " + e.message); }
-
-        modal.items.bg.loadTexture(`big_infobulle_right`);
-        ['title', 'description', 'useButton'].forEach((key) => {
-            modal.items[key].x = modal.game.modalScale(modal.data.items[key].x);
-        });
-    }
-}
-
-/** Description Infobox Modal */
-export default class DescriptionInfobox extends Modal {
+/** Description Tooltip Modal */
+export default class DescriptionTooltip extends Modal {
 
     /**
      * Constructor for a new modal
@@ -47,7 +22,20 @@ export default class DescriptionInfobox extends Modal {
         } catch (e) {
             console.error(e.name + ": " + e.message);
         }
-        super(Type.deepMerge(DescriptionInfobox.pattern, data), manager, game);
+        super(Type.deepMerge(DescriptionTooltip.pattern, data), manager, game);
+    }
+
+    setLeft() {
+        this.items.bg.loadTexture(`big_tooltip_left`);
+        ['title', 'description', 'useButton'].forEach((key) => {
+            this.items[key].x = this.game.modalScale(this.data.items[key].x - 12);
+        });
+    }
+    setRight() {
+        this.items.bg.loadTexture(`big_tooltip_right`);
+        ['title', 'description', 'useButton'].forEach((key) => {
+            this.items[key].x = this.game.modalScale(this.data.items[key].x);
+        });
     }
 
     static get pattern() {
@@ -55,8 +43,8 @@ export default class DescriptionInfobox extends Modal {
             type: "group",
             items: {
                 bg: {
-                    type: "image",
-                    key: "big_infobulle_right"
+                    type: "sprite",
+                    key: "big_tooltip_right"
                 },
                 title: {
                     type: "text",
@@ -86,7 +74,7 @@ export default class DescriptionInfobox extends Modal {
                     x: 263,
                     items: {
                         image: {
-                            type: "image",
+                            type: "sprite",
                             x: 0,
                             y: 0,
                             key: "bouton_a",

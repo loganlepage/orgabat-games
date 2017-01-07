@@ -2,8 +2,13 @@
 import GameObject from 'system/phaser/GameObject';
 import ToolSprite from './ToolSprite';
 import ToolModal from './ToolModal';
+import GameModal from 'system/phaser/GameModal';
 import Position from 'system/phaser/utils/Position';
 import EventHandler from 'system/utils/EventHandler';
+import Type from 'system/utils/Type';
+
+import Vehicle from '../Vehicle/Vehicle';
+import Player from '../Player/Player';
 
 /** Tool Object (include sprite and modals) */
 export default class Tool extends GameObject {
@@ -18,7 +23,7 @@ export default class Tool extends GameObject {
      * @param y
      */
     constructor(game, layer, name, properties, x, y) {
-        super(game, layer, "tool");
+        super(game, layer);
         this.toolIsFullEvent = new EventHandler();
         this.addSprite(new ToolSprite(this.game, Position.getPixelAt(x), Position.getPixelAt(y), name, this));
         this.addModal(new ToolModal(properties, this, game));
@@ -33,40 +38,52 @@ export default class Tool extends GameObject {
     
     /** Events */
     onVehicleStart(vehicle){
-        this.modal.changeVehicleState(vehicle);
+        if(Type.isExist(this.properties.amount) && Type.isNumber(this.properties.amount.current)
+            && Type.isNumber(this.properties.amount.max) && this.properties.amount.current < this.properties.amount.max)
+            this.modal.tooltipHandler(GameModal.VISIBLE, null, GameModal.FIXED);
+        if(Type.isExist(this.properties.needed))
+            this.modal.tooltip.setButtons({a:true, e:false});
     }
     onVehicleStop(){
-        this.modal.changeVehicleState(null);
+        this.modal.tooltipHandler(GameModal.HIDDEN, null, GameModal.NOT_FIXED);
+        this.modal.tooltip.delButtons();
     }
 
     /** Ressource comportements */
     setRessource(amount, cb) {
         let cbZero = () => { cb(this.sprite.key, 0); };
         let cbAmount = () => { cb(this.sprite.key, amount); };
-        if(this.properties.amountMax < this.properties.amount + amount) return cbZero();
-        this.properties.amount += amount;
-        this.modal.updateAmount(this.properties.amount);
-        if(this.properties.amountMax === this.properties.amount) this.toolIsFullEvent.fire();
+        if(!(Type.isExist(this.properties.amount) && Type.isNumber(this.properties.amount.current)
+            && Type.isNumber(this.properties.amount.max))) return;
+        if(this.properties.amount.max < this.properties.amount.current + amount) return cbZero();
+        this.properties.amount.current += amount;
+        if(this.properties.amount.current > 0)
+            this.modal.tooltip.setAmount(this.properties.amount.current);
+        if(this.properties.amount.max === this.properties.amount.current) this.toolIsFullEvent.fire();
         return cbAmount();
     }
 
     /** Add events comportements */
-    objectCollision(o) {
-        super.objectCollision(o.object);
-        switch(this.objectInCollision.obj.type) {
-            case "character":
-              //  this.modal.infoBox();
+    onCollisionBegin(o) {
+        super.onCollisionBegin(o.object);
+        switch(this.objectInCollision.sprite.obj.type) {
+            case Vehicle.name:
+            case Player.name:
+                this.modal.tooltipHandler(GameModal.VISIBLE, GameModal.CONTROLS_DISABLED, null, GameModal.FORCE);
                 break;
             default:
                 break;
         }
     }
+    onCollisionEnd(o) {
+        if(super.isCollidWith(Vehicle.name, o) || super.isCollidWith(Player.name, o))
+            this.modal.tooltipHandler(GameModal.HIDDEN, GameModal.CONTROLS_ENABLED);
+    }
     mouseOver() {
-       // if(!this.game.modals.infoboxAreHided() || this.modal.isShowing('infoBox', 'fixed')) return;
-       // this.modal.infoBox();
+        this.modal.tooltipHandler(GameModal.VISIBLE);
     }
     mouseOut() {
-     //   this.modal.hideInfobox('infoBox');
+        this.modal.tooltipHandler(GameModal.HIDDEN);
     }
 };
 

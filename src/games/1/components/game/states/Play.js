@@ -3,11 +3,11 @@ import {State, Physics, Easing} from 'phaser';
 import Config from '../config/data';
 import MyMath from 'system/utils/Math';
 import TilemapLayer from 'system/phaser/TilemapLayer';
-import Character from '../objects/Character/Character';
+import Player from '../objects/Player/Player';
 import MaterialFactory from '../objects/Material/MaterialFactory';
 import ToolFactory from '../objects/Tool/ToolFactory';
 import VehicleFactory from '../objects/Vehicle/VehicleFactory';
-import CanvasCollection from 'system/phaser/utils/CanvasCollection';
+import PhaserManager from 'system/phaser/utils/PhaserManager';
 import Position from 'system/phaser/utils/Position';
 
 /** State when we start the game */
@@ -91,7 +91,7 @@ export default class Play extends State {
 
     /** Called by create to add player */
     addPlayer() {
-        this.player = new Character(this.game, this.layers[1], Config.entities.player.x, Config.entities.player.y);
+        this.player = new Player(this.game, this.layers[1], Config.entities.player.x, Config.entities.player.y);
     }
 
     /** Called by create to add tools */
@@ -141,8 +141,8 @@ export default class Play extends State {
         let t1 = this.game.add.tween(this.game.camera).to( { y: this.player.sprite.y - this.game.canvas.height / 2 }, 1500, Easing.Quadratic.InOut, false, 800);
         t1.start().onComplete.add(() => {
             this.follow(this.player);
-            if(CanvasCollection.getCanvas('gabator').state.current == "play")
-                CanvasCollection.getCanvas('gabator').state.getCurrentState().awakeGabator();
+            if(PhaserManager.get('gabator').state.current == "play")
+                PhaserManager.get('gabator').state.getCurrentState().awakeGabator();
         });
 
         //Si le dépot est plein, alors le jeu est gagné.
