@@ -57,7 +57,7 @@ export default {
                 //idea, if we want to improve the code
                 //role: {make: {result: {type: "materials", name: "mortier"}, need: {liants: 1, sable: 1, gravier: 1}}}
             }},
-            {name: "depot", x: 8, y: 7/*17*/, prop: {name: "Dépôt", modalDirection: "top", needed: "mortier", amount: {current:0, max:9}}}
+            {name: "depot", x: 8, y: 17, prop: {name: "Dépôt", modalDirection: "top", needed: "mortier", amount: {current:0, max:9}}}
         ],
         assets: [
             //parent: game
