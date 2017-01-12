@@ -21,10 +21,10 @@ export default class VehicleModal extends GameModal {
         this.properties = properties;
         this.obj = vehicleObj;
 
+        let text = `${this.properties.description}\nSa taille est de ${this.properties.size}`;
+        if(Type.isString(this.properties.infoAdded)) text += `\n${this.properties.infoAdded}`;
         this.tooltip = new DescriptionTooltip({items: {
-            title: { text: this.properties.name },
-            description: { text: this.properties.description + '\n'
-            + "Sa taille est de " + this.properties.size }
+            title: {text: this.properties.name}, description: {text: text}
         }}, TooltipManager, this.game);
 
         this.drop = new SmallFeedback({}, StackManager, this.game);

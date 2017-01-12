@@ -7,8 +7,8 @@ export default class Load extends State {
     /** Called before create */
     preload() {
         this.game.stage.backgroundColor = "#FFFFFF";
-        this.game.load.image('gabator-sleep', `${assets_path}/sprites/gabator-sleep.png`);
-        this.game.load.image('gabator', `${assets_path}/sprites/gabator.png`);
+        this.game.load.image('gabator-sleep', `${assets_path}/sprite/gabator-sleep.png`);
+        this.game.load.image('gabator', `${assets_path}/sprite/gabator.png`);
     }
 
     /** Called when the state must be created */

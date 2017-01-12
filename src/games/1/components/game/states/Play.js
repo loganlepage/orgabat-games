@@ -1,7 +1,6 @@
 "use strict";
 import {State, Physics, Easing} from 'phaser';
 import Config from '../config/data';
-import MyMath from 'system/utils/Math';
 import TilemapLayer from 'system/phaser/TilemapLayer';
 import Player from '../objects/Player/Player';
 import MaterialFactory from '../objects/Material/MaterialFactory';
@@ -24,13 +23,6 @@ export default class Play extends State {
      * init all the game (scale, physics, gameobjects...)
      */
     create() {
-        this.game.baseWidth = (Config.tilesmap.tiles.width * Config.tilesmap.tiles.size);
-        this.game.baseHeight = (Config.tilesmap.tiles.height * Config.tilesmap.tiles.size);
-        let sWidth = this.game.width / this.game.baseWidth;
-        let sHeight = this.game.height / this.game.baseHeight;
-
-        this.game.SCALE = ( this.game.baseHeight * sWidth > this.game.height ) ? sWidth : sHeight;
-        this.game.modalScale = (n) => MyMath.scale(this.game.SCALE * 0.9, n);
         this.game.TileSize = Config.tilesmap.tiles.size * this.game.SCALE;
         Position.setTileSize(this.game.TileSize);
 

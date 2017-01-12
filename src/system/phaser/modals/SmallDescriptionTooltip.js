@@ -9,8 +9,8 @@ export default class SmallDescriptionTooltip extends Modal {
      * Constructor for a new modal
      * @param data
      * @param manager
-     * @param game
      * @param materialModal
+     * @param game
      */
     constructor(data, manager, materialModal, game) {
         try {
@@ -57,6 +57,7 @@ export default class SmallDescriptionTooltip extends Modal {
         this.state.button = false;
     }
     setAmount(amount) {
+        if(amount <= 0) { this.delAmount(); return;}
         this.items.name.y =   this.m.getAlignCenterY(this.items.bg, this.items.name) + this.game.modalScale(this.offsetY-10);
         this.items.amount.y = this.m.getAlignCenterY(this.items.bg, this.items.name) + this.game.modalScale(this.offsetY+10);
         if(!this.state.button) this.items.name.x = this.items.amount.x = this.game.modalScale(20);

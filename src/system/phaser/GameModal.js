@@ -64,4 +64,12 @@ export default class GameModal {
     isPossibleToOuterRightToSprite(sprite, offsetX, item) {
         return this.getOuterRightToSprite(sprite) + offsetX + this.getSize(item) < this.game.width;
     }
+
+    static fillWord(item, str, color) {
+        const start = item.text.replace(/\n/g,'').indexOf(str);
+        if(start < 0) return;
+        const oldColor = item.style.fill;
+        item.addColor(color, start);
+        item.addColor(oldColor, start + str.length)
+    }
 };

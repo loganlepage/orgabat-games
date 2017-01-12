@@ -25,7 +25,8 @@ export default {
                 name: "elevateur", x: 2, y: 2,
                 prop: {speed: 18, speedRotate: 10, player_x: 0.5, player_y: -0.35, loading_x: 0.5, loading_y: 1.8,
                     walkToMove: false, use: "up", name: "Chariot élévateur",
-                    description: "Permet de transporter six charges de liant.", size: "1x2m", containerSize: 6,
+                    description: "Permet de transporter six charges de liant.", size: "1x2m",
+                    infoAdded: "Permis élévateur requis", containerSize: 6,
                     source: "https://manitou.cdn.prismic.io/manitou%2F83b388e7-4fd0-47a9-88e3-c22e09c06985_vue_ds_mi80d_mi100d_a_0315.svg"}
             },
             {

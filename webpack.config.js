@@ -1,10 +1,3 @@
-/**
- * Documentations
- * https://webpack.github.io/docs/configuration.html
- * https://www.npmjs.com/package/phaser#webpack-config
- * https://webpack.github.io/docs/multiple-entry-points.html
- */
-
 var path = require("path");
 var webpack = require("webpack");
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
@@ -12,17 +5,12 @@ var ExtractTextPlugin = require("extract-text-webpack-plugin");
 // Phaser webpack config
 var phaserModule = path.join(__dirname, '/node_modules/phaser/');
 
-/**
- * On peut passer à notre commande de build l'option --production
- * @type {boolean}
- */
 var production = process.argv.indexOf("--production") > -1;
 
 module.exports = {
     /** nos points d'entrée, par clé */
     entry: {
-        '1': "./src/games/1/main.js", // Jeu 1
-        '2': "./src/games/2/main.js" // Test
+        '1': "./src/games/1/app.jsx" // Jeu 1
     },
     /** description de nos sorties */
     output: {
@@ -44,28 +32,16 @@ module.exports = {
             'pixi': path.join(phaserModule, 'build/custom/pixi.js'),
             'p2': path.join(phaserModule, 'build/custom/p2.js')
         },
-        /**
-         * On peut ajouter nos extensions à résoudre lors d'un require()
-         * On autorise rien, ou .js(on)
-         */
-        extensions: [
-            "",
-            ".js",
-            ".json"
-        ]
+        /** On ajoute nos extensions à résoudre lors d'un require() */
+        extensions: [ "", ".js", ".jsx", ".json" ]
     },
     module: {
-        /**
-         * Liste de nos loaders
-         * Les loaders sont exécutés en ordre inverse
-         */
+        /** Liste de nos loaders (exécutés en ordre inverse) */
         loaders: [
             {
-                test: /\.js$/,
+                test: /\.jsx?$/,
                 exclude: /node_modules/,
-                loaders: [
-                    "babel"
-                ]
+                loaders: [ 'jsx', 'babel' ]
             },
             { test: /pixi\.js/, loader: 'expose?PIXI' },
             { test: /phaser-split\.js$/, loader: 'expose?Phaser' },
@@ -75,9 +51,7 @@ module.exports = {
             // nativement, il faut donc un loader pour que cela soit transparent
             {
                 test: /\.json$/,
-                loaders: [
-                    "json"
-                ]
+                loaders: [ "json" ]
             }
         ]
     },

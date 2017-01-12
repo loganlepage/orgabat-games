@@ -54,8 +54,7 @@ export default class Material extends GameObject {
         if(!(Type.isExist(this.properties.amount) && Type.isNumber(this.properties.amount.current))) return;
         if(this.properties.amount.current < amount) return cbZero();
         this.properties.amount.current -= amount;
-        if(this.properties.amount.current > 0)
-            this.modal.tooltip.setAmount(this.properties.amount.current);
+        this.modal.tooltip.setAmount(this.properties.amount.current);
         return cbAmount();
     }
 
@@ -63,8 +62,7 @@ export default class Material extends GameObject {
     setRessource(amount, cb) {
         if(!(Type.isExist(this.properties.amount) && Type.isNumber(this.properties.amount.current))) return;
         this.properties.amount.current += amount;
-        if(this.properties.amount.current > 0)
-            this.modal.tooltip.setAmount(this.properties.amount.current);
+        this.modal.tooltip.setAmount(this.properties.amount.current);
         return cb(this.sprite.key, amount);
     }
 

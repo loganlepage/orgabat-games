@@ -1,6 +1,7 @@
 "use strict";
 import Type from 'system/utils/Type';
 import Modal from 'system/phaser/Modal';
+import GameModal from 'system/phaser/GameModal';
 
 
 /** Description Tooltip Modal */
@@ -23,6 +24,8 @@ export default class DescriptionTooltip extends Modal {
             console.error(e.name + ": " + e.message);
         }
         super(Type.deepMerge(DescriptionTooltip.pattern, data), manager, game);
+        this.items.description.y = this.game.modalScale(95 - Type.nbChar(this.items.description.text, '\n') * 10);
+        GameModal.fillWord(this.items.description, 'requis', '#D82E32');
     }
 
     setLeft() {

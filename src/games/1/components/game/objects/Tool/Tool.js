@@ -57,8 +57,7 @@ export default class Tool extends GameObject {
             && Type.isNumber(this.properties.amount.max))) return;
         if(this.properties.amount.max < this.properties.amount.current + amount) return cbZero();
         this.properties.amount.current += amount;
-        if(this.properties.amount.current > 0)
-            this.modal.tooltip.setAmount(this.properties.amount.current);
+        this.modal.tooltip.setAmount(this.properties.amount.current);
         if(this.properties.amount.max === this.properties.amount.current) this.toolIsFullEvent.fire();
         return cbAmount();
     }

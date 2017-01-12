@@ -22,6 +22,19 @@ export default class Type {
     };
 
     /**
+     * Count words in str
+     * @param str
+     * @param word
+     * @returns {number}
+     */
+    static nbChar(str, word) {
+        let nb = 0;
+        str = str.split(""); // cette ligne n'est pas nécessaire pour firefox ni chrome
+        for(let i in str) nb += str[i] == word;
+        return nb;
+    }
+
+    /**
      * Is not null and not undefined
      * @param prop
      * @param debug

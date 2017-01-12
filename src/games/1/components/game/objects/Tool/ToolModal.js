@@ -40,7 +40,7 @@ export default class ToolModal extends GameModal {
             }
         }
         Type.isExist(this.properties.amount) && Type.isNumber(this.properties.amount.current)
-        && this.properties.amount.current > 0 ? this.tooltip.setAmount(this.properties.amount.current) : this.tooltip.delAmount();
+            ? this.tooltip.setAmount(this.properties.amount.current) : this.tooltip.delAmount();
         this.tooltip.toggle(visible, {controls: controls, fixed: fixed, force: force});
     }
 };

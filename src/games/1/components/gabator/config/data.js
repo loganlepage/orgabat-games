@@ -2,26 +2,17 @@
 export default {
     stats: {
         health: {
-            dom: "#gabator-panel-stats-health",
-            maxValue: 7,
-            value: 7
+            max: 7,
+            default: 7
         },
         organization: {
-            dom: "#gabator-panel-stats-organization",
-            maxValue: 7,
-            value: 7
+            max: 7,
+            default: 5
         },
         enterprise: {
-            dom: "#gabator-panel-stats-enterprise",
-            maxValue: 7,
-            value: 7
+            max: 7,
+            default: 2
         }
     },
-    info: {
-        dom: "#gabator-panel-info",
-        text: {
-            dom: "#gabator-panel-info-text",
-            value: "Attention: Vous n'avez pas de permis élévateur."
-        }
-    }
+    info: "Attention: Vous n'avez pas de permis élévateur."
 }

@@ -1,1 +1,0 @@
-document.write('TEST AJOUT MODULE WEBPACK: OK');
