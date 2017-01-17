@@ -56,8 +56,8 @@ export default class Player extends GameObject {
     objectCollisionUpdate() {
         if(this.objectInCollision === null) return; //if not collision, break
         if(this.keys.bool["A"].state) {
-            switch(this.objectInCollision.sprite.obj.type) {
-                case Vehicle.name:
+            switch(this.objectInCollision.sprite.obj.constructor) {
+                case Vehicle:
                     this.setVehicle(this.objectInCollision);
                     this.objectInCollision = null;
                     break;

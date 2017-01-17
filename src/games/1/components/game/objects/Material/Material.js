@@ -69,9 +69,9 @@ export default class Material extends GameObject {
     /** Add events comportements */
     onCollisionBegin(o) {
         super.onCollisionBegin(o.object);
-        switch(this.objectInCollision.sprite.obj.type) {
-            case Vehicle.name:
-            case Player.name:
+        switch(this.objectInCollision.sprite.obj.constructor) {
+            case Vehicle:
+            case Player:
                 this.modal.tooltipHandler(GameModal.VISIBLE, GameModal.CONTROLS_DISABLED, null, GameModal.FORCE);
                 break;
             default:
@@ -79,7 +79,7 @@ export default class Material extends GameObject {
         }
     }
     onCollisionEnd(o) {
-        if(super.isCollidWith(Vehicle.name, o) || super.isCollidWith(Player.name, o))
+        if(super.isCollidWith(Vehicle, o) || super.isCollidWith(Player, o))
             this.modal.tooltipHandler(GameModal.HIDDEN, GameModal.CONTROLS_ENABLED);
     }
     mouseOver() {

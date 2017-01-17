@@ -5,7 +5,7 @@ var ExtractTextPlugin = require("extract-text-webpack-plugin");
 // Phaser webpack config
 var phaserModule = path.join(__dirname, '/node_modules/phaser/');
 
-var production = process.argv.indexOf("--production") > -1;
+var production = process.argv.indexOf("--prod") > -1;
 
 module.exports = {
     /** nos points d'entrée, par clé */

@@ -123,11 +123,11 @@ export default class Vehicle extends GameObject {
     objectCollisionUpdate() {
         if(this.objectInCollision === null) return; //if not collision, break
         if(this.keys.bool["A"].state) {
-            switch(this.objectInCollision.sprite.obj.type) {
-                case Vehicle.name:
+            switch(this.objectInCollision.sprite.obj.constructor) {
+                case Vehicle:
                     this.modal.cantUseFeedback();
                     break;
-                case Material.name:
+                case Material:
                     if(this.keys.bool["E"].state) return;
                     if(!(Type.isExist(this.objectInCollision.sprite.obj.properties.amount)
                         && Type.isExist(this.objectInCollision.sprite.obj.properties.amount.current)
@@ -142,7 +142,7 @@ export default class Vehicle extends GameObject {
                             this.loading.visible = true;
                     });
                     break;
-                case Tool.name:
+                case Tool:
                     if(this.keys.bool["E"].state) return;
                     let needed = this.objectInCollision.sprite.obj.properties.needed;
                     this.objectInCollision.sprite.obj.setRessource(this.container.getSumOf(needed), (name, amount) => {
@@ -156,8 +156,8 @@ export default class Vehicle extends GameObject {
             }
         }
         if(this.keys.bool["E"].state) {
-            switch(this.objectInCollision.sprite.obj.type) {
-                case Material.name:
+            switch(this.objectInCollision.sprite.obj.constructor) {
+                case Material:
                     if(this.keys.bool["A"].state) return;
                     let needed = this.objectInCollision.sprite.key;
                     this.objectInCollision.sprite.obj.setRessource(this.container.getSumOf(needed), (name, amount) => {
@@ -175,18 +175,20 @@ export default class Vehicle extends GameObject {
         switch(o.object.class) {
             case 'gameObject':
                 super.onCollisionBegin(o.object);
-                if(this.collisionEventEnabled)
-                    switch(this.objectInCollision.sprite.obj.type) {
-                        case Player.name:
+                if(this.collisionEventEnabled) {
+                    switch(this.objectInCollision.sprite.obj.constructor) {
+                        case Player:
                             this.modal.tooltipHandler(GameModal.VISIBLE, Vehicle.COLLIDED, GameModal.CONTROLS_DISABLED, null, GameModal.FORCE);
                             break;
-                        case Vehicle.name:
+                        case Vehicle:
                             if(Type.isExist(this.driver))
                                 this.modal.carefulFeedback('aux véhicules');
                             break;
                         default:
                             break;
                     }
+                }
+
                 break;
             case 'layer':
                 this.modal.carefulFeedback('aux murs');
@@ -196,12 +198,12 @@ export default class Vehicle extends GameObject {
         }
     }
     onCollisionEnd(o) {
-        if(super.isCollidWith(Player.name, o)) {
+        if(super.isCollidWith(Player, o)) {
             this.modal.tooltipHandler(GameModal.HIDDEN, null, GameModal.CONTROLS_ENABLED);
         }
     }
     mouseOver() {
-        this.modal.tooltipHandler(GameModal.VISIBLE, super.isCollidWith(Player.name));
+        this.modal.tooltipHandler(GameModal.VISIBLE, super.isCollidWith(Player));
     }
     mouseOut() {
         this.modal.tooltipHandler(GameModal.HIDDEN);

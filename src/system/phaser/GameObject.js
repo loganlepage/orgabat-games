@@ -70,6 +70,6 @@ export default class GameObject {
     mouseOut(){}
 
     isCollidWith(type, o = this.objectInCollision) {
-        return Type.isExist(o) && o.sprite.obj.type === type;
+        return Type.isExist(o) && o.sprite.obj.constructor === type;
     }
 }
