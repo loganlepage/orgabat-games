@@ -22,7 +22,7 @@ webpack --prod
 ```
 
 Créer un fichier pour chaque jeu sans minification (développement),
-les modifications sont automatiquement apportées aux fichiers (watcher).
+update automatique à chaque modification (watcher).
 ```sh
 webpack
 ```
