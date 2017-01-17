@@ -21,8 +21,8 @@ vous pouvez faire CTRL+C dès que terminé.
 webpack --prod
 ```
 
-Créer un fichier pour chaque jeu, sans minification (développement),
-laissez tourner si vous développez, les modifications seront automatiquement apportées aux fichiers.
+Créer un fichier pour chaque jeu sans minification (développement),
+les modifications sont automatiquement apportées aux fichiers (watcher).
 ```sh
 webpack
 ```
