@@ -27,12 +27,15 @@ export default class GameSprite extends Phaser.Sprite {
         this.onCollision(obj1, obj2);
     }
     mouseOver(sprite) {
+        if(!this.game.controlsEnabled) return;
         this.mouseOverEvent.fire(sprite);
     }
     mouseOut(sprite) {
+        if(!this.game.controlsEnabled) return;
         this.mouseOutEvent.fire(sprite);
     }
     update() {
+        if(!this.game.controlsEnabled) return;
         if(this.obj.update !== undefined)
             this.obj.update();
     }

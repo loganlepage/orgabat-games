@@ -4,7 +4,7 @@ export default {
         debug: false
     },
     canvasParent: "#gameDiv",
-    tilesmap: {
+    /*tilesmap: {
         name: "map",
         calques: ["Background", "Midground"],
         file: "map.json",
@@ -15,6 +15,23 @@ export default {
         },
         assets: [
             {name: "PathAndObjects", file: "PathAndObjects.png"}
+        ]
+    },*/
+    tilesmap: {
+        name: "map",
+        calques: ["Background", "Midground"],
+        file: "orgabat2.json",
+        tiles: {
+            width: 25,
+            height: 21,
+            size: 32
+        },
+        assets: [
+            {name: "PathAndObjects", file: "PathAndObjects.png"},
+            {name: "herbe", file: "herbe.png"},
+            {name: "dalle", file: "dalle.png"},
+            {name: "herbe_cote", file: "herbe_cote.png"},
+            {name: "dalle_ciment", file: "dalle_ciment.png"},
         ]
     },
 
@@ -45,7 +62,7 @@ export default {
             }
         ],
         materials: [
-            {name: "parpaings", x: 13, y: 2, prop: {name: "Parpaings", modalDirection: "bottom"}},
+            {name: "parpaing", x: 13, y: 2, prop: {name: "Parpaings", modalDirection: "bottom"}},
             {name: "liants", x: 16, y: 2, prop: {name: "Liants", modalDirection: "bottom"}},
             {name: "sable", x: 7, y: 10, prop: {name: "Sable", modalDirection: "top"}},
             {name: "gravier", x: 10, y: 10, prop: {name: "Gravier", modalDirection: "top"}},
@@ -64,7 +81,7 @@ export default {
             {name: "elevateur", file: "elevateur.png"},
             {name: "brouette", file: "brouette.png"},
             {name: "transpalette", file: "transpalette.png"},
-            {name: "parpaings", file: "parpaings.png"},
+            {name: "parpaing", file: "parpaing.png"},
             {name: "liants", file: "liants.png"},
             {name: "sable", file: "sable.png"},
             {name: "gravier", file: "gravier.png"},
@@ -79,6 +96,7 @@ export default {
 
     modals: {
         assets: [
+            {name: "big_modal", file: "big_modal.png"},
             {name: "big_tooltip_left", file: "big_tooltip_left.png"},
             {name: "big_tooltip_right", file: "big_tooltip_right.png"},
             {name: "small_tooltip_top", file: "small_tooltip_top.png"},
@@ -88,7 +106,9 @@ export default {
             {name: "small_feedback", file: "small_feedback.png"},
             {name: "bouton_a", file: "bouton_a.png"},
             {name: "bouton_z", file: "bouton_z.png"},
-            {name: "bouton_e", file: "bouton_e.png"}
+            {name: "bouton_e", file: "bouton_e.png"},
+            {name: "star", file: "star.png"},
+            {name: "star_disabled", file: "star_disabled.png"}
         ]
     }
 }

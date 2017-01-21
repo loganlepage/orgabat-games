@@ -22,19 +22,31 @@ class Canvas extends Phaser.Game {
     }
 
     /** Constructor to start the game */
-    start() {
-        this.state.start('boot');
+    start(react) {
+        //start(key, clearWorld, clearCache, parameter)
+        this.state.start('boot', true, false, react);
     }
 }
 
 export default class Gabator extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            health: Config.stats.health.default,
+            organization: Config.stats.organization.default,
+            enterprise: Config.stats.enterprise.default,
+            info: Config.info
+        };
+        this.healthMax = Config.stats.health.max;
+        this.organizationMax = Config.stats.health.max;
+        this.enterpriseMax = Config.stats.health.max;
     }
     componentDidMount() {
         const gabator = new Canvas(this.props.width, this.props.height, Phaser.CANVAS, ReactDOM.findDOMNode(this));
-        gabator.start();
+        gabator.start(this);
+    }
+    changeValues(stats = {}) {
+        this.setState(stats);
     }
     render() {
         return (
@@ -43,15 +55,15 @@ export default class Gabator extends React.Component {
                     <div id="gabator-panel-stats">
                         <h4>Statistiques</h4>
                         <ProgressBar name="Santé" class="progress-bar-success"
-                                     current={Config.stats.health.default} max={Config.stats.health.max} />
+                                     current={this.state.health} max={this.healthMax} />
                         <ProgressBar name="Organisation" class="progress-bar-info"
-                                     current={Config.stats.organization.default} max={Config.stats.organization.max} />
+                                     current={this.state.organization} max={this.organizationMax} />
                         <ProgressBar name="Notoriété de l'entreprise" class="progress-bar-warning"
-                                     current={Config.stats.enterprise.default} max={Config.stats.enterprise.max} />
+                                     current={this.state.enterprise} max={this.enterpriseMax} />
                     </div>
                     <div id="gabator-panel-info">
                         <h4>Informations</h4>
-                        <p id="gabator-panel-info-text">{Config.info}</p>
+                        <p id="gabator-panel-info-text">{this.state.info}</p>
                     </div>
                 </div>
             </div>

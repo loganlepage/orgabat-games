@@ -2,15 +2,15 @@
 export default {
     stats: {
         health: {
-            max: 7,
-            default: 7
+            max: 2,
+            default: 2
         },
         organization: {
-            max: 7,
-            default: 5
+            max: 2,
+            default: 2
         },
         enterprise: {
-            max: 7,
+            max: 2,
             default: 2
         }
     },

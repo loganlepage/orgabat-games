@@ -1,9 +1,9 @@
 'use strict';
-import {Group} from 'phaser';
+import GameFactory from 'system/phaser/GameFactory';
 import Vehicle from './Vehicle';
 
 /** Vehicle Group Factory (called by play state) */
-export default class VehicleFactory extends Group {
+export default class VehicleFactory extends GameFactory {
 
     /**
      * Constructor for a new vehicle group

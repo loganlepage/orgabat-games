@@ -32,42 +32,47 @@ export default class SmallDescriptionTooltip extends Modal {
     setBottom() { this.items.bg.loadTexture(`small_tooltip_bottom`); this.offsetY = 9; this._refresh() }
     _refresh() {
         if(this.state.button) {
-            this.items.useButton.y = this.m.getAlignCenterY(this.items.bg, this.items.useButton) + this.game.modalScale(this.offsetY);
-            this.items.name.x = this.items.amount.x = this.game.modalScale(14);
+            this.items.useButton.y = this.m.getAlignCenterY(this.items.bg, this.items.useButton) + this.offsetY;
+            this.items.name.x = this.items.amount.x = 14;
         }
         if(this.state.amount) {
-            this.items.name.y =   this.m.getAlignCenterY(this.items.bg, this.items.name) + this.game.modalScale(this.offsetY-10);
-            this.items.amount.y = this.m.getAlignCenterY(this.items.bg, this.items.name) + this.game.modalScale(this.offsetY+10);
-            if(!this.state.button) this.items.name.x = this.items.amount.x = this.game.modalScale(20);
+            this.items.name.y =   this.m.getAlignCenterY(this.items.bg, this.items.name) + (this.offsetY-10);
+            this.items.amount.y = this.m.getAlignCenterY(this.items.bg, this.items.name) + (this.offsetY+10);
+            if(!this.state.button) this.items.name.x = this.items.amount.x = 20;
         }
     }
 
     setButtons(buttons = {a:true, e:true}) {
         this.items.useButton.items.a.visible = buttons.a;
         this.items.useButton.items.e.visible = buttons.e;
-        this.items.useButton.y = this.m.getAlignCenterY(this.items.bg, this.items.useButton) + this.game.modalScale(this.offsetY);
-        this.items.name.x = this.items.amount.x = this.game.modalScale(14);
+        let y = 0;
+        for (let item in this.items.useButton.items) {
+            this.items.useButton.items[item].y = y;
+            if(this.items.useButton.items[item].visible) y += 25;
+        }
+        this.items.useButton.y = this.m.getAlignCenterY(this.items.bg, this.items.useButton) + this.offsetY;
+        this.items.name.x = this.items.amount.x = 14;
         this.items.useButton.visible = true;
         this.state.button = true;
     }
     delButtons() {
         this.items.useButton.visible = false;
         if(!this.state.amount) this.items.name.x = this.m.getAlignCenterX(this.items.bg, this.items.name);
-        else this.items.name.x = this.items.amount.x = this.game.modalScale(20);
+        else this.items.name.x = this.items.amount.x = 20;
         this.state.button = false;
     }
     setAmount(amount) {
         if(amount <= 0) { this.delAmount(); return;}
-        this.items.name.y =   this.m.getAlignCenterY(this.items.bg, this.items.name) + this.game.modalScale(this.offsetY-10);
-        this.items.amount.y = this.m.getAlignCenterY(this.items.bg, this.items.name) + this.game.modalScale(this.offsetY+10);
-        if(!this.state.button) this.items.name.x = this.items.amount.x = this.game.modalScale(20);
+        this.items.name.y =   this.m.getAlignCenterY(this.items.bg, this.items.name) + (this.offsetY-10);
+        this.items.amount.y = this.m.getAlignCenterY(this.items.bg, this.items.name) + (this.offsetY+10);
+        if(!this.state.button) this.items.name.x = this.items.amount.x = 20;
         this.items.amount.text = `x${amount}`;
         this.items.amount.visible = true;
         this.state.amount = true;
     }
     delAmount() {
         this.items.amount.visible = false;
-        this.items.name.y = this.m.getAlignCenterY(this.items.bg, this.items.name) + this.game.modalScale(this.offsetY);
+        this.items.name.y = this.m.getAlignCenterY(this.items.bg, this.items.name) + this.offsetY;
         if(!this.state.button) this.items.name.x = this.m.getAlignCenterX(this.items.bg, this.items.name);
         this.state.amount = false;
     }
@@ -82,8 +87,6 @@ export default class SmallDescriptionTooltip extends Modal {
                 },
                 name: {
                     type: "text",
-                    x: 0,
-                    y: 0,
                     text: "{name}",
                     style: {
                         fill: "#5F4D21",
@@ -93,7 +96,6 @@ export default class SmallDescriptionTooltip extends Modal {
                 },
                 amount: {
                     type: "text",
-                    x: 0,
                     y: 20,
                     text: "{amount}",
                     style: {
@@ -105,7 +107,6 @@ export default class SmallDescriptionTooltip extends Modal {
                 },
                 useButton: {
                     type: "group",
-                    y: 0,
                     x: 90,
                     visible: false,
                     items: {

@@ -30,12 +30,12 @@ export default class MaterialModal extends GameModal {
     tooltipHandler(visible, controls, fixed, force) {
         if(visible) {
             const dir = this.properties.modalDirection;
-            this.tooltip.x = this.getOuterCenterXToSprite(this.obj.sprite, this.tooltip.items.bg);
+            this.tooltip.x = this.getOuterCenterXToSprite(this.obj.sprite, this.tooltip.items.bg, this.tooltip.scale.x);
             if(dir === "bottom") {
-                this.tooltip.y = this.getOuterBottomToSprite(this.obj.sprite);
+                this.tooltip.y = this.getOuterBottomToSprite(this.obj.sprite, 5);
                 this.tooltip.setBottom();
             } else {
-                this.tooltip.y = this.getOuterTopToSprite(this.obj.sprite, this.tooltip.items.bg);
+                this.tooltip.y = this.getOuterTopToSprite(this.obj.sprite, this.tooltip.items.bg, this.tooltip.scale.y, 5);
                 this.tooltip.setTop();
             }
         }

@@ -28,10 +28,13 @@ export default class Vehicle extends GameObject {
      */
     constructor(game, layer, name, properties, x, y) {
         super(game, layer);
-        this.vehicleMountedEvent = new EventHandler();
-        this.vehicleUnmountedEvent = new EventHandler();
-        this.vehicleStartedEvent = new EventHandler();
-        this.vehicleStopedEvent = new EventHandler();
+        this.mountedEvent = new EventHandler();
+        this.unmountedEvent = new EventHandler();
+        this.startedEvent = new EventHandler();
+        this.stoppedEvent = new EventHandler();
+        this.loadedEvent = new EventHandler(); //Si on charge un véhicule, on remplis un objectif
+        this.collisionEvent = new EventHandler(); //Si on tape un véhicule/mur, on baisse le score
+
         this.startProcess = false;
         this.stopProcess = false;
         this.container = new Inventary(properties.containerSize, Config.entities.materials);
@@ -71,13 +74,13 @@ export default class Vehicle extends GameObject {
         this.sprite.anchor.setTo(0.5, 0.5); //don't change when vehicle is mounted
         player.idle("up");
         this.driver = player;
-        this.modal.howDropFeedback();
+        this.modal.buttonInfoFeedback();
         this.modal.tooltipHandler(GameModal.HIDDEN, false, GameModal.FIXED);
 
         this.initializedAnimation = false;
-        this.vehicleMountedEvent.fire(this);
+        this.mountedEvent.fire(this);
         setTimeout(() => {
-            this.vehicleStartedEvent.fire(this);
+            this.startedEvent.fire(this);
             this.startProcess = false;
         }, 200);
     }
@@ -90,29 +93,34 @@ export default class Vehicle extends GameObject {
         this.sprite.body.setZeroVelocity();
 
         this.collisionEventEnabled = false;
-        this.game.add.existing(this.driver);
+        this.game.layer.zDepth0.add(this.driver);
         this.driver.scale.setTo(this.game.SCALE);
         this.driver.anchor.set(0.5, 0.5);
         this.driver.reset(x, y);
         this.driver.body.collideWorldBounds = true;
         let driver = this.driver; this.driver = null;
-        this.modal.howDropFeedback(GameModal.HIDDEN);
+        this.modal.buttonInfoFeedback(GameModal.HIDDEN);
         this.modal.droppedFeedback();
 
-        this.vehicleStopedEvent.fire(driver.obj);
+        this.stoppedEvent.fire(driver.obj);
         setTimeout(() => {
             driver.obj.onCollisionBegin({object: this.sprite.body});
             this.collisionEventEnabled = true;
-            this.vehicleUnmountedEvent.fire(driver.obj);
+            this.unmountedEvent.fire(driver.obj);
             this.stopProcess = false;
         }, 200);
     }
 
     /** Update */
     update() {
-        if(!this.ready) return;
+        if(!this.ready || this.startProcess || this.stopProcess) return;
         super.update();
         if(this.driver === null) return;
+
+        //Fix un glitch: le personnage se déplaçait quand on cognait l'arrière d'un véhicule dans un angle
+        if(this.driver.x != 0 || this.driver.y != 0)
+            this.driver.reset(0, 0);
+
         this.objectCollisionUpdate();
         this.moveUpdate();
         if(this.keys.bool["Z"].state && this.driver.obj.vehicleInUse.object !== null)
@@ -136,19 +144,11 @@ export default class Vehicle extends GameObject {
                     const wantAmount = this.container.getSizeLeft() > materialAmount ? materialAmount : this.container.getSizeLeft();
                     this.objectInCollision.sprite.obj.getRessource(wantAmount, (name, amount) => {
                         this.container.addItem(name, amount);
+                        this.loadedEvent.fire(name, amount);
                         if(amount > 0 && this.container.getSizeLeft() === 0)
                             this.modal.containerFullFeedback();
                         if(this.container.getSizeUsed() > 0)
                             this.loading.visible = true;
-                    });
-                    break;
-                case Tool:
-                    if(this.keys.bool["E"].state) return;
-                    let needed = this.objectInCollision.sprite.obj.properties.needed;
-                    this.objectInCollision.sprite.obj.setRessource(this.container.getSumOf(needed), (name, amount) => {
-                        this.container.delItem(needed, amount);
-                        if(this.container.getSizeUsed() === 0)
-                            this.loading.visible = false;
                     });
                     break;
                 default:
@@ -156,10 +156,20 @@ export default class Vehicle extends GameObject {
             }
         }
         if(this.keys.bool["E"].state) {
+            let needed;
             switch(this.objectInCollision.sprite.obj.constructor) {
                 case Material:
                     if(this.keys.bool["A"].state) return;
-                    let needed = this.objectInCollision.sprite.key;
+                    needed = this.objectInCollision.sprite.key;
+                    this.objectInCollision.sprite.obj.setRessource(this.container.getSumOf(needed), (name, amount) => {
+                        this.container.delItem(needed, amount);
+                        if(this.container.getSizeUsed() === 0)
+                            this.loading.visible = false;
+                    });
+                    break;
+                case Tool:
+                    if(this.keys.bool["A"].state) return;
+                    needed = this.objectInCollision.sprite.obj.properties.needed;
                     this.objectInCollision.sprite.obj.setRessource(this.container.getSumOf(needed), (name, amount) => {
                         this.container.delItem(needed, amount);
                         if(this.container.getSizeUsed() === 0)
@@ -181,8 +191,10 @@ export default class Vehicle extends GameObject {
                             this.modal.tooltipHandler(GameModal.VISIBLE, Vehicle.COLLIDED, GameModal.CONTROLS_DISABLED, null, GameModal.FORCE);
                             break;
                         case Vehicle:
-                            if(Type.isExist(this.driver))
+                            if(Type.isExist(this.driver)) {
+                                this.collisionEvent.fire('vehicle');
                                 this.modal.carefulFeedback('aux véhicules');
+                            }
                             break;
                         default:
                             break;
@@ -191,6 +203,7 @@ export default class Vehicle extends GameObject {
 
                 break;
             case 'layer':
+                this.collisionEvent.fire('wall');
                 this.modal.carefulFeedback('aux murs');
                 break;
             default:

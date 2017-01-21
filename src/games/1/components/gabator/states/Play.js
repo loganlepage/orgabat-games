@@ -1,5 +1,7 @@
 "use strict";
 import {State} from 'phaser';
+import {Stack} from 'system/phaser/Modal';
+import PhaserManager from 'system/phaser/utils/PhaserManager';
 
 /** State when we start gabator */
 export default class Play extends State {
@@ -12,7 +14,10 @@ export default class Play extends State {
     }
 
     /** Called when the game start */
-    awakeGabator() {
+    start() {
         this.gabator.loadTexture('gabator', 0);
+        
     }
+
+
 };

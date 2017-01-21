@@ -20,6 +20,7 @@ export default class Player extends GameObject {
     constructor(game, layer, x, y) {
         super(game, layer);
         this.addSprite(new PlayerSprite(game, Position.getPixelAt(x), Position.getPixelAt(y), this.type, this));
+        this.game.layer.zDepth0.add(this.sprite);
         this.configure();
         this.ready = true;
     }
@@ -37,10 +38,9 @@ export default class Player extends GameObject {
         this.keys.addBool("A"); this.keys.addBool("Z"); this.keys.addBool("E");
 
         this.game.vehicleGroup.forEach((vehicle) => {
-            vehicle.obj.vehicleMountedEvent.add(this, "onVehicleMount");
-            vehicle.obj.vehicleStartedEvent.add(this, "onVehicleStart");
-            vehicle.obj.vehicleStopedEvent.add(this, "onVehicleStop");
-            vehicle.obj.vehicleStopedEvent.add(this, "onVehicleUnmount");
+            vehicle.obj.mountedEvent.add(this, "onVehicleMount");
+            vehicle.obj.startedEvent.add(this, "onVehicleStart");
+            vehicle.obj.stoppedEvent.add(this, "onVehicleStop");
         });
     }
 
@@ -80,8 +80,10 @@ export default class Player extends GameObject {
     }
     onVehicleMount(vehicle) { this.vehicleInUse.object = vehicle; }
     onVehicleStart() { this.vehicleInUse.started = true; }
-    onVehicleStop() { this.vehicleInUse.started = false; }
-    onVehicleUnmount() { this.vehicleInUse.object = null; }
+    onVehicleStop() {
+        this.vehicleInUse.started = false;
+        this.vehicleInUse.object = null;
+    }
 
     /**
      * Move
@@ -95,6 +97,7 @@ export default class Player extends GameObject {
         if(this.direction == "down")   this.sprite.body.moveDown(this.speed);
     }
     moveTo(keycode, keystate) {
+        if(!this.game.controlsEnabled) return;
         if(this.vehicleInUse.object !== null)
             return this.vehicleInUse.started ? this.vehicleInUse.object.moveTo(keycode, keystate) : 0;
 

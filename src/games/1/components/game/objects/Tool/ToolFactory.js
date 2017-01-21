@@ -1,9 +1,9 @@
 'use strict';
-import {Group} from 'phaser';
+import GameFactory from 'system/phaser/GameFactory';
 import Tool from './Tool';
 
 /** Tool Group Factory (called by play state) */
-export default class ToolFactory extends Group {
+export default class ToolFactory extends GameFactory {
 
     /**
      * Constructor for a new tool group

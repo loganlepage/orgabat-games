@@ -26,7 +26,7 @@ export default class LoadMap extends State {
 
     /** Called by preload to load assets */
     loadAssets(){
-        this.game.load.tilemap('map', `${assets_path}tilemap/maps/map.json`, null, Tilemap.TILED_JSON);
+        this.game.load.tilemap('map', `${assets_path}tilemap/maps/orgabat2.json`, null, Tilemap.TILED_JSON);
         for(let i in Config.entities.assets)
             this.game.load.image(Config.entities.assets[i].name, `${assets_path}sprite/${Config.entities.assets[i].file}`);
         for(let i in Config.tilesmap.assets)

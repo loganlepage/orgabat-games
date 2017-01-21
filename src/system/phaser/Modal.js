@@ -23,10 +23,14 @@ class Sprite extends Phaser.Sprite {
         } catch (e) {
             console.error(e.name + ": " + e.message);
         }
-        super(game, game.modalScale(x), game.modalScale(y), key);
-        this.scale.setTo(Type.isNumber(props.scale) ? game.modalScale(props.scale) : game.modalScale(1));
+        super(game, x, y, key);
+        this.scale.setTo(Type.isNumber(props.scale) ? props.scale : 1);
         this.visible = Type.isBoolean(props.visible) ? props.visible : true;
         this.inputEnabled = Type.isBoolean(props.inputEnabled) ? props.inputEnabled : false;
+        this.anchor.set(
+            Type.isNumber(props.anchorX) ? props.anchorX : 0,
+            Type.isNumber(props.anchorY) ? props.anchorY : 0
+        );
     }
 }
 
@@ -52,10 +56,13 @@ class Text extends Phaser.Text {
             console.error(e.name + ": " + e.message);
         }
         style = Type.isExist(style) ? style : {};
-        if(style.fontSize) style.fontSize = game.modalScale(style.fontSize);
-        super(game, game.modalScale(x), game.modalScale(y), text, style);
+        super(game, x, y, text, style);
         this.visible = Type.isBoolean(props.visible) ? props.visible : true;
         this.inputEnabled = Type.isBoolean(props.inputEnabled) ? props.inputEnabled : false;
+        this.anchor.set(
+            Type.isNumber(props.anchorX) ? props.anchorX : 0,
+            Type.isNumber(props.anchorY) ? props.anchorY : 0
+        );
     }
 }
 
@@ -73,11 +80,14 @@ class Manager extends GameModal {
     }
 
     /** Show modal view */
-    static show(modal, callback = () => {}) {
+    static show(modal, group, callback = () => {}) {
         try { Type.isExist(modal, true);
         } catch (e) { console.error(e.name + ": " + e.message); }
+        if(Type.isExist(group)) {
+            group.add(modal);
+            group.bringToTop(modal);
+        }
         const m = modal; // Prevent change during an animation
-        this.game.world.bringToTop(m);
         m.visible = true;
         m.alpha = 0;
         this.game.add.tween(m).to({alpha:1}, 100, Phaser.Easing.Linear.None, true)
@@ -112,7 +122,7 @@ export class TooltipManager extends Manager {
     /** Controls */
     _setFixed(modal, visible = true) {
         if(visible)
-            Manager.show(modal);
+            Manager.show(modal, this.game.layer.zDepth1);
         modal.params.fixeMe = null;
         modal.params.fixed = true;
     }
@@ -127,7 +137,7 @@ export class TooltipManager extends Manager {
             if(this.current && this.current !== modal)
                 this._setCurrent(this.current, false);
             this.current = modal;
-            Manager.show(this.current);
+            Manager.show(this.current, this.game.layer.zDepth1);
         } else if(this.current && this.current === modal) {
             Manager.hide(this.current);
             this.current = null;
@@ -136,7 +146,6 @@ export class TooltipManager extends Manager {
 
     /** Toggle Show / Hide modal */
     toggle(visible, modal, params) {
-       // console.error({visible:visible, modal:modal, controls:params.controls, fixeMe:modal.params.fixeMe, fixed:modal.params.fixed});
         if(params.controls === true) this.controls = true;
 
         // If we want to fixe
@@ -155,30 +164,73 @@ export class TooltipManager extends Manager {
     }
 }
 
-class Stack extends Phaser.Group {
-    constructor(x, y, align, game) {
-        super(game);
+export class Stack extends Phaser.Group {
+    constructor(x, y, game, params) {
+        super(game, game.layer.zDepth2);
         this.fixedToCamera = true;
         this.cameraOffset.setTo(x, y);
-        this.align = align;
+        this.axe = Type.isBoolean(params.axe) ? params.axe : Stack.VERTICAL;
+        this.direction = Type.isString(params.direction) ? params.direction : Stack.TOP;
+        this.offset = {
+            x: Type.isNumber(params.offsetX) ? params.offsetX : 10,
+            y: Type.isNumber(params.offsetY) ? params.offsetY : 10,
+        };
+        this.anchor = {
+            x: Type.isNumber(params.anchorX) ? params.anchorX : 0,
+            y: Type.isNumber(params.anchorY) ? params.anchorY : 0,
+        };
+        this.sort = Type.isNumber(params.sort) ? params.sort : Stack.DESC;
+        this.toAdd = [];
     }
-    add(modal) {
-        if(this.align.h === 'left') modal.x = 0;
-        else if(this.align.h === 'right') modal.x = -modal.width;
-        super.add(modal);
+    add(modal) { this.toAdd.push(modal); }
+    _add(modal) {
+        super.addChild(modal);
         this._reorganize();
     }
     remove(modal) {
-        super.remove(modal);
+        super.removeChild(modal);
         this._reorganize();
     }
+    //permet de ne pas avoir l'erreur "this.children[i] is undefined" de la part de Phaser.Group
+    //en étant sûr de faire l'ajout en dehors de la boucle d'update du parent.
+    update() {
+        for(let i = 0; i < this.toAdd.length; i++)
+            this._add(this.toAdd[i]);
+        this.toAdd = [];
+    }
     _reorganize() {
-        let margin = 0;
-        for(let i = this.children.length - 1; i >= 0; i--) {
-            margin -= this.children[i].height + this.game.modalScale(10);
-            Manager.moveTo(this.children[i], {y:margin});
+        let x = 0, y = 0, counter = 0;
+        const start =               this.sort == Stack.DESC ? this.children.length - 1 : 0;
+        const condition = (i) =>    this.sort == Stack.DESC ? i >= 0 : i < this.children.length;
+        const increment =           this.sort;
+        for(let i = start; condition(i); i+=increment) {
+            switch(this.axe) {
+                case Stack.HORIZONTAL:
+                    if(counter == 0) x = this.children[i].width * -this.anchor.x;
+                    y = (this.children[i].height + this.offset.y) * (1-this.anchor.y*2);
+                    Manager.moveTo(this.children[i], {x:x, y:y});
+                    x += (this.direction == Stack.LEFT ? -1 : 1) * (this.children[i].width + this.offset.x);
+                    break;
+                case Stack.VERTICAL:
+                    if(counter == 0) y = this.children[i].height * -this.anchor.y;
+                    x = (this.children[i].width + this.offset.x) * (1-this.anchor.x*2);
+                    Manager.moveTo(this.children[i], {x:x, y:y});
+                    y += (this.direction == Stack.TOP ? -1 : 1) * (this.children[i].height + this.offset.y);
+                    break;
+                default:
+                    break;
+            }
+            counter++;
         }
     }
+    static get VERTICAL() { return true }
+    static get HORIZONTAL() { return false }
+    static get BOTTOM() { return 'BOTTOM' }
+    static get LEFT() { return 'LEFT' }
+    static get TOP() { return 'TOP' }
+    static get RIGHT() { return 'RIGHT' }
+    static get ASC() { return 1 }
+    static get DESC() { return -1 }
 }
 
 /** Modal Stack Manager Strategy */
@@ -187,29 +239,75 @@ export class StackManager extends Manager {
         super(game);
         this.debug = debug;
         this.stacks = {
-            BOTTOM_LEFT: new Stack(
-                this.game.modalScale(10),
-                this.game.canvas.height - this.game.modalScale(10),
-                {v: 'bottom', h: 'left'}, this.game),
             BOTTOM_RIGHT: new Stack(
-                this.game.canvas.width - this.game.modalScale(10),
-                this.game.canvas.height - this.game.modalScale(10),
-                {v: 'bottom', h: 'right'}, this.game)
+                this.game.canvas.width - 10,
+                this.game.canvas.height - 10,
+                this.game,
+                {axe: Stack.VERTICAL, direction: Stack.TOP, anchorX: 1, anchorY: 1 })
         };
     }
 
     /** Controls */
     _add(modal, stack) {
-        this.stacks[stack].add(modal);
+        if(Type.isString(stack))
+            this.stacks[stack].add(modal);
+        else if(Type.isInstanceOf(stack, Stack))
+            stack.add(modal);
         Manager.show(modal);
     }
     _del(modal, stack) {
-        Manager.hide(modal, () => this.stacks[stack].remove(modal));
+        Manager.hide(modal, () => {
+            if(Type.isString(stack))
+                this.stacks[stack].remove(modal);
+            else if(Type.isInstanceOf(stack, Stack))
+                stack.remove(modal);
+        });
     }
 
     /** Toggle Show / Hide modal */
     toggle(visible, modal, params) {
         visible ? this._add(modal, params.stack) : this._del(modal, params.stack);
+    }
+}
+
+/** Modal Stack Manager Strategy */
+export class DefaultManager extends Manager {
+    constructor(game, debug) {
+        super(game);
+        this.debug = debug;
+        const rect = game.add.graphics(0, 0);
+        rect.beginFill(0x000000, 0.75);
+        rect.drawRect(0, 0, game.canvas.width, game.canvas.height);
+        rect.endFill();
+        this.blackBackground = new Phaser.Group(game);
+        this.blackBackground.alpha = 0;
+        this.blackBackground.fixedToCamera = true;
+        this.blackBackground.add(rect);
+        this.game.layer.zDepth3.add(this.blackBackground);
+    }
+
+    /** Controls */
+    _add(modal, params) {
+        if(Type.isNumber(params.width) && Type.isNumber(params.height)) {
+            modal.fixedToCameraDefault = modal.fixedToCamera;
+            modal.fixedToCamera = true;
+            modal.cameraOffset.setTo(
+                this.game.canvas.width / 2 - this.game.modalScale(params.width) / 2,
+                this.game.canvas.height / 2 - this.game.modalScale(params.height) / 2
+            );
+            Manager.show(this.blackBackground);
+            Manager.show(modal, this.game.layer.zDepth3);
+        }
+    }
+    _del(modal) {
+        modal.fixedToCamera = modal.fixedToCameraDefault;
+        Manager.hide(this.blackBackground);
+        Manager.hide(modal);
+    }
+
+    /** Toggle Show / Hide modal */
+    toggle(visible, modal, params) {
+        visible ? this._add(modal, params) : this._del(modal);
     }
 }
 
@@ -241,8 +339,10 @@ class Factory extends Phaser.Group {
                 if(data.items[key].type === 'group') {
                     const visible = Type.isBoolean(data.items[key].visible) ? data.items[key].visible : true;
                     const nestedGroup = new Factory(data.items[key], this.game, visible);
-                    if(Type.isNumber(data.items[key].x)) nestedGroup.x = this.game.modalScale(data.items[key].x);
-                    if(Type.isNumber(data.items[key].y)) nestedGroup.y = this.game.modalScale(data.items[key].y);
+                    if(Type.isNumber(data.items[key].x))
+                        nestedGroup.x = data.items[key].x;
+                    if(Type.isNumber(data.items[key].y))
+                        nestedGroup.y = data.items[key].y;
                     this.add(nestedGroup);
                     this.items[key] = nestedGroup;
                 }
@@ -288,6 +388,7 @@ export default class Modal extends Factory {
         this.data = data;
         this.manager = manager.getInstance(game);
         this.params = { fixed: false, fixeMe: null };
+        this.scale.setTo(game.modalScale(1));
     }
 
     /**

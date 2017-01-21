@@ -24,7 +24,7 @@ export default class Tool extends GameObject {
      */
     constructor(game, layer, name, properties, x, y) {
         super(game, layer);
-        this.toolIsFullEvent = new EventHandler();
+        this.isFullEvent = new EventHandler();
         this.addSprite(new ToolSprite(this.game, Position.getPixelAt(x), Position.getPixelAt(y), name, this));
         this.addModal(new ToolModal(properties, this, game));
         this.configure(properties);
@@ -42,7 +42,7 @@ export default class Tool extends GameObject {
             && Type.isNumber(this.properties.amount.max) && this.properties.amount.current < this.properties.amount.max)
             this.modal.tooltipHandler(GameModal.VISIBLE, null, GameModal.FIXED);
         if(Type.isExist(this.properties.needed))
-            this.modal.tooltip.setButtons({a:true, e:false});
+            this.modal.tooltip.setButtons({a:false, e:true});
     }
     onVehicleStop(){
         this.modal.tooltipHandler(GameModal.HIDDEN, null, GameModal.NOT_FIXED);
@@ -58,7 +58,7 @@ export default class Tool extends GameObject {
         if(this.properties.amount.max < this.properties.amount.current + amount) return cbZero();
         this.properties.amount.current += amount;
         this.modal.tooltip.setAmount(this.properties.amount.current);
-        if(this.properties.amount.max === this.properties.amount.current) this.toolIsFullEvent.fire();
+        if(this.properties.amount.max === this.properties.amount.current) this.isFullEvent.fire();
         return cbAmount();
     }
 

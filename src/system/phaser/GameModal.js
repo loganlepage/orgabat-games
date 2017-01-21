@@ -21,39 +21,49 @@ export default class GameModal {
     /** @returns {boolean} */
     static get FORCE() { return true; }
 
-    getSize(item) {
-        return this.game.modalScale(item._frame.right);
-    }
     getAlignCenterX(reference, item) {
-        return this.game.modalScale(reference._frame.centerX) - item.width / 2;
+        return reference._frame.centerX - item.width / 2;
     }
     getAlignRightX(reference, item) {
-        return this.game.modalScale(reference._frame.right) - item.width;
+        return reference._frame.width - item.width;
     }
     getAlignCenterY(reference, item) {
-        return this.game.modalScale(reference._frame.centerY) - item.height / 2;
+        return reference._frame.centerY - item.height / 2;
     }
     getAlignBottomY(reference, item) {
-        return this.game.modalScale(reference._frame.bottom) - item.height;
+        return reference._frame.bottom - item.height;
     }
-    getOuterLeftToSprite(sprite, item, offset) {
+
+    /** OUTER */
+    getOuterLeftToSprite(sprite, item, scaleX, offset) {
         offset = offset ? offset : 0;
-        return sprite.position.x - sprite.width * (1 - sprite.anchor.x) - this.game.modalScale(item._frame.right + offset);
+        return this.getInnerLeftToSprite(sprite) - item._frame.width * scaleX - offset;
     }
-    getOuterCenterXToSprite(sprite, item) {
-        return sprite.position.x - this.game.modalScale(item._frame.centerX);
+    getOuterCenterXToSprite(sprite, item, scaleX) {
+        return this.getInnerCenterXToSprite(sprite) - item._frame.centerX * scaleX ;
     }
     getOuterRightToSprite(sprite, offset) {
         offset = offset ? offset : 0;
-        return sprite.position.x + sprite.width * (1 - sprite.anchor.x) + this.game.modalScale(offset);
+        return this.getInnerRightToSprite(sprite) + offset;
     }
-    getOuterTopToSprite(sprite, item, offset) {
+    getOuterTopToSprite(sprite, item, scaleY, offset) {
         offset = offset ? offset : 0;
-        return sprite.position.y - sprite.height * (1 - sprite.anchor.y) - this.game.modalScale(item._frame.height + offset);
+        return this.getInnerTopToSprite(sprite) - item._frame.height * scaleY - offset;
     }
     getOuterBottomToSprite(sprite, offset) {
         offset = offset ? offset : 0;
-        return sprite.position.y + sprite.height * (1 - sprite.anchor.y) - this.game.modalScale(offset);
+        return this.getInnerDownToSprite(sprite) + offset;
+    }
+
+    /** INNER */
+    getInnerLeftToSprite(sprite) {
+        return sprite.position.x - sprite.width * (1 - sprite.anchor.x)
+    }
+    getInnerCenterXToSprite(sprite) {
+        return this.getInnerLeftToSprite(sprite) + sprite.width / 2;
+    }
+    getInnerRightToSprite(sprite) {
+        return sprite.position.x + sprite.width * (1 - sprite.anchor.x)
     }
     getInnerTopToSprite(sprite) {
         return sprite.position.y - sprite.height * (1 - sprite.anchor.y)
@@ -61,10 +71,13 @@ export default class GameModal {
     getInnerDownToSprite(sprite) {
         return sprite.position.y + sprite.height * (1 - sprite.anchor.y)
     }
+
+    /** BOOLEAN */
     isPossibleToOuterRightToSprite(sprite, offsetX, item) {
-        return this.getOuterRightToSprite(sprite) + offsetX + this.getSize(item) < this.game.width;
+        return this.getOuterRightToSprite(sprite) + offsetX + item._frame.right < this.game.width;
     }
 
+    /** OTHER */
     static fillWord(item, str, color) {
         const start = item.text.replace(/\n/g,'').indexOf(str);
         if(start < 0) return;

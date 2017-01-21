@@ -24,20 +24,20 @@ export default class DescriptionTooltip extends Modal {
             console.error(e.name + ": " + e.message);
         }
         super(Type.deepMerge(DescriptionTooltip.pattern, data), manager, game);
-        this.items.description.y = this.game.modalScale(95 - Type.nbChar(this.items.description.text, '\n') * 10);
+        this.items.description.y = 95 - Type.nbChar(this.items.description.text, '\n') * 10;
         GameModal.fillWord(this.items.description, 'requis', '#D82E32');
     }
 
     setLeft() {
         this.items.bg.loadTexture(`big_tooltip_left`);
         ['title', 'description', 'useButton'].forEach((key) => {
-            this.items[key].x = this.game.modalScale(this.data.items[key].x - 12);
+            this.items[key].x = this.data.items[key].x - 12;
         });
     }
     setRight() {
         this.items.bg.loadTexture(`big_tooltip_right`);
         ['title', 'description', 'useButton'].forEach((key) => {
-            this.items[key].x = this.game.modalScale(this.data.items[key].x);
+            this.items[key].x = this.data.items[key].x;
         });
     }
 
@@ -68,13 +68,13 @@ export default class DescriptionTooltip extends Modal {
                     style: {
                         fill: "#5F4D21",
                         fontFamily: "Arial",
-                        fontSize: 14
+                        fontSize: 12
                     }
                 },
                 useButton: {
                     type: "group",
-                    y: 129,
-                    x: 263,
+                    y: 126,
+                    x: 260,
                     items: {
                         image: {
                             type: "sprite",
@@ -85,13 +85,13 @@ export default class DescriptionTooltip extends Modal {
                         },
                         text: {
                             type: "text",
-                            x: 30,
-                            y: 3,
+                            x: 26,
+                            y: 2,
                             text: "utiliser",
                             style: {
                                 fill: "#5F4D21",
                                 fontFamily: "Arial",
-                                fontSize: 12
+                                fontSize: 11
                             }
                         }
                     }
