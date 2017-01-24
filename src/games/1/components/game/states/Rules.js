@@ -1,28 +1,43 @@
 "use strict";
-import {State} from 'phaser';
-import Keyboard from 'system/phaser/utils/Keyboard';
+import Phaser, {State, Keyboard} from 'phaser';
+import AJoystick from 'system/phaser/utils/joysticks/AJoystick';
 
 /** State when we the game is loaded */
 export default class Rules extends State {
 
     /** Called when the state must be created */
     create() {
-        this.game.add.text(this.game.modalScale(80), this.game.modalScale(80), "Approvisionnez le chantier",
-            { font: 'Arial', fill: '#272727', fontSize: this.game.modalScale(21) });
+        this.game.add.text(this.game.uiScale(80), this.game.uiScale(80), "Approvisionnez le chantier",
+            { font: 'Arial', fill: '#272727', fontSize: this.game.uiScale(21) });
 
-        this.game.add.text(this.game.modalScale(80), this.game.modalScale(160),
-            "Vous devez apporter du liant dans l'entrepôt afin d'approvisionner le chantier. " +
+        this.game.add.text(this.game.uiScale(80), this.game.uiScale(160),
+            "Vous devez apporter du liant dans l'entrepôt afin d'approvisionner le chantier.\n" +
             "Pour cela, choisissez un des trois outils (brouette, transpalette ou l'élévateur), " +
             "prennez du liant dans le mortier et apportez le au dépôt à l'intérieur du bâtiment.",
-            { font: 'Arial', fill: '#272727', fontSize: this.game.modalScale(16),
-                wordWrap: true, wordWrapWidth: this.game.world.width - this.game.modalScale(160) });
+            { font: 'Arial', fill: '#272727', fontSize: this.game.uiScale(16),
+                wordWrap: true, wordWrapWidth: this.game.world.width - this.game.uiScale(160) });
 
-        this.game.add.text(this.game.modalScale(80), this.game.world.height - this.game.modalScale(80),
-            "Appuyez sur [Entrer] pour voir l'introduction",
-            { font: 'Arial', fill: '#c0392b', fontSize: this.game.modalScale(16) });
+        const a = this.game.add.sprite(
+            this.game.uiScale(80),
+            this.game.world.height - this.game.uiScale(80+12),
+            'bouton_a'
+        );
+        a.scale.set(this.game.uiScale(1.2));
+        a.inputEnabled = true;
 
-        let wKey = this.game.input.keyboard.addKey(Keyboard.ENTER);
-        wKey.onDown.addOnce(this.video, this);
+        const text = this.game.add.text(
+            this.game.uiScale(135), this.game.world.height - this.game.uiScale(80),
+            "Voir l'introduction",
+            { font: 'Arial', fill: '#c0392b', fontSize: this.game.uiScale(16) }
+        );
+        text.inputEnabled = true;
+
+        if(window.isSmartphone)
+            new AJoystick(this.game);
+        a.events.onInputDown.add(this.video, this);
+        text.events.onInputDown.add(this.video, this);
+        this.game.keys.key(Keyboard.ENTER).onDown.addOnce(this.video, this);
+        this.game.keys.key(Keyboard.A).onDown.addOnce(this.video, this);
     }
 
     video() {

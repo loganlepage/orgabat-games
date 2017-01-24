@@ -1,5 +1,5 @@
 "use strict";
-import {State, Physics, Easing} from 'phaser';
+import Phaser, {State, Physics, Easing} from 'phaser';
 import Config from '../config/data';
 import TilemapLayer from 'system/phaser/TilemapLayer';
 import Player from '../objects/Player/Player';
@@ -8,7 +8,7 @@ import ToolFactory from '../objects/Tool/ToolFactory';
 import VehicleFactory from '../objects/Vehicle/VehicleFactory';
 import PhaserManager from 'system/phaser/utils/PhaserManager';
 import Position from 'system/phaser/utils/Position';
-import Keyboard from 'system/phaser/utils/Keyboard';
+import Type from 'system/utils/Type';
 
 import StartInfoModal from '../modals/StartInfoModal';
 import EndInfoModal from '../modals/EndInfoModal';
@@ -47,7 +47,7 @@ export default class Play extends State {
         };
 
         this.initMap();
-        this.initUILayers();
+        this.initUI();
         this.addVehicles();
         this.addPlayer();
         this.addTools();
@@ -55,6 +55,10 @@ export default class Play extends State {
 
         this.game.physics.p2.setBoundsToWorld(true, true, true, true, false);
         this.game.physics.p2.updateBoundsCollisionGroup();
+
+       /* if(Type.isInstanceOf(this.game.keys, Joystick)) {
+            this.game.world.add(this.game.keys);
+        }*/
         this.start();
     }
 
@@ -81,12 +85,13 @@ export default class Play extends State {
     }
 
     /** Called by create to add UI Layers */
-    initUILayers() {
+    initUI() {
         this.game.layer = {
             zDepth0: this.add.group(),
             zDepth1: this.add.group(),
             zDepth2: this.add.group(),
-            zDepth3: this.add.group()
+            zDepth3: this.add.group(),
+            zDepthOverAll: this.add.group()
         };
     }
 
@@ -202,15 +207,17 @@ class GameProcess {
             width: this.startInfoModal.items.bg._frame.width,
             height: this.startInfoModal.items.bg._frame.height
         });
-        this.p.game.input.keyboard.addKey(Keyboard.ENTER).onDown.addOnce(this.onStartInfoClose, this);
-        this.startInfoModal.items.closeButton.events.onInputDown.add(this.onStartInfoClose, this);
+        this.p.game.keys.key(Phaser.Keyboard.ENTER).onDown.addOnce(this.onStartInfoClose, this);
+        this.p.game.keys.key(Phaser.Keyboard.A).onDown.addOnce(this.onStartInfoClose, this);
+        this.startInfoModal.items.close.items.iconA.events.onInputDown.add(this.onStartInfoClose, this);
+        this.startInfoModal.items.close.items.textA.events.onInputDown.add(this.onStartInfoClose, this);
     }
+
     onStartInfoClose() {
         //Ferme la modale et active les controls
         this.startInfoModal.toggle(false, {});
         this.p.follow(this.p.player);
         this.p.game.controlsEnabled = true;
-        this.p.game.input.keyboard.removeKey(Keyboard.ENTER);
         this.onControlsEnabled();
     }
     onControlsEnabled() {

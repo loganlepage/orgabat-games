@@ -2,9 +2,13 @@
 import {Tilemap, State} from 'phaser';
 import Config from '../config/data';
 import Player from '../objects/Player/Player';
+import Joystick from 'system/phaser/utils/Joystick';
 
 /** State to load the game (image, tilemap, spritesheet...) */
-export default class LoadMap extends State {
+export default class Load extends State {
+    constructor() {
+        super();
+    }
 
     /** Called before create */
     preload() {
@@ -12,6 +16,7 @@ export default class LoadMap extends State {
         this.game.stage.backgroundColor = '#FFFFFF';
         this.showLoadingText();
         this.loadAssets();
+        this.loadModulesAssets();
     }
 
     /** Called by preload to show loading text */
@@ -20,7 +25,7 @@ export default class LoadMap extends State {
         text.anchor.set(0.5);
         text.align = 'center';
         text.font = 'Arial';
-        text.fontSize = this.game.modalScale(48);
+        text.fontSize = this.game.uiScale(48);
         text.fill = '#272727';
     }
 
@@ -35,6 +40,10 @@ export default class LoadMap extends State {
             this.game.load.image(Config.modals.assets[i].name, `${assets_path}modal/${Config.modals.assets[i].file}`);
 
         this.game.load.spritesheet(Player.name, `${assets_path}sprite/george.png`, 32, 32, 16);
+    }
+
+    loadModulesAssets(){
+        Joystick.preload(this.game);
     }
 
     /** Called when the state must be created */

@@ -4,8 +4,12 @@ var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 // Phaser webpack config
 var phaserModule = path.join(__dirname, '/node_modules/phaser/');
+var phaser = path.join(phaserModule, 'build/custom/phaser-split.js'),
+    pixi = path.join(phaserModule, 'build/custom/pixi.js'),
+    p2 = path.join(phaserModule, 'build/custom/p2.js');
 
-var production = process.argv.indexOf("--prod") > -1;
+var production = process.argv.indexOf("-p") > -1;
+process.env.NODE_ENV = production ? 'production' : 'development';
 
 module.exports = {
     /** nos points d'entrée, par clé */
@@ -28,9 +32,9 @@ module.exports = {
         /** On ajoute un alias vers nos bibliothèques pour le require */
         alias: {
             'system': path.resolve("./src/system"),
-            'phaser': path.join(phaserModule, 'build/custom/phaser-split.js'),
-            'pixi': path.join(phaserModule, 'build/custom/pixi.js'),
-            'p2': path.join(phaserModule, 'build/custom/p2.js')
+            'phaser': phaser,
+            'pixi': pixi,
+            'p2': p2,
         },
         /** On ajoute nos extensions à résoudre lors d'un require() */
         extensions: [ "", ".js", ".jsx", ".json" ]
@@ -78,7 +82,14 @@ module.exports = {
                         compress: {
                             warnings: false,
                         }
-                    })
+                    }),
+
+                    // on défini l'environnement
+                    new webpack.DefinePlugin({
+                        'process.env': {
+                            'NODE_ENV': JSON.stringify('production')
+                        }
+                    }),
                 ]
                 : []
         )

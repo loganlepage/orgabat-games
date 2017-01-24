@@ -7,8 +7,9 @@ import GameModal from 'system/phaser/GameModal';
 import Position from 'system/phaser/utils/Position';
 import Inventary from 'system/phaser/Inventary';
 import EventHandler from 'system/utils/EventHandler';
-import Keyboard from 'system/phaser/utils/Keyboard';
 import Type from 'system/utils/Type';
+import {Keyboard} from 'phaser';
+import PadAzeJoystick from 'system/phaser/utils/joysticks/PadAzeJoystick';
 
 import Material from '../Material/Material';
 import Player from '../Player/Player';
@@ -49,6 +50,8 @@ export default class Vehicle extends GameObject {
     configure(properties) {
         this.speed = properties.speed * this.game.SCALE * 500; //500: convert to km/h in game
         this.speedRotate = properties.speedRotate * this.game.SCALE * 2; //2: convert to tr/min in game
+        this.pendingRotate = false;
+
         this.properties = properties;
         this.loading = this.game.add.sprite(0, 0, 'charge');
         this.sprite.addChild(this.loading);
@@ -58,11 +61,45 @@ export default class Vehicle extends GameObject {
         this.driver = null;
     }
 
+    /** Set Cross and AZE buttons */
+    setControls() {
+        if(this.driver === null) return;
+        if(window.isSmartphone)
+            this.GuiJoystick = new PadAzeJoystick(this.game, this.game.layer.zDepthOverAll);
+
+        this.game.keys.key(Keyboard.LEFT).onDown.add(this.moveTo, this);
+        this.game.keys.key(Keyboard.RIGHT).onDown.add(this.moveTo, this);
+        this.game.keys.key(Keyboard.UP).onDown.add(this.moveTo, this);
+        this.game.keys.key(Keyboard.DOWN).onDown.add(this.moveTo, this);
+
+        this.game.keys.key(Keyboard.LEFT).onUp.add(this.standTo, this);
+        this.game.keys.key(Keyboard.RIGHT).onUp.add(this.standTo, this);
+        this.game.keys.key(Keyboard.UP).onUp.add(this.standTo, this);
+        this.game.keys.key(Keyboard.DOWN).onUp.add(this.standTo, this);
+
+        this.game.keys.key(Keyboard.A);
+        this.game.keys.key(Keyboard.Z);
+        this.game.keys.key(Keyboard.E);
+    }
+    removeControls() {
+        if(window.isSmartphone)
+            this.GuiJoystick.destroy();
+
+        this.game.keys.key(Keyboard.LEFT).onDown.remove(this.moveTo, this);
+        this.game.keys.key(Keyboard.RIGHT).onDown.remove(this.moveTo, this);
+        this.game.keys.key(Keyboard.UP).onDown.remove(this.moveTo, this);
+        this.game.keys.key(Keyboard.DOWN).onDown.remove(this.moveTo, this);
+
+        this.game.keys.key(Keyboard.LEFT).onUp.remove(this.standTo, this);
+        this.game.keys.key(Keyboard.RIGHT).onUp.remove(this.standTo, this);
+        this.game.keys.key(Keyboard.UP).onUp.remove(this.standTo, this);
+        this.game.keys.key(Keyboard.DOWN).onUp.remove(this.standTo, this);
+    }
+
     /** Start & stop vehicle */
-    startBy(player, keys){
+    startBy(player){
         if(this.stopProcess) return;
         this.startProcess = true;
-        this.keys = keys;
         player.body.collideWorldBounds = false;
         this.sprite.body.static = false;
         this.sprite.body.fixedRotation = false;
@@ -80,6 +117,7 @@ export default class Vehicle extends GameObject {
         this.initializedAnimation = false;
         this.mountedEvent.fire(this);
         setTimeout(() => {
+            this.setControls(); //une fois que c'est démarré on ajoute les controls
             this.startedEvent.fire(this);
             this.startProcess = false;
         }, 200);
@@ -87,6 +125,8 @@ export default class Vehicle extends GameObject {
     stop(){
         if(this.startProcess) return;
         this.stopProcess = true;
+        this.removeControls();
+
         let x = this.driver.world.x, y = this.driver.world.y;
         this.sprite.body.static = true;
         this.sprite.body.fixedRotation = true;
@@ -123,20 +163,20 @@ export default class Vehicle extends GameObject {
 
         this.objectCollisionUpdate();
         this.moveUpdate();
-        if(this.keys.bool["Z"].state && this.driver.obj.vehicleInUse.object !== null)
+        if(this.game.keys.key(Keyboard.Z).isDown && this.driver.obj.vehicleInUse.object !== null)
             this.stop();
     }
 
     /** Add events comportements */
     objectCollisionUpdate() {
         if(this.objectInCollision === null) return; //if not collision, break
-        if(this.keys.bool["A"].state) {
+        if(this.game.keys.key(Keyboard.A).isDown) {
             switch(this.objectInCollision.sprite.obj.constructor) {
                 case Vehicle:
                     this.modal.cantUseFeedback();
                     break;
                 case Material:
-                    if(this.keys.bool["E"].state) return;
+                    if(this.game.keys.key(Keyboard.E).isDown) return;
                     if(!(Type.isExist(this.objectInCollision.sprite.obj.properties.amount)
                         && Type.isExist(this.objectInCollision.sprite.obj.properties.amount.current)
                         && this.objectInCollision.sprite.obj.properties.amount.current > 0)) return;
@@ -155,11 +195,11 @@ export default class Vehicle extends GameObject {
                     break;
             }
         }
-        if(this.keys.bool["E"].state) {
+        if(this.game.keys.key(Keyboard.E).isDown) {
             let needed;
             switch(this.objectInCollision.sprite.obj.constructor) {
                 case Material:
-                    if(this.keys.bool["A"].state) return;
+                    if(this.game.keys.key(Keyboard.A).isDown) return;
                     needed = this.objectInCollision.sprite.key;
                     this.objectInCollision.sprite.obj.setRessource(this.container.getSumOf(needed), (name, amount) => {
                         this.container.delItem(needed, amount);
@@ -168,7 +208,7 @@ export default class Vehicle extends GameObject {
                     });
                     break;
                 case Tool:
-                    if(this.keys.bool["A"].state) return;
+                    if(this.game.keys.key(Keyboard.A).isDown) return;
                     needed = this.objectInCollision.sprite.obj.properties.needed;
                     this.objectInCollision.sprite.obj.setRessource(this.container.getSumOf(needed), (name, amount) => {
                         this.container.delItem(needed, amount);
@@ -228,47 +268,50 @@ export default class Vehicle extends GameObject {
             this.driver.idle(this.properties.use);
             this.initializedAnimation = true;
         }
-       // this.driver.body.setZeroVelocity(); // force player to don't move by default
-        let speed = this.speed * (this.properties.use === 'up' ? 1 : -1);
-        if(this.keys.event[Keyboard.UP].state)
+        const speed = this.speed * (this.properties.use === Keyboard.UP ? 1 : -1);
+
+        if(this.game.keys.key(Keyboard.UP).isDown)
             this.sprite.body.thrust(speed);
-        else if (this.keys.event[Keyboard.DOWN].state)
+        else if (this.game.keys.key(Keyboard.DOWN).isDown)
             this.sprite.body.reverse(speed);
-        /*else
-            this.sprite.body.setZeroVelocity();*/
-        if(!this.keys.event[Keyboard.LEFT].state && !this.keys.event[Keyboard.RIGHT].state)
+
+        if(this.rotateDirection == Keyboard.LEFT) this.sprite.body.rotateLeft(this.speedRotate);
+        if(this.rotateDirection == Keyboard.RIGHT) this.sprite.body.rotateRight(this.speedRotate);
+
+        if(!this.game.keys.key(Keyboard.LEFT).isDown && !this.game.keys.key(Keyboard.RIGHT).isDown)
             this.sprite.body.setZeroRotation();
-      //  Vehicle.constrainVelocity(this.sprite, this.speed);
     }
-    moveTo(keycode, keystate){
-        if(keystate) {
-            if(this.keys.event[keycode].info.name == "left")
-                this.sprite.body.rotateLeft(this.speedRotate);
-            if(this.keys.event[keycode].info.name == "right")
-                this.sprite.body.rotateRight(this.speedRotate);
+    moveTo(key){
+        if(!this.game.controlsEnabled) return;
 
-            if(this.properties.walkToMove) {
-                if(this.keys.event[keycode].info.name == "up") this.driver.walk(this.properties.use);
-                else if(this.keys.event[keycode].info.name == "down") this.driver.walk('up');
-            }
-            else this.driver.idle(this.properties.use);
-        } else
-            this.driver.idle(this.properties.use);
-    }
-
-    /** Static methods */
-    static constrainVelocity(sprite, maxVelocity) {
-        let body = sprite.body;
-        let angle, currVelocitySqr, vx, vy;
-        vx = body.data.velocity[0];
-        vy = body.data.velocity[1];
-        currVelocitySqr = vx * vx + vy * vy;
-        if (currVelocitySqr > maxVelocity * maxVelocity) {
-            angle = Math.atan2(vy, vx);
-            vx = Math.cos(angle) * maxVelocity;
-            vy = Math.sin(angle) * maxVelocity;
-            body.data.velocity[0] = vx;
-            body.data.velocity[1] = vy;
+        if(key.keyCode == Keyboard.DOWN || key.keyCode == Keyboard.UP) {
+            if(this.game.keys.key(Keyboard.LEFT).isDown) this.moveTo(this.game.keys.key(Keyboard.LEFT));
+            if(this.game.keys.key(Keyboard.RIGHT).isDown) this.moveTo(this.game.keys.key(Keyboard.RIGHT));
         }
+
+        //si on recule on tourne dans l'autre sens (pour faire réaliste)
+        if(key.keyCode == Keyboard.LEFT)
+            this.rotateDirection = !this.game.keys.key(Keyboard.DOWN).isDown ? Keyboard.LEFT : Keyboard.RIGHT;
+        if(key.keyCode == Keyboard.RIGHT)
+            this.rotateDirection = !this.game.keys.key(Keyboard.DOWN).isDown ? Keyboard.RIGHT : Keyboard.LEFT;
+
+        if(this.properties.walkToMove) {
+            switch(key.keyCode) {
+                case Keyboard.UP:
+                    this.driver.walk(this.properties.use === Keyboard.UP ? Keyboard.UP : Keyboard.DOWN);
+                    break;
+                case Keyboard.DOWN:
+                    this.driver.walk(this.properties.use === Keyboard.DOWN ? Keyboard.DOWN : Keyboard.UP);
+                    break;
+            }
+        }
+        else this.driver.idle(this.properties.use);
+    }
+    standTo(key) {
+        if(!this.game.controlsEnabled) return;
+        this.driver.idle(this.properties.use);
+        this.rotateDirection = null;
+        if(this.game.keys.key(Keyboard.LEFT).isDown) this.moveTo(this.game.keys.key(Keyboard.LEFT));
+        if(this.game.keys.key(Keyboard.RIGHT).isDown) this.moveTo(this.game.keys.key(Keyboard.RIGHT));
     }
 };

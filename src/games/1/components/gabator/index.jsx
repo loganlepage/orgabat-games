@@ -49,20 +49,32 @@ export default class Gabator extends React.Component {
         this.setState(stats);
     }
     render() {
+        const scale = this.props.width / this.props.maxWidth;
+        const titleStyle = {
+            fontSize: 18 * scale,
+            marginBottom: 15 * scale,
+            marginTop: 15 * scale
+        };
+        const defaultStyle = {
+            width: this.props.width,
+            fontSize: 14 * scale,
+            paddingLeft: 15 * scale,
+            paddingRight: 15 * scale
+        };
         return (
-            <div id="gabator-canvas">
+            <div id="gabator-canvas" style={defaultStyle}>
                 <div id="gabator-panel">
-                    <div id="gabator-panel-stats">
-                        <h4>Statistiques</h4>
-                        <ProgressBar name="Santé" class="progress-bar-success"
+                    <div id="gabator-panel-stats" style={{paddingBottom:5 * scale}}>
+                        <h4 style={titleStyle}>Statistiques</h4>
+                        <ProgressBar name="Santé" class="progress-bar-success" scale={scale}
                                      current={this.state.health} max={this.healthMax} />
-                        <ProgressBar name="Organisation" class="progress-bar-info"
+                        <ProgressBar name="Organisation" class="progress-bar-info" scale={scale}
                                      current={this.state.organization} max={this.organizationMax} />
-                        <ProgressBar name="Notoriété de l'entreprise" class="progress-bar-warning"
+                        <ProgressBar name="Notoriété de l'entreprise" class="progress-bar-warning" scale={scale}
                                      current={this.state.enterprise} max={this.enterpriseMax} />
                     </div>
                     <div id="gabator-panel-info">
-                        <h4>Informations</h4>
+                        <h4 style={titleStyle}>Informations</h4>
                         <p id="gabator-panel-info-text">{this.state.info}</p>
                     </div>
                 </div>

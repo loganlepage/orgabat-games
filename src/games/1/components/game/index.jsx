@@ -8,9 +8,10 @@ import Play from './states/Play';
 import Rules from './states/Rules';
 import Win from './states/Win';
 import Iframe from 'system/dom/Iframe';
+import Type from 'system/utils/Type';
 
 /** State to init the Game canvas */
-class Canvas extends Phaser.Game {
+export class Canvas extends Phaser.Game {
 
     /** Constructor to init the game */
     constructor(width, height, type, node) {
@@ -31,12 +32,18 @@ class Canvas extends Phaser.Game {
 export default class Game extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        Game.game = Game.game || null;
     }
-    componentDidMount() {
-        const game = new Canvas(this.props.width, this.props.height, Phaser.CANVAS, ReactDOM.findDOMNode(this));
-        game.start();
-        game.iframe = this.refs.iframe;
+    // On créé et lance le jeu s'il n'existe pas,
+    // ou on le restore dans son état d'origine s'il existait déjà
+    bootGame() {
+        if(!Type.isInstanceOf(Game.game, Canvas)) {
+            Game.game = new Canvas(this.props.width, this.props.height, Phaser.CANVAS, ReactDOM.findDOMNode(this));
+            Game.game.start();
+            Game.game.iframe = this.refs.iframe;
+        } else {
+            ReactDOM.findDOMNode(this).appendChild(Game.game.canvas);
+        }
     }
     render() {
         return <div id="game-canvas">

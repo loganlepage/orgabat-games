@@ -78,8 +78,6 @@ export default class DescriptionTooltip extends Modal {
                     items: {
                         image: {
                             type: "sprite",
-                            x: 0,
-                            y: 0,
                             key: "bouton_a",
                             props: { scale: 0.6 }
                         },

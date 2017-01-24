@@ -53,17 +53,29 @@ export default class DefaultModal extends Modal {
                         wordWrapWidth: 450 - 40 //sprite.width - margin
                     }
                 },
-                closeButton: {
-                    type : "text",
+                close: {
+                    type: "group",
                     x: 360,
                     y: 320,
-                    text: "CONTINUER",
-                    style: {
-                        fill: "#5F4D21",
-                        fontFamily: "Arial",
-                        fontSize: 12
+                    items: {
+                        iconA: {
+                            type: "sprite",
+                            key: "bouton_a",
+                            x: -36,
+                            y: -7,
+                            props: { scale: 0.8, inputEnabled: true }
+                        },
+                        textA: {
+                            type : "text",
+                            text: "CONTINUER",
+                            style: {
+                                fill: "#5F4D21",
+                                fontFamily: "Arial",
+                                fontSize: 12
+                            },
+                            props: { inputEnabled: true }
+                        }
                     },
-                    props: { inputEnabled: true }
                 }
             }
         }

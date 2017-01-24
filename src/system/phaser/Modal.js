@@ -292,8 +292,8 @@ export class DefaultManager extends Manager {
             modal.fixedToCameraDefault = modal.fixedToCamera;
             modal.fixedToCamera = true;
             modal.cameraOffset.setTo(
-                this.game.canvas.width / 2 - this.game.modalScale(params.width) / 2,
-                this.game.canvas.height / 2 - this.game.modalScale(params.height) / 2
+                this.game.canvas.width / 2 - this.game.uiScale(params.width) / 2,
+                this.game.canvas.height / 2 - this.game.uiScale(params.height) / 2
             );
             Manager.show(this.blackBackground);
             Manager.show(modal, this.game.layer.zDepth3);
@@ -388,7 +388,7 @@ export default class Modal extends Factory {
         this.data = data;
         this.manager = manager.getInstance(game);
         this.params = { fixed: false, fixeMe: null };
-        this.scale.setTo(game.modalScale(1));
+        this.scale.setTo(game.uiScale(1));
     }
 
     /**
