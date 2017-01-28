@@ -32,9 +32,9 @@ export default class Player extends GameObject {
         this.vehicleInUse = {object: null, started: false};
         this.setControls();
         this.game.vehicleGroup.forEach((vehicle) => {
-            vehicle.obj.mountedEvent.add(this, "onVehicleMount");
-            vehicle.obj.startedEvent.add(this, "onVehicleStart");
-            vehicle.obj.stoppedEvent.add(this, "onVehicleStop");
+            vehicle.obj.onMounted.add(this.onVehicleMount, this);
+            vehicle.obj.onStarted.add(this.onVehicleStart, this);
+            vehicle.obj.onStopped.add(this.onVehicleStop, this);
         });
     }
 
@@ -42,6 +42,7 @@ export default class Player extends GameObject {
     setControls() {
         if(window.isSmartphone)
             this.GuiJoystick = new CrossAJoystick(this.game, this.game.layer.zDepthOverAll);
+        this.direction = [];
 
         this.game.keys.key(Keyboard.LEFT).onDown.add(this.moveTo, this);
         this.game.keys.key(Keyboard.RIGHT).onDown.add(this.moveTo, this);
@@ -118,18 +119,19 @@ export default class Player extends GameObject {
     /** Boucle d'animation pour les déplacements */
     moveUpdate() {
         this.sprite.body.setZeroVelocity();
-        if(!this.isMoving) return;
-        if(this.direction == Keyboard.LEFT)   this.sprite.body.moveLeft(this.speed);
-        if(this.direction == Keyboard.RIGHT)  this.sprite.body.moveRight(this.speed);
-        if(this.direction == Keyboard.UP)     this.sprite.body.moveUp(this.speed);
-        if(this.direction == Keyboard.DOWN)   this.sprite.body.moveDown(this.speed);
+        if(!this.isMoving && this.direction.length === 0) return;
+        this.sprite.walk(this.direction[this.direction.length-1]);
+        if(this.direction[this.direction.length-1] == Keyboard.LEFT)   this.sprite.body.moveLeft(this.speed);
+        if(this.direction[this.direction.length-1] == Keyboard.RIGHT)  this.sprite.body.moveRight(this.speed);
+        if(this.direction[this.direction.length-1] == Keyboard.UP)     this.sprite.body.moveUp(this.speed);
+        if(this.direction[this.direction.length-1] == Keyboard.DOWN)   this.sprite.body.moveDown(this.speed);
     }
     /** Evenement onDown sur une touche directionnelle */
     moveTo(key) {
         if(!this.game.controlsEnabled) return;
         this.sprite.body.setZeroVelocity();
-        this.sprite.walk(key.keyCode);
-        this.direction = key.keyCode;
+        if(this.direction.indexOf(key.keyCode) === -1)
+            this.direction.push(key.keyCode);
         this.isMoving = true;
     }
     /** Evenement onUp sur une touche directionnelle */
@@ -137,13 +139,23 @@ export default class Player extends GameObject {
         if(!this.game.controlsEnabled) return;
         this.sprite.body.setZeroVelocity();
         this.sprite.idle(key.keyCode);
-        this.direction = null;
-        this.isMoving = false;
+        const indexOf = this.direction.indexOf(key.keyCode);
+        if(indexOf > -1)
+            this.direction.splice(indexOf, 1);
+        if(this.direction.length === 0)
+            this.isMoving = false;
 
-        //Si on a une autre touche enfoncée, alors on relance l'évènement moveTo pour se déplacer
-        if(this.game.keys.key(Keyboard.LEFT).isDown) this.moveTo(this.game.keys.key(Keyboard.LEFT));
-        if(this.game.keys.key(Keyboard.RIGHT).isDown) this.moveTo(this.game.keys.key(Keyboard.RIGHT));
-        if(this.game.keys.key(Keyboard.UP).isDown) this.moveTo(this.game.keys.key(Keyboard.UP));
-        if(this.game.keys.key(Keyboard.DOWN).isDown) this.moveTo(this.game.keys.key(Keyboard.DOWN));
+        // Si une touche devrait être enfoncée mais ne l'est pas
+        // évènement non détecté, ex: clic hors canvas
+        const clear = (key) => {
+            if(!this.game.keys.key(key).isDown) {
+                const indexOf = this.direction.indexOf(key);
+                if(indexOf > -1) this.direction.splice(indexOf, 1);
+            }
+        };
+        clear(Keyboard.LEFT);
+        clear(Keyboard.RIGHT);
+        clear(Keyboard.UP);
+        clear(Keyboard.DOWN);
     }
 };

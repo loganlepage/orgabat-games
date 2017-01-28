@@ -1,6 +1,5 @@
 'use strict';
-import {Math} from 'phaser';
-import EventHandler from '../utils/EventHandler';
+import {Math, Signal} from 'phaser';
 import Type from '../utils/Type';
 
 /** Abstract gameObject (parent for all gameObjects) */
@@ -23,11 +22,9 @@ export default class GameObject {
         this.objectInCollision = null;
         this.objectInitialDistance = null;
         this.collisionEventEnabled = true;
-        this.collisionEndEvent = new EventHandler();
-        this.collisionEndEvent.add(this, "onCollisionEnd");
-        this.sprite.collisionEvent.add(this, "onCollisionBegin");
-        this.sprite.mouseOverEvent.add(this, "mouseOver");
-        this.sprite.mouseOutEvent.add(this, "mouseOut");
+        this.sprite.onCollisionHandled.add(this.onCollisionBegin, this);
+        this.sprite.onMouseOverHandled.add(this.onMouseOver, this);
+        this.sprite.onMouseOutHandled.add(this.onMouseOut, this);
     }
     addModal(modal) {
         this.modal = modal;
@@ -44,10 +41,9 @@ export default class GameObject {
         this.sprite.position.x, this.sprite.position.y
     )}
     refreshObjectInCollision() {
-        if(Type.isExist(this._oic) && this.objectCurrentDistance > this.objectInitialDistance + this.MAX_COLLIDE_DISTANCE) {
-            const object = this._oic; this._oic = null;
-            this.onCollisionEnd(object);
-        }
+        if(Type.isExist(this._oic) &&
+            this.objectCurrentDistance > this.objectInitialDistance + this.MAX_COLLIDE_DISTANCE)
+            this.onCollisionEnd(this._oic);
     }
 
     /** Object collision */
@@ -66,8 +62,8 @@ export default class GameObject {
         this.objectInCollision = o;
     }
     onCollisionEnd(s){}
-    mouseOver(){}
-    mouseOut(){}
+    onMouseOver(){}
+    onMouseOut(){}
 
     isCollidWith(type, o = this.objectInCollision) {
         return Type.isExist(o) && o.sprite.obj.constructor === type;

@@ -6,7 +6,7 @@ import PhaserManager from 'system/phaser/utils/PhaserManager';
 export default class Boot extends State {
 
     init(dom) {
-        this.game.reactDom = dom;
+        this.game.stats = dom;
     }
 
     /** Called when the state must be created */

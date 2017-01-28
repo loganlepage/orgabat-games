@@ -1,38 +1,37 @@
 'use strict';
-import Phaser from 'phaser';
-import EventHandler from '../utils/EventHandler';
+import Phaser, {Signal} from 'phaser';
 
 /** Abstract gameSprite (parent for all gameSprites) */
 export default class GameSprite extends Phaser.Sprite {
     constructor(game, x, y, name, gameObject) {
         super(game, x, y, name);
-        this.collisionEvent = new EventHandler();
-        this.mouseOverEvent = new EventHandler();
-        this.mouseOutEvent = new EventHandler();
+        this.onCollisionHandled = new Signal();
+        this.onMouseOverHandled = new Signal();
+        this.onMouseOutHandled = new Signal();
         this.scale.set(game.SCALE);
         this.obj = gameObject;
         this.inputEnabled = true;
-        this.events.onInputOver.add(this.mouseOver, this);
-        this.events.onInputOut.add(this.mouseOut, this);
+        this.events.onInputOver.add(this.onMouseOver, this);
+        this.events.onInputOut.add(this.onMouseOut, this);
     }
 
     /** Events */
     onCollision(obj1, obj2) {
         obj1.class = obj1.class === undefined ? 'gameObject' : obj1.class;
         obj2.class = obj2.class === undefined ? 'gameObject' : obj2.class;
-        this.collisionEvent.fire({me: obj1, object: obj2});
+        this.onCollisionHandled.dispatch({me: obj1, object: obj2});
     }
     wallCollision(obj1, obj2) {
         obj2.class = 'layer';
         this.onCollision(obj1, obj2);
     }
-    mouseOver(sprite) {
+    onMouseOver(sprite) {
         if(!this.game.controlsEnabled) return;
-        this.mouseOverEvent.fire(sprite);
+        this.onMouseOverHandled.dispatch(sprite);
     }
-    mouseOut(sprite) {
+    onMouseOut(sprite) {
         if(!this.game.controlsEnabled) return;
-        this.mouseOutEvent.fire(sprite);
+        this.onMouseOutHandled.dispatch(sprite);
     }
     update() {
         if(!this.game.controlsEnabled) return;

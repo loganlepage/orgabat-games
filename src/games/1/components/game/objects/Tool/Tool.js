@@ -1,10 +1,10 @@
 "use strict";
+import {Signal} from 'phaser';
 import GameObject from 'system/phaser/GameObject';
 import ToolSprite from './ToolSprite';
 import ToolModal from './ToolModal';
 import GameModal from 'system/phaser/GameModal';
 import Position from 'system/phaser/utils/Position';
-import EventHandler from 'system/utils/EventHandler';
 import Type from 'system/utils/Type';
 
 import Vehicle from '../Vehicle/Vehicle';
@@ -24,7 +24,7 @@ export default class Tool extends GameObject {
      */
     constructor(game, layer, name, properties, x, y) {
         super(game, layer);
-        this.isFullEvent = new EventHandler();
+        this.onFull = new Signal();
         this.addSprite(new ToolSprite(this.game, Position.getPixelAt(x), Position.getPixelAt(y), name, this));
         this.addModal(new ToolModal(properties, this, game));
         this.configure(properties);
@@ -37,7 +37,7 @@ export default class Tool extends GameObject {
     }
     
     /** Events */
-    onVehicleStart(vehicle){
+    onVehicleStart(){
         if(Type.isExist(this.properties.amount) && Type.isNumber(this.properties.amount.current)
             && Type.isNumber(this.properties.amount.max) && this.properties.amount.current < this.properties.amount.max)
             this.modal.tooltipHandler(GameModal.VISIBLE, null, GameModal.FIXED);
@@ -58,7 +58,7 @@ export default class Tool extends GameObject {
         if(this.properties.amount.max < this.properties.amount.current + amount) return cbZero();
         this.properties.amount.current += amount;
         this.modal.tooltip.setAmount(this.properties.amount.current);
-        if(this.properties.amount.max === this.properties.amount.current) this.isFullEvent.fire();
+        if(this.properties.amount.max === this.properties.amount.current) this.onFull.dispatch();
         return cbAmount();
     }
 
@@ -78,10 +78,10 @@ export default class Tool extends GameObject {
         if(super.isCollidWith(Vehicle, o) || super.isCollidWith(Player, o))
             this.modal.tooltipHandler(GameModal.HIDDEN, GameModal.CONTROLS_ENABLED);
     }
-    mouseOver() {
+    onMouseOver() {
         this.modal.tooltipHandler(GameModal.VISIBLE);
     }
-    mouseOut() {
+    onMouseOut() {
         this.modal.tooltipHandler(GameModal.HIDDEN);
     }
 };

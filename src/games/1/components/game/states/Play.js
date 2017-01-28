@@ -12,9 +12,12 @@ import Type from 'system/utils/Type';
 
 import StartInfoModal from '../modals/StartInfoModal';
 import EndInfoModal from '../modals/EndInfoModal';
-import {DefaultManager, StackManager, Stack} from 'system/phaser/Modal';
-import Objective, {ObjectiveTitle} from "system/phaser/modals/Objective";
-import {DoOnce} from "system/utils/Utils";
+import {DefaultManager} from 'system/phaser/Modal';
+
+import QuestManager, {GuiQuestList} from 'system/phaser/utils/Quest';
+import VehicleMountQuest from '../quests/VehicleMountQuest';
+import VehicleLoadQuest from '../quests/VehicleLoadQuest';
+import DepotFillQuest from '../quests/DepotFillQuest';
 
 /** State when we start the game */
 export default class Play extends State {
@@ -55,10 +58,6 @@ export default class Play extends State {
 
         this.game.physics.p2.setBoundsToWorld(true, true, true, true, false);
         this.game.physics.p2.updateBoundsCollisionGroup();
-
-       /* if(Type.isInstanceOf(this.game.keys, Joystick)) {
-            this.game.world.add(this.game.keys);
-        }*/
         this.start();
     }
 
@@ -99,8 +98,8 @@ export default class Play extends State {
     addVehicles() {
         this.game.vehicleGroup = new VehicleFactory(this.game, this.layers[1], Config.entities.vehicles);
         this.game.vehicleGroup.forEach((item) => {
-            item.obj.mountedEvent.add(this, "follow");
-            item.obj.unmountedEvent.add(this, "follow");
+            item.obj.onMounted.add(this.follow, this);
+            item.obj.onUnmounted.add(this.follow, this);
         });
     }
 
@@ -114,8 +113,8 @@ export default class Play extends State {
         this.game.toolGroup = new ToolFactory(this.game, this.layers[1], Config.entities.tools);
         this.game.vehicleGroup.forEach((vehicle) => {
             this.game.toolGroup.forEach((tool) => {
-                vehicle.obj.startedEvent.add(tool.obj, "onVehicleStart");
-                vehicle.obj.stoppedEvent.add(tool.obj, "onVehicleStop");
+                vehicle.obj.onStarted.add(tool.obj.onVehicleStart, tool.obj);
+                vehicle.obj.onStopped.add(tool.obj.onVehicleStop, tool.obj);
             });
         });
     }
@@ -125,8 +124,8 @@ export default class Play extends State {
         this.game.materialGroup = new MaterialFactory(this.game, this.layers[1], Config.entities.materials);
         this.game.vehicleGroup.forEach((vehicle) => {
             this.game.materialGroup.forEach((material) => {
-                vehicle.obj.startedEvent.add(material.obj, "onVehicleStart");
-                vehicle.obj.stoppedEvent.add(material.obj, "onVehicleStop");
+                vehicle.obj.onStarted.add(material.obj.onVehicleStart, material.obj);
+                vehicle.obj.onStopped.add(material.obj.onVehicleStop, material.obj);
             });
         });
     }
@@ -159,39 +158,31 @@ export default class Play extends State {
 
 class GameProcess {
     constructor(playState) {
-        this.p = playState;
-        this.p.game.camera.y = this.p.game.camera.height;
+        this.play = playState;
+        this.game = playState.game;
+        this.game.camera.y = this.game.camera.height;
 
         //Animation de la caméra
         //On ajuste sa durée par rapport au mouvement à effectuer (peut être égal à 0)
-        this.bootTweenTime = (this.p.game.world.height - this.p.game.camera.height)*4.5;
-        this.bootTween = this.p.game.add.tween(this.p.game.camera).to({
-            y: this.p.player.sprite.y - this.p.game.canvas.height / 2
+        this.bootTweenTime = (this.game.world.height - this.game.camera.height)*4.5;
+        this.bootTween = this.game.add.tween(this.game.camera).to({
+            y: this.play.player.sprite.y - this.game.canvas.height / 2
         }, this.bootTweenTime , Easing.Quadratic.InOut, false, 600);
 
         //On prépare la modale d'info
-        this.startInfoModal = new StartInfoModal({}, DefaultManager, this.p.game);
-        this.endInfoModal = new EndInfoModal({}, DefaultManager, this.p.game, {
-            healthMax: PhaserManager.get('gabator').reactDom.healthMax,
-            organizationMax: PhaserManager.get('gabator').reactDom.organizationMax,
-            enterpriseMax: PhaserManager.get('gabator').reactDom.enterpriseMax
+        this.startInfoModal = new StartInfoModal({}, DefaultManager, this.game);
+        this.endInfoModal = new EndInfoModal({}, DefaultManager, this.game, {
+            healthMax: PhaserManager.get('gabator').stats.healthMax,
+            organizationMax: PhaserManager.get('gabator').stats.organizationMax,
+            enterpriseMax: PhaserManager.get('gabator').stats.enterpriseMax
         });
 
-        //On prépare les modales d'objectif
-        this.goalStack = new Stack(
-            this.p.game.canvas.width - 10, 30, this.p.game,
-            {axe: Stack.VERTICAL, direction: Stack.BOTTOM, offsetX: 10, offsetY: 15, anchorX: 1, sort: Stack.ASC}
-        );
-        this.objectiveTitle = new ObjectiveTitle({}, StackManager, this.p.game);
-        this.vehicleMounted = new Objective({items: {
-            text: { text: "Monter un véhicule"}}
-        }, StackManager, this.p.game);
-        this.vehicleLoaded = new Objective({items: {
-            text: { text: "Prendre du mortier"}}
-        }, StackManager, this.p.game);
-        this.depotFilled = new Objective({items: {
-            text: { text: "Déposer 9 charges de mortier dans le dépot"}}
-        }, StackManager, this.p.game);
+        //On prépare les quêtes
+        this.quests = new QuestManager(this.game);
+        new GuiQuestList(this.game.canvas.width - 10, 30, this.quests, this.game);
+        this.quests.add(new VehicleMountQuest(this.game));
+        this.quests.add(new VehicleLoadQuest(this.game));
+        this.quests.add(new DepotFillQuest(this.game));
     }
     init() {
         if(this.bootTweenTime > 0) this.bootTween.start().onComplete.add(() => this.onAnimationEnd());
@@ -207,66 +198,53 @@ class GameProcess {
             width: this.startInfoModal.items.bg._frame.width,
             height: this.startInfoModal.items.bg._frame.height
         });
-        this.p.game.keys.key(Phaser.Keyboard.ENTER).onDown.addOnce(this.onStartInfoClose, this);
-        this.p.game.keys.key(Phaser.Keyboard.A).onDown.addOnce(this.onStartInfoClose, this);
+        this.game.keys.key(Phaser.Keyboard.ENTER).onDown.addOnce(this.onStartInfoClose, this);
+        this.game.keys.key(Phaser.Keyboard.A).onDown.addOnce(this.onStartInfoClose, this);
         this.startInfoModal.items.close.items.iconA.events.onInputDown.add(this.onStartInfoClose, this);
         this.startInfoModal.items.close.items.textA.events.onInputDown.add(this.onStartInfoClose, this);
     }
 
     onStartInfoClose() {
+        this.game.keys.key(Phaser.Keyboard.ENTER).onDown.remove(this.onStartInfoClose, this);
+        this.game.keys.key(Phaser.Keyboard.A).onDown.remove(this.onStartInfoClose, this);
+
         //Ferme la modale et active les controls
         this.startInfoModal.toggle(false, {});
-        this.p.follow(this.p.player);
-        this.p.game.controlsEnabled = true;
-        this.onControlsEnabled();
-    }
-    onControlsEnabled() {
-        //Le jeu est pleinement lancé, on ajoute des évènements sur les actions ici
+        this.play.follow(this.play.player);
+        this.game.controlsEnabled = true;
 
-        //On affiche les objectifs
-        this.objectiveTitle.toggle(true, {stack: this.goalStack});
-        this.vehicleMounted.toggle(true, {stack: this.goalStack});
-        this.vehicleLoaded.toggle(true, {stack: this.goalStack});
-        this.depotFilled.toggle(true, {stack: this.goalStack});
-
-        //Si on monte un véhicule ou qu'on le charge
-        this.isVehicleMounted = new DoOnce((name) => this.vehicleMounted.setFinish());
-        this.isVehicleLoaded = new DoOnce((name) => name == 'mortier' ? this.vehicleLoaded.setFinish() : null);
-        const changeValue = () => PhaserManager.get('gabator').reactDom.changeValues({
-            enterprise: PhaserManager.get('gabator').reactDom.state.enterprise - 1,
-            health: PhaserManager.get('gabator').reactDom.state.health - 1,
-        });
-        this.isVehicleCollideVehicle = new DoOnce(() => changeValue(), (name) => name == 'vehicle');
-        this.isVehicleCollideWall = new DoOnce(() => changeValue(), (name) => name == 'wall');
-        this.p.game.vehicleGroup.forEach((vehicle) => {
-            vehicle.obj.startedEvent.add(this.isVehicleMounted, "call");
-            vehicle.obj.loadedEvent.add(this.isVehicleLoaded, "call");
-            vehicle.obj.collisionEvent.add(this.isVehicleCollideVehicle, "call");
-            vehicle.obj.collisionEvent.add(this.isVehicleCollideWall, "call");
+        //Si on rentre en collision
+        this.collide = { wall: false, vehicle: false };
+        this.game.vehicleGroup.forEach((vehicle) => {
+            vehicle.obj.onCollision.add(this.onCollide, this);
         });
 
         //Si on termine la partie
-        this.isDepotFulled = new DoOnce((args) => this.onFinish());
-        this.p.game.toolGroup.forEach((tool) => { if(tool.key === 'depot')
-            tool.obj.isFullEvent.add(this.isDepotFulled, "call")
+        this.quests.get('depot_fill').onDone.addOnce(this.onFinish, this);
+    }
+    onCollide(name){
+        if(!Type.isExist(this.collide[name]) || this.collide[name]) return;
+        this.collide[name] = true;
+        PhaserManager.get('gabator').stats.changeValues({
+            enterprise: PhaserManager.get('gabator').stats.state.enterprise - 1,
+            health: PhaserManager.get('gabator').stats.state.health - 1,
         });
     }
     onFinish() {
-        this.p.game.controlsEnabled = false;
-        this.depotFilled.setFinish();
+        this.game.controlsEnabled = false;
 
         //On affiche la modale de fin
         this.endInfoModal.toggle(true, {
             width: this.endInfoModal.items.bg._frame.width,
             height: this.endInfoModal.items.bg._frame.height
         }, {
-            star1: this.isVehicleMounted.done,
-            star2: this.isVehicleLoaded.done,
-            star3: this.isDepotFulled.done
+            star1: this.quests.get('vehicle_mount').isDone,
+            star2: this.quests.get('vehicle_load').isDone,
+            star3: this.quests.get('depot_fill').isDone
         }, {
-            health: PhaserManager.get('gabator').reactDom.state.health,
-            organization: PhaserManager.get('gabator').reactDom.state.organization,
-            enterprise: PhaserManager.get('gabator').reactDom.state.enterprise,
+            health: PhaserManager.get('gabator').stats.state.health,
+            organization: PhaserManager.get('gabator').stats.state.organization,
+            enterprise: PhaserManager.get('gabator').stats.state.enterprise,
         });
 
         //Et on envoie le score à l'API

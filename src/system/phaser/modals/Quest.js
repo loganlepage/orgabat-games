@@ -2,10 +2,10 @@
 import Type from 'system/utils/Type';
 import Modal from 'system/phaser/Modal';
 
-export class ObjectiveTitle extends Modal {
+export class TitleLayout extends Modal {
 
     constructor(data, manager, game) {
-        super(Type.deepMerge(ObjectiveTitle.pattern, data), manager, game);
+        super(Type.deepMerge(TitleLayout.pattern, data), manager, game);
     }
 
     static get pattern() {
@@ -32,7 +32,7 @@ export class ObjectiveTitle extends Modal {
 }
 
 /** Feedback Modal */
-export default class Objective extends Modal {
+export default class QuestLayout extends Modal {
 
     /**
      * Constructor for a new modal
@@ -41,7 +41,7 @@ export default class Objective extends Modal {
      * @param game
      */
     constructor(data, manager, game) {
-        super(Type.deepMerge(Objective.pattern, data), manager, game);
+        super(Type.deepMerge(QuestLayout.pattern, data), manager, game);
         //Aligne l'étoile à droite du texte
         this.items.star.alignTo(this.items.text, Phaser.RIGHT_CENTER, 6, -3);
         this.setFinish(false);
@@ -54,8 +54,8 @@ export default class Objective extends Modal {
             this.items.text.strokeThickness = 2;
         } else {
             this.items.star.loadTexture('star_disabled');
-            this.items.text.stroke = Objective.pattern.items.text.style.stroke;
-            this.items.text.strokeThickness = Objective.pattern.items.text.style.strokeThickness;
+            this.items.text.stroke = QuestLayout.pattern.items.text.style.stroke;
+            this.items.text.strokeThickness = QuestLayout.pattern.items.text.style.strokeThickness;
         }
     }
 

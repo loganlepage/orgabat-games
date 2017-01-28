@@ -82,10 +82,10 @@ export default class Material extends GameObject {
         if(super.isCollidWith(Vehicle, o) || super.isCollidWith(Player, o))
             this.modal.tooltipHandler(GameModal.HIDDEN, GameModal.CONTROLS_ENABLED);
     }
-    mouseOver() {
+    onMouseOVer() {
         this.modal.tooltipHandler(GameModal.VISIBLE);
     }
-    mouseOut() {
+    onMouseOut() {
         this.modal.tooltipHandler(GameModal.HIDDEN);
     }
 };

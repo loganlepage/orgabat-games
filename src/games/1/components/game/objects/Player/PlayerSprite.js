@@ -18,6 +18,7 @@ export default class PlayerSprite extends GameSprite {
         super(game, x, y, name, characterObj);
         this.setPhysics();
         this.setAnimations();
+        this.isWalking = false;
     }
 
     /** initialize physics and animations */
@@ -36,19 +37,23 @@ export default class PlayerSprite extends GameSprite {
         this.animations.add(Keyboard.LEFT, [4, 5, 6, 7], 10, true);
         this.animations.add(Keyboard.UP, [8, 9, 10, 11], 10, true);
         this.animations.add(Keyboard.RIGHT, [12, 13, 14, 15], 10, true);
-        this.direction = Keyboard.DOWN; this.statut = "idle";
+        this.direction = Keyboard.DOWN;
     }
 
     /** Manage current animation */
     idle(direction) {
+        this.isWalking = false;
         this.direction = direction;
         this.animations.stop();
         this.animations.play(direction, 8, true);
         this.animations.stop();
     }
     walk(direction) {
-        this.direction = direction;
-        this.animations.stop();
-        this.animations.play(direction, 8, true);
+        if(!this.isWalking || this.direction !== direction) {
+            this.isWalking = true;
+            this.direction = direction;
+            this.animations.stop();
+            this.animations.play(direction, 8, true);
+        }
     }
 };

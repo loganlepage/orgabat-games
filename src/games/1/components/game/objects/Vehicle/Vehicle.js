@@ -1,4 +1,5 @@
 "use strict";
+import {Signal} from 'phaser';
 import Config from '../../config/data';
 import GameObject from 'system/phaser/GameObject';
 import VehicleSprite from './VehicleSprite';
@@ -6,7 +7,6 @@ import VehicleModal from './VehicleModal';
 import GameModal from 'system/phaser/GameModal';
 import Position from 'system/phaser/utils/Position';
 import Inventary from 'system/phaser/Inventary';
-import EventHandler from 'system/utils/EventHandler';
 import Type from 'system/utils/Type';
 import {Keyboard} from 'phaser';
 import PadAzeJoystick from 'system/phaser/utils/joysticks/PadAzeJoystick';
@@ -29,12 +29,12 @@ export default class Vehicle extends GameObject {
      */
     constructor(game, layer, name, properties, x, y) {
         super(game, layer);
-        this.mountedEvent = new EventHandler();
-        this.unmountedEvent = new EventHandler();
-        this.startedEvent = new EventHandler();
-        this.stoppedEvent = new EventHandler();
-        this.loadedEvent = new EventHandler(); //Si on charge un véhicule, on remplis un objectif
-        this.collisionEvent = new EventHandler(); //Si on tape un véhicule/mur, on baisse le score
+        this.onMounted = new Signal();
+        this.onUnmounted = new Signal();
+        this.onStarted = new Signal();
+        this.onStopped = new Signal();
+        this.onLoaded = new Signal(); //Si on charge un véhicule, on remplis un objectif
+        this.onCollision = new Signal(); //Si on tape un véhicule/mur, on baisse le score
 
         this.startProcess = false;
         this.stopProcess = false;
@@ -50,7 +50,6 @@ export default class Vehicle extends GameObject {
     configure(properties) {
         this.speed = properties.speed * this.game.SCALE * 500; //500: convert to km/h in game
         this.speedRotate = properties.speedRotate * this.game.SCALE * 2; //2: convert to tr/min in game
-        this.pendingRotate = false;
 
         this.properties = properties;
         this.loading = this.game.add.sprite(0, 0, 'charge');
@@ -66,6 +65,8 @@ export default class Vehicle extends GameObject {
         if(this.driver === null) return;
         if(window.isSmartphone)
             this.GuiJoystick = new PadAzeJoystick(this.game, this.game.layer.zDepthOverAll);
+        this.rotateDirection = null;
+        this.walkDirection = [];
 
         this.game.keys.key(Keyboard.LEFT).onDown.add(this.moveTo, this);
         this.game.keys.key(Keyboard.RIGHT).onDown.add(this.moveTo, this);
@@ -115,10 +116,10 @@ export default class Vehicle extends GameObject {
         this.modal.tooltipHandler(GameModal.HIDDEN, false, GameModal.FIXED);
 
         this.initializedAnimation = false;
-        this.mountedEvent.fire(this);
+        this.onMounted.dispatch(this);
         setTimeout(() => {
             this.setControls(); //une fois que c'est démarré on ajoute les controls
-            this.startedEvent.fire(this);
+            this.onStarted.dispatch(this);
             this.startProcess = false;
         }, 200);
     }
@@ -142,11 +143,11 @@ export default class Vehicle extends GameObject {
         this.modal.buttonInfoFeedback(GameModal.HIDDEN);
         this.modal.droppedFeedback();
 
-        this.stoppedEvent.fire(driver.obj);
+        this.onStopped.dispatch(driver.obj);
         setTimeout(() => {
             driver.obj.onCollisionBegin({object: this.sprite.body});
             this.collisionEventEnabled = true;
-            this.unmountedEvent.fire(driver.obj);
+            this.onUnmounted.dispatch(driver.obj);
             this.stopProcess = false;
         }, 200);
     }
@@ -184,7 +185,7 @@ export default class Vehicle extends GameObject {
                     const wantAmount = this.container.getSizeLeft() > materialAmount ? materialAmount : this.container.getSizeLeft();
                     this.objectInCollision.sprite.obj.getRessource(wantAmount, (name, amount) => {
                         this.container.addItem(name, amount);
-                        this.loadedEvent.fire(name, amount);
+                        this.onLoaded.dispatch(name, amount);
                         if(amount > 0 && this.container.getSizeLeft() === 0)
                             this.modal.containerFullFeedback();
                         if(this.container.getSizeUsed() > 0)
@@ -232,7 +233,7 @@ export default class Vehicle extends GameObject {
                             break;
                         case Vehicle:
                             if(Type.isExist(this.driver)) {
-                                this.collisionEvent.fire('vehicle');
+                                this.onCollision.dispatch('vehicle');
                                 this.modal.carefulFeedback('aux véhicules');
                             }
                             break;
@@ -243,7 +244,7 @@ export default class Vehicle extends GameObject {
 
                 break;
             case 'layer':
-                this.collisionEvent.fire('wall');
+                this.onCollision.dispatch('wall');
                 this.modal.carefulFeedback('aux murs');
                 break;
             default:
@@ -251,14 +252,13 @@ export default class Vehicle extends GameObject {
         }
     }
     onCollisionEnd(o) {
-        if(super.isCollidWith(Player, o)) {
+        if(super.isCollidWith(Player, o))
             this.modal.tooltipHandler(GameModal.HIDDEN, null, GameModal.CONTROLS_ENABLED);
-        }
     }
-    mouseOver() {
+    onMouseOver() {
         this.modal.tooltipHandler(GameModal.VISIBLE, super.isCollidWith(Player));
     }
-    mouseOut() {
+    onMouseOut() {
         this.modal.tooltipHandler(GameModal.HIDDEN);
     }
 
@@ -270,9 +270,11 @@ export default class Vehicle extends GameObject {
         }
         const speed = this.speed * (this.properties.use === Keyboard.UP ? 1 : -1);
 
-        if(this.game.keys.key(Keyboard.UP).isDown)
+        if(this.properties.walkToMove && this.walkDirection.length > 0)
+            this.driver.walk(this.properties.use);
+        if(this.walkDirection[this.walkDirection.length-1] == Keyboard.UP)
             this.sprite.body.thrust(speed);
-        else if (this.game.keys.key(Keyboard.DOWN).isDown)
+        if(this.walkDirection[this.walkDirection.length-1] == Keyboard.DOWN)
             this.sprite.body.reverse(speed);
 
         if(this.rotateDirection == Keyboard.LEFT) this.sprite.body.rotateLeft(this.speedRotate);
@@ -295,23 +297,30 @@ export default class Vehicle extends GameObject {
         if(key.keyCode == Keyboard.RIGHT)
             this.rotateDirection = !this.game.keys.key(Keyboard.DOWN).isDown ? Keyboard.RIGHT : Keyboard.LEFT;
 
-        if(this.properties.walkToMove) {
-            switch(key.keyCode) {
-                case Keyboard.UP:
-                    this.driver.walk(this.properties.use === Keyboard.UP ? Keyboard.UP : Keyboard.DOWN);
-                    break;
-                case Keyboard.DOWN:
-                    this.driver.walk(this.properties.use === Keyboard.DOWN ? Keyboard.DOWN : Keyboard.UP);
-                    break;
-            }
-        }
-        else this.driver.idle(this.properties.use);
+        if((key.keyCode == Keyboard.UP || key.keyCode == Keyboard.DOWN)
+            && this.walkDirection.indexOf(key.keyCode) === -1)
+                this.walkDirection.push(key.keyCode);
     }
     standTo(key) {
         if(!this.game.controlsEnabled) return;
+        if(key.keyCode == Keyboard.UP || key.keyCode == Keyboard.DOWN)
         this.driver.idle(this.properties.use);
+        const indexOf = this.walkDirection.indexOf(key.keyCode);
+        if(indexOf > -1)
+            this.walkDirection.splice(indexOf, 1);
         this.rotateDirection = null;
         if(this.game.keys.key(Keyboard.LEFT).isDown) this.moveTo(this.game.keys.key(Keyboard.LEFT));
         if(this.game.keys.key(Keyboard.RIGHT).isDown) this.moveTo(this.game.keys.key(Keyboard.RIGHT));
+
+        // Si une touche devrait être enfoncée mais ne l'est pas
+        // évènement non détecté, ex: clic hors canvas
+        const clear = (key) => {
+            if(!this.game.keys.key(key).isDown) {
+                const indexOf = this.walkDirection.indexOf(key);
+                if(indexOf > -1) this.walkDirection.splice(indexOf, 1);
+            }
+        };
+        clear(Keyboard.UP);
+        clear(Keyboard.DOWN);
     }
 };
