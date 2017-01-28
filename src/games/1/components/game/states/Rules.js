@@ -14,7 +14,7 @@ export default class Rules extends State {
             "Vous devez apporter du liant dans l'entrepôt afin d'approvisionner le chantier.\n" +
             "Pour cela, choisissez un des trois outils (brouette, transpalette ou l'élévateur), " +
             "prennez du liant dans le mortier et apportez le au dépôt à l'intérieur du bâtiment.",
-            { font: 'Arial', fill: '#272727', fontSize: 20,
+            { font: 'Arial', fill: '#272727', fontSize: this.game.uiScale(16),
                 wordWrap: true, wordWrapWidth: this.game.world.width - this.game.uiScale(160) });
 
         const a = this.game.add.sprite(
@@ -22,7 +22,7 @@ export default class Rules extends State {
             this.game.world.height - this.game.uiScale(80+12),
             'bouton_a'
         );
-        a.scale.set(this.game.uiScale(1.2));
+        a.scale.set(this.game.uiScale(0.8));
         a.inputEnabled = true;
 
         const text = this.game.add.text(

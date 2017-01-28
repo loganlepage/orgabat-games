@@ -24,7 +24,7 @@ export default class SmallFeedback extends Modal {
                     type: "sprite",
                     x: 10,
                     key: "bouton_z",
-                    props: { scale: 0.6 }
+                    props: { scale: 0.4 }
                 },
                 text: {
                     type: "text",

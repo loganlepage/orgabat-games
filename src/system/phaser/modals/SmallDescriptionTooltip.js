@@ -32,13 +32,20 @@ export default class SmallDescriptionTooltip extends Modal {
     setBottom() { this.items.bg.loadTexture(`small_tooltip_bottom`); this.offsetY = 9; this._refresh() }
     _refresh() {
         if(this.state.button) {
-            this.items.useButton.y = this.m.getAlignCenterY(this.items.bg, this.items.useButton) + this.offsetY;
-            this.items.name.x = this.items.amount.x = 14;
+            this.items.useButton.y = this.m.getAlignCenterY(this.items.bg, this.items.useButton)
+                + this.game.uiScale(this.offsetY);
+            this.items.name.setX(14);
+            this.items.amount.setX(14);
         }
         if(this.state.amount) {
-            this.items.name.y =   this.m.getAlignCenterY(this.items.bg, this.items.name) + (this.offsetY-10);
-            this.items.amount.y = this.m.getAlignCenterY(this.items.bg, this.items.name) + (this.offsetY+10);
-            if(!this.state.button) this.items.name.x = this.items.amount.x = 20;
+            this.items.name.y = this.m.getAlignCenterY(this.items.bg, this.items.name)
+                + this.game.uiScale(this.offsetY-10);
+            this.items.amount.y = this.m.getAlignCenterY(this.items.bg, this.items.name)
+                + this.game.uiScale(this.offsetY+10);
+            if(!this.state.button) {
+                this.items.name.setX(20);
+                this.items.amount.setX(20);
+            }
         }
     }
 
@@ -47,33 +54,44 @@ export default class SmallDescriptionTooltip extends Modal {
         this.items.useButton.items.e.visible = buttons.e;
         let y = 0;
         for (let item in this.items.useButton.items) {
-            this.items.useButton.items[item].y = y;
+            this.items.useButton.items[item].setY(y);
             if(this.items.useButton.items[item].visible) y += 25;
         }
-        this.items.useButton.y = this.m.getAlignCenterY(this.items.bg, this.items.useButton) + this.offsetY;
-        this.items.name.x = this.items.amount.x = 14;
+        this.items.useButton.y = this.m.getAlignCenterY(this.items.bg, this.items.useButton)
+            + this.game.uiScale(this.offsetY);
+        this.items.name.setX(14);
+        this.items.amount.setX(14);
         this.items.useButton.visible = true;
         this.state.button = true;
     }
     delButtons() {
         this.items.useButton.visible = false;
-        if(!this.state.amount) this.items.name.x = this.m.getAlignCenterX(this.items.bg, this.items.name);
-        else this.items.name.x = this.items.amount.x = 20;
+        if(!this.state.amount) this.items.name.setX(this.m.getAlignCenterX(this.items.bg, this.items.name));
+        else {
+            this.items.name.setX(20);
+            this.items.amount.setX(20);
+        }
         this.state.button = false;
     }
     setAmount(amount) {
         if(amount <= 0) { this.delAmount(); return;}
-        this.items.name.y =   this.m.getAlignCenterY(this.items.bg, this.items.name) + (this.offsetY-10);
-        this.items.amount.y = this.m.getAlignCenterY(this.items.bg, this.items.name) + (this.offsetY+10);
-        if(!this.state.button) this.items.name.x = this.items.amount.x = 20;
+        this.items.name.y = this.m.getAlignCenterY(this.items.bg, this.items.name)
+            + this.game.uiScale(this.offsetY-10);
+        this.items.amount.y = this.m.getAlignCenterY(this.items.bg, this.items.name)
+            + this.game.uiScale(this.offsetY+10);
+        if(!this.state.button) {
+            this.items.name.setX(20);
+            this.items.amount.setX(20);
+        }
         this.items.amount.text = `x${amount}`;
         this.items.amount.visible = true;
         this.state.amount = true;
     }
     delAmount() {
         this.items.amount.visible = false;
-        this.items.name.y = this.m.getAlignCenterY(this.items.bg, this.items.name) + this.offsetY;
-        if(!this.state.button) this.items.name.x = this.m.getAlignCenterX(this.items.bg, this.items.name);
+        this.items.name.y = this.m.getAlignCenterY(this.items.bg, this.items.name) + this.game.uiScale(this.offsetY);
+        if(!this.state.button)
+            this.items.name.x = this.m.getAlignCenterX(this.items.bg, this.items.name);
         this.state.amount = false;
     }
 
@@ -112,17 +130,14 @@ export default class SmallDescriptionTooltip extends Modal {
                     items: {
                         a: {
                             type: "sprite",
-                            x: 0,
-                            y: 0,
                             key: "bouton_a",
-                            props: { scale: 0.6 }
+                            props: { scale: 0.4 }
                         },
                         e: {
                             type: "sprite",
-                            x: 0,
                             y: 25,
                             key: "bouton_e",
-                            props: { scale: 0.6 }
+                            props: { scale: 0.4 }
                         }
                     }
                 }

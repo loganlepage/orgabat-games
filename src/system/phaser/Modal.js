@@ -23,8 +23,8 @@ class Sprite extends Phaser.Sprite {
         } catch (e) {
             console.error(e.name + ": " + e.message);
         }
-        super(game, x, y, key);
-        this.scale.setTo(Type.isNumber(props.scale) ? props.scale : 1);
+        super(game, game.uiScale(x), game.uiScale(y), key);
+        this.scale.setTo(game.uiScale(Type.isNumber(props.scale) ? props.scale : 1));
         this.visible = Type.isBoolean(props.visible) ? props.visible : true;
         this.inputEnabled = Type.isBoolean(props.inputEnabled) ? props.inputEnabled : false;
         this.anchor.set(
@@ -32,6 +32,9 @@ class Sprite extends Phaser.Sprite {
             Type.isNumber(props.anchorY) ? props.anchorY : 0
         );
     }
+    setX(x){ this.x = this.game.uiScale(x) }
+    setY(y){ this.y = this.game.uiScale(y) }
+    getWidth() { return this._frame.width}
 }
 
 /** Make a text item for modal */
@@ -56,7 +59,11 @@ class Text extends Phaser.Text {
             console.error(e.name + ": " + e.message);
         }
         style = Type.isExist(style) ? style : {};
-        super(game, x, y, text, style);
+        if(style.fontSize) style.fontSize = game.uiScale(style.fontSize);
+        if(style.strokeThickness) style.strokeThickness = game.uiScale(style.strokeThickness);
+        if(style.wordWrapWidth) style.wordWrapWidth = game.uiScale(style.wordWrapWidth);
+
+        super(game, game.uiScale(x), game.uiScale(y), text, style);
         this.visible = Type.isBoolean(props.visible) ? props.visible : true;
         this.inputEnabled = Type.isBoolean(props.inputEnabled) ? props.inputEnabled : false;
         this.anchor.set(
@@ -64,6 +71,8 @@ class Text extends Phaser.Text {
             Type.isNumber(props.anchorY) ? props.anchorY : 0
         );
     }
+    setX(x){ this.x = this.game.uiScale(x) }
+    setY(y){ this.y = this.game.uiScale(y) }
 }
 
 /** Modal Manager Strategy */
@@ -138,7 +147,8 @@ export class TooltipManager extends Manager {
                 this._setCurrent(this.current, false);
             this.current = modal;
             Manager.show(this.current, this.game.layer.zDepth1);
-        } else if(this.current && this.current === modal) {
+        }
+        else if(this.current) {
             Manager.hide(this.current);
             this.current = null;
         }
@@ -172,8 +182,8 @@ export class Stack extends Phaser.Group {
         this.axe = Type.isBoolean(params.axe) ? params.axe : Stack.VERTICAL;
         this.direction = Type.isString(params.direction) ? params.direction : Stack.TOP;
         this.offset = {
-            x: Type.isNumber(params.offsetX) ? params.offsetX : 10,
-            y: Type.isNumber(params.offsetY) ? params.offsetY : 10,
+            x: game.uiScale(Type.isNumber(params.offsetX) ? params.offsetX : 10),
+            y: game.uiScale(Type.isNumber(params.offsetY) ? params.offsetY : 10),
         };
         this.anchor = {
             x: Type.isNumber(params.anchorX) ? params.anchorX : 0,
@@ -328,6 +338,8 @@ class Factory extends Phaser.Group {
         this.items = {};
         this.generateItems(data);
     }
+    setX(x){ this.x = this.game.uiScale(x) }
+    setY(y){ this.y = this.game.uiScale(y) }
 
     /**
      * Generate items or group
@@ -340,9 +352,9 @@ class Factory extends Phaser.Group {
                     const visible = Type.isBoolean(data.items[key].visible) ? data.items[key].visible : true;
                     const nestedGroup = new Factory(data.items[key], this.game, visible);
                     if(Type.isNumber(data.items[key].x))
-                        nestedGroup.x = data.items[key].x;
+                        nestedGroup.setX(data.items[key].x);
                     if(Type.isNumber(data.items[key].y))
-                        nestedGroup.y = data.items[key].y;
+                        nestedGroup.setY(data.items[key].y);
                     this.add(nestedGroup);
                     this.items[key] = nestedGroup;
                 }
@@ -388,7 +400,7 @@ export default class Modal extends Factory {
         this.data = data;
         this.manager = manager.getInstance(game);
         this.params = { fixed: false, fixeMe: null };
-        this.scale.setTo(game.uiScale(1));
+        //this.scale.setTo(game.uiScale(1));
     }
 
     /**

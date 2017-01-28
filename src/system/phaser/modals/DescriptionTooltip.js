@@ -24,20 +24,20 @@ export default class DescriptionTooltip extends Modal {
             console.error(e.name + ": " + e.message);
         }
         super(Type.deepMerge(DescriptionTooltip.pattern, data), manager, game);
-        this.items.description.y = 95 - Type.nbChar(this.items.description.text, '\n') * 10;
+        this.items.description.y = game.uiScale(95 - Type.nbChar(this.items.description.text, '\n') * 10);
         GameModal.fillWord(this.items.description, 'requis', '#D82E32');
     }
 
     setLeft() {
         this.items.bg.loadTexture(`big_tooltip_left`);
         ['title', 'description', 'useButton'].forEach((key) => {
-            this.items[key].x = this.data.items[key].x - 12;
+            this.items[key].setX(this.data.items[key].x);
         });
     }
     setRight() {
         this.items.bg.loadTexture(`big_tooltip_right`);
         ['title', 'description', 'useButton'].forEach((key) => {
-            this.items[key].x = this.data.items[key].x;
+            this.items[key].setX(this.data.items[key].x);
         });
     }
 
@@ -79,7 +79,7 @@ export default class DescriptionTooltip extends Modal {
                         image: {
                             type: "sprite",
                             key: "bouton_a",
-                            props: { scale: 0.6 }
+                            props: { scale: 0.4 }
                         },
                         text: {
                             type: "text",

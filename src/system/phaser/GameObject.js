@@ -42,8 +42,10 @@ export default class GameObject {
     )}
     refreshObjectInCollision() {
         if(Type.isExist(this._oic) &&
-            this.objectCurrentDistance > this.objectInitialDistance + this.MAX_COLLIDE_DISTANCE)
-            this.onCollisionEnd(this._oic);
+            this.objectCurrentDistance > this.objectInitialDistance + this.MAX_COLLIDE_DISTANCE) {
+            const oic = this._oic; this._oic = null;
+            this.onCollisionEnd(oic);
+        }
     }
 
     /** Object collision */

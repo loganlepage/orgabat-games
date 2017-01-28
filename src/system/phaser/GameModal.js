@@ -22,25 +22,25 @@ export default class GameModal {
     static get FORCE() { return true; }
 
     getAlignCenterX(reference, item) {
-        return reference._frame.centerX - item.width / 2;
+        return reference.centerX - item.width / 2;
     }
     getAlignRightX(reference, item) {
-        return reference._frame.width - item.width;
+        return reference.width - item.width;
     }
     getAlignCenterY(reference, item) {
-        return reference._frame.centerY - item.height / 2;
+        return reference.centerY - item.height / 2;
     }
     getAlignBottomY(reference, item) {
-        return reference._frame.bottom - item.height;
+        return reference.bottom - item.height;
     }
 
     /** OUTER */
     getOuterLeftToSprite(sprite, item, scaleX, offset) {
         offset = offset ? offset : 0;
-        return this.getInnerLeftToSprite(sprite) - item._frame.width * scaleX - offset;
+        return this.getInnerLeftToSprite(sprite) - item.width * scaleX - offset;
     }
     getOuterCenterXToSprite(sprite, item, scaleX) {
-        return this.getInnerCenterXToSprite(sprite) - item._frame.centerX * scaleX ;
+        return this.getInnerCenterXToSprite(sprite) - item.centerX * scaleX ;
     }
     getOuterRightToSprite(sprite, offset) {
         offset = offset ? offset : 0;
@@ -48,7 +48,7 @@ export default class GameModal {
     }
     getOuterTopToSprite(sprite, item, scaleY, offset) {
         offset = offset ? offset : 0;
-        return this.getInnerTopToSprite(sprite) - item._frame.height * scaleY - offset;
+        return this.getInnerTopToSprite(sprite) - item.height * scaleY - offset;
     }
     getOuterBottomToSprite(sprite, offset) {
         offset = offset ? offset : 0;

@@ -38,7 +38,8 @@ export default class Game extends React.Component {
     // ou on le restore dans son état d'origine s'il existait déjà
     bootGame() {
         if(!Type.isInstanceOf(Game.game, Canvas)) {
-            Game.game = new Canvas(this.props.width, this.props.height, Phaser.CANVAS, ReactDOM.findDOMNode(this));
+            Game.game = new Canvas(this.props.width, this.props.height, Phaser.CANVAS,
+                ReactDOM.findDOMNode(this));
             Game.game.start();
             Game.game.iframe = this.refs.iframe;
         } else {

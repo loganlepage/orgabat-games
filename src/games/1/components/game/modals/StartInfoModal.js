@@ -63,7 +63,7 @@ export default class DefaultModal extends Modal {
                             key: "bouton_a",
                             x: -36,
                             y: -7,
-                            props: { scale: 0.8, inputEnabled: true }
+                            props: { scale: 0.53, inputEnabled: true }
                         },
                         textA: {
                             type : "text",
