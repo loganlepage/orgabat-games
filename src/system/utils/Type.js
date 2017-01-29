@@ -3,6 +3,14 @@
 export default class Type {
 
     /**
+     * @returns {boolean}
+     */
+    static isMobile() {
+        try{ document.createEvent("TouchEvent"); return true; }
+        catch(e){ return false; }
+    }
+
+    /**
      * deep merge two json
      * @param target
      * @param source
@@ -10,13 +18,14 @@ export default class Type {
      */
     static deepMerge(target, source) {
         if (Type.isObject(target) && Type.isObject(source)) {
-            Object.keys(source).forEach(key => {
-                if (Type.isObject(source[key])) {
-                    if (!target[key]) Object.assign(target, {[key]: {}});
+            for(const key in source) {
+                if(Type.isObject(source[key])) {
+                    if(!Type.isExist(target[key]))
+                        target[key] = {};
                     Type.deepMerge(target[key], source[key]);
-                } else
-                    Object.assign(target, {[key]: source[key]});
-            });
+                }
+                else target[key] = source[key];
+            }
         }
         return target;
     };

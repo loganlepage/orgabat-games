@@ -3,6 +3,7 @@ import Type from '../../utils/Type';
 
 /** Collection of Phaser Canvas objects. */
 export default class PhaserManager {
+    static _canvas = {};
     static get(name) {
         if(Type.isExist(this._canvas[name]))
             return this._canvas[name];
@@ -16,8 +17,3 @@ export default class PhaserManager {
             delete this._canvas[name];
     }
 };
-
-/** Static properties */
-Object.assign(PhaserManager, {
-    _canvas: {}
-});

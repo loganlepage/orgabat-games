@@ -6,6 +6,8 @@ import {Keyboard} from 'phaser';
 /** Player Sprite (called by the character gameObject) */
 export default class PlayerSprite extends GameSprite {
 
+    isWalking = false;
+
     /**
      * Constructor for a new character sprite
      * @param game
@@ -18,15 +20,14 @@ export default class PlayerSprite extends GameSprite {
         super(game, x, y, name, characterObj);
         this.setPhysics();
         this.setAnimations();
-        this.isWalking = false;
     }
 
     /** initialize physics and animations */
     setPhysics() {
         this.game.physics.p2.enable(this, Config.developer.debug);
         this.body.fixedRotation = true;
+        this.body.setRectangle(this.width - this.width/3, this.height/2, 0, this.height/4);
         this.body.setCollisionGroup(this.game.CollisionGroup.player);
-        this.body.addRectangle(this.body.width, this.body.height, 0, 0);
         this.body.collides(this.game.CollisionGroup.vehicle, this.onCollision, this);
         this.body.collides(this.game.CollisionGroup.tool, this.onCollision, this);
         this.body.collides(this.game.CollisionGroup.material, this.onCollision, this);

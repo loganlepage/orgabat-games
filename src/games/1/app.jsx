@@ -44,9 +44,10 @@ class App extends React.Component {
             height: this.isVertical ? window.innerWidth : window.innerHeight
         };
     }
+
     componentWillMount() {
-        window.isSmartphone = Type.isExist(window.orientation);
-        if(window.isSmartphone) {
+        window.isMobile = Type.isMobile();
+        if(window.isMobile) {
             this.isVertical = !(window.orientation == 90 || window.orientation == -90);
             window.addEventListener('orientationchange', () => {
                 this.isVertical = !(window.orientation == 90 || window.orientation == -90);

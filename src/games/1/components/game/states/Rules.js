@@ -13,7 +13,7 @@ export default class Rules extends State {
         this.game.add.text(this.game.uiScale(80), this.game.uiScale(160),
             "Vous devez apporter du liant dans l'entrepôt afin d'approvisionner le chantier.\n" +
             "Pour cela, choisissez un des trois outils (brouette, transpalette ou l'élévateur), " +
-            "prennez du liant dans le mortier et apportez le au dépôt à l'intérieur du bâtiment.",
+            "prenez du liant dans le mortier et apportez le au dépôt à l'intérieur du bâtiment.",
             { font: 'Arial', fill: '#272727', fontSize: this.game.uiScale(16),
                 wordWrap: true, wordWrapWidth: this.game.world.width - this.game.uiScale(160) });
 
@@ -32,12 +32,12 @@ export default class Rules extends State {
         );
         text.inputEnabled = true;
 
-        if(window.isSmartphone)
+        if(window.isMobile)
             new AJoystick(this.game);
         a.events.onInputDown.add(this.video, this);
         text.events.onInputDown.add(this.video, this);
-        this.game.keys.key(Keyboard.ENTER).onDown.addOnce(this.video, this);
-        this.game.keys.key(Keyboard.A).onDown.addOnce(this.video, this);
+        this.game.keys.addKey(Keyboard.ENTER).onDown.addOnce(this.video, this);
+        this.game.keys.addKey(Keyboard.A).onDown.addOnce(this.video, this);
     }
 
     video() {

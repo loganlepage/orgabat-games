@@ -22,8 +22,5 @@ export default class Play extends State {
     /** Called when the game start */
     start() {
         this.gabator.loadTexture('gabator', 0);
-
     }
-
-
 };

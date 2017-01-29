@@ -13,6 +13,8 @@ import Player from '../Player/Player';
 /** Tool Object (include sprite and modals) */
 export default class Tool extends GameObject {
 
+    ready = false;
+
     /**
      * Constructor for a new tool object
      * @param game

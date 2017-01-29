@@ -31,15 +31,15 @@ export default class Load extends State {
 
     /** Called by preload to load assets */
     loadAssets(){
-        this.game.load.tilemap('map', `${assets_path}tilemap/maps/orgabat2.json`, null, Tilemap.TILED_JSON);
+        this.game.load.tilemap('map', `${assets_path}tilemap/maps/${Config.tilemap.file}`, null, Tilemap.TILED_JSON);
         for(let i in Config.entities.assets)
             this.game.load.image(Config.entities.assets[i].name, `${assets_path}sprite/${Config.entities.assets[i].file}`);
-        for(let i in Config.tilesmap.assets)
-            this.game.load.image(Config.tilesmap.assets[i].name, `${assets_path}tilemap/tiles/${Config.tilesmap.assets[i].file}`);
+        for(let i in Config.tilemap.assets)
+            this.game.load.image(Config.tilemap.assets[i].name, `${assets_path}tilemap/tiles/${Config.tilemap.assets[i].file}`);
         for(let i in Config.modals.assets)
             this.game.load.image(Config.modals.assets[i].name, `${assets_path}modal/${Config.modals.assets[i].file}`);
 
-        this.game.load.spritesheet(Player.name, `${assets_path}sprite/george.png`, 32, 32, 16);
+        this.game.load.spritesheet('player', `${assets_path}sprite/player.32.png`, 33, 48, 16);
     }
 
     loadModulesAssets(){

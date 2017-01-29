@@ -6,7 +6,7 @@ export default {
         debug: false
     },
     canvasParent: "#gameDiv",
-    /*tilesmap: {
+    /*tilemap: {
         name: "map",
         calques: ["Background", "Midground"],
         file: "map.json",
@@ -19,21 +19,17 @@ export default {
             {name: "PathAndObjects", file: "PathAndObjects.png"}
         ]
     },*/
-    tilesmap: {
+    tilemap: {
         name: "map",
         calques: ["Background", "Midground"],
-        file: "orgabat2.json",
+        file: "map.final.json",
         tiles: {
             width: 25,
             height: 21,
             size: 32
         },
         assets: [
-            {name: "PathAndObjects", file: "PathAndObjects.png"},
-            {name: "herbe", file: "herbe.png"},
-            {name: "dalle", file: "dalle.png"},
-            {name: "herbe_cote", file: "herbe_cote.png"},
-            {name: "dalle_ciment", file: "dalle_ciment.png"},
+            {name: "tilemap.32", file: "tilemap.32.png"},
         ]
     },
 
@@ -42,7 +38,7 @@ export default {
         vehicles: [ //names are unique
             {
                 name: "elevateur", x: 2, y: 2,
-                prop: {speed: 18, speedRotate: 10, player_x: 0.5, player_y: -0.35, loading_x: 0.5, loading_y: 1.8,
+                prop: {speed: 18, speedRotate: 10, player_x: 0.5, player_y: -0.20, loading_x: 0.5, loading_y: 1.8,
                     walkToMove: false, use: Keyboard.UP, name: "Chariot élévateur",
                     description: "Permet de transporter six charges de liant.", size: "1x2m",
                     infoAdded: "Permis élévateur requis", containerSize: 6,
@@ -50,14 +46,14 @@ export default {
             },
             {
                 name: "brouette", x: 5, y: 3,
-                prop: {speed: 10, speedRotate: 15, player_x: 0.5, player_y: -0.25, loading_x: 0.5, loading_y: 1,
+                prop: {speed: 10, speedRotate: 15, player_x: 0.5, player_y: 0.10, loading_x: 0.5, loading_y: 1,
                     walkToMove: true, use: Keyboard.UP, name: "Brouette",
                     description: "Permet de transporter une charge de liant.", size: "0.5x1m", containerSize: 1,
                     source: "http://st.depositphotos.com/1739901/2117/i/950/depositphotos_21173467-Top-view-of-wheelbarrow-on.jpg"}
             },
             {
                 name: "transpalette", x: 7.5, y: 2.5,
-                prop: {speed: 8, speedRotate: 10, player_x: 0.5, player_y: -1, loading_x: 0.5, loading_y: 1,
+                prop: {speed: 8, speedRotate: 10, player_x: 0.5, player_y: -0.25, loading_x: 0.5, loading_y: 1,
                     walkToMove: true, use: Keyboard.DOWN, name: "Transpalette",
                     description: "Permet de transporter trois charges de liant.", size: "0.5x1.5m", containerSize: 3,
                     source: "http://www.lkgoodwin.com/more_info/pallet_truck/images/bt_top_view.jpg"}

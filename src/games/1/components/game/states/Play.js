@@ -22,10 +22,11 @@ import DepotFillQuest from '../quests/DepotFillQuest';
 /** State when we start the game */
 export default class Play extends State {
 
+    layers = [];
+
     /** Constructor for a new play state */
     constructor() {
         super();
-        this.layers = [];
     }
 
     /**
@@ -34,7 +35,7 @@ export default class Play extends State {
      */
     create() {
         this.game.controlsEnabled = false;
-        this.game.TileSize = Config.tilesmap.tiles.size * this.game.SCALE;
+        this.game.TileSize = Config.tilemap.tiles.size * this.game.SCALE;
         Position.setTileSize(this.game.TileSize);
 
         this.game.physics.startSystem(Physics.P2JS);
@@ -52,9 +53,10 @@ export default class Play extends State {
         this.initMap();
         this.initUI();
         this.addVehicles();
-        this.addPlayer();
+
         this.addTools();
         this.addMaterials();
+        this.addPlayer();
 
         this.game.physics.p2.setBoundsToWorld(true, true, true, true, false);
         this.game.physics.p2.updateBoundsCollisionGroup();
@@ -63,12 +65,12 @@ export default class Play extends State {
 
     /** Called by create to init the map */
     initMap() {
-        this.map = this.game.add.tilemap(Config.tilesmap.name);
-        for(let i in Config.tilesmap.assets)
-            this.map.addTilesetImage(Config.tilesmap.assets[i].name);
+        this.map = this.game.add.tilemap(Config.tilemap.name);
+        for(let i in Config.tilemap.assets)
+            this.map.addTilesetImage(Config.tilemap.assets[i].name);
 
-        for(let i in Config.tilesmap.calques) {
-            let layer = new TilemapLayer(this.game, this.map, Config.tilesmap.calques[i]);
+        for(let i in Config.tilemap.calques) {
+            let layer = new TilemapLayer(this.game, this.map, Config.tilemap.calques[i]);
             this.layers.push(layer);
         }
 
@@ -144,6 +146,7 @@ export default class Play extends State {
             this.game.time.advancedTiming = true; //SEE FPS
             this.game.debug.text(this.game.time.fps, 2, 14, "#00ff00");
         }
+        this.game.debug.body(this.player.sprite);
     }
 
     /**
@@ -198,15 +201,15 @@ class GameProcess {
             width: this.startInfoModal.items.bg._frame.width,
             height: this.startInfoModal.items.bg._frame.height
         });
-        this.game.keys.key(Phaser.Keyboard.ENTER).onDown.addOnce(this.onStartInfoClose, this);
-        this.game.keys.key(Phaser.Keyboard.A).onDown.addOnce(this.onStartInfoClose, this);
+        this.game.keys.addKey(Phaser.Keyboard.ENTER).onDown.addOnce(this.onStartInfoClose, this);
+        this.game.keys.addKey(Phaser.Keyboard.A).onDown.addOnce(this.onStartInfoClose, this);
         this.startInfoModal.items.close.items.iconA.events.onInputDown.add(this.onStartInfoClose, this);
         this.startInfoModal.items.close.items.textA.events.onInputDown.add(this.onStartInfoClose, this);
     }
 
     onStartInfoClose() {
-        this.game.keys.key(Phaser.Keyboard.ENTER).onDown.remove(this.onStartInfoClose, this);
-        this.game.keys.key(Phaser.Keyboard.A).onDown.remove(this.onStartInfoClose, this);
+        this.game.keys.addKey(Phaser.Keyboard.ENTER).onDown.remove(this.onStartInfoClose, this);
+        this.game.keys.addKey(Phaser.Keyboard.A).onDown.remove(this.onStartInfoClose, this);
 
         //Ferme la modale et active les controls
         this.startInfoModal.toggle(false, {});
@@ -221,6 +224,7 @@ class GameProcess {
 
         //Si on termine la partie
         this.quests.get('depot_fill').onDone.addOnce(this.onFinish, this);
+        this._timeStart = this.game.time.elapsedMS;
     }
     onCollide(name){
         if(!Type.isExist(this.collide[name]) || this.collide[name]) return;
@@ -231,6 +235,9 @@ class GameProcess {
         });
     }
     onFinish() {
+        this._timeEnd = this.game.time.elapsedMS;
+        const timeElapsed = this._timeEnd - this._timeStart;
+
         this.game.controlsEnabled = false;
 
         //On affiche la modale de fin
@@ -246,8 +253,13 @@ class GameProcess {
             organization: PhaserManager.get('gabator').stats.state.organization,
             enterprise: PhaserManager.get('gabator').stats.state.enterprise,
         });
-
         //Et on envoie le score à l'API
-        api.sendScore({id: game_id, time: 10, health: 3, organization: 4, business: 2});
+        api.sendScore({
+            id: game_id,
+            time: timeElapsed,
+            health: PhaserManager.get('gabator').stats.state.health,
+            organization: PhaserManager.get('gabator').stats.state.organization,
+            business: PhaserManager.get('gabator').stats.state.enterprise
+        });
     }
 }

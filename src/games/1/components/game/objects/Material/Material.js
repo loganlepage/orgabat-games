@@ -12,6 +12,9 @@ import Player from '../Player/Player';
 /** Material Object (include sprite and modals) */
 export default class Material extends GameObject {
 
+    ready = false;
+
+
     /**
      * Constructor for a new material object
      * @param game

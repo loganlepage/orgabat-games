@@ -18,6 +18,23 @@ import Tool from '../Tool/Tool';
 /** Vehicle Object (include sprite and modals) */
 export default class Vehicle extends GameObject {
 
+    ready = false;
+    startProcess = false;
+    stopProcess = false;
+
+    onMounted = new Signal();
+    onUnmounted = new Signal();
+    onStarted = new Signal();
+    onStopped = new Signal();
+    onLoaded = new Signal(); //Si on charge un véhicule, on remplis un objectif
+    onCollision = new Signal(); //Si on tape un véhicule/mur, on baisse le score
+
+    speed = 0;
+    speedRotate = 0;
+    driver = null;
+    rotateDirection = null;
+    walkDirection = null;
+
     /**
      * Constructor for a new vehicle object
      * @param game
@@ -29,17 +46,7 @@ export default class Vehicle extends GameObject {
      */
     constructor(game, layer, name, properties, x, y) {
         super(game, layer);
-        this.onMounted = new Signal();
-        this.onUnmounted = new Signal();
-        this.onStarted = new Signal();
-        this.onStopped = new Signal();
-        this.onLoaded = new Signal(); //Si on charge un véhicule, on remplis un objectif
-        this.onCollision = new Signal(); //Si on tape un véhicule/mur, on baisse le score
-
-        this.startProcess = false;
-        this.stopProcess = false;
         this.container = new Inventary(properties.containerSize, Config.entities.materials);
-
         this.addSprite(new VehicleSprite(this.game, Position.getPixelAt(x), Position.getPixelAt(y), name, this));
         this.addModal(new VehicleModal(properties, this, game));
         this.configure(properties);
@@ -57,44 +64,43 @@ export default class Vehicle extends GameObject {
         this.loading.anchor.set(this.properties.loading_x, this.properties.loading_y);
         this.loading.visible = false;
         this.sprite.body.damping = 1;
-        this.driver = null;
     }
 
     /** Set Cross and AZE buttons */
     setControls() {
         if(this.driver === null) return;
-        if(window.isSmartphone)
+        if(window.isMobile)
             this.GuiJoystick = new PadAzeJoystick(this.game, this.game.layer.zDepthOverAll);
         this.rotateDirection = null;
         this.walkDirection = [];
 
-        this.game.keys.key(Keyboard.LEFT).onDown.add(this.moveTo, this);
-        this.game.keys.key(Keyboard.RIGHT).onDown.add(this.moveTo, this);
-        this.game.keys.key(Keyboard.UP).onDown.add(this.moveTo, this);
-        this.game.keys.key(Keyboard.DOWN).onDown.add(this.moveTo, this);
+        this.game.keys.addKey(Keyboard.LEFT).onDown.add(this.moveTo, this);
+        this.game.keys.addKey(Keyboard.RIGHT).onDown.add(this.moveTo, this);
+        this.game.keys.addKey(Keyboard.UP).onDown.add(this.moveTo, this);
+        this.game.keys.addKey(Keyboard.DOWN).onDown.add(this.moveTo, this);
 
-        this.game.keys.key(Keyboard.LEFT).onUp.add(this.standTo, this);
-        this.game.keys.key(Keyboard.RIGHT).onUp.add(this.standTo, this);
-        this.game.keys.key(Keyboard.UP).onUp.add(this.standTo, this);
-        this.game.keys.key(Keyboard.DOWN).onUp.add(this.standTo, this);
+        this.game.keys.addKey(Keyboard.LEFT).onUp.add(this.standTo, this);
+        this.game.keys.addKey(Keyboard.RIGHT).onUp.add(this.standTo, this);
+        this.game.keys.addKey(Keyboard.UP).onUp.add(this.standTo, this);
+        this.game.keys.addKey(Keyboard.DOWN).onUp.add(this.standTo, this);
 
-        this.game.keys.key(Keyboard.A);
-        this.game.keys.key(Keyboard.Z);
-        this.game.keys.key(Keyboard.E);
+        this.game.keys.addKey(Keyboard.A);
+        this.game.keys.addKey(Keyboard.Z);
+        this.game.keys.addKey(Keyboard.E);
     }
     removeControls() {
-        if(window.isSmartphone)
+        if(window.isMobile)
             this.GuiJoystick.destroy();
 
-        this.game.keys.key(Keyboard.LEFT).onDown.remove(this.moveTo, this);
-        this.game.keys.key(Keyboard.RIGHT).onDown.remove(this.moveTo, this);
-        this.game.keys.key(Keyboard.UP).onDown.remove(this.moveTo, this);
-        this.game.keys.key(Keyboard.DOWN).onDown.remove(this.moveTo, this);
+        this.game.keys.addKey(Keyboard.LEFT).onDown.remove(this.moveTo, this);
+        this.game.keys.addKey(Keyboard.RIGHT).onDown.remove(this.moveTo, this);
+        this.game.keys.addKey(Keyboard.UP).onDown.remove(this.moveTo, this);
+        this.game.keys.addKey(Keyboard.DOWN).onDown.remove(this.moveTo, this);
 
-        this.game.keys.key(Keyboard.LEFT).onUp.remove(this.standTo, this);
-        this.game.keys.key(Keyboard.RIGHT).onUp.remove(this.standTo, this);
-        this.game.keys.key(Keyboard.UP).onUp.remove(this.standTo, this);
-        this.game.keys.key(Keyboard.DOWN).onUp.remove(this.standTo, this);
+        this.game.keys.addKey(Keyboard.LEFT).onUp.remove(this.standTo, this);
+        this.game.keys.addKey(Keyboard.RIGHT).onUp.remove(this.standTo, this);
+        this.game.keys.addKey(Keyboard.UP).onUp.remove(this.standTo, this);
+        this.game.keys.addKey(Keyboard.DOWN).onUp.remove(this.standTo, this);
     }
 
     /** Start & stop vehicle */
@@ -164,20 +170,20 @@ export default class Vehicle extends GameObject {
 
         this.objectCollisionUpdate();
         this.moveUpdate();
-        if(this.game.keys.key(Keyboard.Z).isDown && this.driver.obj.vehicleInUse.object !== null)
+        if(this.game.keys.isDown(Keyboard.Z) && this.driver.obj.vehicleInUse.object !== null)
             this.stop();
     }
 
     /** Add events comportements */
     objectCollisionUpdate() {
         if(this.objectInCollision === null) return; //if not collision, break
-        if(this.game.keys.key(Keyboard.A).isDown) {
+        if(this.game.keys.isDown(Keyboard.A)) {
             switch(this.objectInCollision.sprite.obj.constructor) {
                 case Vehicle:
                     this.modal.cantUseFeedback();
                     break;
                 case Material:
-                    if(this.game.keys.key(Keyboard.E).isDown) return;
+                    if(this.game.keys.isDown(Keyboard.E)) return;
                     if(!(Type.isExist(this.objectInCollision.sprite.obj.properties.amount)
                         && Type.isExist(this.objectInCollision.sprite.obj.properties.amount.current)
                         && this.objectInCollision.sprite.obj.properties.amount.current > 0)) return;
@@ -196,11 +202,11 @@ export default class Vehicle extends GameObject {
                     break;
             }
         }
-        if(this.game.keys.key(Keyboard.E).isDown) {
+        if(this.game.keys.isDown(Keyboard.E)) {
             let needed;
             switch(this.objectInCollision.sprite.obj.constructor) {
                 case Material:
-                    if(this.game.keys.key(Keyboard.A).isDown) return;
+                    if(this.game.keys.isDown(Keyboard.A)) return;
                     needed = this.objectInCollision.sprite.key;
                     this.objectInCollision.sprite.obj.setRessource(this.container.getSumOf(needed), (name, amount) => {
                         this.container.delItem(needed, amount);
@@ -209,7 +215,7 @@ export default class Vehicle extends GameObject {
                     });
                     break;
                 case Tool:
-                    if(this.game.keys.key(Keyboard.A).isDown) return;
+                    if(this.game.keys.isDown(Keyboard.A)) return;
                     needed = this.objectInCollision.sprite.obj.properties.needed;
                     this.objectInCollision.sprite.obj.setRessource(this.container.getSumOf(needed), (name, amount) => {
                         this.container.delItem(needed, amount);
@@ -280,22 +286,22 @@ export default class Vehicle extends GameObject {
         if(this.rotateDirection == Keyboard.LEFT) this.sprite.body.rotateLeft(this.speedRotate);
         if(this.rotateDirection == Keyboard.RIGHT) this.sprite.body.rotateRight(this.speedRotate);
 
-        if(!this.game.keys.key(Keyboard.LEFT).isDown && !this.game.keys.key(Keyboard.RIGHT).isDown)
+        if(!this.game.keys.isDown(Keyboard.LEFT) && !this.game.keys.isDown(Keyboard.RIGHT))
             this.sprite.body.setZeroRotation();
     }
     moveTo(key){
         if(!this.game.controlsEnabled) return;
 
         if(key.keyCode == Keyboard.DOWN || key.keyCode == Keyboard.UP) {
-            if(this.game.keys.key(Keyboard.LEFT).isDown) this.moveTo(this.game.keys.key(Keyboard.LEFT));
-            if(this.game.keys.key(Keyboard.RIGHT).isDown) this.moveTo(this.game.keys.key(Keyboard.RIGHT));
+            if(this.game.keys.isDown(Keyboard.LEFT)) this.moveTo(this.game.keys.addKey(Keyboard.LEFT));
+            if(this.game.keys.isDown(Keyboard.RIGHT)) this.moveTo(this.game.keys.addKey(Keyboard.RIGHT));
         }
 
         //si on recule on tourne dans l'autre sens (pour faire réaliste)
         if(key.keyCode == Keyboard.LEFT)
-            this.rotateDirection = !this.game.keys.key(Keyboard.DOWN).isDown ? Keyboard.LEFT : Keyboard.RIGHT;
+            this.rotateDirection = !this.game.keys.isDown(Keyboard.DOWN) ? Keyboard.LEFT : Keyboard.RIGHT;
         if(key.keyCode == Keyboard.RIGHT)
-            this.rotateDirection = !this.game.keys.key(Keyboard.DOWN).isDown ? Keyboard.RIGHT : Keyboard.LEFT;
+            this.rotateDirection = !this.game.keys.isDown(Keyboard.DOWN) ? Keyboard.RIGHT : Keyboard.LEFT;
 
         if((key.keyCode == Keyboard.UP || key.keyCode == Keyboard.DOWN)
             && this.walkDirection.indexOf(key.keyCode) === -1)
@@ -309,13 +315,13 @@ export default class Vehicle extends GameObject {
         if(indexOf > -1)
             this.walkDirection.splice(indexOf, 1);
         this.rotateDirection = null;
-        if(this.game.keys.key(Keyboard.LEFT).isDown) this.moveTo(this.game.keys.key(Keyboard.LEFT));
-        if(this.game.keys.key(Keyboard.RIGHT).isDown) this.moveTo(this.game.keys.key(Keyboard.RIGHT));
+        if(this.game.keys.isDown(Keyboard.LEFT)) this.moveTo(this.game.keys.addKey(Keyboard.LEFT));
+        if(this.game.keys.isDown(Keyboard.RIGHT)) this.moveTo(this.game.keys.addKey(Keyboard.RIGHT));
 
         // Si une touche devrait être enfoncée mais ne l'est pas
         // évènement non détecté, ex: clic hors canvas
         const clear = (key) => {
-            if(!this.game.keys.key(key).isDown) {
+            if(!this.game.keys.isDown(key)) {
                 const indexOf = this.walkDirection.indexOf(key);
                 if(indexOf > -1) this.walkDirection.splice(indexOf, 1);
             }

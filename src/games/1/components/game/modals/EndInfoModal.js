@@ -23,10 +23,10 @@ export default class DefaultModal extends Modal {
     // Juste avant d'afficher, on place le text au centre
     toggle(visible, params, stars = {}, score = {}) {
         if(visible) {
-            this.items.c.y = this.items.bg._frame.centerY - this.items.c.height/2;
-            this.items.c.items.text.x = this.items.bg._frame.centerX;
+            this.items.c.y = this.items.bg.centerY - this.items.c.height/2;
+            this.items.c.items.text.x = this.items.bg.centerX;
+            this.items.c.items.stars.x = this.items.bg.centerX - this.items.c.items.stars.width/2;
 
-            this.items.c.items.stars.x = this.items.bg._frame.centerX - this.items.c.items.stars.width/2;
             if(Type.isBoolean(stars.star1))
                 if(stars.star1) this.items.c.items.stars.items.star1.loadTexture('star');
                 else this.items.c.items.stars.items.star1.loadTexture('star_disabled');
@@ -41,7 +41,7 @@ export default class DefaultModal extends Modal {
                 `SANTÉ ${Type.isNumber(score.health) ? score.health : 0 } / ${this.healthMax} - ` +
                 `ORGANISATION ${Type.isNumber(score.organization) ? score.organization : 0 } / ${this.organizationMax} - ` +
                 `NOTORIÉTÉ ${Type.isNumber(score.enterprise) ? score.enterprise : 0 } / ${this.enterpriseMax}`;
-            this.items.c.items.score.x = this.items.bg._frame.centerX;
+            this.items.c.items.score.x = this.items.bg.centerX;
         }
         super.toggle(visible, params);
     }

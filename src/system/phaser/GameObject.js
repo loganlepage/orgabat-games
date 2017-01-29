@@ -7,7 +7,6 @@ export default class GameObject {
     constructor(game, layer) {
         this.game = game;
         this.layer = layer;
-        this.type = this.constructor.name;
     }
 
     /** @returns {boolean} */

@@ -11,6 +11,11 @@ import Vehicle from '../Vehicle/Vehicle';
 /** Player Object (include sprite and keys) */
 export default class Player extends GameObject {
 
+    ready = false;
+    direction = [];
+    isMoving = false;
+
+
     /**
      * Constructor for a new character object
      * @param game
@@ -20,7 +25,7 @@ export default class Player extends GameObject {
      */
     constructor(game, layer, x, y) {
         super(game, layer);
-        this.addSprite(new PlayerSprite(game, Position.getPixelAt(x), Position.getPixelAt(y), this.type, this));
+        this.addSprite(new PlayerSprite(game, Position.getPixelAt(x), Position.getPixelAt(y), 'player', this));
         this.game.layer.zDepth0.add(this.sprite);
         this.configure();
         this.ready = true;
@@ -40,36 +45,36 @@ export default class Player extends GameObject {
 
     /** Set Cross and AZE buttons */
     setControls() {
-        if(window.isSmartphone)
+        if(window.isMobile)
             this.GuiJoystick = new CrossAJoystick(this.game, this.game.layer.zDepthOverAll);
         this.direction = [];
 
-        this.game.keys.key(Keyboard.LEFT).onDown.add(this.moveTo, this);
-        this.game.keys.key(Keyboard.RIGHT).onDown.add(this.moveTo, this);
-        this.game.keys.key(Keyboard.UP).onDown.add(this.moveTo, this);
-        this.game.keys.key(Keyboard.DOWN).onDown.add(this.moveTo, this);
+        this.game.keys.addKey(Keyboard.LEFT).onDown.add(this.moveTo, this);
+        this.game.keys.addKey(Keyboard.RIGHT).onDown.add(this.moveTo, this);
+        this.game.keys.addKey(Keyboard.UP).onDown.add(this.moveTo, this);
+        this.game.keys.addKey(Keyboard.DOWN).onDown.add(this.moveTo, this);
 
-        this.game.keys.key(Keyboard.LEFT).onUp.add(this.standTo, this);
-        this.game.keys.key(Keyboard.RIGHT).onUp.add(this.standTo, this);
-        this.game.keys.key(Keyboard.UP).onUp.add(this.standTo, this);
-        this.game.keys.key(Keyboard.DOWN).onUp.add(this.standTo, this);
+        this.game.keys.addKey(Keyboard.LEFT).onUp.add(this.standTo, this);
+        this.game.keys.addKey(Keyboard.RIGHT).onUp.add(this.standTo, this);
+        this.game.keys.addKey(Keyboard.UP).onUp.add(this.standTo, this);
+        this.game.keys.addKey(Keyboard.DOWN).onUp.add(this.standTo, this);
 
-        this.game.keys.key(Keyboard.A);
+        this.game.keys.addKey(Keyboard.A);
     }
 
     removeControls() {
-        if(window.isSmartphone)
+        if(window.isMobile)
             this.GuiJoystick.destroy();
 
-        this.game.keys.key(Keyboard.LEFT).onDown.remove(this.moveTo, this);
-        this.game.keys.key(Keyboard.RIGHT).onDown.remove(this.moveTo, this);
-        this.game.keys.key(Keyboard.UP).onDown.remove(this.moveTo, this);
-        this.game.keys.key(Keyboard.DOWN).onDown.remove(this.moveTo, this);
+        this.game.keys.addKey(Keyboard.LEFT).onDown.remove(this.moveTo, this);
+        this.game.keys.addKey(Keyboard.RIGHT).onDown.remove(this.moveTo, this);
+        this.game.keys.addKey(Keyboard.UP).onDown.remove(this.moveTo, this);
+        this.game.keys.addKey(Keyboard.DOWN).onDown.remove(this.moveTo, this);
 
-        this.game.keys.key(Keyboard.LEFT).onUp.remove(this.standTo, this);
-        this.game.keys.key(Keyboard.RIGHT).onUp.remove(this.standTo, this);
-        this.game.keys.key(Keyboard.UP).onUp.remove(this.standTo, this);
-        this.game.keys.key(Keyboard.DOWN).onUp.remove(this.standTo, this);
+        this.game.keys.addKey(Keyboard.LEFT).onUp.remove(this.standTo, this);
+        this.game.keys.addKey(Keyboard.RIGHT).onUp.remove(this.standTo, this);
+        this.game.keys.addKey(Keyboard.UP).onUp.remove(this.standTo, this);
+        this.game.keys.addKey(Keyboard.DOWN).onUp.remove(this.standTo, this);
     }
 
     /** Update, not called when the player mount a vehicle */
@@ -83,7 +88,7 @@ export default class Player extends GameObject {
     /** Add comportements to an Object collided */
     objectCollisionUpdate() {
         if(this.objectInCollision === null) return; //if not collision, break
-        if(this.game.keys.key(Keyboard.A).isDown)
+        if(this.game.keys.isDown(Keyboard.A))
             switch(this.objectInCollision.sprite.obj.constructor) {
                 case Vehicle:
                     this.setVehicle(this.objectInCollision);
@@ -148,7 +153,7 @@ export default class Player extends GameObject {
         // Si une touche devrait être enfoncée mais ne l'est pas
         // évènement non détecté, ex: clic hors canvas
         const clear = (key) => {
-            if(!this.game.keys.key(key).isDown) {
+            if(!this.game.keys.isDown(key)) {
                 const indexOf = this.direction.indexOf(key);
                 if(indexOf > -1) this.direction.splice(indexOf, 1);
             }

@@ -13,7 +13,7 @@ export default class AJoystick extends Joystick {
      */
     constructor(game, parent) {
         super(game, parent);
-        const button = new Button(this.game, undefined, Keyboard.A, 0, 0, 'button_a');
+        const button = new Button(this.game, undefined, Keyboard.A, 0, 0, 'joystick_button_a');
         button.scale.set(this.game.uiScale(Joystick.SCALE));
         button.x = this.game.canvas.width - button.width - AJoystick.MARGIN;
         button.y = this.game.canvas.height - button.height - AJoystick.MARGIN;
