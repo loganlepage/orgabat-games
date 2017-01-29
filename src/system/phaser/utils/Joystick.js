@@ -96,19 +96,6 @@ export default class Joystick extends Group {
         game.load.spritesheet('joystick_button_e', `${assets_path}button/bouton_e.png`, 96, 96);
     }
 
-    // Supprime complètement un joystick
-    destroy(joystick) {
-        if(!Type.isInstanceOf(joystick, Joystick)) return;
-        var destroy = (children) => children.forEach((child) => {
-            if(Type.isInstanceOf(child, Group)) {
-                if(child.children.length > 0) destroy(child);
-                else child.pendingDestroy = true; //le groupe sera supprimé au prochain update
-            }
-            if(Type.isInstanceOf(child, Button)) child.destroy();
-        });
-        destroy(joystick.children);
-    }
-
     constructor(game, parent) {
         super(game);
         if(Type.isInstanceOf(parent, Group))

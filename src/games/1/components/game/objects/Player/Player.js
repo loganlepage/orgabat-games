@@ -46,7 +46,7 @@ export default class Player extends GameObject {
     /** Set Cross and AZE buttons */
     setControls() {
         if(window.isMobile)
-            this.GuiJoystick = new CrossAJoystick(this.game, this.game.layer.zDepthOverAll);
+            this.guiJoystick = new CrossAJoystick(this.game, this.game.layer.zDepthOverAll);
         this.direction = [];
 
         this.game.keys.addKey(Keyboard.LEFT).onDown.add(this.moveTo, this);
@@ -64,7 +64,7 @@ export default class Player extends GameObject {
 
     removeControls() {
         if(window.isMobile)
-            this.GuiJoystick.destroy();
+            this.guiJoystick.destroy();
 
         this.game.keys.addKey(Keyboard.LEFT).onDown.remove(this.moveTo, this);
         this.game.keys.addKey(Keyboard.RIGHT).onDown.remove(this.moveTo, this);

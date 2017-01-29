@@ -70,7 +70,7 @@ export default class Vehicle extends GameObject {
     setControls() {
         if(this.driver === null) return;
         if(window.isMobile)
-            this.GuiJoystick = new PadAzeJoystick(this.game, this.game.layer.zDepthOverAll);
+            this.guiJoystick = new PadAzeJoystick(this.game, this.game.layer.zDepthOverAll);
         this.rotateDirection = null;
         this.walkDirection = [];
 
@@ -90,7 +90,7 @@ export default class Vehicle extends GameObject {
     }
     removeControls() {
         if(window.isMobile)
-            this.GuiJoystick.destroy();
+            this.guiJoystick.destroy();
 
         this.game.keys.addKey(Keyboard.LEFT).onDown.remove(this.moveTo, this);
         this.game.keys.addKey(Keyboard.RIGHT).onDown.remove(this.moveTo, this);
