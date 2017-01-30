@@ -14,11 +14,10 @@ export default class MaterialFactory extends GameFactory {
     constructor(game, layer, materials) {
         super(game);
         for(let i in materials) {
-            let material = new Material(
+            this.add((new Material(
                 this.game, layer, materials[i].name,
                 materials[i].prop, materials[i].x, materials[i].y
-            );
-            this.add(material.sprite);
+            )).sprite);
         }
     }
 };

@@ -7,6 +7,7 @@ import {Keyboard} from 'phaser';
 import CrossAJoystick from 'system/phaser/utils/joysticks/CrossAJoystick';
 
 import Vehicle from '../Vehicle/Vehicle';
+import Type from 'system/utils/Type';
 
 /** Player Object (include sprite and keys) */
 export default class Player extends GameObject {
@@ -88,15 +89,12 @@ export default class Player extends GameObject {
     /** Add comportements to an Object collided */
     objectCollisionUpdate() {
         if(this.objectInCollision === null) return; //if not collision, break
-        if(this.game.keys.isDown(Keyboard.A))
-            switch(this.objectInCollision.sprite.obj.constructor) {
-                case Vehicle:
-                    this.setVehicle(this.objectInCollision);
-                    this.objectInCollision = null;
-                    break;
-                default:
-                    break;
+        if(this.game.keys.isDown(Keyboard.A)) {
+            if(Type.isInstanceOf(this.objectInCollision.sprite.obj, Vehicle)) {
+                this.setVehicle(this.objectInCollision);
+                this.objectInCollision = null;
             }
+        }
     }
     onCollisionBegin(o) {
         if( this.vehicleInUse.object !== null ) return;

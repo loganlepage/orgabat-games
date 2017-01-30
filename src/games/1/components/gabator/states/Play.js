@@ -32,7 +32,6 @@ export default class Play extends State {
     /** Called when the game start */
     start() {
         this.gabator.loadTexture('gabator', 0); //gabator reveillé
-        this.helpFeedback = new HelpModal({}, StackManager, Canvas.get('game'));
         this.help.visible = true;
 
         if(Type.isExist(Canvas.get('game'))
@@ -47,19 +46,6 @@ export default class Play extends State {
         || !Type.isExist(Canvas.get('game').gameProcess.quests)) return;
         const quest = Canvas.get('game').gameProcess.quests.getFirstNotDone();
         if(!Type.isInstanceOf(quest, Quest)) return;
-
-        this.helpFeedbackOnce = this.helpFeedbackOnce || new DoOnce((q) => {
-                this.helpFeedback.title = q.name;
-                this.helpFeedback.description = q.help;
-                this.helpFeedback.toggle(true, {stack: 'BOTTOM_RIGHT', fixed:true});
-                const close = () => {
-                    this.helpFeedback.toggle(false, {stack: 'BOTTOM_RIGHT', fixed:true});
-                    this.helpFeedbackOnce.done = false;
-                    clearTimeout(timeOut);
-                };
-                const timeOut = setTimeout(close, 7000);
-                this.helpFeedback.items.close.events.onInputDown.addOnce(close, this);
-            });
-        this.helpFeedbackOnce.call(quest);
+        this.game.modal.showHelp(quest.name, quest.help);
     }
 };

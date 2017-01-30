@@ -1,4 +1,5 @@
 import {Keyboard} from 'phaser';
+import Elevator from '../objects/Vehicle/elevator/Elevator';
 
 /** Configs for this game */
 export default {
@@ -37,7 +38,7 @@ export default {
         player: {x: 2, y: 7, speed: 175},
         vehicles: [ //names are unique
             {
-                name: "elevateur", x: 2, y: 2,
+                name: "elevateur", x: 2, y: 2, useClass: Elevator,
                 prop: {speed: 18, speedRotate: 10, player_x: 0.5, player_y: -0.20, loading_x: 0.5, loading_y: 1.8,
                     walkToMove: false, use: Keyboard.UP, name: "Chariot élévateur",
                     description: "Permet de transporter six charges de liant.", size: "1x2m",
@@ -107,7 +108,8 @@ export default {
             {name: "bouton_e", file: "bouton_e.png"},
             {name: "star", file: "star.png"},
             {name: "star_disabled", file: "star_disabled.png"},
-            {name: "gabator_help_modal", file: "gabator_help_modal.png"}
+            {name: "gabator_help_modal", file: "gabator_help_modal.png"},
+            {name: "gabator_confirm_modal", file: "gabator_confirm_modal.png"}
         ]
     },
 

@@ -7,7 +7,7 @@ import {TooltipManager, StackManager, Stack} from 'system/phaser/Modal';
 import Type from 'system/utils/Type';
 import {DoOnce} from 'system/utils/Utils';
 
-/** Vehicle Modal (called by the tool gameObject) */
+/** Vehicle Modal (called by the vehicle gameObject) */
 export default class VehicleModal extends GameModal {
 
     /**

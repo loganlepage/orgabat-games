@@ -72,13 +72,9 @@ export default class Material extends GameObject {
     /** Add events comportements */
     onCollisionBegin(o) {
         super.onCollisionBegin(o.object);
-        switch(this.objectInCollision.sprite.obj.constructor) {
-            case Vehicle:
-            case Player:
-                this.modal.tooltipHandler(GameModal.VISIBLE, GameModal.CONTROLS_DISABLED, null, GameModal.FORCE);
-                break;
-            default:
-                break;
+        if(Type.isInstanceOf(this.objectInCollision.sprite.obj, Vehicle)
+        || Type.isInstanceOf(this.objectInCollision.sprite.obj, Player)) {
+            this.modal.tooltipHandler(GameModal.VISIBLE, GameModal.CONTROLS_DISABLED, null, GameModal.FORCE);
         }
     }
     onCollisionEnd(o) {

@@ -14,11 +14,10 @@ export default class ToolFactory extends GameFactory {
     constructor(game, layer, tools) {
         super(game);
         for(let i in tools) {
-            let tool = new Tool(
+            this.add((new Tool(
                 this.game, layer, tools[i].name,
                 tools[i].prop, tools[i].x, tools[i].y
-            );
-            this.add(tool.sprite);
+            )).sprite);
         }
     }
 };

@@ -19,6 +19,8 @@ import VehicleMountQuest from '../quests/VehicleMountQuest';
 import VehicleLoadQuest from '../quests/VehicleLoadQuest';
 import DepotFillQuest from '../quests/DepotFillQuest';
 
+import Elevator from '../objects/Vehicle/elevator/Elevator';
+
 /** State when we start the game */
 export default class Play extends State {
 
@@ -53,10 +55,10 @@ export default class Play extends State {
         this.initMap();
         this.initUI();
         this.addVehicles();
-
         this.addTools();
         this.addMaterials();
         this.addPlayer();
+        PhaserManager.ready('game', 'play');
 
         this.game.physics.p2.setBoundsToWorld(true, true, true, true, false);
         this.game.physics.p2.updateBoundsCollisionGroup();
@@ -192,10 +194,6 @@ class GameProcess {
         else this._onAnimationEnd();
     }
     _onAnimationEnd() {
-        //On active Gabator
-        if(PhaserManager.get('gabator').state.current == "play")
-            PhaserManager.get('gabator').state.getCurrentState().start();
-
         //On affiche la modale d'information du début
         this.startInfoModal.toggle(true);
         this.game.keys.addKey(Phaser.Keyboard.ENTER).onDown.addOnce(this._onStartInfoClose, this);
@@ -204,6 +202,10 @@ class GameProcess {
         this.startInfoModal.items.close.items.textA.events.onInputDown.add(this._onStartInfoClose, this);
     }
     _onStartInfoClose() {
+        //On active Gabator
+        if(PhaserManager.get('gabator').state.current == "play")
+            PhaserManager.get('gabator').state.getCurrentState().start();
+
         this.game.keys.addKey(Phaser.Keyboard.ENTER).onDown.remove(this._onStartInfoClose, this);
         this.game.keys.addKey(Phaser.Keyboard.A).onDown.remove(this._onStartInfoClose, this);
 
@@ -213,9 +215,15 @@ class GameProcess {
         this.game.controlsEnabled = true;
 
         //Si on rentre en collision
-        this.collide = { wall: false, vehicle: false };
+        this.collided = { wall: false, vehicle: false };
         this.game.vehicleGroup.forEach((vehicle) => {
             vehicle.obj.onCollision.add(this._onCollide, this);
+        });
+
+        //Si on monte un élévator
+        this.elevatorMounted = false;
+        this.game.vehicleGroup.forEach((vehicle) => {
+            vehicle.obj.onMounted.add(this._onMount, this);
         });
 
         //Si on termine la partie
@@ -223,11 +231,18 @@ class GameProcess {
         this._timeStart = this.game.time.elapsedMS;
     }
     _onCollide(name){
-        if(!Type.isExist(this.collide[name]) || this.collide[name]) return;
-        this.collide[name] = true;
+        if(!Type.isExist(this.collided[name]) || this.collided[name]) return;
+        this.collided[name] = true;
         PhaserManager.get('gabator').stats.changeValues({
             enterprise: PhaserManager.get('gabator').stats.state.enterprise - 1,
             health: PhaserManager.get('gabator').stats.state.health - 1,
+        });
+    }
+    _onMount(vehicle) {
+        if(!Type.isInstanceOf(vehicle, Elevator) || this.elevatorMounted) return;
+        this.elevatorMounted = true;
+        PhaserManager.get('gabator').stats.changeValues({
+            organization: PhaserManager.get('gabator').stats.state.organization - 1,
         });
     }
     _onFinish() {

@@ -43,6 +43,7 @@ export default class Vehicle extends GameObject {
      * @param properties
      * @param x
      * @param y
+     * @param modal
      */
     constructor(game, layer, name, properties, x, y) {
         super(game, layer);
@@ -178,53 +179,45 @@ export default class Vehicle extends GameObject {
     objectCollisionUpdate() {
         if(this.objectInCollision === null) return; //if not collision, break
         if(this.game.keys.isDown(Keyboard.A)) {
-            switch(this.objectInCollision.sprite.obj.constructor) {
-                case Vehicle:
-                    this.modal.cantUseFeedback();
-                    break;
-                case Material:
-                    if(this.game.keys.isDown(Keyboard.E)) return;
-                    if(!(Type.isExist(this.objectInCollision.sprite.obj.properties.amount)
-                        && Type.isExist(this.objectInCollision.sprite.obj.properties.amount.current)
-                        && this.objectInCollision.sprite.obj.properties.amount.current > 0)) return;
-                    const materialAmount = this.objectInCollision.sprite.obj.properties.amount.current;
-                    const wantAmount = this.container.getSizeLeft() > materialAmount ? materialAmount : this.container.getSizeLeft();
-                    this.objectInCollision.sprite.obj.getRessource(wantAmount, (name, amount) => {
-                        this.container.addItem(name, amount);
-                        this.onLoaded.dispatch(name, amount);
-                        if(amount > 0 && this.container.getSizeLeft() === 0)
-                            this.modal.containerFullFeedback();
-                        if(this.container.getSizeUsed() > 0)
-                            this.loading.visible = true;
-                    });
-                    break;
-                default:
-                    break;
+            if(Type.isInstanceOf(this.objectInCollision.sprite.obj, Vehicle)) {
+                this.modal.cantUseFeedback();
+            }
+            else if(Type.isInstanceOf(this.objectInCollision.sprite.obj, Material)) {
+                if(this.game.keys.isDown(Keyboard.E)) return;
+                if(!(Type.isExist(this.objectInCollision.sprite.obj.properties.amount)
+                    && Type.isExist(this.objectInCollision.sprite.obj.properties.amount.current)
+                    && this.objectInCollision.sprite.obj.properties.amount.current > 0)) return;
+                const materialAmount = this.objectInCollision.sprite.obj.properties.amount.current;
+                const wantAmount = this.container.getSizeLeft() > materialAmount ? materialAmount : this.container.getSizeLeft();
+                this.objectInCollision.sprite.obj.getRessource(wantAmount, (name, amount) => {
+                    this.container.addItem(name, amount);
+                    this.onLoaded.dispatch(name, amount);
+                    if(amount > 0 && this.container.getSizeLeft() === 0)
+                        this.modal.containerFullFeedback();
+                    if(this.container.getSizeUsed() > 0)
+                        this.loading.visible = true;
+                });
             }
         }
         if(this.game.keys.isDown(Keyboard.E)) {
             let needed;
-            switch(this.objectInCollision.sprite.obj.constructor) {
-                case Material:
-                    if(this.game.keys.isDown(Keyboard.A)) return;
-                    needed = this.objectInCollision.sprite.key;
-                    this.objectInCollision.sprite.obj.setRessource(this.container.getSumOf(needed), (name, amount) => {
-                        this.container.delItem(needed, amount);
-                        if(this.container.getSizeUsed() === 0)
-                            this.loading.visible = false;
-                    });
-                    break;
-                case Tool:
-                    if(this.game.keys.isDown(Keyboard.A)) return;
-                    needed = this.objectInCollision.sprite.obj.properties.needed;
-                    this.objectInCollision.sprite.obj.setRessource(this.container.getSumOf(needed), (name, amount) => {
-                        this.container.delItem(needed, amount);
-                        if(this.container.getSizeUsed() === 0)
-                            this.loading.visible = false;
-                    });
-                    break;
-                default:
-                    break;
+            if(Type.isInstanceOf(this.objectInCollision.sprite.obj, Material)) {
+                if(this.game.keys.isDown(Keyboard.A)) return;
+                needed = this.objectInCollision.sprite.key;
+                this.objectInCollision.sprite.obj.setRessource(this.container.getSumOf(needed), (name, amount) => {
+                    this.container.delItem(needed, amount);
+                    if(this.container.getSizeUsed() === 0)
+                        this.loading.visible = false;
+                });
+            }
+            else if(Type.isInstanceOf(this.objectInCollision.sprite.obj, Tool)) {
+                if(this.game.keys.isDown(Keyboard.A)) return;
+                needed = this.objectInCollision.sprite.obj.properties.needed;
+                this.objectInCollision.sprite.obj.setRessource(this.container.getSumOf(needed), (name, amount) => {
+                    this.container.delItem(needed, amount);
+                    if(this.container.getSizeUsed() === 0)
+                        this.loading.visible = false;
+                });
             }
         }
     }
@@ -233,18 +226,14 @@ export default class Vehicle extends GameObject {
             case 'gameObject':
                 super.onCollisionBegin(o.object);
                 if(this.collisionEventEnabled) {
-                    switch(this.objectInCollision.sprite.obj.constructor) {
-                        case Player:
-                            this.modal.tooltipHandler(GameModal.VISIBLE, Vehicle.COLLIDED, GameModal.CONTROLS_DISABLED, null, GameModal.FORCE);
-                            break;
-                        case Vehicle:
-                            if(Type.isExist(this.driver)) {
-                                this.onCollision.dispatch('vehicle');
-                                this.modal.carefulFeedback('aux véhicules');
-                            }
-                            break;
-                        default:
-                            break;
+                    if(Type.isInstanceOf(this.objectInCollision.sprite.obj, Player)) {
+                        this.modal.tooltipHandler(
+                            GameModal.VISIBLE, Vehicle.COLLIDED, GameModal.CONTROLS_DISABLED, null, GameModal.FORCE
+                        );
+                    }
+                    else if(Type.isInstanceOf(this.objectInCollision.sprite.obj, Vehicle)) {
+                        this.onCollision.dispatch('vehicle');
+                        this.modal.carefulFeedback('aux véhicules');
                     }
                 }
 

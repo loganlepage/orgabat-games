@@ -1,6 +1,7 @@
 'use strict';
 import GameFactory from 'system/phaser/GameFactory';
 import Vehicle from './Vehicle';
+import Type from 'system/utils/Type';
 
 /** Vehicle Group Factory (called by play state) */
 export default class VehicleFactory extends GameFactory {
@@ -14,11 +15,13 @@ export default class VehicleFactory extends GameFactory {
     constructor(game, layer, vehicles) {
         super(game);
         for(let i in vehicles) {
-            let vehicle = new Vehicle(
+            if(Type.isExist(vehicles[i].useClass) && !vehicles[i].useClass.prototype instanceof Vehicle)
+                throw `${vehicles[i].useClass.prototype} doit étendre de ${Vehicle.prototype}`;
+
+            this.add((new (Type.isExist(vehicles[i].useClass) ? vehicles[i].useClass : Vehicle)(
                 this.game, layer, vehicles[i].name,
                 vehicles[i].prop, vehicles[i].x, vehicles[i].y
-            );
-            this.add(vehicle.sprite);
+            )).sprite);
         }
     }
 };
