@@ -4,6 +4,38 @@ import Type from '../utils/Type';
 import GameModal from './GameModal';
 
 /** Make a sprite item for modal */
+class Button extends Phaser.Button {
+    /**
+     * Constructor for a new Image item
+     * @param game
+     * @param x
+     * @param y
+     * @param key
+     * @param props
+     */
+    constructor(game, x, y, key, props) {
+        props = props || {};
+        try {
+            Type.isExist(game, true);
+            Type.isNumber(x, true);
+            Type.isNumber(y, true);
+            Type.isString(key, true);
+        } catch (e) {
+            console.error(e.name + ": " + e.message);
+        }
+        super(game, game.uiScale(x), game.uiScale(y), key, null, null, 2, 1, 0);
+        this.scale.setTo(game.uiScale(Type.isNumber(props.scale) ? props.scale : 1));
+        this.visible = Type.isBoolean(props.visible) ? props.visible : true;
+        this.anchor.set(
+            Type.isNumber(props.anchorX) ? props.anchorX : 0,
+            Type.isNumber(props.anchorY) ? props.anchorY : 0
+        );
+    }
+    setX(x){ this.x = this.game.uiScale(x) }
+    setY(y){ this.y = this.game.uiScale(y) }
+}
+
+/** Make a sprite item for modal */
 class Sprite extends Phaser.Sprite {
     /**
      * Constructor for a new Image item
@@ -34,7 +66,6 @@ class Sprite extends Phaser.Sprite {
     }
     setX(x){ this.x = this.game.uiScale(x) }
     setY(y){ this.y = this.game.uiScale(y) }
-    getWidth() { return this._frame.width}
 }
 
 /** Make a text item for modal */
@@ -213,25 +244,44 @@ export class Stack extends Phaser.Group {
         const start =               this.sort == Stack.DESC ? this.children.length - 1 : 0;
         const condition = (i) =>    this.sort == Stack.DESC ? i >= 0 : i < this.children.length;
         const increment =           this.sort;
-        for(let i = start; condition(i); i+=increment) {
-            switch(this.axe) {
-                case Stack.HORIZONTAL:
-                    if(counter == 0) x = this.children[i].width * -this.anchor.x;
-                    y = (this.children[i].height + this.offset.y) * (1-this.anchor.y*2);
-                    Manager.moveTo(this.children[i], {x:x, y:y});
-                    x += (this.direction == Stack.LEFT ? -1 : 1) * (this.children[i].width + this.offset.x);
-                    break;
-                case Stack.VERTICAL:
-                    if(counter == 0) y = this.children[i].height * -this.anchor.y;
-                    x = (this.children[i].width + this.offset.x) * (1-this.anchor.x*2);
-                    Manager.moveTo(this.children[i], {x:x, y:y});
-                    y += (this.direction == Stack.TOP ? -1 : 1) * (this.children[i].height + this.offset.y);
-                    break;
-                default:
-                    break;
+        const reorganize = (cbCondition) => {
+            for(let i = start; condition(i); i+=increment) {
+                if(cbCondition(this.children[i])) {
+                    switch(this.axe) {
+                        case Stack.HORIZONTAL:
+                            if(counter == 0) {
+                                x = this.children[i].width * -this.anchor.x;
+                            } else if(this.direction == Stack.LEFT) {
+                                x -= this.children[i].width + this.offset.x;
+                            }
+                            y = (this.children[i].height + this.offset.y) * (1-this.anchor.y*2);
+                            Manager.moveTo(this.children[i], {x:x, y:y});
+                            if(this.direction == Stack.RIGHT) {
+                                x += this.children[i].width + this.offset.x;
+                            }
+                            break;
+                        case Stack.VERTICAL:
+                            if(counter == 0) {
+                                y = this.children[i].height * -this.anchor.y;
+                            } else if(this.direction == Stack.TOP) {
+                                y -= this.children[i].height + this.offset.y;
+                            }
+                            x = (this.children[i].width + this.offset.x) * (1-this.anchor.x*2);
+                            Manager.moveTo(this.children[i], {x:x, y:y});
+                            if(this.direction == Stack.BOTTOM) {
+                                y += this.children[i].height + this.offset.y;
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                    counter++;
+                }
             }
-            counter++;
-        }
+        };
+        //permet de créer des groupes de pile dans une pile
+        reorganize((modal) => modal.params.fixeMe === true);
+        reorganize((modal) => !Type.isBoolean(modal.params.fixeMe) || !modal.params.fixeMe);
     }
     static get VERTICAL() { return true }
     static get HORIZONTAL() { return false }
@@ -297,17 +347,15 @@ export class DefaultManager extends Manager {
     }
 
     /** Controls */
-    _add(modal, params) {
-        if(Type.isNumber(params.width) && Type.isNumber(params.height)) {
-            modal.fixedToCameraDefault = modal.fixedToCamera;
-            modal.fixedToCamera = true;
-            modal.cameraOffset.setTo(
-                this.game.canvas.width / 2 - this.game.uiScale(params.width) / 2,
-                this.game.canvas.height / 2 - this.game.uiScale(params.height) / 2
-            );
-            Manager.show(this.blackBackground);
-            Manager.show(modal, this.game.layer.zDepth3);
-        }
+    _add(modal, params = {}) {
+        modal.fixedToCameraDefault = modal.fixedToCamera;
+        modal.fixedToCamera = true;
+        modal.cameraOffset.setTo(
+            this.game.canvas.width / 2 - modal.width / 2,
+            this.game.canvas.height / 2 - modal.height / 2
+        );
+        Manager.show(this.blackBackground);
+        Manager.show(modal, this.game.layer.zDepth3);
     }
     _del(modal) {
         modal.fixedToCamera = modal.fixedToCameraDefault;
@@ -377,6 +425,9 @@ class Factory extends Phaser.Group {
             case 'sprite':
                 item = new Sprite(this.game, data.x || 0, data.y || 0, data.key, data.props);
                 break;
+            case 'button':
+                item = new Button(this.game, data.x || 0, data.y || 0, data.key, data.props);
+                break;
         }
         if(item) {
             this.add(item);
@@ -408,7 +459,7 @@ export default class Modal extends Factory {
      * @param visible
      * @param params (fixed|controls)
      */
-    toggle(visible, params) {
+    toggle(visible, params = {}) {
         this.params.fixeMe = Type.isBoolean(params.fixed) ? params.fixed : null;
         this.manager.toggle(visible, this, params);
     }

@@ -154,8 +154,8 @@ export default class Play extends State {
      * this.game Rules
      */
     start() {
-        const gameProcess = new GameProcess(this);
-        gameProcess.init();
+        this.game.gameProcess = new GameProcess(this);
+        this.game.gameProcess.init();
     }
 };
 
@@ -188,28 +188,24 @@ class GameProcess {
         this.quests.add(new DepotFillQuest(this.game));
     }
     init() {
-        if(this.bootTweenTime > 0) this.bootTween.start().onComplete.add(() => this.onAnimationEnd());
-        else this.onAnimationEnd();
+        if(this.bootTweenTime > 0) this.bootTween.start().onComplete.add(() => this._onAnimationEnd());
+        else this._onAnimationEnd();
     }
-    onAnimationEnd() {
+    _onAnimationEnd() {
         //On active Gabator
         if(PhaserManager.get('gabator').state.current == "play")
             PhaserManager.get('gabator').state.getCurrentState().start();
 
         //On affiche la modale d'information du début
-        this.startInfoModal.toggle(true, {
-            width: this.startInfoModal.items.bg._frame.width,
-            height: this.startInfoModal.items.bg._frame.height
-        });
-        this.game.keys.addKey(Phaser.Keyboard.ENTER).onDown.addOnce(this.onStartInfoClose, this);
-        this.game.keys.addKey(Phaser.Keyboard.A).onDown.addOnce(this.onStartInfoClose, this);
-        this.startInfoModal.items.close.items.iconA.events.onInputDown.add(this.onStartInfoClose, this);
-        this.startInfoModal.items.close.items.textA.events.onInputDown.add(this.onStartInfoClose, this);
+        this.startInfoModal.toggle(true);
+        this.game.keys.addKey(Phaser.Keyboard.ENTER).onDown.addOnce(this._onStartInfoClose, this);
+        this.game.keys.addKey(Phaser.Keyboard.A).onDown.addOnce(this._onStartInfoClose, this);
+        this.startInfoModal.items.close.items.iconA.events.onInputDown.add(this._onStartInfoClose, this);
+        this.startInfoModal.items.close.items.textA.events.onInputDown.add(this._onStartInfoClose, this);
     }
-
-    onStartInfoClose() {
-        this.game.keys.addKey(Phaser.Keyboard.ENTER).onDown.remove(this.onStartInfoClose, this);
-        this.game.keys.addKey(Phaser.Keyboard.A).onDown.remove(this.onStartInfoClose, this);
+    _onStartInfoClose() {
+        this.game.keys.addKey(Phaser.Keyboard.ENTER).onDown.remove(this._onStartInfoClose, this);
+        this.game.keys.addKey(Phaser.Keyboard.A).onDown.remove(this._onStartInfoClose, this);
 
         //Ferme la modale et active les controls
         this.startInfoModal.toggle(false, {});
@@ -219,14 +215,14 @@ class GameProcess {
         //Si on rentre en collision
         this.collide = { wall: false, vehicle: false };
         this.game.vehicleGroup.forEach((vehicle) => {
-            vehicle.obj.onCollision.add(this.onCollide, this);
+            vehicle.obj.onCollision.add(this._onCollide, this);
         });
 
         //Si on termine la partie
-        this.quests.get('depot_fill').onDone.addOnce(this.onFinish, this);
+        this.quests.get('depot_fill').onDone.addOnce(this._onFinish, this);
         this._timeStart = this.game.time.elapsedMS;
     }
-    onCollide(name){
+    _onCollide(name){
         if(!Type.isExist(this.collide[name]) || this.collide[name]) return;
         this.collide[name] = true;
         PhaserManager.get('gabator').stats.changeValues({
@@ -234,7 +230,7 @@ class GameProcess {
             health: PhaserManager.get('gabator').stats.state.health - 1,
         });
     }
-    onFinish() {
+    _onFinish() {
         this._timeEnd = this.game.time.elapsedMS;
         const timeElapsed = this._timeEnd - this._timeStart;
 

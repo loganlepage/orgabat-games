@@ -5,9 +5,13 @@ import QuestLayout, {TitleLayout} from "system/phaser/modals/Quest";
 import Type from "system/utils/Type";
 
 export class Quest {
+
+    _name = 'default_name';
+    _key = 'default_key';
+    _help = 'default_help';
+
     constructor(game) {
         this._done = false;
-        this._key = 'default';
         this.onDone = new Phaser.Signal();
     }
     get isDone() {
@@ -19,31 +23,56 @@ export class Quest {
     get key() {
         return this._key;
     }
+    get help() {
+        return this._help;
+    }
     done() {
+        if(this._done) return;
         this._done = true;
         this.onDone.dispatch();
     }
 }
 
 export default class QuestManager {
+
+    _quests = {};
+    _nbQuestsDone = 0;
+
     constructor() {
-        this.quests = {};
         this.onAdd = new Phaser.Signal();
         this.onDelete = new Phaser.Signal();
+        this.onNbQuestsDoneChange = new Phaser.Signal();
+    }
+    set nbQuestsDone(value) {
+        this._nbQuestsDone += value;
+        this.onNbQuestsDoneChange.dispatch(this._nbQuestsDone);
     }
     add(quest) {
         if(Type.isExist(this.get(quest.key) && this.get(quest.key) !== quest))
             throw `An other quest with key '${quest.key}' already exist`;
 
-        this.quests[quest.key] = quest;
+        this._quests[quest.key] = quest;
+        this._quests[quest.key].onDone.addOnce(this.isDone, this);
+        this.nbQuestsDone = +1;
         this.onAdd.dispatch(quest);
     }
     del(quest) {
         this.onDelete.dispatch(quest);
-        delete this.quests[quest.key];
+        delete this._quests[quest.key];
     }
     get(key) {
-        return this.quests[key];
+        return this._quests[key];
+    }
+    isDone() {
+        this.nbQuestsDone = -1;
+    }
+    getFirstNotDone() {
+        let quest = null, founded = false;
+        const keys = Object.keys(this._quests).reverse();
+        for(let i = 0; i < keys.length; ++i)
+            if(!this._quests[keys[i]].isDone && !founded)
+                quest = this._quests[keys[i]];
+        return quest;
     }
 }
 

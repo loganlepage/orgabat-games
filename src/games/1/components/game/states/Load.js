@@ -38,6 +38,14 @@ export default class Load extends State {
             this.game.load.image(Config.tilemap.assets[i].name, `${assets_path}tilemap/tiles/${Config.tilemap.assets[i].file}`);
         for(let i in Config.modals.assets)
             this.game.load.image(Config.modals.assets[i].name, `${assets_path}modal/${Config.modals.assets[i].file}`);
+        for(let i in Config.buttons.assets)
+            this.game.load.spritesheet(
+                Config.buttons.assets[i].name,
+                `${assets_path}button/${Config.buttons.assets[i].file}`,
+                Config.buttons.assets[i].width,
+                Config.buttons.assets[i].height
+            );
+
 
         this.game.load.spritesheet('player', `${assets_path}sprite/player.32.png`, 33, 48, 16);
     }

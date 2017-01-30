@@ -4,6 +4,7 @@ export default class DepotFillQuest extends Quest {
 
     _name = 'Déposer 9 charges de mortier dans le dépot';
     _key = 'depot_fill';
+    _help = "Depuis votre véhicule, \napprochez-vous du dépot dans l'entrepôt, \npuis appuyez sur E pour décharger.";
 
     constructor(game) {
         super(game);

@@ -106,7 +106,14 @@ export default {
             {name: "bouton_z", file: "bouton_z.png"},
             {name: "bouton_e", file: "bouton_e.png"},
             {name: "star", file: "star.png"},
-            {name: "star_disabled", file: "star_disabled.png"}
+            {name: "star_disabled", file: "star_disabled.png"},
+            {name: "gabator_help_modal", file: "gabator_help_modal.png"}
+        ]
+    },
+
+    buttons: {
+        assets: [
+            {name: "bouton_close", file: "bouton_close.png", width:32, height:32}
         ]
     }
 }
