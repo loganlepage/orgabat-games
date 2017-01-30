@@ -266,11 +266,11 @@ class GameProcess {
         });
         //Et on envoie le score à l'API
         api.sendScore({
-            id: game_id,
-            time: timeElapsed,
+            exerciseId: game_id,
+            time: Math.round(timeElapsed/1000),
             health: PhaserManager.get('gabator').stats.state.health,
             organization: PhaserManager.get('gabator').stats.state.organization,
             business: PhaserManager.get('gabator').stats.state.enterprise
-        });
+        }, ()=>{});
     }
 }
