@@ -63,7 +63,6 @@ class Modal {
                 this.confirm.description = args.description;
                 this.confirm.toggle(true, {stack: 'BOTTOM_RIGHT', fixed:true});
                 const close = (isConfirm = false) => {
-                    console.log(isConfirm);
                     this.confirm.toggle(false, {stack: 'BOTTOM_RIGHT', fixed:true});
                     this.confirmOnce.done = false;
                     if(isConfirm) args.cb();
