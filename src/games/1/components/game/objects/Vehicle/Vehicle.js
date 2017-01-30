@@ -231,7 +231,7 @@ export default class Vehicle extends GameObject {
                             GameModal.VISIBLE, Vehicle.COLLIDED, GameModal.CONTROLS_DISABLED, null, GameModal.FORCE
                         );
                     }
-                    else if(Type.isInstanceOf(this.objectInCollision.sprite.obj, Vehicle)) {
+                    else if(Type.isInstanceOf(this.objectInCollision.sprite.obj, Vehicle) && Type.isExist(this.driver)) {
                         this.onCollision.dispatch('vehicle');
                         this.modal.carefulFeedback('aux véhicules');
                     }
