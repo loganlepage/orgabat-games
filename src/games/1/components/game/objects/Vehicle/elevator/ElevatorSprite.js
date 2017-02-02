@@ -14,7 +14,6 @@ export default class ElevatorSprite extends VehicleSprite {
      */
     constructor(game, x, y, name, vehicleObj) {
         super(game, x, y, name, vehicleObj);
-        this.setPhysics();
     }
     setContext(obj) {
         this.obj = obj;
@@ -22,7 +21,7 @@ export default class ElevatorSprite extends VehicleSprite {
 
     /** Initialize physics */
     setPhysics() {
-        super.setPhysics();
         this.body.setRectangle(this.width*1.1, this.height);
+        super.setPhysics();
     }
 };

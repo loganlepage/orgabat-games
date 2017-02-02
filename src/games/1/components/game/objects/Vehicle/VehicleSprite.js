@@ -15,12 +15,12 @@ export default class VehicleSprite extends GameSprite {
      */
     constructor(game, x, y, name, vehicleObj) {
         super(game, x, y, name, vehicleObj);
+        this.game.physics.p2.enable(this, Config.developer.debug);
         this.setPhysics();
     }
 
     /** Initialize physics */
     setPhysics() {
-        this.game.physics.p2.enable(this, Config.developer.debug);
         this.body.fixedRotation = true;
         this.body.setCollisionGroup(this.game.CollisionGroup.vehicle);
         this.body.collides(this.game.CollisionGroup.vehicle, this.onCollision, this);

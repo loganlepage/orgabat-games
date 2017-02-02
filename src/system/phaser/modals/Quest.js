@@ -52,10 +52,12 @@ export default class QuestLayout extends Modal {
             this.items.star.loadTexture('atlas', 'modal/item/star');
             this.items.text.stroke = "#3F3F3F";
             this.items.text.strokeThickness = 2;
+            this.items.text.setShadow(0, 0, 'rgba(0,0,0,0)', 0);
         } else {
             this.items.star.loadTexture('atlas', 'modal/item/star_disabled');
             this.items.text.stroke = QuestLayout.pattern.items.text.style.stroke;
             this.items.text.strokeThickness = QuestLayout.pattern.items.text.style.strokeThickness;
+            this.items.text.setShadow(0, 0, 'rgba(0,0,0,0.4)', 5);
         }
     }
 
