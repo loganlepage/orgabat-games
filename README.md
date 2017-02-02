@@ -4,7 +4,7 @@ Répertoire de travail pour les jeux du projet [ORGABAT]
 ## Récupération du projet et installation des dépendances
 Positionnez vous à la racine du projet ORGABAT
 ```sh
-git clone https://github.com/loganlepage/orgabat-games.git ./web/modules/game
+git submodule update --init
 cd ./web/modules/game
 npm install
 ```
@@ -18,7 +18,7 @@ npm install -g webpack
 Créer un fichier minifié pour chaque jeu (production),
 vous pouvez faire CTRL+C dès que terminé.
 ```sh
-webpack --prod
+webpack -p
 ```
 
 Créer un fichier pour chaque jeu sans minification (développement),
