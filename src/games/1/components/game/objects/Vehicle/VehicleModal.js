@@ -10,6 +10,14 @@ import {DoOnce} from 'system/utils/Utils';
 /** Vehicle Modal (called by the vehicle gameObject) */
 export default class VehicleModal extends GameModal {
 
+    isShowMouseUsable = true;
+    isShowUsable = true;
+    isDroppedUsable = true;
+    isCanUseUsable = true;
+    isContainerFullUsable = true;
+    isCarefulUsable = true;
+
+
     /**
      * Constructor for a new vehicle modal
      * @param properties
@@ -20,104 +28,134 @@ export default class VehicleModal extends GameModal {
         super(game);
         this.properties = properties;
         this.obj = vehicleObj;
-
-        let text = `${this.properties.description}\nSa taille est de ${this.properties.size}`;
-        if(Type.isString(this.properties.infoAdded)) text += `\n${this.properties.infoAdded}`;
-        this.tooltip = new DescriptionTooltip({items: {
-            title: {text: this.properties.name}, description: {text: text}
-        }}, TooltipManager, this.game);
+        this.descriptionText = `${this.properties.description}\nSa taille est de ${this.properties.size}`;
+        if(Type.isString(this.properties.infoAdded))
+            this.descriptionText += `\n${this.properties.infoAdded}`;
 
         this.buttonStack = new Stack(
             20, game.canvas.height, game,
             {axe: Stack.HORIZONTAL, direction: Stack.RIGHT, offsetX: 32, offsetY: 5, anchorY: 1}
         );
-        this.dropInfo = new ButtonInfo({items: {
-            image: { key: "bouton_e"}, text: { text: "Déposer"}}
-        }, StackManager, this.game);
-        this.useInfo = new ButtonInfo({items: {
-            image: { key: "bouton_a"}, text: { text: "Prendre"}}
-        }, StackManager, this.game);
-        this.exitInfo = new ButtonInfo({items: {
-            image: { key: "bouton_z"}, text: { text: "Sortir"}}
-        }, StackManager, this.game);
-
-        this.dropped = new Feedback({}, StackManager, this.game);
-        this.cantUse = new Feedback({}, StackManager, this.game);
-        this.containerFull = new Feedback({}, StackManager, this.game);
     }
 
     /** ------------------------------------------
      * Modals
      * ------------------------------------------ */
-
-    tooltipHandler(visible, isCollide = false, controls, fixed, force) {
-        if(visible) {
-            this.tooltip.items.useButton.visible = isCollide;
-            const dir = this.isPossibleToOuterRightToSprite(this.obj.sprite, 10, this.tooltip.items.bg) ? 'right' : 'left';
-            this.tooltip.y =  this.getInnerTopToSprite(this.obj.sprite) + 10;
-            if(dir === 'right') {
-                this.tooltip.x = this.getOuterRightToSprite(this.obj.sprite, 10);
-                this.tooltip.setRight();
-            } else {
-                this.tooltip.x = this.getOuterLeftToSprite(this.obj.sprite, this.tooltip.items.bg, this.tooltip.scale.x, 10);
-                this.tooltip.setLeft();
-            }
+    prepareTooltip(tooltip, isButton) {
+        tooltip.items.useButton.visible = isButton;
+        const dir = this.isPossibleToOuterRightToSprite(this.obj.sprite, 10, tooltip.items.bg) ? 'right' : 'left';
+        tooltip.y =  this.getInnerTopToSprite(this.obj.sprite) + 10;
+        if(dir === 'right') {
+            tooltip.x = this.getOuterRightToSprite(this.obj.sprite, 10);
+            tooltip.setRight();
+        } else {
+            tooltip.x = this.getOuterLeftToSprite(this.obj.sprite, tooltip.items.bg, tooltip.scale.x, 10);
+            tooltip.setLeft();
         }
-        this.tooltip.toggle(visible, {controls: controls, fixed: fixed, force: force});
+    }
+    showMouseTooltip(isCollide) {
+        if(!this.isShowMouseUsable) return;
+        this.isShowMouseUsable = false;
+        const tooltip = new DescriptionTooltip({items: {
+            title: {text: this.properties.name}, description: {text: this.descriptionText}
+        }}, TooltipManager, this.game);
+        this.obj.onMouseOutHandled.addOnce(() => tooltip.toggle(false), tooltip);
+        tooltip.onDeleted.addOnce(()=>{
+            this.obj.onMouseOutHandled.removeAll(tooltip);
+            this.isShowMouseUsable = true;
+        }, this);
+
+        this.prepareTooltip(tooltip, isCollide);
+        tooltip.toggle(true, {context: this},
+            (err) => { if(err.code === 403) {
+                tooltip.delete(); //Si on a créé un objet non utilisé
+                this.isShowMouseUsable = true;
+            }}
+        );
+    }
+    showTooltip() {
+        if(!this.isShowUsable) return;
+        this.isShowUsable = false;
+        const tooltip = new DescriptionTooltip({items: {
+            title: {text: this.properties.name}, description: {text: this.descriptionText}
+        }}, TooltipManager, this.game);
+        this.obj.onMounted.addOnce(() => tooltip.toggle(false, {controls: true, fixed:true}), tooltip);
+        this.obj.onCollisionEndHandled.addOnce(() => tooltip.toggle(false, {controls: true, fixed:true}), tooltip);
+        tooltip.onDeleted.addOnce(()=>{
+            this.obj.onMounted.removeAll(tooltip);
+            this.obj.onCollisionEndHandled.removeAll(tooltip);
+            this.isShowUsable = true;
+        }, this);
+
+        this.prepareTooltip(tooltip, true);
+        tooltip.toggle(true, {fixed: true, controls: false, context: this});
     }
     
     buttonInfoFeedback(visible = true) {
-        this.dropInfo.toggle(visible, {stack: this.buttonStack});
-        this.useInfo.toggle(visible, {stack: this.buttonStack});
-        this.exitInfo.toggle(visible, {stack: this.buttonStack});
+        const dropInfo = new ButtonInfo({items: {
+            image: { key: "item/button_e"}, text: { text: "Déposer"}}
+        }, StackManager, this.game);
+        this.obj.onStopped.addOnce(() => dropInfo.toggle(false, {stack: this.buttonStack}), dropInfo);
+        dropInfo.toggle(visible, {stack: this.buttonStack});
+
+        const useInfo = new ButtonInfo({items: {
+            image: { key: "item/button_a"}, text: { text: "Prendre"}}
+        }, StackManager, this.game);
+        this.obj.onStopped.addOnce(() => useInfo.toggle(false, {stack: this.buttonStack}), useInfo);
+        useInfo.toggle(visible, {stack: this.buttonStack});
+
+        const exitInfo = new ButtonInfo({items: {
+            image: { key: "item/button_z"}, text: { text: "Sortir"}}
+        }, StackManager, this.game);
+        this.obj.onStopped.addOnce(() => exitInfo.toggle(false, {stack: this.buttonStack}), exitInfo);
+        exitInfo.toggle(visible, {stack: this.buttonStack});
     }
 
     droppedFeedback() {
-        this.droppedFeedbackOnce = this.droppedFeedbackOnce || new DoOnce(() => {
-            this.dropped.setInfo('Vous venez de quitter le véhicule.');
-            this.dropped.toggle(GameModal.VISIBLE, {stack: 'BOTTOM_RIGHT'});
-            setTimeout(() => {
-                this.dropped.toggle(GameModal.HIDDEN, {stack: 'BOTTOM_RIGHT'});
-                this.droppedFeedbackOnce.done = false;
-            }, 2000);
-        });
-        this.droppedFeedbackOnce.call();
+        if(!this.isDroppedUsable) return;
+        this.isDroppedUsable = false;
+        const dropped = new Feedback({}, StackManager, this.game);
+        dropped.setInfo('Vous venez de quitter le véhicule.');
+        dropped.toggle(GameModal.VISIBLE, {stack: 'BOTTOM_RIGHT'});
+        setTimeout(() => {
+            dropped.toggle(GameModal.HIDDEN, {stack: 'BOTTOM_RIGHT'});
+            this.isDroppedUsable = true;
+        }, 2000);
     }
 
     cantUseFeedback() {
-        this.cantUseFeedbackOnce = this.cantUseFeedbackOnce || new DoOnce(() => {
-            this.cantUse.setInfo("Quittez l'outil actuel avant.");
-            this.cantUse.toggle(GameModal.VISIBLE, {stack: 'BOTTOM_RIGHT'});
-            setTimeout(() => {
-                this.cantUse.toggle(GameModal.HIDDEN, {stack: 'BOTTOM_RIGHT'});
-                this.cantUseFeedbackOnce.done = false;
-            }, 2000);
-        });
-        this.cantUseFeedbackOnce.call();
+        if(!this.isCanUseUsable) return;
+        this.isCanUseUsable = false;
+        const cantUse = new Feedback({}, StackManager, this.game);
+        cantUse.setInfo("Quittez l'outil actuel avant.");
+        cantUse.toggle(GameModal.VISIBLE, {stack: 'BOTTOM_RIGHT'});
+        setTimeout(() => {
+            cantUse.toggle(GameModal.HIDDEN, {stack: 'BOTTOM_RIGHT'});
+            this.isCanUseUsable = true;
+        }, 2000);
     }
 
     containerFullFeedback() {
-        this.containerFullFeedbackOnce = this.containerFullFeedbackOnce || new DoOnce(() => {
-            this.containerFull.setInfo('Le vehicule est plein !');
-            this.containerFull.toggle(GameModal.VISIBLE, {stack:'BOTTOM_RIGHT'});
-            setTimeout(() => {
-                this.containerFull.toggle(GameModal.HIDDEN, {stack: 'BOTTOM_RIGHT'});
-                this.containerFullFeedbackOnce.done = false;
-            } , 2000);
-        });
-        this.containerFullFeedbackOnce.call();
+        if(!this.isContainerFullUsable) return;
+        this.isContainerFullUsable = false;
+        const containerFull = new Feedback({}, StackManager, this.game);
+        containerFull.setInfo('Le vehicule est plein !');
+        containerFull.toggle(GameModal.VISIBLE, {stack:'BOTTOM_RIGHT'});
+        setTimeout(() => {
+            containerFull.toggle(GameModal.HIDDEN, {stack: 'BOTTOM_RIGHT'});
+            this.isContainerFullUsable = true;
+        } , 2000);
     }
 
     carefulFeedback(text) {
-        this.carefulFeedbackOnce = this.carefulFeedbackOnce || new DoOnce((text) => {
-            const careful = new Feedback({}, StackManager, this.game);
-            careful.setAlert(`Attention ${text}!`);
-            careful.toggle(GameModal.VISIBLE, {stack: 'BOTTOM_RIGHT'});
-            setTimeout(() => {
-                this.carefulFeedbackOnce.done = false;
-                careful.toggle(GameModal.HIDDEN, {stack: 'BOTTOM_RIGHT'})
-            }, 2000);
-        });
-        this.carefulFeedbackOnce.call(text);
+        if(!this.isCarefulUsable) return;
+        this.isCarefulUsable = false;
+        const careful = new Feedback({}, StackManager, this.game);
+        careful.setAlert(`Attention ${text}!`);
+        careful.toggle(GameModal.VISIBLE, {stack: 'BOTTOM_RIGHT'});
+        setTimeout(() => {
+            this.isCarefulUsable = true;
+            careful.toggle(GameModal.HIDDEN, {stack: 'BOTTOM_RIGHT'})
+        }, 2000);
     }
 };

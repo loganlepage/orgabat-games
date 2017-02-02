@@ -14,24 +14,24 @@ export default class Play extends State {
     /** Called when the state must be created */
     create() {
         /** Gabator */
-        this.gabator = this.game.add.sprite(0, 0, 'gabator-sleep');
+        this.gabator = this.game.add.sprite(0, 0, 'atlas', 'sprite/gabator-sleep');
         this.gabator.width = this.game.uiScale(this.gabator.width);
         this.gabator.height = this.game.uiScale(this.gabator.height);
-        this.gabator.x = this.game.canvas.width / 2 - this.gabator.width / 2;
+        this.gabator.x = this.game.canvas.width*0.5 - this.gabator.width*0.5;
         this.gabator.y = this.game.canvas.height - this.gabator.height;
 
         /** Bouton d'aide */
         this.help = this.game.add.button(
             this.game.uiScale(10),
             this.game.canvas.height - this.gabator.height - this.game.uiScale(15),
-            'bouton_help', this.onHelp, this, 2, 1, 0); // Bouton aide
+            'atlas', this.onHelp, this, 'other/button_help_left.0', 'other/button_help_left.1', 'other/button_help_left.2'); // Bouton aide
         this.help.scale.set(this.game.uiScale(0.6));
         this.help.visible = false;
     }
 
     /** Called when the game start */
     start() {
-        this.gabator.loadTexture('gabator', 0); //gabator reveillé
+        this.gabator.loadTexture('atlas', 'sprite/gabator'); //gabator reveillé
         this.help.visible = true;
 
         if(Type.isExist(Canvas.get('game'))

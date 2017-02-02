@@ -1,12 +1,16 @@
 "use strict";
 import {Signal} from 'phaser';
+import Position from 'system/phaser/utils/Position';
 import Vehicle from '../Vehicle';
+import ElevatorSprite from './ElevatorSprite';
 import {Keyboard} from 'phaser';
 import Canvas from 'system/phaser/utils/PhaserManager';
 import Type from 'system/utils/Type';
 
 /** Vehicle Object (include sprite and modals) */
 export default class Elevator extends Vehicle {
+
+    confirmed = false;
 
     /**
      * Constructor for a new elevator vehicle object
@@ -18,20 +22,26 @@ export default class Elevator extends Vehicle {
      * @param y
      */
     constructor(game, layer, name, properties, x, y) {
-        super(game, layer, name, properties, x, y);
+        super(game, layer, name, properties, x, y,
+            new ElevatorSprite(game, Position.getPixelAt(x), Position.getPixelAt(y), name));
+        this.sprite.setContext(this);
     }
 
     /** Start an elevator */
     startBy(player){
         if(super.stopProcess) return;
-        Canvas.get('gabator').modal.showConfirm(
-            "Élévateur",
-            "Pour conduire un élévateur, vous avez besoin d'un permis adapté.\n" +
-            "Êtes vous sûr d'avoir votre permis élévateur ?",
-            () => {
-                if(Type.isExist(this.objectInCollision))
-                    super.startBy(player);
-            },
-        );
+        const start = () => {
+            this.confirmed = true;
+            if(Type.isExist(this.objectInCollision))
+                super.startBy(player);
+        };
+        if(!this.confirmed)
+            Canvas.get('gabator').modal.showConfirm(
+                "Élévateur",
+                "Pour conduire un élévateur, vous avez besoin d'un permis adapté.\n" +
+                "Êtes vous sûr d'avoir votre permis élévateur ?",
+                start,
+            );
+        else start();
     }
 };

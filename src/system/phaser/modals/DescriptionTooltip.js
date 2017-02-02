@@ -29,13 +29,13 @@ export default class DescriptionTooltip extends Modal {
     }
 
     setLeft() {
-        this.items.bg.loadTexture(`big_tooltip_left`);
+        this.items.bg.loadTexture('atlas', 'modal/bg/big_tooltip_left');
         ['title', 'description', 'useButton'].forEach((key) => {
             this.items[key].setX(this.data.items[key].x);
         });
     }
     setRight() {
-        this.items.bg.loadTexture(`big_tooltip_right`);
+        this.items.bg.loadTexture('atlas', 'modal/bg/big_tooltip_right');
         ['title', 'description', 'useButton'].forEach((key) => {
             this.items[key].setX(this.data.items[key].x);
         });
@@ -47,7 +47,7 @@ export default class DescriptionTooltip extends Modal {
             items: {
                 bg: {
                     type: "sprite",
-                    key: "big_tooltip_right"
+                    key: "bg/big_tooltip_right"
                 },
                 title: {
                     type: "text",
@@ -78,7 +78,7 @@ export default class DescriptionTooltip extends Modal {
                     items: {
                         image: {
                             type: "sprite",
-                            key: "bouton_a",
+                            key: "item/button_a",
                             props: { scale: 0.4 }
                         },
                         text: {

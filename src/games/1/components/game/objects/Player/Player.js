@@ -26,7 +26,7 @@ export default class Player extends GameObject {
      */
     constructor(game, layer, x, y) {
         super(game, layer);
-        this.addSprite(new PlayerSprite(game, Position.getPixelAt(x), Position.getPixelAt(y), 'player', this));
+        this.addSprite(new PlayerSprite(game, Position.getPixelAt(x), Position.getPixelAt(y), 'player/0', this));
         this.game.layer.zDepth0.add(this.sprite);
         this.configure();
         this.ready = true;
@@ -50,32 +50,31 @@ export default class Player extends GameObject {
             this.guiJoystick = new CrossAJoystick(this.game, this.game.layer.zDepthOverAll);
         this.direction = [];
 
-        this.game.keys.addKey(Keyboard.LEFT).onDown.add(this.moveTo, this);
-        this.game.keys.addKey(Keyboard.RIGHT).onDown.add(this.moveTo, this);
-        this.game.keys.addKey(Keyboard.UP).onDown.add(this.moveTo, this);
-        this.game.keys.addKey(Keyboard.DOWN).onDown.add(this.moveTo, this);
+        this.game.keys.addKey(Keyboard.LEFT).onDown.add(this.onMoveRequest, this);
+        this.game.keys.addKey(Keyboard.RIGHT).onDown.add(this.onMoveRequest, this);
+        this.game.keys.addKey(Keyboard.UP).onDown.add(this.onMoveRequest, this);
+        this.game.keys.addKey(Keyboard.DOWN).onDown.add(this.onMoveRequest, this);
 
-        this.game.keys.addKey(Keyboard.LEFT).onUp.add(this.standTo, this);
-        this.game.keys.addKey(Keyboard.RIGHT).onUp.add(this.standTo, this);
-        this.game.keys.addKey(Keyboard.UP).onUp.add(this.standTo, this);
-        this.game.keys.addKey(Keyboard.DOWN).onUp.add(this.standTo, this);
+        this.game.keys.addKey(Keyboard.LEFT).onUp.add(this.onStandRequest, this);
+        this.game.keys.addKey(Keyboard.RIGHT).onUp.add(this.onStandRequest, this);
+        this.game.keys.addKey(Keyboard.UP).onUp.add(this.onStandRequest, this);
+        this.game.keys.addKey(Keyboard.DOWN).onUp.add(this.onStandRequest, this);
 
         this.game.keys.addKey(Keyboard.A);
     }
 
     removeControls() {
-        if(window.isMobile)
-            this.guiJoystick.destroy();
+        if(window.isMobile) this.guiJoystick.destroy();
 
-        this.game.keys.addKey(Keyboard.LEFT).onDown.remove(this.moveTo, this);
-        this.game.keys.addKey(Keyboard.RIGHT).onDown.remove(this.moveTo, this);
-        this.game.keys.addKey(Keyboard.UP).onDown.remove(this.moveTo, this);
-        this.game.keys.addKey(Keyboard.DOWN).onDown.remove(this.moveTo, this);
+        this.game.keys.addKey(Keyboard.LEFT).onDown.removeAll(this);
+        this.game.keys.addKey(Keyboard.RIGHT).onDown.removeAll(this);
+        this.game.keys.addKey(Keyboard.UP).onDown.removeAll(this);
+        this.game.keys.addKey(Keyboard.DOWN).onDown.removeAll(this);
 
-        this.game.keys.addKey(Keyboard.LEFT).onUp.remove(this.standTo, this);
-        this.game.keys.addKey(Keyboard.RIGHT).onUp.remove(this.standTo, this);
-        this.game.keys.addKey(Keyboard.UP).onUp.remove(this.standTo, this);
-        this.game.keys.addKey(Keyboard.DOWN).onUp.remove(this.standTo, this);
+        this.game.keys.addKey(Keyboard.LEFT).onUp.removeAll(this);
+        this.game.keys.addKey(Keyboard.RIGHT).onUp.removeAll(this);
+        this.game.keys.addKey(Keyboard.UP).onUp.removeAll(this);
+        this.game.keys.addKey(Keyboard.DOWN).onUp.removeAll(this);
     }
 
     /** Update, not called when the player mount a vehicle */
@@ -90,15 +89,13 @@ export default class Player extends GameObject {
     objectCollisionUpdate() {
         if(this.objectInCollision === null) return; //if not collision, break
         if(this.game.keys.isDown(Keyboard.A)) {
-            if(Type.isInstanceOf(this.objectInCollision.sprite.obj, Vehicle)) {
+            if(Type.isInstanceOf(this.objectInCollision.sprite.obj, Vehicle))
                 this.setVehicle(this.objectInCollision);
-                this.objectInCollision = null;
-            }
         }
     }
     onCollisionBegin(o) {
         if( this.vehicleInUse.object !== null ) return;
-        super.onCollisionBegin(o.object);
+        this.objectInCollision = o.object;
     }
 
     /** Start vehicle */
@@ -116,6 +113,7 @@ export default class Player extends GameObject {
     onVehicleStop() {
         this.vehicleInUse.started = false;
         this.vehicleInUse.object = null;
+        this.sprite.idle(Keyboard.DOWN);
         this.setControls();
     }
 
@@ -130,17 +128,15 @@ export default class Player extends GameObject {
         if(this.direction[this.direction.length-1] == Keyboard.DOWN)   this.sprite.body.moveDown(this.speed);
     }
     /** Evenement onDown sur une touche directionnelle */
-    moveTo(key) {
+    onMoveRequest(key) {
         if(!this.game.controlsEnabled) return;
-        this.sprite.body.setZeroVelocity();
         if(this.direction.indexOf(key.keyCode) === -1)
             this.direction.push(key.keyCode);
         this.isMoving = true;
     }
     /** Evenement onUp sur une touche directionnelle */
-    standTo(key) {
+    onStandRequest(key) {
         if(!this.game.controlsEnabled) return;
-        this.sprite.body.setZeroVelocity();
         this.sprite.idle(key.keyCode);
         const indexOf = this.direction.indexOf(key.keyCode);
         if(indexOf > -1)

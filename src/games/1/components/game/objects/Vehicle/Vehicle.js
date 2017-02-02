@@ -43,12 +43,16 @@ export default class Vehicle extends GameObject {
      * @param properties
      * @param x
      * @param y
-     * @param modal
+     * @param sprite
      */
-    constructor(game, layer, name, properties, x, y) {
+    constructor(game, layer, name, properties, x, y, sprite = null) {
         super(game, layer);
         this.container = new Inventary(properties.containerSize, Config.entities.materials);
-        this.addSprite(new VehicleSprite(this.game, Position.getPixelAt(x), Position.getPixelAt(y), name, this));
+        this.addSprite(
+            Type.isInstanceOf(sprite, VehicleSprite)
+            ? sprite
+            : new VehicleSprite(this.game, Position.getPixelAt(x), Position.getPixelAt(y), name, this)
+        );
         this.addModal(new VehicleModal(properties, this, game));
         this.configure(properties);
         this.ready = true;
@@ -57,10 +61,11 @@ export default class Vehicle extends GameObject {
     /** Config & initialize */
     configure(properties) {
         this.speed = properties.speed * this.game.SCALE * 500; //500: convert to km/h in game
+        this.speed = this.speed * (properties.use === Keyboard.UP ? 1 : -1);
         this.speedRotate = properties.speedRotate * this.game.SCALE * 2; //2: convert to tr/min in game
 
         this.properties = properties;
-        this.loading = this.game.add.sprite(0, 0, 'charge');
+        this.loading = this.game.add.sprite(0, 0, 'atlas', 'sprite/charge');
         this.sprite.addChild(this.loading);
         this.loading.anchor.set(this.properties.loading_x, this.properties.loading_y);
         this.loading.visible = false;
@@ -75,52 +80,53 @@ export default class Vehicle extends GameObject {
         this.rotateDirection = null;
         this.walkDirection = [];
 
-        this.game.keys.addKey(Keyboard.LEFT).onDown.add(this.moveTo, this);
-        this.game.keys.addKey(Keyboard.RIGHT).onDown.add(this.moveTo, this);
-        this.game.keys.addKey(Keyboard.UP).onDown.add(this.moveTo, this);
-        this.game.keys.addKey(Keyboard.DOWN).onDown.add(this.moveTo, this);
+        this.game.keys.addKey(Keyboard.LEFT).onDown.add(this.onMoveRequest, this);
+        this.game.keys.addKey(Keyboard.RIGHT).onDown.add(this.onMoveRequest, this);
+        this.game.keys.addKey(Keyboard.UP).onDown.add(this.onMoveRequest, this);
+        this.game.keys.addKey(Keyboard.DOWN).onDown.add(this.onMoveRequest, this);
 
-        this.game.keys.addKey(Keyboard.LEFT).onUp.add(this.standTo, this);
-        this.game.keys.addKey(Keyboard.RIGHT).onUp.add(this.standTo, this);
-        this.game.keys.addKey(Keyboard.UP).onUp.add(this.standTo, this);
-        this.game.keys.addKey(Keyboard.DOWN).onUp.add(this.standTo, this);
+        this.game.keys.addKey(Keyboard.LEFT).onUp.add(this.onStandRequest, this);
+        this.game.keys.addKey(Keyboard.RIGHT).onUp.add(this.onStandRequest, this);
+        this.game.keys.addKey(Keyboard.UP).onUp.add(this.onStandRequest, this);
+        this.game.keys.addKey(Keyboard.DOWN).onUp.add(this.onStandRequest, this);
 
         this.game.keys.addKey(Keyboard.A);
         this.game.keys.addKey(Keyboard.Z);
         this.game.keys.addKey(Keyboard.E);
     }
     removeControls() {
-        if(window.isMobile)
-            this.guiJoystick.destroy();
+        if(window.isMobile) this.guiJoystick.destroy();
 
-        this.game.keys.addKey(Keyboard.LEFT).onDown.remove(this.moveTo, this);
-        this.game.keys.addKey(Keyboard.RIGHT).onDown.remove(this.moveTo, this);
-        this.game.keys.addKey(Keyboard.UP).onDown.remove(this.moveTo, this);
-        this.game.keys.addKey(Keyboard.DOWN).onDown.remove(this.moveTo, this);
+        this.game.keys.addKey(Keyboard.LEFT).onDown.removeAll(this);
+        this.game.keys.addKey(Keyboard.RIGHT).onDown.removeAll(this);
+        this.game.keys.addKey(Keyboard.UP).onDown.removeAll(this);
+        this.game.keys.addKey(Keyboard.DOWN).onDown.removeAll(this);
 
-        this.game.keys.addKey(Keyboard.LEFT).onUp.remove(this.standTo, this);
-        this.game.keys.addKey(Keyboard.RIGHT).onUp.remove(this.standTo, this);
-        this.game.keys.addKey(Keyboard.UP).onUp.remove(this.standTo, this);
-        this.game.keys.addKey(Keyboard.DOWN).onUp.remove(this.standTo, this);
+        this.game.keys.addKey(Keyboard.LEFT).onUp.removeAll(this);
+        this.game.keys.addKey(Keyboard.RIGHT).onUp.removeAll(this);
+        this.game.keys.addKey(Keyboard.UP).onUp.removeAll(this);
+        this.game.keys.addKey(Keyboard.DOWN).onUp.removeAll(this);
     }
 
     /** Start & stop vehicle */
     startBy(player){
         if(this.stopProcess) return;
         this.startProcess = true;
+        this.objectInCollision = null;
+        player.obj.objectInCollision = null;
+
         player.body.collideWorldBounds = false;
         this.sprite.body.static = false;
         this.sprite.body.fixedRotation = false;
         this.sprite.addChild(player);
 
+        player.idle(`${this.properties.use}_topview`);
         player.scale.setTo(1);
         player.reset(0, 0);
         player.anchor.set(this.properties.player_x, this.properties.player_y);
         this.sprite.anchor.setTo(0.5, 0.5); //don't change when vehicle is mounted
-        player.idle("up");
         this.driver = player;
         this.modal.buttonInfoFeedback();
-        this.modal.tooltipHandler(GameModal.HIDDEN, false, GameModal.FIXED);
 
         this.initializedAnimation = false;
         this.onMounted.dispatch(this);
@@ -135,7 +141,7 @@ export default class Vehicle extends GameObject {
         this.stopProcess = true;
         this.removeControls();
 
-        let x = this.driver.world.x, y = this.driver.world.y;
+        const x = this.driver.world.x, y = this.driver.world.y;
         this.sprite.body.static = true;
         this.sprite.body.fixedRotation = true;
         this.sprite.body.setZeroVelocity();
@@ -146,13 +152,13 @@ export default class Vehicle extends GameObject {
         this.driver.anchor.set(0.5, 0.5);
         this.driver.reset(x, y);
         this.driver.body.collideWorldBounds = true;
-        let driver = this.driver; this.driver = null;
-        this.modal.buttonInfoFeedback(GameModal.HIDDEN);
+        const driver = this.driver; this.driver = null;
         this.modal.droppedFeedback();
 
         this.onStopped.dispatch(driver.obj);
         setTimeout(() => {
-            driver.obj.onCollisionBegin({object: this.sprite.body});
+            driver.obj.objectInCollision = this.sprite.body;
+            this.objectInCollision = driver.body;
             this.collisionEventEnabled = true;
             this.onUnmounted.dispatch(driver.obj);
             this.stopProcess = false;
@@ -183,7 +189,7 @@ export default class Vehicle extends GameObject {
                 this.modal.cantUseFeedback();
             }
             else if(Type.isInstanceOf(this.objectInCollision.sprite.obj, Material)) {
-                if(this.game.keys.isDown(Keyboard.E)) return;
+                if(this.game.keys.isDown(Keyboard.E) || this.container.getSizeLeft() === 0) return;
                 if(!(Type.isExist(this.objectInCollision.sprite.obj.properties.amount)
                     && Type.isExist(this.objectInCollision.sprite.obj.properties.amount.current)
                     && this.objectInCollision.sprite.obj.properties.amount.current > 0)) return;
@@ -203,7 +209,8 @@ export default class Vehicle extends GameObject {
             let needed;
             if(Type.isInstanceOf(this.objectInCollision.sprite.obj, Material)) {
                 if(this.game.keys.isDown(Keyboard.A)) return;
-                needed = this.objectInCollision.sprite.key;
+                needed = this.objectInCollision.sprite.obj.type;
+                if(this.container.getSumOf(needed) === 0) return;
                 this.objectInCollision.sprite.obj.setRessource(this.container.getSumOf(needed), (name, amount) => {
                     this.container.delItem(needed, amount);
                     if(this.container.getSizeUsed() === 0)
@@ -213,6 +220,7 @@ export default class Vehicle extends GameObject {
             else if(Type.isInstanceOf(this.objectInCollision.sprite.obj, Tool)) {
                 if(this.game.keys.isDown(Keyboard.A)) return;
                 needed = this.objectInCollision.sprite.obj.properties.needed;
+                if(this.container.getSumOf(needed) === 0) return;
                 this.objectInCollision.sprite.obj.setRessource(this.container.getSumOf(needed), (name, amount) => {
                     this.container.delItem(needed, amount);
                     if(this.container.getSizeUsed() === 0)
@@ -224,19 +232,16 @@ export default class Vehicle extends GameObject {
     onCollisionBegin(o) {
         switch(o.object.class) {
             case 'gameObject':
-                super.onCollisionBegin(o.object);
+                this.objectInCollision = o.object;
                 if(this.collisionEventEnabled) {
                     if(Type.isInstanceOf(this.objectInCollision.sprite.obj, Player)) {
-                        this.modal.tooltipHandler(
-                            GameModal.VISIBLE, Vehicle.COLLIDED, GameModal.CONTROLS_DISABLED, null, GameModal.FORCE
-                        );
+                        this.modal.showTooltip(Vehicle.COLLIDED);
                     }
                     else if(Type.isInstanceOf(this.objectInCollision.sprite.obj, Vehicle) && Type.isExist(this.driver)) {
                         this.onCollision.dispatch('vehicle');
                         this.modal.carefulFeedback('aux véhicules');
                     }
                 }
-
                 break;
             case 'layer':
                 this.onCollision.dispatch('wall');
@@ -248,29 +253,23 @@ export default class Vehicle extends GameObject {
     }
     onCollisionEnd(o) {
         if(super.isCollidWith(Player, o))
-            this.modal.tooltipHandler(GameModal.HIDDEN, null, GameModal.CONTROLS_ENABLED);
+            this.onCollisionEndHandled.dispatch();
     }
     onMouseOver() {
-        this.modal.tooltipHandler(GameModal.VISIBLE, super.isCollidWith(Player));
+        this.modal.showMouseTooltip(super.isCollidWith(Player));
     }
     onMouseOut() {
-        this.modal.tooltipHandler(GameModal.HIDDEN);
+        this.onMouseOutHandled.dispatch();
     }
 
     /** Move */
     moveUpdate(){
-        if(!this.initializedAnimation) {
-            this.driver.idle(this.properties.use);
-            this.initializedAnimation = true;
-        }
-        const speed = this.speed * (this.properties.use === Keyboard.UP ? 1 : -1);
-
         if(this.properties.walkToMove && this.walkDirection.length > 0)
-            this.driver.walk(this.properties.use);
+            this.driver.walk(`${this.properties.use}_topview`);
         if(this.walkDirection[this.walkDirection.length-1] == Keyboard.UP)
-            this.sprite.body.thrust(speed);
+            this.sprite.body.thrust(this.speed);
         if(this.walkDirection[this.walkDirection.length-1] == Keyboard.DOWN)
-            this.sprite.body.reverse(speed);
+            this.sprite.body.reverse(this.speed);
 
         if(this.rotateDirection == Keyboard.LEFT) this.sprite.body.rotateLeft(this.speedRotate);
         if(this.rotateDirection == Keyboard.RIGHT) this.sprite.body.rotateRight(this.speedRotate);
@@ -278,12 +277,11 @@ export default class Vehicle extends GameObject {
         if(!this.game.keys.isDown(Keyboard.LEFT) && !this.game.keys.isDown(Keyboard.RIGHT))
             this.sprite.body.setZeroRotation();
     }
-    moveTo(key){
+    onMoveRequest(key){
         if(!this.game.controlsEnabled) return;
-
         if(key.keyCode == Keyboard.DOWN || key.keyCode == Keyboard.UP) {
-            if(this.game.keys.isDown(Keyboard.LEFT)) this.moveTo(this.game.keys.addKey(Keyboard.LEFT));
-            if(this.game.keys.isDown(Keyboard.RIGHT)) this.moveTo(this.game.keys.addKey(Keyboard.RIGHT));
+            if(this.game.keys.isDown(Keyboard.LEFT)) this.onMoveRequest(this.game.keys.addKey(Keyboard.LEFT));
+            if(this.game.keys.isDown(Keyboard.RIGHT)) this.onMoveRequest(this.game.keys.addKey(Keyboard.RIGHT));
         }
 
         //si on recule on tourne dans l'autre sens (pour faire réaliste)
@@ -296,16 +294,16 @@ export default class Vehicle extends GameObject {
             && this.walkDirection.indexOf(key.keyCode) === -1)
                 this.walkDirection.push(key.keyCode);
     }
-    standTo(key) {
+    onStandRequest(key) {
         if(!this.game.controlsEnabled) return;
         if(key.keyCode == Keyboard.UP || key.keyCode == Keyboard.DOWN)
-        this.driver.idle(this.properties.use);
+            this.driver.idle(`${this.properties.use}_topview`);
         const indexOf = this.walkDirection.indexOf(key.keyCode);
         if(indexOf > -1)
             this.walkDirection.splice(indexOf, 1);
         this.rotateDirection = null;
-        if(this.game.keys.isDown(Keyboard.LEFT)) this.moveTo(this.game.keys.addKey(Keyboard.LEFT));
-        if(this.game.keys.isDown(Keyboard.RIGHT)) this.moveTo(this.game.keys.addKey(Keyboard.RIGHT));
+        if(this.game.keys.isDown(Keyboard.LEFT)) this.onMoveRequest(this.game.keys.addKey(Keyboard.LEFT));
+        if(this.game.keys.isDown(Keyboard.RIGHT)) this.onMoveRequest(this.game.keys.addKey(Keyboard.RIGHT));
 
         // Si une touche devrait être enfoncée mais ne l'est pas
         // évènement non détecté, ex: clic hors canvas

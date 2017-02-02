@@ -29,5 +29,6 @@ export default class VehicleSprite extends GameSprite {
         this.body.collides(this.game.CollisionGroup.material, this.onCollision, this);
         this.body.collides(this.game.CollisionGroup.layer, this.wallCollision, this);
         this.body.static = true;
+        this.body.damping = 0;
     }
 };

@@ -20,16 +20,21 @@ export default class SmallFeedback extends Modal {
             type: "group",
             fixedToCamera: true,
             items: {
+                bg: {
+                    type: "sprite",
+                    key: "bg/button_info"
+                },
                 image: {
                     type: "sprite",
-                    x: 10,
-                    key: "bouton_z",
+                    x: 2,
+                    y: 2,
+                    key: "item/button_z",
                     props: { scale: 0.4 }
                 },
                 text: {
                     type: "text",
-                    x: 40,
-                    y: 3,
+                    x: 27,
+                    y: 4,
                     text: "{content}",
                     style: {
                         fill: "#ffffff",

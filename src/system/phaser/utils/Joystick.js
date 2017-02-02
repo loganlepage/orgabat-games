@@ -59,8 +59,8 @@ export class Button extends Sprite {
     }
     get isDown() { return this.game.input.keyboard.isDown(this.keyCode) }
 
-    constructor(game, group, keyCode, x, y, key, props = {}) {
-        super(game, x, y, key);
+    constructor(game, group, keyCode, x, y, key, frame, props = {}) {
+        super(game, x, y, key, frame);
         if(Type.isInstanceOf(group, Group))
             group.add(this);
 
@@ -88,12 +88,12 @@ export default class Joystick extends Group {
     static get MARGIN() {return 10;}
     static get SCALE() {return 0.75;}
     static preload(game) {
-        game.load.spritesheet('joystick_pad_r', `${assets_path}button/pad_r.png`, 120, 120);
+      /*  game.load.spritesheet('joystick_pad_r', `${assets_path}button/pad_r.png`, 120, 120);
         game.load.spritesheet('joystick_pad_fleche', `${assets_path}button/pad_fleche.png`, 120, 120);
         game.load.spritesheet('joystick_cross', `${assets_path}button/cross.png`, 144, 144);
         game.load.spritesheet('joystick_button_a', `${assets_path}button/bouton_a.png`, 96, 96);
         game.load.spritesheet('joystick_button_z', `${assets_path}button/bouton_z.png`, 96, 96);
-        game.load.spritesheet('joystick_button_e', `${assets_path}button/bouton_e.png`, 96, 96);
+        game.load.spritesheet('joystick_button_e', `${assets_path}button/bouton_e.png`, 96, 96);*/
     }
 
     constructor(game, parent) {

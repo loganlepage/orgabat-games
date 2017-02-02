@@ -3,9 +3,12 @@ import GameModal from 'system/phaser/GameModal';
 import SmallDescriptionTooltip from 'system/phaser/modals/SmallDescriptionTooltip';
 import {TooltipManager} from 'system/phaser/Modal';
 import Type from 'system/utils/Type';
+import {DoOnce} from 'system/utils/Utils';
 
 /** Material Modal (called by the material gameObject) */
 export default class MaterialModal extends GameModal {
+
+    isTooltipUsable = true;
 
     /**
      * Constructor for a new material modal
@@ -17,9 +20,6 @@ export default class MaterialModal extends GameModal {
         super(game);
         this.properties = properties;
         this.obj = materialObj;
-        this.tooltip = new SmallDescriptionTooltip({items: {
-            name: { text: this.properties.name }
-        }}, TooltipManager, this, this.game);
     }
 
 
@@ -27,20 +27,49 @@ export default class MaterialModal extends GameModal {
      * Modals
      * ------------------------------------------ */
 
-    tooltipHandler(visible, controls, fixed, force) {
-        if(visible) {
-            const dir = this.properties.modalDirection;
-            this.tooltip.x = this.getOuterCenterXToSprite(this.obj.sprite, this.tooltip.items.bg, this.tooltip.scale.x);
-            if(dir === "bottom") {
-                this.tooltip.y = this.getOuterBottomToSprite(this.obj.sprite, 5);
-                this.tooltip.setBottom();
-            } else {
-                this.tooltip.y = this.getOuterTopToSprite(this.obj.sprite, this.tooltip.items.bg, this.tooltip.scale.y, 5);
-                this.tooltip.setTop();
-            }
+    showTooltip(fixed = false) {
+        if(!this.isTooltipUsable) return;
+        this.isTooltipUsable = false;
+        const tooltip = new SmallDescriptionTooltip({items: {
+            name: { text: this.properties.name }
+        }}, TooltipManager, this, this.game);
+
+        /** Events */
+        const close = (enabled) => tooltip.toggle(false, {fixed: enabled});
+        this.obj.onMouseOutHandled.addOnce(()=>{close(false)}, tooltip);
+        this.obj.onCollisionEndHandled.addOnce(()=>{close(!tooltip.params.fixed)}, tooltip);
+        this.obj.onVehicleStartHandled.addOnce(() => {if(!fixed) { //Si déjà existant mais sans boutons et non fixe
+            tooltip.setButtons({a:true, e:true});
+            tooltip.toggle(true, {fixed: true});
+        }}, tooltip);
+        this.obj.onVehicleStopHandled.addOnce(()=>{close(true)}, tooltip);
+        this.obj.onAmountChange.add(tooltip.setAmount, tooltip);
+        tooltip.onDeleted.addOnce(()=>{
+            this.obj.onMouseOutHandled.removeAll(tooltip);
+            this.obj.onCollisionEndHandled.removeAll(tooltip);
+            this.obj.onVehicleStartHandled.removeAll(tooltip);
+            this.obj.onVehicleStopHandled.removeAll(tooltip);
+            this.obj.onAmountChange.removeAll(tooltip);
+            this.isTooltipUsable = true;
+        }, this);
+
+        /** UI */
+        tooltip.x = this.getOuterCenterXToSprite(this.obj.sprite, tooltip.items.bg, tooltip.scale.x);
+        if(this.properties.modalDirection === "bottom") {
+            tooltip.y = this.getOuterBottomToSprite(this.obj.sprite, 5);
+            tooltip.setBottom();
+        } else {
+            tooltip.y = this.getOuterTopToSprite(this.obj.sprite, tooltip.items.bg, tooltip.scale.y, 5);
+            tooltip.setTop();
         }
-        Type.isExist(this.properties.amount) && Type.isNumber(this.properties.amount.current)
-            ? this.tooltip.setAmount(this.properties.amount.current) : this.tooltip.delAmount();
-        this.tooltip.toggle(visible, {controls: controls, fixed: fixed, force: force});
+        if(Type.isExist(this.properties.amount) && Type.isNumber(this.properties.amount.current))
+            tooltip.setAmount(this.properties.amount.current);
+        if(fixed)
+            tooltip.setButtons({a:true, e:true});
+        tooltip.toggle(true, {fixed: fixed},
+            (err) => { if(err.code === 403) {
+                tooltip.delete(); //Si on a créé un objet non utilisé
+                this.isShowMouseUsable = true;
+            }});
     }
 };

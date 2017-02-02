@@ -22,13 +22,13 @@ export default class GameModal {
     static get FORCE() { return true; }
 
     getAlignCenterX(reference, item) {
-        return reference.centerX - item.width / 2;
+        return reference.centerX - item.width * 0.5;
     }
     getAlignRightX(reference, item) {
         return reference.width - item.width;
     }
     getAlignCenterY(reference, item) {
-        return reference.centerY - item.height / 2;
+        return reference.centerY - item.height * 0.5;
     }
     getAlignBottomY(reference, item) {
         return reference.bottom - item.height;
@@ -60,7 +60,7 @@ export default class GameModal {
         return sprite.position.x - sprite.width * (1 - sprite.anchor.x)
     }
     getInnerCenterXToSprite(sprite) {
-        return this.getInnerLeftToSprite(sprite) + sprite.width / 2;
+        return this.getInnerLeftToSprite(sprite) + sprite.width * 0.5;
     }
     getInnerRightToSprite(sprite) {
         return sprite.position.x + sprite.width * (1 - sprite.anchor.x)

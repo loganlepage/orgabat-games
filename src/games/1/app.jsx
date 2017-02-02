@@ -26,7 +26,7 @@ class Content extends React.Component {
     static get GABATOR_PERCENT_WIDTH() {return 18}
     static get GABATOR_MAX_WIDTH() {return 250}
     render() {
-        const gabatorTmpWidth = this.props.width * Content.GABATOR_PERCENT_WIDTH / 100;
+        const gabatorTmpWidth = this.props.width * Content.GABATOR_PERCENT_WIDTH * 0.01;
         const gabatorWidth = gabatorTmpWidth < Content.GABATOR_MAX_WIDTH ? gabatorTmpWidth : Content.GABATOR_MAX_WIDTH;
         return <div id="game" className="container">
             <Game width={this.props.width - gabatorWidth} height={this.props.height} ref="game" />

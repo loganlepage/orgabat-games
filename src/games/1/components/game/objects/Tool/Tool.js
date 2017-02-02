@@ -30,6 +30,10 @@ export default class Tool extends GameObject {
         this.addSprite(new ToolSprite(this.game, Position.getPixelAt(x), Position.getPixelAt(y), name, this));
         this.addModal(new ToolModal(properties, this, game));
         this.configure(properties);
+        this.onVehicleStartHandled = new Signal();
+        this.onVehicleStopHandled = new Signal();
+        this.onAmountChange = new Signal();
+        this.type = name;
         this.ready = true;
     }
 
@@ -39,48 +43,49 @@ export default class Tool extends GameObject {
     }
     
     /** Events */
-    onVehicleStart(){
+    onVehicleStart() {
         if(Type.isExist(this.properties.amount) && Type.isNumber(this.properties.amount.current)
-            && Type.isNumber(this.properties.amount.max) && this.properties.amount.current < this.properties.amount.max)
-            this.modal.tooltipHandler(GameModal.VISIBLE, null, GameModal.FIXED);
-        if(Type.isExist(this.properties.needed))
-            this.modal.tooltip.setButtons({a:false, e:true});
+            && Type.isNumber(this.properties.amount.max) && this.properties.amount.current < this.properties.amount.max) {
+            this.modal.showTooltip(GameModal.FIXED);
+            this.onVehicleStartHandled.dispatch();
+        }
+       // Type.isExist(this.properties.needed) ? {a:false, e:true} : null
     }
     onVehicleStop(){
-        this.modal.tooltipHandler(GameModal.HIDDEN, null, GameModal.NOT_FIXED);
-        this.modal.tooltip.delButtons();
+        this.onVehicleStopHandled.dispatch();
     }
 
     /** Ressource comportements */
     setRessource(amount, cb) {
-        let cbZero = () => { cb(this.sprite.key, 0); };
-        let cbAmount = () => { cb(this.sprite.key, amount); };
+        let cbZero = () => { cb(this.type, 0); };
+        let cbAmount = () => { cb(this.type, amount); };
         if(!(Type.isExist(this.properties.amount) && Type.isNumber(this.properties.amount.current)
             && Type.isNumber(this.properties.amount.max))) return;
         if(this.properties.amount.max < this.properties.amount.current + amount) return cbZero();
         this.properties.amount.current += amount;
-        this.modal.tooltip.setAmount(this.properties.amount.current);
-        if(this.properties.amount.max === this.properties.amount.current) this.onFull.dispatch();
+        this.onAmountChange.dispatch(this.properties.amount.current);
+        if(this.properties.amount.max === this.properties.amount.current)
+            this.onFull.dispatch();
         return cbAmount();
     }
 
     /** Add events comportements */
     onCollisionBegin(o) {
-        super.onCollisionBegin(o.object);
+        this.objectInCollision = o.object;
         if(Type.isInstanceOf(this.objectInCollision.sprite.obj, Vehicle)
         || Type.isInstanceOf(this.objectInCollision.sprite.obj, Player)) {
-            this.modal.tooltipHandler(GameModal.VISIBLE, GameModal.CONTROLS_DISABLED, null, GameModal.FORCE);
+            this.modal.showTooltip()
         }
     }
     onCollisionEnd(o) {
         if(super.isCollidWith(Vehicle, o) || super.isCollidWith(Player, o))
-            this.modal.tooltipHandler(GameModal.HIDDEN, GameModal.CONTROLS_ENABLED);
+            this.onCollisionEndHandled.dispatch();
     }
     onMouseOver() {
-        this.modal.tooltipHandler(GameModal.VISIBLE);
+        this.modal.showTooltip()
     }
     onMouseOut() {
-        this.modal.tooltipHandler(GameModal.HIDDEN);
+        this.onMouseOutHandled.dispatch();
     }
 };
 

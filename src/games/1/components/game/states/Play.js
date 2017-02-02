@@ -73,12 +73,13 @@ export default class Play extends State {
 
         for(let i in Config.tilemap.calques) {
             let layer = new TilemapLayer(this.game, this.map, Config.tilemap.calques[i]);
+            layer.smoothed = false;
             this.layers.push(layer);
         }
 
-        this.map.setCollisionBetween(0, 1000, true, this.layers[1]); //red collider
-        this.layers[1].debug = Config.developer.debug;
-        let layerColliders = this.game.physics.p2.convertTilemap(this.map, this.layers[1]);
+        this.map.setCollision(28, true, this.layers[0]); //wall
+        this.layers[0].debug = Config.developer.debug;
+        const layerColliders = this.game.physics.p2.convertTilemap(this.map, this.layers[0]);
         for(let collider in layerColliders)
         {
             layerColliders[collider].setCollisionGroup(this.game.CollisionGroup.layer);
@@ -144,11 +145,10 @@ export default class Play extends State {
 
     /** Called by Phaser to render */
     render() {
-        if(Config.developer.debug) {
+        //if(Config.developer.debug) {
             this.game.time.advancedTiming = true; //SEE FPS
             this.game.debug.text(this.game.time.fps, 2, 14, "#00ff00");
-        }
-        this.game.debug.body(this.player.sprite);
+       // }
     }
 
     /**
@@ -169,18 +169,10 @@ class GameProcess {
 
         //Animation de la caméra
         //On ajuste sa durée par rapport au mouvement à effectuer (peut être égal à 0)
-        this.bootTweenTime = (this.game.world.height - this.game.camera.height)*4.5;
+        this.bootTweenTime = (this.game.world.height - this.game.camera.height) * 4.5;
         this.bootTween = this.game.add.tween(this.game.camera).to({
-            y: this.play.player.sprite.y - this.game.canvas.height / 2
+            y: this.play.player.sprite.y - this.game.canvas.height * 0.5
         }, this.bootTweenTime , Easing.Quadratic.InOut, false, 600);
-
-        //On prépare la modale d'info
-        this.startInfoModal = new StartInfoModal({}, DefaultManager, this.game);
-        this.endInfoModal = new EndInfoModal({}, DefaultManager, this.game, {
-            healthMax: PhaserManager.get('gabator').stats.healthMax,
-            organizationMax: PhaserManager.get('gabator').stats.organizationMax,
-            enterpriseMax: PhaserManager.get('gabator').stats.enterpriseMax
-        });
 
         //On prépare les quêtes
         this.quests = new QuestManager(this.game);
@@ -195,11 +187,13 @@ class GameProcess {
     }
     _onAnimationEnd() {
         //On affiche la modale d'information du début
-        this.startInfoModal.toggle(true);
+        this.startInfoModal = new StartInfoModal({}, DefaultManager, this.game);
         this.game.keys.addKey(Phaser.Keyboard.ENTER).onDown.addOnce(this._onStartInfoClose, this);
         this.game.keys.addKey(Phaser.Keyboard.A).onDown.addOnce(this._onStartInfoClose, this);
         this.startInfoModal.items.close.items.iconA.events.onInputDown.add(this._onStartInfoClose, this);
         this.startInfoModal.items.close.items.textA.events.onInputDown.add(this._onStartInfoClose, this);
+        this.startInfoModal.onDeleted.addOnce(()=>{delete this.startInfoModal}, this);
+        this.startInfoModal.toggle(true);
     }
     _onStartInfoClose() {
         //On active Gabator
@@ -228,7 +222,8 @@ class GameProcess {
 
         //Si on termine la partie
         this.quests.get('depot_fill').onDone.addOnce(this._onFinish, this);
-        this._timeStart = this.game.time.elapsedMS;
+
+        this._timeStart = this.game.time.now;
     }
     _onCollide(name){
         if(!Type.isExist(this.collided[name]) || this.collided[name]) return;
@@ -246,16 +241,16 @@ class GameProcess {
         });
     }
     _onFinish() {
-        this._timeEnd = this.game.time.elapsedMS;
-        const timeElapsed = this._timeEnd - this._timeStart;
-
         this.game.controlsEnabled = false;
+        this._timeEnd = this.game.time.now;
 
         //On affiche la modale de fin
-        this.endInfoModal.toggle(true, {
-            width: this.endInfoModal.items.bg._frame.width,
-            height: this.endInfoModal.items.bg._frame.height
-        }, {
+        const endInfoModal = new EndInfoModal({}, DefaultManager, this.game, {
+            healthMax: PhaserManager.get('gabator').stats.healthMax,
+            organizationMax: PhaserManager.get('gabator').stats.organizationMax,
+            enterpriseMax: PhaserManager.get('gabator').stats.enterpriseMax
+        });
+        endInfoModal.toggle(true, {}, {
             star1: this.quests.get('vehicle_mount').isDone,
             star2: this.quests.get('vehicle_load').isDone,
             star3: this.quests.get('depot_fill').isDone
@@ -264,10 +259,11 @@ class GameProcess {
             organization: PhaserManager.get('gabator').stats.state.organization,
             enterprise: PhaserManager.get('gabator').stats.state.enterprise,
         });
+
         //Et on envoie le score à l'API
         api.sendScore({
             exerciseId: game_id,
-            time: Math.round(timeElapsed/1000),
+            time: Math.round((this._timeEnd - this._timeStart)/1000),
             health: PhaserManager.get('gabator').stats.state.health,
             organization: PhaserManager.get('gabator').stats.state.organization,
             business: PhaserManager.get('gabator').stats.state.enterprise

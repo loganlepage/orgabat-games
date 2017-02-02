@@ -49,11 +49,11 @@ export default class QuestLayout extends Modal {
 
     setFinish(isFinish = true) {
         if(isFinish) {
-            this.items.star.loadTexture('star');
+            this.items.star.loadTexture('atlas', 'modal/item/star');
             this.items.text.stroke = "#3F3F3F";
             this.items.text.strokeThickness = 2;
         } else {
-            this.items.star.loadTexture('star_disabled');
+            this.items.star.loadTexture('atlas', 'modal/item/star_disabled');
             this.items.text.stroke = QuestLayout.pattern.items.text.style.stroke;
             this.items.text.strokeThickness = QuestLayout.pattern.items.text.style.strokeThickness;
         }
@@ -66,7 +66,7 @@ export default class QuestLayout extends Modal {
             items: {
                 star: {
                     type: "sprite",
-                    key: "star_disabled",
+                    key: "item/star_disabled",
                     props: { scale: 0.4 }
                 },
                 text: {

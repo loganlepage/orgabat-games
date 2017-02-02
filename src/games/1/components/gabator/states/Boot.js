@@ -35,43 +35,42 @@ export default class Boot extends State {
 }
 
 class Modal {
-    constructor(){
-        this.help = new HelpModal({}, StackManager, PhaserManager.get('game'));
-        this.confirm = new ConfirmModal({}, StackManager, PhaserManager.get('game'));
-    }
+    constructor(){}
 
     showHelp(title = "", description = "", cb = ()=>{}) {
         this.helpOnce = this.helpOnce || new DoOnce((args = {}) => {
-            this.help.title = args.title;
-            this.help.description = args.description;
-            this.help.toggle(true, {stack: 'BOTTOM_RIGHT', fixed:true});
+            const help = new HelpModal({}, StackManager, PhaserManager.get('game'));
+            help.title = args.title;
+            help.description = args.description;
+            help.toggle(true, {stack: 'BOTTOM_RIGHT', fixed:true});
             const close = () => {
-                this.help.toggle(false, {stack: 'BOTTOM_RIGHT', fixed:true});
+                help.toggle(false, {stack: 'BOTTOM_RIGHT', fixed:true});
                 this.helpOnce.done = false;
                 args.cb();
                 clearTimeout(timeOut);
             };
             const timeOut = setTimeout(close, 7000);
-            this.help.items.close.events.onInputDown.addOnce(close, this);
+            help.items.close.events.onInputDown.addOnce(close, this);
         });
         this.helpOnce.call({title:title, description:description, cb:cb});
     }
 
     showConfirm(title = "", description = "", cb = ()=>{}) {
         this.confirmOnce = this.confirmOnce || new DoOnce((args = {}) => {
-                this.confirm.title = args.title;
-                this.confirm.description = args.description;
-                this.confirm.toggle(true, {stack: 'BOTTOM_RIGHT', fixed:true});
+                const confirm = new ConfirmModal({}, StackManager, PhaserManager.get('game'));
+                confirm.title = args.title;
+                confirm.description = args.description;
+                confirm.toggle(true, {stack: 'BOTTOM_RIGHT', fixed:true});
                 const close = (isConfirm = false) => {
-                    this.confirm.toggle(false, {stack: 'BOTTOM_RIGHT', fixed:true});
+                    confirm.toggle(false, {stack: 'BOTTOM_RIGHT', fixed:true});
                     this.confirmOnce.done = false;
                     if(isConfirm) args.cb();
                     clearTimeout(timeOut);
                 };
                 const timeOut = setTimeout(() => close(), 7000);
-                this.confirm.items.close.events.onInputDown.addOnce(() => close(), this);
-                this.confirm.items.buttons.items.yes.events.onInputDown.addOnce(() => close(true), this);
-                this.confirm.items.buttons.items.no.events.onInputDown.addOnce(() => close(), this);
+                confirm.items.close.events.onInputDown.addOnce(() => close(), this);
+                confirm.items.buttons.items.yes.events.onInputDown.addOnce(() => close(true), this);
+                confirm.items.buttons.items.no.events.onInputDown.addOnce(() => close(), this);
             });
         this.confirmOnce.call({title:title, description:description, cb:cb});
     }

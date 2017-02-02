@@ -8,16 +8,7 @@ export default class Load extends State {
     /** Called before create */
     preload() {
         this.game.stage.backgroundColor = "#FFFFFF";
-        for(let i in Config.entities.assets)
-            this.game.load.image(
-                Config.entities.assets[i].name,
-                `${assets_path}sprite/${Config.entities.assets[i].file}`
-            );
-        for(let i in Config.buttons.assets)
-            this.game.load.spritesheet(
-                Config.buttons.assets[i].name,
-                `${assets_path}button/${Config.buttons.assets[i].file}`, 96, 96
-            );
+        this.game.load.atlasJSONHash('atlas', `${assets_path}atlas.32.png`, `${assets_path}atlas.32.json`);
     }
 
     /** Called when the state must be created */

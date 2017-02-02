@@ -1,4 +1,5 @@
 "use strict";
+import {Signal} from 'phaser'
 import GameObject from 'system/phaser/GameObject';
 import MaterialSprite from './MaterialSprite';
 import MaterialModal from './MaterialModal';
@@ -14,7 +15,6 @@ export default class Material extends GameObject {
 
     ready = false;
 
-
     /**
      * Constructor for a new material object
      * @param game
@@ -29,6 +29,10 @@ export default class Material extends GameObject {
         this.addSprite(new MaterialSprite(game, Position.getPixelAt(x), Position.getPixelAt(y), name, this));
         this.addModal(new MaterialModal(properties, this, game));
         this.configure(properties);
+        this.onVehicleStartHandled = new Signal();
+        this.onVehicleStopHandled = new Signal();
+        this.onAmountChange = new Signal();
+        this.type = name;
         this.ready = true;
     }
 
@@ -41,23 +45,22 @@ export default class Material extends GameObject {
     onVehicleStart(vehicle){
         if(Type.isExist(this.properties.amount) && Type.isNumber(this.properties.amount.current)
             && this.properties.amount.current > 0) {
-            this.modal.tooltipHandler(GameModal.VISIBLE, null, GameModal.FIXED);
-            this.modal.tooltip.setButtons();
+            this.modal.showTooltip(GameModal.FIXED);
+            this.onVehicleStartHandled.dispatch();
         }
     }
     onVehicleStop(){
-        this.modal.tooltipHandler(GameModal.HIDDEN, null, GameModal.NOT_FIXED);
-        this.modal.tooltip.delButtons();
+        this.onVehicleStopHandled.dispatch();
     }
 
     /** Ressource comportements */
     getRessource(amount, cb) {
-        let cbZero = () => { cb(this.sprite.key, 0); };
-        let cbAmount = () => { cb(this.sprite.key, amount); };
+        let cbZero = () => { cb(this.type, 0); };
+        let cbAmount = () => { cb(this.type, amount); };
         if(!(Type.isExist(this.properties.amount) && Type.isNumber(this.properties.amount.current))) return;
         if(this.properties.amount.current < amount) return cbZero();
         this.properties.amount.current -= amount;
-        this.modal.tooltip.setAmount(this.properties.amount.current);
+        this.onAmountChange.dispatch(this.properties.amount.current);
         return cbAmount();
     }
 
@@ -65,26 +68,26 @@ export default class Material extends GameObject {
     setRessource(amount, cb) {
         if(!(Type.isExist(this.properties.amount) && Type.isNumber(this.properties.amount.current))) return;
         this.properties.amount.current += amount;
-        this.modal.tooltip.setAmount(this.properties.amount.current);
-        return cb(this.sprite.key, amount);
+        this.onAmountChange.dispatch(this.properties.amount.current);
+        return cb(this.type, amount);
     }
 
     /** Add events comportements */
     onCollisionBegin(o) {
-        super.onCollisionBegin(o.object);
+        this.objectInCollision = o.object;
         if(Type.isInstanceOf(this.objectInCollision.sprite.obj, Vehicle)
         || Type.isInstanceOf(this.objectInCollision.sprite.obj, Player)) {
-            this.modal.tooltipHandler(GameModal.VISIBLE, GameModal.CONTROLS_DISABLED, null, GameModal.FORCE);
+            this.modal.showTooltip();
         }
     }
     onCollisionEnd(o) {
         if(super.isCollidWith(Vehicle, o) || super.isCollidWith(Player, o))
-            this.modal.tooltipHandler(GameModal.HIDDEN, GameModal.CONTROLS_ENABLED);
+            this.onCollisionEndHandled.dispatch();
     }
     onMouseOver() {
-        this.modal.tooltipHandler(GameModal.VISIBLE);
+        this.modal.showTooltip();
     }
     onMouseOut() {
-        this.modal.tooltipHandler(GameModal.HIDDEN);
+        this.onMouseOutHandled.dispatch();
     }
 };

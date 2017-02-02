@@ -13,17 +13,16 @@ class Button extends Phaser.Button {
      * @param key
      * @param props
      */
-    constructor(game, x, y, key, props) {
+    constructor(game, x, y, overFrame, outFrame, downFrame, upFrame, props) {
         props = props || {};
         try {
             Type.isExist(game, true);
             Type.isNumber(x, true);
             Type.isNumber(y, true);
-            Type.isString(key, true);
         } catch (e) {
             console.error(e.name + ": " + e.message);
         }
-        super(game, game.uiScale(x), game.uiScale(y), key, null, null, 2, 1, 0);
+        super(game, game.uiScale(x), game.uiScale(y), 'atlas', null, null, overFrame, outFrame, downFrame, upFrame);
         this.scale.setTo(game.uiScale(Type.isNumber(props.scale) ? props.scale : 1));
         this.visible = Type.isBoolean(props.visible) ? props.visible : true;
         this.anchor.set(
@@ -55,7 +54,7 @@ class Sprite extends Phaser.Sprite {
         } catch (e) {
             console.error(e.name + ": " + e.message);
         }
-        super(game, game.uiScale(x), game.uiScale(y), key);
+        super(game, game.uiScale(x), game.uiScale(y), 'atlas', `modal/${key}`);
         this.scale.setTo(game.uiScale(Type.isNumber(props.scale) ? props.scale : 1));
         this.visible = Type.isBoolean(props.visible) ? props.visible : true;
         this.inputEnabled = Type.isBoolean(props.inputEnabled) ? props.inputEnabled : false;
@@ -104,6 +103,7 @@ class Text extends Phaser.Text {
     }
     setX(x){ this.x = this.game.uiScale(x) }
     setY(y){ this.y = this.game.uiScale(y) }
+    update() {}
 }
 
 /** Modal Manager Strategy */
@@ -120,7 +120,7 @@ class Manager extends GameModal {
     }
 
     /** Show modal view */
-    static show(modal, group, callback = () => {}) {
+    static show(modal, group, quick = false, callback = () => {}) {
         try { Type.isExist(modal, true);
         } catch (e) { console.error(e.name + ": " + e.message); }
         if(Type.isExist(group)) {
@@ -129,19 +129,34 @@ class Manager extends GameModal {
         }
         const m = modal; // Prevent change during an animation
         m.visible = true;
-        m.alpha = 0;
-        this.game.add.tween(m).to({alpha:1}, 100, Phaser.Easing.Linear.None, true)
-            .onComplete.add(() => callback(), this);
+        const todo = () => {
+            if(Type.isInstanceOf(modal.onShow, Phaser.Signal))
+                modal.onShow.dispatch();
+            callback()
+        };
+        if(quick) { m.alpha = 1; todo(); }
+        else {
+            m.alpha = 0;
+            this.game.add.tween(m).to({alpha:1}, 100, Phaser.Easing.Linear.None, true).onComplete.add(todo, this);
+        }
     }
 
     /** Hide modal view */
-    static hide(modal, callback = () => {}) {
+    static hide(modal, quick = false, callback = () => {}) {
         try { Type.isExist(modal, true);
         } catch (e) { console.error(e.name + ": " + e.message); }
         const m = modal; // Prevent change during an animation
-        m.alpha = 1;
-        this.game.add.tween(m).to({alpha:0}, 100, Phaser.Easing.Linear.None, true)
-            .onComplete.add(() => {m.visible = false; callback()}, this);
+        const todo = () => {
+            if(Type.isInstanceOf(modal.onHide, Phaser.Signal))
+                modal.onHide.dispatch();
+            m.visible = false;
+            callback()
+        };
+        if(quick) { m.alpha = 0; todo(); }
+        else {
+            m.alpha = 1;
+            this.game.add.tween(m).to({alpha:0}, 100, Phaser.Easing.Linear.None, true).onComplete.add(todo, this);
+        }
     }
 
     /** Move modal */
@@ -155,53 +170,71 @@ class Manager extends GameModal {
 export class TooltipManager extends Manager {
     constructor(game, debug) {
         super(game);
-        this.controls = true;
+        this.controls = null;
         this.debug = debug;
     }
 
     /** Controls */
-    _setFixed(modal, visible = true) {
-        if(visible)
-            Manager.show(modal, this.game.layer.zDepth1);
+    _showFixed(modal, quick = false) {
+        Manager.show(modal, this.game.layer.zDepth1, quick);
         modal.params.fixeMe = null;
         modal.params.fixed = true;
+        if(modal === this.current)
+            this.current = null;
     }
-    _setNotFixed(modal, visible = false) {
-        if(!visible)
-            Manager.hide(modal);
+    _hideFixed(modal, quick = false) {
+        Manager.hide(modal, quick);
         modal.params.fixeMe = null;
         modal.params.fixed = false;
     }
-    _setCurrent(modal, visible) {
+    _setCurrent(modal, visible, quick) {
         if(visible) {
             if(this.current && this.current !== modal)
-                this._setCurrent(this.current, false);
+                this._setCurrent(this.current, false, quick);
             this.current = modal;
-            Manager.show(this.current, this.game.layer.zDepth1);
+            Manager.show(this.current, this.game.layer.zDepth1, quick);
         }
-        else if(this.current) {
-            Manager.hide(this.current);
+        else if(this.current && this.current === modal) {
+            Manager.hide(this.current, quick);
             this.current = null;
         }
     }
 
-    /** Toggle Show / Hide modal */
-    toggle(visible, modal, params) {
-        if(params.controls === true) this.controls = true;
+    /**
+     * Toggle Show / Hide modal
+     * params.controls: boolean
+     **/
+    toggle(visible, modal, params, callback = ()=>{}) {
+        if(params.controls === false || this.controls === modal)
+            this.controls = modal;
+        if(params.controls === true && this.controls === modal)
+            this.controls = null;
 
-        // If we want to fixe
-        if(modal.params.fixeMe === true && modal.params.fixed === false)
-            this._setFixed(modal, visible);
-
-        // If we want to unfixe
-        else if(modal.params.fixeMe === false && modal.params.fixed === true)
-            this._setNotFixed(modal, visible);
-
-        // If we want to set current (controls must be enabled)
-        else if(modal.params.fixed === false && (this.controls || params.force === true))
+        //visible:true, fixed:true
+        if(visible && modal.params.fixeMe === true) {
+            if(Type.isExist(params.context) && Type.isExist(this.current) && params.context === this.current.params.context) {
+                this._setCurrent(this.current, false, true); //hide other to my place context
+                this._showFixed(modal, true);
+            } else
+                this._showFixed(modal);
+        }
+        //visible:false, fixed:true
+        else if(!visible && modal.params.fixed === true && modal.params.fixeMe === true) {
+            this._hideFixed(modal);
+        }
+        else if(modal.params.fixed === false && visible && this.controls !== null && this.controls !== modal) {
+            return callback({code: 403, msg: "Vous n'avez pas les controls pour vous afficher"});
+        }
+        //visible:true, _controls:true
+        else if(modal.params.fixed === false) {
             this._setCurrent(modal, visible);
-
-        this.controls = Type.isBoolean(params.controls) ? params.controls : this.controls;
+        }
+        //console.log('-------------------------------------');
+        //console.log('visible', visible);
+        //console.log('fixeMe', modal.params.fixeMe);
+        //console.log('fixed', modal.params.fixed);
+        //console.log('this.controls=null', this.controls === null);
+        //console.log('this.controls=modal', this.controls === modal);
     }
 }
 
@@ -235,7 +268,7 @@ export class Stack extends Phaser.Group {
     //permet de ne pas avoir l'erreur "this.children[i] is undefined" de la part de Phaser.Group
     //en étant sûr de faire l'ajout en dehors de la boucle d'update du parent.
     update() {
-        for(let i = 0; i < this.toAdd.length; i++)
+        for(let i = 0; i < this.toAdd.length; ++i)
             this._add(this.toAdd[i]);
         this.toAdd = [];
     }
@@ -316,7 +349,7 @@ export class StackManager extends Manager {
         Manager.show(modal);
     }
     _del(modal, stack) {
-        Manager.hide(modal, () => {
+        Manager.hide(modal, false, () => {
             if(Type.isString(stack))
                 this.stacks[stack].remove(modal);
             else if(Type.isInstanceOf(stack, Stack))
@@ -347,12 +380,12 @@ export class DefaultManager extends Manager {
     }
 
     /** Controls */
-    _add(modal, params = {}) {
+    _add(modal) {
         modal.fixedToCameraDefault = modal.fixedToCamera;
         modal.fixedToCamera = true;
         modal.cameraOffset.setTo(
-            this.game.canvas.width / 2 - modal.width / 2,
-            this.game.canvas.height / 2 - modal.height / 2
+            this.game.canvas.width * 0.5 - modal.width * 0.5,
+            this.game.canvas.height * 0.5 - modal.height * 0.5
         );
         Manager.show(this.blackBackground);
         Manager.show(modal, this.game.layer.zDepth3);
@@ -426,7 +459,8 @@ class Factory extends Phaser.Group {
                 item = new Sprite(this.game, data.x || 0, data.y || 0, data.key, data.props);
                 break;
             case 'button':
-                item = new Button(this.game, data.x || 0, data.y || 0, data.key, data.props);
+                item = new Button(this.game, data.x || 0, data.y || 0, data.overFrame || null,
+                    data.outFrame || null, data.downFrame || null, data.upFrame || null, data.props);
                 break;
         }
         if(item) {
@@ -440,6 +474,11 @@ class Factory extends Phaser.Group {
 
 /** Abstract Modal (parent for all gameModals) */
 export default class Modal extends Factory {
+
+    onShow = new Phaser.Signal();
+    onHide = new Phaser.Signal();
+    onDeleted = new Phaser.Signal();
+
     /**
      * Constructor for a new modal
      * @param data
@@ -450,17 +489,24 @@ export default class Modal extends Factory {
         super(data, game);
         this.data = data;
         this.manager = manager.getInstance(game);
-        this.params = { fixed: false, fixeMe: null };
-        //this.scale.setTo(game.uiScale(1));
+        this.params = { fixed: false, fixeMe: null, context: null };
+        this.onHide.addOnce(this.delete, this);
+    }
+    delete() {
+        this.items = {}; //on supprime les références
+        this.destroy(true); //on supprime les objets réels
+        this.onDeleted.dispatch();
     }
 
     /**
      * Manager Strategy
      * @param visible
      * @param params (fixed|controls)
+     * @param cb
      */
-    toggle(visible, params = {}) {
+    toggle(visible, params = {}, cb) {
+        this.params.context = Type.isExist(params.context) ? params.context : null;
         this.params.fixeMe = Type.isBoolean(params.fixed) ? params.fixed : null;
-        this.manager.toggle(visible, this, params);
+        this.manager.toggle(visible, this, params, cb);
     }
 };

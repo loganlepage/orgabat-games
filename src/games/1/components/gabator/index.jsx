@@ -42,7 +42,8 @@ export default class Gabator extends React.Component {
         this.enterpriseMax = Config.stats.health.max;
     }
     componentDidMount() {
-        const gabator = new Canvas(this.props.width, this.props.height, Phaser.CANVAS, ReactDOM.findDOMNode(this));
+        const gabator = new Canvas(this.props.width, this.props.height, Phaser.CANVAS,
+            ReactDOM.findDOMNode(this), null, false, false);
         gabator.start(this);
     }
     changeValues(stats = {}) {

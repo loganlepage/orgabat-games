@@ -1,4 +1,5 @@
 "use strict";
+import Phaser from 'phaser';
 import Config from '../../config/data';
 import GameSprite from 'system/phaser/GameSprite';
 import {Keyboard} from 'phaser';
@@ -26,18 +27,21 @@ export default class PlayerSprite extends GameSprite {
     setPhysics() {
         this.game.physics.p2.enable(this, Config.developer.debug);
         this.body.fixedRotation = true;
-        this.body.setRectangle(this.width - this.width/3, this.height/2, 0, this.height/4);
+        this.body.setRectangle(this.width - this.width*0.33, this.height*0.5, 0, this.height*0.25);
         this.body.setCollisionGroup(this.game.CollisionGroup.player);
         this.body.collides(this.game.CollisionGroup.vehicle, this.onCollision, this);
         this.body.collides(this.game.CollisionGroup.tool, this.onCollision, this);
         this.body.collides(this.game.CollisionGroup.material, this.onCollision, this);
         this.body.collides(this.game.CollisionGroup.layer);
+        this.body.damping = 0;
     }
     setAnimations() {
-        this.animations.add(Keyboard.DOWN, [0, 1, 2, 3], 10, true);
-        this.animations.add(Keyboard.LEFT, [4, 5, 6, 7], 10, true);
-        this.animations.add(Keyboard.UP, [8, 9, 10, 11], 10, true);
-        this.animations.add(Keyboard.RIGHT, [12, 13, 14, 15], 10, true);
+        this.animations.add(Keyboard.DOWN, ['sprite/player/0', 'sprite/player/1', 'sprite/player/2', 'sprite/player/3'], 10, true);
+        this.animations.add(Keyboard.LEFT, ['sprite/player/4', 'sprite/player/5', 'sprite/player/6', 'sprite/player/7'], 10, true);
+        this.animations.add(Keyboard.UP, ['sprite/player/8', 'sprite/player/9', 'sprite/player/10', 'sprite/player/11'], 10, true);
+        this.animations.add(Keyboard.RIGHT, ['sprite/player/12', 'sprite/player/13', 'sprite/player/14', 'sprite/player/15'], 10, true);
+        this.animations.add(`${Keyboard.DOWN}_topview`, ['sprite/player/16'], 10, true);
+        this.animations.add(`${Keyboard.UP}_topview`, ['sprite/player/17'], 10, true);
         this.direction = Keyboard.DOWN;
     }
 

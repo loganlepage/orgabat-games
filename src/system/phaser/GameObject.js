@@ -7,6 +7,8 @@ export default class GameObject {
     constructor(game, layer) {
         this.game = game;
         this.layer = layer;
+        this.onCollisionEndHandled = new Signal();
+        this.onMouseOutHandled = new Signal();
     }
 
     /** @returns {boolean} */
@@ -53,15 +55,13 @@ export default class GameObject {
         return this._oic;
     }
     set objectInCollision(object) {
+        if(Type.isExist(object) && object.sprite === undefined && object.class === 'gameObject') return;
         this._oic = object;
         if(Type.isExist(this._oic)) {
             this.objectInitialDistance = this.objectCurrentDistance;
         }
     }
-    onCollisionBegin(o) {
-        if(o.sprite === undefined && o.class === 'gameObject') return;
-        this.objectInCollision = o;
-    }
+    onCollisionBegin() {}
     onCollisionEnd(s){}
     onMouseOver(){}
     onMouseOut(){}

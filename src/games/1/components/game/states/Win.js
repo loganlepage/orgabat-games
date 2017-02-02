@@ -7,7 +7,7 @@ export default class Win extends State {
     /** Called when the state must be created */
     create() {
         let loadingText = "Partie terminée";
-        let text = this.game.add.text(this.game.canvas.width/2, this.game.canvas.height/2, loadingText);
+        let text = this.game.add.text(this.game.canvas.width*0.5, this.game.canvas.height*0.5, loadingText);
         //  Centers the text
         text.anchor.set(0.5);
         text.align = 'center';

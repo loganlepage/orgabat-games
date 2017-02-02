@@ -16,11 +16,11 @@ export default class Feedback extends Modal {
     }
 
     setAlert(text = 'Attention !') {
-        this.items.bg.loadTexture('alert_feedback');
+        this.items.bg.loadTexture('atlas', 'modal/bg/alert_feedback');
         this.items.text.text = text;
     }
     setInfo(text = '{content}') {
-        this.items.bg.loadTexture('info_feedback');
+        this.items.bg.loadTexture('atlas', 'modal/bg/info_feedback');
         this.items.text.text = text;
     }
 
@@ -31,7 +31,7 @@ export default class Feedback extends Modal {
             items: {
                 bg: {
                     type: "sprite",
-                    key: "info_feedback"
+                    key: "bg/info_feedback"
                 },
                 text: {
                     type: "text",

@@ -20,7 +20,7 @@ export default class Rules extends State {
         const a = this.game.add.sprite(
             this.game.uiScale(80),
             this.game.world.height - this.game.uiScale(80+12),
-            'bouton_a'
+            'atlas', 'modal/item/button_a'
         );
         a.scale.set(this.game.uiScale(0.8));
         a.inputEnabled = true;

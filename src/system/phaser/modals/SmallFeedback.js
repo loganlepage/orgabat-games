@@ -22,13 +22,13 @@ export default class SmallFeedback extends Modal {
             items: {
                 bg: {
                     type: "sprite",
-                    key: "small_feedback"
+                    key: "bg/small_feedback"
                 },
                 image: {
                     type: "sprite",
                     y: 10,
                     x: 10,
-                    key: "bouton_z",
+                    key: "item/button_z",
                 },
                 text: {
                     type: "text",

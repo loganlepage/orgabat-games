@@ -5,7 +5,7 @@ import GameModal from 'system/phaser/GameModal';
 
 
 /** Description Tooltip Modal */
-export default class DefaultModal extends Modal {
+export default class StartInfoModal extends Modal {
 
     /**
      * Constructor for a new modal
@@ -14,7 +14,7 @@ export default class DefaultModal extends Modal {
      * @param game
      */
     constructor(data, manager, game) {
-        super(Type.deepMerge(DefaultModal.pattern, data), manager, game);
+        super(Type.deepMerge(StartInfoModal.pattern, data), manager, game);
     }
 
     static get pattern() {
@@ -23,7 +23,7 @@ export default class DefaultModal extends Modal {
             items: {
                 bg: {
                     type: "sprite",
-                    key: "big_modal"
+                    key: "bg/big_modal"
                 },
                 title: {
                     type: "text",
@@ -43,8 +43,8 @@ export default class DefaultModal extends Modal {
                     text: "Bienvenue sur le chantier.\n\n" +
                     "Vous avez à disposition des ressources et des véhicules, choisissez le bon moyen de transport " +
                     "(celui qui vous fera gagner du temps) pour déplacer du liant dans le dépôt en bas.\n\n" +
-                    "Utilisez la croix directionnelle et votre souris pour déplacer le personnage ou le véhicule et " +
-                    "survoler les objets pour voir de quoi il s'agit.",
+                    "Utilisez la croix directionnelle pour déplacer le personnage ou le véhicule et " +
+                    "survolez les objets à la souris pour voir de quoi il s'agit.",
                     style: {
                         fill: "#5F4D21",
                         fontFamily: "Arial",
@@ -60,7 +60,7 @@ export default class DefaultModal extends Modal {
                     items: {
                         iconA: {
                             type: "sprite",
-                            key: "bouton_a",
+                            key: "item/button_a",
                             x: -36,
                             y: -7,
                             props: { scale: 0.53, inputEnabled: true }

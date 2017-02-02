@@ -4,7 +4,7 @@ import Phaser, {Signal} from 'phaser';
 /** Abstract gameSprite (parent for all gameSprites) */
 export default class GameSprite extends Phaser.Sprite {
     constructor(game, x, y, name, gameObject) {
-        super(game, x, y, name);
+        super(game, x, y, 'atlas', `sprite/${name}`);
         this.onCollisionHandled = new Signal();
         this.onMouseOverHandled = new Signal();
         this.onMouseOutHandled = new Signal();

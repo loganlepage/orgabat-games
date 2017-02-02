@@ -35,7 +35,7 @@ export default class HelpModal extends Modal {
             items: {
                 bg: {
                     type: "sprite",
-                    key: "gabator_help_modal"
+                    key: "bg/gabator_help_tooltip"
                 },
                 title: {
                     type: "text",
@@ -65,7 +65,10 @@ export default class HelpModal extends Modal {
                 },
                 close: {
                     type: "button",
-                    key: "bouton_close",
+                    key: "modal/item/button_close",
+                    overFrame: "modal/item/button_close.0",
+                    outFrame: "modal/item/button_close.1",
+                    downFrame: "modal/item/button_close.2",
                     x: 298,
                     y: 14,
                     props: { scale: 0.7 }

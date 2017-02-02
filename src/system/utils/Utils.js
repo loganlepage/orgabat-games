@@ -7,7 +7,7 @@ export class DoOnce {
         this.condition = condition; //méthode qui retourne un booléen
     }
     call(args = {}) {
-        if(!this.done && this.condition(args)) {
+        if((!this.done) && this.condition(args)) {
             this.done = true;
             this.callback(args);
         }

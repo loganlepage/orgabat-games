@@ -14,16 +14,5 @@ export default {
             default: 2
         }
     },
-    info: "Attention: Vous n'avez pas de permis élévateur.",
-    entities: {
-        assets: [
-            {name: "gabator", file: "gabator.png"},
-            {name: "gabator-sleep", file: "gabator-sleep.png"}
-        ]
-    },
-    buttons: {
-        assets: [
-            {name: "bouton_help", file: "leftbulle_bouton_help.png"}
-        ]
-    }
+    info: "Attention: Vous n'avez pas de permis élévateur."
 }
