@@ -9,7 +9,7 @@ export default class DepotFillQuest extends Quest {
     constructor(game) {
         super(game);
         game.toolGroup.forEach((tool) => {
-            if(tool.key === 'depot')
+            if(tool.obj.type === 'depot')
                 tool.obj.onFull.addOnce(this.done, this);
         });
     }
