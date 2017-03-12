@@ -1,4 +1,5 @@
 import {Quest} from 'system/phaser/utils/Quest';
+import Config from '../config/data';
 
 export default class DepotFillQuest extends Quest {
 
@@ -12,5 +13,9 @@ export default class DepotFillQuest extends Quest {
             if(tool.obj.type === 'depot')
                 tool.obj.onFull.addOnce(this.done, this);
         });
+        if(Config.developer.debug) {
+            window.quest = window.quest || {};
+            window.quest.depotFill = this;
+        }
     }
 }

@@ -250,6 +250,8 @@ class GameProcess {
             organizationMax: PhaserManager.get('gabator').stats.organizationMax,
             enterpriseMax: PhaserManager.get('gabator').stats.enterpriseMax
         });
+        endInfoModal.onExit.addOnce(() => window.closeGameModal(), this);
+        endInfoModal.onReplay.addOnce(() => window.location.reload(), this);
         endInfoModal.toggle(true, {}, {
             star1: this.quests.get('vehicle_mount').isDone,
             star2: this.quests.get('vehicle_load').isDone,
@@ -261,7 +263,7 @@ class GameProcess {
         });
 
         //Et on envoie le score à l'API
-        api.sendScore({
+        window.api.sendScore({
             exerciseId: game_id,
             time: Math.round((this._timeEnd - this._timeStart)/1000),
             health: PhaserManager.get('gabator').stats.state.health,

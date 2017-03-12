@@ -4,7 +4,7 @@ import Elevator from '../objects/Vehicle/elevator/Elevator';
 /** Configs for this game */
 export default {
     developer: {
-        debug: false
+        debug: true
     },
     canvasParent: "#gameDiv",
     tilemap: {
