@@ -10,11 +10,11 @@ export default class ToolSprite extends GameSprite {
      * @param game
      * @param x
      * @param y
-     * @param name
+     * @param key
      * @param toolObj
      */
     constructor(game, x, y, name, toolObj){
-        super(game, x, y, name, toolObj);
+        super(game, x, y, `jeu1/${name}`, toolObj);
         this.setPhysics();
     }
 

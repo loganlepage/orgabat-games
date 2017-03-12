@@ -65,7 +65,7 @@ export default class Vehicle extends GameObject {
         this.speedRotate = properties.speedRotate * this.game.SCALE * 2; //2: convert to tr/min in game
 
         this.properties = properties;
-        this.loading = this.game.add.sprite(0, 0, 'atlas', 'sprite/charge');
+        this.loading = this.game.add.sprite(0, 0, 'atlas', 'jeu1/charge');
         this.sprite.addChild(this.loading);
         this.loading.anchor.set(this.properties.loading_x, this.properties.loading_y);
         this.loading.visible = false;

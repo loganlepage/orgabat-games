@@ -1,5 +1,6 @@
 /** Configs for gabator */
 export default {
+    atlas: "gabator",
     stats: {
         health: {
             max: 2,

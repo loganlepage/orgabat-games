@@ -10,11 +10,11 @@ export default class VehicleSprite extends GameSprite {
      * @param game
      * @param x
      * @param y
-     * @param name
+     * @param key
      * @param vehicleObj
      */
     constructor(game, x, y, name, vehicleObj) {
-        super(game, x, y, name, vehicleObj);
+        super(game, x, y, `jeu1/${name}`, vehicleObj);
         this.game.physics.p2.enable(this, Config.developer.debug);
         this.setPhysics();
     }

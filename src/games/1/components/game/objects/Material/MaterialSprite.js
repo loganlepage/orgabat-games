@@ -10,11 +10,11 @@ export default class MaterialSprite extends GameSprite {
      * @param game
      * @param x
      * @param y
-     * @param name
+     * @param key
      * @param materialObj
      */
     constructor(game, x, y, name, materialObj) {
-        super(game, x, y, name, materialObj);
+        super(game, x, y, `jeu1/${name}`, materialObj);
         this.setPhysics();
     }
 

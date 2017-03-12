@@ -14,11 +14,11 @@ export default class PlayerSprite extends GameSprite {
      * @param game
      * @param x
      * @param y
-     * @param name
+     * @param key
      * @param characterObj
      */
     constructor(game, x, y, name, characterObj) {
-        super(game, x, y, name, characterObj);
+        super(game, x, y, `jeu1/${name}`, characterObj);
         this.setPhysics();
         this.setAnimations();
     }
@@ -36,12 +36,12 @@ export default class PlayerSprite extends GameSprite {
         this.body.damping = 0;
     }
     setAnimations() {
-        this.animations.add(Keyboard.DOWN, ['sprite/player/0', 'sprite/player/1', 'sprite/player/2', 'sprite/player/3'], 10, true);
-        this.animations.add(Keyboard.LEFT, ['sprite/player/4', 'sprite/player/5', 'sprite/player/6', 'sprite/player/7'], 10, true);
-        this.animations.add(Keyboard.UP, ['sprite/player/8', 'sprite/player/9', 'sprite/player/10', 'sprite/player/11'], 10, true);
-        this.animations.add(Keyboard.RIGHT, ['sprite/player/12', 'sprite/player/13', 'sprite/player/14', 'sprite/player/15'], 10, true);
-        this.animations.add(`${Keyboard.DOWN}_topview`, ['sprite/player/16'], 10, true);
-        this.animations.add(`${Keyboard.UP}_topview`, ['sprite/player/17'], 10, true);
+        this.animations.add(Keyboard.DOWN, ['jeu1/player/0', 'jeu1/player/1', 'jeu1/player/2', 'jeu1/player/3'], 10, true);
+        this.animations.add(Keyboard.LEFT, ['jeu1/player/4', 'jeu1/player/5', 'jeu1/player/6', 'jeu1/player/7'], 10, true);
+        this.animations.add(Keyboard.UP, ['jeu1/player/8', 'jeu1/player/9', 'jeu1/player/10', 'jeu1/player/11'], 10, true);
+        this.animations.add(Keyboard.RIGHT, ['jeu1/player/12', 'jeu1/player/13', 'jeu1/player/14', 'jeu1/player/15'], 10, true);
+        this.animations.add(`${Keyboard.DOWN}_topview`, ['jeu1/player/16'], 10, true);
+        this.animations.add(`${Keyboard.UP}_topview`, ['jeu1/player/17'], 10, true);
         this.direction = Keyboard.DOWN;
     }
 

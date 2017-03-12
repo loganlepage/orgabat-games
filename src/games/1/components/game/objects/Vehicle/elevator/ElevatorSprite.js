@@ -9,11 +9,11 @@ export default class ElevatorSprite extends VehicleSprite {
      * @param game
      * @param x
      * @param y
-     * @param name
+     * @param key
      * @param vehicleObj
      */
-    constructor(game, x, y, name, vehicleObj) {
-        super(game, x, y, name, vehicleObj);
+    constructor(game, x, y, key, vehicleObj) {
+        super(game, x, y, key, vehicleObj);
     }
     setContext(obj) {
         this.obj = obj;

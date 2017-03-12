@@ -1,0 +1,52 @@
+{"frames": {
+
+"gabator/button_help_left.0":
+{
+	"frame": {"x":4,"y":245,"w":96,"h":96},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":96,"h":96},
+	"sourceSize": {"w":96,"h":96}
+},
+"gabator/button_help_left.1":
+{
+	"frame": {"x":105,"y":245,"w":96,"h":96},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":96,"h":96},
+	"sourceSize": {"w":96,"h":96}
+},
+"gabator/button_help_left.2":
+{
+	"frame": {"x":206,"y":245,"w":96,"h":96},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":96,"h":96},
+	"sourceSize": {"w":96,"h":96}
+},
+"gabator/gabator-sleep":
+{
+	"frame": {"x":4,"y":4,"w":200,"h":236},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":200,"h":236},
+	"sourceSize": {"w":200,"h":236}
+},
+"gabator/gabator":
+{
+	"frame": {"x":209,"y":4,"w":200,"h":236},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":200,"h":236},
+	"sourceSize": {"w":200,"h":236}
+}},
+"meta": {
+	"app": "http://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "gabator.png",
+	"format": "RGBA8888",
+	"size": {"w":413,"h":345},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:1a58974c5b6ebd728966957703bddd5a:e1ab151a5c06353bf261596b399f0794:0367769794c7f546853037d127bf23ac$"
+}
+}

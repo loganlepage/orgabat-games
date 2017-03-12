@@ -33,7 +33,7 @@ export default class Load extends State {
         this.game.load.tilemap('map', `${assets_path}tilemap/maps/${Config.tilemap.file}`, null, Tilemap.TILED_JSON);
         for(let i in Config.tilemap.assets)
             this.game.load.image(Config.tilemap.assets[i].name, `${assets_path}tilemap/tiles/${Config.tilemap.assets[i].file}`);
-        this.game.load.atlasJSONHash('atlas', `${assets_path}atlas.32.png`, `${assets_path}atlas.32.json`);
+        this.game.load.atlasJSONHash('atlas', `${assets_path}${Config.atlas}.png`, `${assets_path}${Config.atlas}.json`);
     }
 
     loadModulesAssets(){
