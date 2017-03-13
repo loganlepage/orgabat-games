@@ -475,10 +475,10 @@
 "meta": {
 	"app": "http://www.codeandweb.com/texturepacker",
 	"version": "1.0",
-	"image": "atlas_jeu1.png",
+	"image": "jeu1.png",
 	"format": "RGBA8888",
 	"size": {"w":506,"h":1523},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:eb2ac2178c75c2bb3b59ccb1bcc6c97d:b31c38d82e993366c8f4cf1deb751a62:4a562af621ac2e0f0e2dd09f471838bd$"
+	"smartupdate": "$TexturePacker:SmartUpdate:8ff7299c9e1fd58db88d59b7800783b2:b31c38d82e993366c8f4cf1deb751a62:f3e3ac0d35d429b372c676f91f6c8703$"
 }
 }

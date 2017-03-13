@@ -20,7 +20,7 @@ export default {
             {name: "tilemap.32", file: "tilemap.32.png"},
         ]
     },
-    atlas: "atlas_jeu1",
+    atlas: "jeu1",
     entities: {
         player: {x: 2, y: 7, speed: 175},
         vehicles: [ //names are unique

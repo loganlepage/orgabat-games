@@ -14,7 +14,8 @@ process.env.NODE_ENV = production ? 'production' : 'development';
 module.exports = {
     /** nos points d'entrée, par clé */
     entry: {
-        '1': "./src/games/1/app.jsx" // Jeu 1
+       // '1': "./src/games/1/app.jsx", // Jeu 1
+        '2': "./src/games/2/app.jsx" // Jeu 1
     },
     /** description de nos sorties */
     output: {

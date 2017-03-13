@@ -6,7 +6,6 @@ import Boot from './states/Boot';
 import Load from './states/Load';
 import Play from './states/Play';
 import Rules from './states/Rules';
-import Iframe from 'system/dom/Iframe';
 import Type from 'system/utils/Type';
 
 /** State to init the Game canvas */
@@ -40,14 +39,11 @@ export default class Game extends React.Component {
             Game.game = new Canvas(this.props.width, this.props.height, Phaser.CANVAS,
                 ReactDOM.findDOMNode(this), null, false, false);
             Game.game.start();
-            Game.game.iframe = this.refs.iframe;
         } else {
             ReactDOM.findDOMNode(this).appendChild(Game.game.canvas);
         }
     }
     render() {
-        return <div id="game-canvas">
-            <Iframe ref="iframe" />
-        </div>;
+        return <div id="game-canvas"></div>;
     }
 }
