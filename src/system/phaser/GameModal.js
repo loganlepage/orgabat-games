@@ -1,5 +1,6 @@
 "use strict";
 
+
 /** Abstract gameModal (parent for all gameModals) */
 export default class GameModal {
     constructor(game) {
@@ -35,46 +36,42 @@ export default class GameModal {
     }
 
     /** OUTER */
-    getOuterLeftToSprite(sprite, item, scaleX, offset) {
-        offset = offset ? offset : 0;
-        return this.getInnerLeftToSprite(sprite) - item.width * scaleX - offset;
+    getOuterLeftToSprite(fromSprite, fromPosition, toItem, scaleX, offset = 0) {
+        return this.getInnerLeftToSprite(fromSprite, fromPosition) - toItem.width * scaleX - offset;
     }
-    getOuterCenterXToSprite(sprite, item, scaleX) {
-        return this.getInnerCenterXToSprite(sprite) - item.centerX * scaleX ;
+    getOuterCenterXToSprite(fromSprite, fromPosition, toItem, scaleX) {
+        return this.getInnerCenterXToSprite(fromSprite, fromPosition) - toItem.centerX * scaleX;
     }
-    getOuterRightToSprite(sprite, offset) {
-        offset = offset ? offset : 0;
-        return this.getInnerRightToSprite(sprite) + offset;
+    getOuterRightToSprite(fromSprite, fromPosition, offset = 0) {
+        return this.getInnerRightToSprite(fromSprite, fromPosition) + offset;
     }
-    getOuterTopToSprite(sprite, item, scaleY, offset) {
-        offset = offset ? offset : 0;
-        return this.getInnerTopToSprite(sprite) - item.height * scaleY - offset;
+    getOuterTopToSprite(fromSprite, fromPosition, toItem, scaleY, offset = 0) {
+        return this.getInnerTopToSprite(fromSprite, fromPosition) - toItem.height * scaleY - offset;
     }
-    getOuterBottomToSprite(sprite, offset) {
-        offset = offset ? offset : 0;
-        return this.getInnerDownToSprite(sprite) + offset;
+    getOuterBottomToSprite(fromSprite, fromPosition, offset = 0) {
+        return this.getInnerDownToSprite(fromSprite, fromPosition) + offset;
     }
 
     /** INNER */
-    getInnerLeftToSprite(sprite) {
-        return sprite.position.x - sprite.width * (1 - sprite.anchor.x)
+    getInnerLeftToSprite(sprite, position) {
+        return position.x - sprite.width * sprite.anchor.x
     }
-    getInnerCenterXToSprite(sprite) {
-        return this.getInnerLeftToSprite(sprite) + sprite.width * 0.5;
+    getInnerCenterXToSprite(sprite, position) {
+        return this.getInnerLeftToSprite(sprite, position) + sprite.width * 0.5;
     }
-    getInnerRightToSprite(sprite) {
-        return sprite.position.x + sprite.width * (1 - sprite.anchor.x)
+    getInnerRightToSprite(sprite, position) {
+        return position.x + sprite.width * sprite.anchor.x
     }
-    getInnerTopToSprite(sprite) {
-        return sprite.position.y - sprite.height * (1 - sprite.anchor.y)
+    getInnerTopToSprite(sprite, position) {
+        return position.y - sprite.height * sprite.anchor.y
     }
-    getInnerDownToSprite(sprite) {
-        return sprite.position.y + sprite.height * (1 - sprite.anchor.y)
+    getInnerDownToSprite(sprite, position) {
+        return position.y + sprite.height * sprite.anchor.y
     }
 
     /** BOOLEAN */
-    isPossibleToOuterRightToSprite(sprite, offsetX, item) {
-        return this.getOuterRightToSprite(sprite) + offsetX + item._frame.right < this.game.width;
+    isPossibleToOuterRightToSprite(fromSprite, fromPosition, offsetX, item) {
+        return this.getOuterRightToSprite(fromSprite, fromPosition) + offsetX + item._frame.right < this.game.width;
     }
 
     /** OTHER */

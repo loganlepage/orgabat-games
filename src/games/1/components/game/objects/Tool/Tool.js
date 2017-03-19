@@ -2,7 +2,7 @@
 import {Signal} from 'phaser';
 import GameObject from 'system/phaser/GameObject';
 import ToolSprite from './ToolSprite';
-import ToolModal from './ToolModal';
+import ToolModalHandler from './ToolModalHandler';
 import GameModal from 'system/phaser/GameModal';
 import Position from 'system/phaser/utils/Position';
 import Type from 'system/utils/Type';
@@ -19,21 +19,21 @@ export default class Tool extends GameObject {
      * Constructor for a new tool object
      * @param game
      * @param layer
-     * @param name
+     * @param type
      * @param properties
      * @param x
      * @param y
      */
-    constructor(game, layer, name, properties, x, y) {
+    constructor(game, layer, type, properties, x, y) {
         super(game, layer);
         this.onFull = new Signal();
-        this.addSprite(new ToolSprite(this.game, Position.getPixelAt(x), Position.getPixelAt(y), name, this));
-        this.addModal(new ToolModal(properties, this, game));
+        this.addSprite(new ToolSprite(this.game, Position.getPixelAt(x), Position.getPixelAt(y), type, this));
+        this.addModalHandler(new ToolModalHandler(properties, this, game));
         this.configure(properties);
         this.onVehicleStartHandled = new Signal();
         this.onVehicleStopHandled = new Signal();
         this.onAmountChange = new Signal();
-        this.type = name;
+        this.type = type;
         this.ready = true;
     }
 
@@ -46,7 +46,7 @@ export default class Tool extends GameObject {
     onVehicleStart() {
         if(Type.isExist(this.properties.amount) && Type.isNumber(this.properties.amount.current)
             && Type.isNumber(this.properties.amount.max) && this.properties.amount.current < this.properties.amount.max) {
-            this.modal.showTooltip(GameModal.FIXED);
+            this.modalHandler.showTooltip(GameModal.FIXED);
             this.onVehicleStartHandled.dispatch();
         }
        // Type.isExist(this.properties.needed) ? {a:false, e:true} : null
@@ -74,7 +74,7 @@ export default class Tool extends GameObject {
         this.objectInCollision = o.object;
         if(Type.isInstanceOf(this.objectInCollision.sprite.obj, Vehicle)
         || Type.isInstanceOf(this.objectInCollision.sprite.obj, Player)) {
-            this.modal.showTooltip()
+            this.modalHandler.showTooltip()
         }
     }
     onCollisionEnd(o) {
@@ -82,7 +82,7 @@ export default class Tool extends GameObject {
             this.onCollisionEndHandled.dispatch();
     }
     onMouseOver() {
-        this.modal.showTooltip()
+        this.modalHandler.showTooltip()
     }
     onMouseOut() {
         this.onMouseOutHandled.dispatch();

@@ -23,7 +23,7 @@ export default class StartInfoModal extends Modal {
             items: {
                 bg: {
                     type: "sprite",
-                    key: "bg/big_modal"
+                    key: "modal/bg/big_modal"
                 },
                 title: {
                     type: "text",
@@ -60,7 +60,7 @@ export default class StartInfoModal extends Modal {
                     items: {
                         iconA: {
                             type: "sprite",
-                            key: "item/button_a",
+                            key: "modal/item/button_a",
                             x: -36,
                             y: -7,
                             props: { scale: 0.53, inputEnabled: true }

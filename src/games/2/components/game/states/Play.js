@@ -2,6 +2,7 @@
 import Phaser, {State, Physics, Easing} from 'phaser';
 import Config from '../config/data';
 import FloorFactory from '../objects/Floor/FloorFactory';
+import MaterialFactory from '../objects/Material/MaterialFactory';
 import PhaserManager from 'system/phaser/utils/PhaserManager';
 
 import StartInfoModal from '../modals/StartInfoModal';
@@ -29,6 +30,7 @@ export default class Play extends State {
 
         this.initUI();
         this.addFloors();
+        this.addMaterials();
         this.game.world.setBounds(0, 0, this.game.floorGroup.width, this.game.floorGroup.height);
         PhaserManager.ready('game', 'play');
         this.start();
@@ -49,7 +51,9 @@ export default class Play extends State {
     addFloors() {
         this.game.floorGroup = new FloorFactory(this.game, Config.entities.floors);
     }
-
+    addMaterials() {
+        this.game.materialGroup = new MaterialFactory(this.game, Config.entities.materials);
+    }
     /** Called by a delegated event to follow an object */
     follow(object) {
         this.game.camera.follow(object.sprite);
@@ -80,7 +84,7 @@ class GameProcess {
 
         //Animation de la caméra
         //On ajuste sa durée par rapport au mouvement à effectuer (peut être égal à 0)
-        this.bootTweenTime = (this.game.world.height - this.game.camera.height) * 4.5;
+        this.bootTweenTime = (this.game.world.height - this.game.camera.height) * 2;
         this.bootTween = this.game.add.tween(this.game.camera).to({
             y: this.game.floorGroup.height - this.game.canvas.height
         }, this.bootTweenTime , Easing.Quadratic.InOut, false, 600);

@@ -1,7 +1,6 @@
 "use strict";
 import Type from 'system/utils/Type';
 import Modal from 'system/phaser/Modal';
-import GameModal from 'system/phaser/GameModal';
 
 
 /** Gabator Help Modal */
@@ -35,7 +34,7 @@ export default class HelpModal extends Modal {
             items: {
                 bg: {
                     type: "sprite",
-                    key: "bg/gabator_confirm_tooltip"
+                    key: "modal/bg/gabator_confirm_tooltip"
                 },
                 title: {
                     type: "text",

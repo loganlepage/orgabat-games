@@ -1,6 +1,6 @@
 "use strict";
 import GameModal from 'system/phaser/GameModal';
-import DescriptionTooltip from 'system/phaser/modals/DescriptionTooltip';
+import BigDescriptionTooltip from 'system/phaser/modals/BigDescriptionTooltip';
 import ButtonInfo from 'system/phaser/modals/ButtonInfo';
 import Feedback from 'system/phaser/modals/Feedback';
 import {TooltipManager, StackManager, Stack} from 'system/phaser/Modal';
@@ -8,7 +8,7 @@ import Type from 'system/utils/Type';
 import {DoOnce} from 'system/utils/Utils';
 
 /** Vehicle Modal (called by the vehicle gameObject) */
-export default class VehicleModal extends GameModal {
+export default class VehicleModalHandler extends GameModal {
 
     isShowMouseUsable = true;
     isShowUsable = true;
@@ -43,20 +43,20 @@ export default class VehicleModal extends GameModal {
      * ------------------------------------------ */
     prepareTooltip(tooltip, isButton) {
         tooltip.items.useButton.visible = isButton;
-        const dir = this.isPossibleToOuterRightToSprite(this.obj.sprite, 10, tooltip.items.bg) ? 'right' : 'left';
-        tooltip.y =  this.getInnerTopToSprite(this.obj.sprite) + 10;
+        const dir = this.isPossibleToOuterRightToSprite(this.obj.sprite, this.obj.sprite.world, 10, tooltip.items.bg) ? 'right' : 'left';
+        tooltip.y =  this.getInnerTopToSprite(this.obj.sprite, this.obj.sprite.world) + 10;
         if(dir === 'right') {
-            tooltip.x = this.getOuterRightToSprite(this.obj.sprite, 10);
+            tooltip.x = this.getOuterRightToSprite(this.obj.sprite, this.obj.sprite.world, 10);
             tooltip.setRight();
         } else {
-            tooltip.x = this.getOuterLeftToSprite(this.obj.sprite, tooltip.items.bg, tooltip.scale.x, 10);
+            tooltip.x = this.getOuterLeftToSprite(this.obj.sprite, this.obj.sprite.world, tooltip.items.bg, tooltip.scale.x, 10);
             tooltip.setLeft();
         }
     }
     showMouseTooltip(isCollide) {
         if(!this.isShowMouseUsable) return;
         this.isShowMouseUsable = false;
-        const tooltip = new DescriptionTooltip({items: {
+        const tooltip = new BigDescriptionTooltip({items: {
             title: {text: this.properties.name}, description: {text: this.descriptionText}
         }}, TooltipManager, this.game);
         this.obj.onMouseOutHandled.addOnce(() => tooltip.toggle(false), tooltip);
@@ -76,7 +76,7 @@ export default class VehicleModal extends GameModal {
     showTooltip() {
         if(!this.isShowUsable) return;
         this.isShowUsable = false;
-        const tooltip = new DescriptionTooltip({items: {
+        const tooltip = new BigDescriptionTooltip({items: {
             title: {text: this.properties.name}, description: {text: this.descriptionText}
         }}, TooltipManager, this.game);
         this.obj.onMounted.addOnce(() => tooltip.toggle(false, {controls: true, fixed:true}), tooltip);
@@ -93,19 +93,19 @@ export default class VehicleModal extends GameModal {
     
     buttonInfoFeedback(visible = true) {
         const dropInfo = new ButtonInfo({items: {
-            image: { key: "item/button_e"}, text: { text: "Déposer"}}
+            image: { key: "modal/item/button_e"}, text: { text: "Déposer"}}
         }, StackManager, this.game);
         this.obj.onStopped.addOnce(() => dropInfo.toggle(false, {stack: this.buttonStack}), dropInfo);
         dropInfo.toggle(visible, {stack: this.buttonStack});
 
         const useInfo = new ButtonInfo({items: {
-            image: { key: "item/button_a"}, text: { text: "Prendre"}}
+            image: { key: "modal/item/button_a"}, text: { text: "Prendre"}}
         }, StackManager, this.game);
         this.obj.onStopped.addOnce(() => useInfo.toggle(false, {stack: this.buttonStack}), useInfo);
         useInfo.toggle(visible, {stack: this.buttonStack});
 
         const exitInfo = new ButtonInfo({items: {
-            image: { key: "item/button_z"}, text: { text: "Sortir"}}
+            image: { key: "modal/item/button_z"}, text: { text: "Sortir"}}
         }, StackManager, this.game);
         this.obj.onStopped.addOnce(() => exitInfo.toggle(false, {stack: this.buttonStack}), exitInfo);
         exitInfo.toggle(visible, {stack: this.buttonStack});

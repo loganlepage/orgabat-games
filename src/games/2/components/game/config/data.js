@@ -16,6 +16,13 @@ export default {
             {name: "1st", prop: {name: "1er étage"}},
             {name: "rdc", prop: {name: "Rez-de-chaussée"}},
             {name: "ext", prop: {name: "Extérieur"}},
+        ],
+        materials: [
+            {name: "passerelle", prop: {name: "Passerelle avec garde corps"}},
+            {name: "tremi", prop: {name: "Garde corps de trémi"}},
+            {name: "baie_ouverte", prop: {name: "Protection des baies ouvertes"}},
+            {name: "barriere", prop: {name: "Barrière de protection"}},
+            {name: "peinture", prop: {name: "Panneau peinture fraîche"}}
         ]
     }
 }

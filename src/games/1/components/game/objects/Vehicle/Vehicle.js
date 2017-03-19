@@ -3,8 +3,7 @@ import {Signal} from 'phaser';
 import Config from '../../config/data';
 import GameObject from 'system/phaser/GameObject';
 import VehicleSprite from './VehicleSprite';
-import VehicleModal from './VehicleModal';
-import GameModal from 'system/phaser/GameModal';
+import VehicleModalHandler from './VehicleModalHandler';
 import Position from 'system/phaser/utils/Position';
 import Inventary from 'system/phaser/Inventary';
 import Type from 'system/utils/Type';
@@ -45,15 +44,15 @@ export default class Vehicle extends GameObject {
      * @param y
      * @param sprite
      */
-    constructor(game, layer, name, properties, x, y, sprite = null) {
+    constructor(game, layer, type, properties, x, y, sprite = null) {
         super(game, layer);
         this.container = new Inventary(properties.containerSize, Config.entities.materials);
         this.addSprite(
             Type.isInstanceOf(sprite, VehicleSprite)
             ? sprite
-            : new VehicleSprite(this.game, Position.getPixelAt(x), Position.getPixelAt(y), name, this)
+            : new VehicleSprite(this.game, Position.getPixelAt(x), Position.getPixelAt(y), type, this)
         );
-        this.addModal(new VehicleModal(properties, this, game));
+        this.addModalHandler(new VehicleModalHandler(properties, this, game));
         this.configure(properties);
         this.ready = true;
     }
@@ -126,7 +125,7 @@ export default class Vehicle extends GameObject {
         player.anchor.set(this.properties.player_x, this.properties.player_y);
         this.sprite.anchor.setTo(0.5, 0.5); //don't change when vehicle is mounted
         this.driver = player;
-        this.modal.buttonInfoFeedback();
+        this.modalHandler.buttonInfoFeedback();
 
         this.initializedAnimation = false;
         this.onMounted.dispatch(this);
@@ -153,7 +152,7 @@ export default class Vehicle extends GameObject {
         this.driver.reset(x, y);
         this.driver.body.collideWorldBounds = true;
         const driver = this.driver; this.driver = null;
-        this.modal.droppedFeedback();
+        this.modalHandler.droppedFeedback();
 
         this.onStopped.dispatch(driver.obj);
         setTimeout(() => {
@@ -186,7 +185,7 @@ export default class Vehicle extends GameObject {
         if(this.objectInCollision === null) return; //if not collision, break
         if(this.game.keys.isDown(Keyboard.A)) {
             if(Type.isInstanceOf(this.objectInCollision.sprite.obj, Vehicle)) {
-                this.modal.cantUseFeedback();
+                this.modalHandler.cantUseFeedback();
             }
             else if(Type.isInstanceOf(this.objectInCollision.sprite.obj, Material)) {
                 if(this.game.keys.isDown(Keyboard.E) || this.container.getSizeLeft() === 0) return;
@@ -199,7 +198,7 @@ export default class Vehicle extends GameObject {
                     this.container.addItem(name, amount);
                     this.onLoaded.dispatch(name, amount);
                     if(amount > 0 && this.container.getSizeLeft() === 0)
-                        this.modal.containerFullFeedback();
+                        this.modalHandler.containerFullFeedback();
                     if(this.container.getSizeUsed() > 0)
                         this.loading.visible = true;
                 });
@@ -235,17 +234,17 @@ export default class Vehicle extends GameObject {
                 this.objectInCollision = o.object;
                 if(this.collisionEventEnabled) {
                     if(Type.isInstanceOf(this.objectInCollision.sprite.obj, Player)) {
-                        this.modal.showTooltip(Vehicle.COLLIDED);
+                        this.modalHandler.showTooltip(Vehicle.COLLIDED);
                     }
                     else if(Type.isInstanceOf(this.objectInCollision.sprite.obj, Vehicle) && Type.isExist(this.driver)) {
                         this.onCollision.dispatch('vehicle');
-                        this.modal.carefulFeedback('aux véhicules');
+                        this.modalHandler.carefulFeedback('aux véhicules');
                     }
                 }
                 break;
             case 'layer':
                 this.onCollision.dispatch('wall');
-                this.modal.carefulFeedback('aux murs');
+                this.modalHandler.carefulFeedback('aux murs');
                 break;
             default:
                 break;
@@ -256,7 +255,7 @@ export default class Vehicle extends GameObject {
             this.onCollisionEndHandled.dispatch();
     }
     onMouseOver() {
-        this.modal.showMouseTooltip(super.isCollidWith(Player));
+        this.modalHandler.showMouseTooltip(super.isCollidWith(Player));
     }
     onMouseOut() {
         this.onMouseOutHandled.dispatch();

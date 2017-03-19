@@ -13,15 +13,24 @@ export default class Boot extends Phaser.State {
         this.game.baseHeight = (Config.tilemap.tiles.height * Config.tilemap.tiles.size);
 
         this.game.SCALE =
-            Config.tilemap.tiles.width / Config.tilemap.tiles.height > this.game.width / this.game.height
-            ? this.game.height / this.game.baseHeight
-            : this.game.width / this.game.baseWidth;
-        this.game.uiScale = (n) => MyMath.scale(this.game.SCALE * 0.9, n);
+            this.game.baseWidth / this.game.baseHeight > this.game.width / this.game.height
+                ? this.game.height / this.game.baseHeight //600 default game height
+                : this.game.width / this.game.baseWidth; //800 default game width
+
+        this.game.UI_SCALE =
+            (this.game.baseWidth / this.game.baseHeight > this.game.width / this.game.height
+                ? this.game.height / 600 //600 default game height
+                : this.game.width / 800) * 0.9; //800 default game width
+
+        this.game.uiScale = (n) => MyMath.scale(this.game.UI_SCALE, n);
         this.game.keys = this.game.input.keyboard;
 
+        console.log(this.game.uiScale(1) + ", " + this.game.baseHeight + ", " + this.game.baseWidth);
         //Phaser.Canvas.setImageRenderingCrisp(this.game.canvas);
         //Phaser.Canvas.setSmoothingEnabled(this.game.context, false);
         PhaserManager.add('game', this.game);
         this.game.state.start('load');
     }
 };
+
+

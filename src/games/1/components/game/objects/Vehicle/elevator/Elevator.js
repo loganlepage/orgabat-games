@@ -21,9 +21,9 @@ export default class Elevator extends Vehicle {
      * @param x
      * @param y
      */
-    constructor(game, layer, name, properties, x, y) {
-        super(game, layer, name, properties, x, y,
-            new ElevatorSprite(game, Position.getPixelAt(x), Position.getPixelAt(y), name));
+    constructor(game, layer, type, properties, x, y) {
+        super(game, layer, type, properties, x, y,
+            new ElevatorSprite(game, Position.getPixelAt(x), Position.getPixelAt(y), type));
         this.sprite.setContext(this);
     }
 

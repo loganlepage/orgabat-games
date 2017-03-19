@@ -1,6 +1,6 @@
 "use strict";
 import GameModal from 'system/phaser/GameModal';
-import SmallDescriptionTooltip from 'system/phaser/modals/SmallDescriptionTooltip';
+import LittleDescriptionTooltip from 'system/phaser/modals/LittleDescriptionTooltip';
 import {TooltipManager} from 'system/phaser/Modal';
 import Type from 'system/utils/Type';
 import {DoOnce} from 'system/utils/Utils';
@@ -30,7 +30,7 @@ export default class MaterialModal extends GameModal {
     showTooltip(fixed = false) {
         if(!this.isTooltipUsable) return;
         this.isTooltipUsable = false;
-        const tooltip = new SmallDescriptionTooltip({items: {
+        const tooltip = new LittleDescriptionTooltip({items: {
             name: { text: this.properties.name }
         }}, TooltipManager, this, this.game);
 
@@ -54,12 +54,12 @@ export default class MaterialModal extends GameModal {
         }, this);
 
         /** UI */
-        tooltip.x = this.getOuterCenterXToSprite(this.obj.sprite, tooltip.items.bg, tooltip.scale.x);
+        tooltip.x = this.getOuterCenterXToSprite(this.obj.sprite, this.obj.sprite.world, tooltip.items.bg, tooltip.scale.x);
         if(this.properties.modalDirection === "bottom") {
-            tooltip.y = this.getOuterBottomToSprite(this.obj.sprite, 5);
+            tooltip.y = this.getOuterBottomToSprite(this.obj.sprite, this.obj.sprite.world, 5);
             tooltip.setBottom();
         } else {
-            tooltip.y = this.getOuterTopToSprite(this.obj.sprite, tooltip.items.bg, tooltip.scale.y, 5);
+            tooltip.y = this.getOuterTopToSprite(this.obj.sprite, this.obj.sprite.world, tooltip.items.bg, tooltip.scale.y, 5);
             tooltip.setTop();
         }
         if(Type.isExist(this.properties.amount) && Type.isNumber(this.properties.amount.current))

@@ -18,11 +18,11 @@ export default class Floor extends GameObject {
      * @param x
      * @param y
      */
-    constructor(game, layer, name, properties, x, y) {
+    constructor(game, layer, type, properties, x, y) {
         super(game, layer);
-        this.addSprite(new FloorSprite(game, x, y, name, this));
+        this.addSprite(new FloorSprite(game, x, y, type, this));
         this.configure(properties);
-        this.type = name;
+        this.type = type;
         this.ready = true;
     }
 

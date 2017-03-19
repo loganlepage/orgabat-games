@@ -8,14 +8,13 @@ var phaser = path.join(phaserModule, 'build/custom/phaser-split.js'),
     pixi = path.join(phaserModule, 'build/custom/pixi.js'),
     p2 = path.join(phaserModule, 'build/custom/p2.js');
 
-var production = process.argv.indexOf("-p") > -1;
-process.env.NODE_ENV = production ? 'production' : 'development';
+var isProd = process.argv.indexOf("-p") > -1;
 
 module.exports = {
     /** nos points d'entrée, par clé */
     entry: {
-       // '1': "./src/games/1/app.jsx", // Jeu 1
-        '2': "./src/games/2/app.jsx" // Jeu 1
+        '1': "./src/games/1/app.jsx", // Jeu 1
+        '2': "./src/games/2/app.jsx" // Jeu 2
     },
     /** description de nos sorties */
     output: {
@@ -63,18 +62,18 @@ module.exports = {
     plugins: (
         [
             // on active l'extraction CSS (en production seulement)
-            new ExtractTextPlugin("[name].css", {disable: !production}),
+            new ExtractTextPlugin("[name].css", {disable: !isProd}),
 
             // ce plugin permet de transformer les clés passés en dur dans les
             // modules ainsi vous pourrez faire dans votre code js
             // if (__PROD__) { ... }
             new webpack.DefinePlugin({
-                __PROD__: production
-            }),
+                "process.env": { NODE_ENV: JSON.stringify(process.env.NODE_ENV || isProd ? 'production' : 'development') }
+            })
         ]
         // en production, on peut rajouter des plugins pour optimiser
         .concat(
-            production
+            isProd
                 ? [
                     // ici on rajoute uglify.js pour compresser nos sorties
                     // (vous remarquerez que certain plugins sont directement livrés dans
@@ -83,14 +82,7 @@ module.exports = {
                         compress: {
                             warnings: false,
                         }
-                    }),
-
-                    // on défini l'environnement
-                    new webpack.DefinePlugin({
-                        'process.env': {
-                            'NODE_ENV': JSON.stringify('production')
-                        }
-                    }),
+                    })
                 ]
                 : []
         )

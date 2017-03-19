@@ -31,7 +31,7 @@ export default class Feedback extends Modal {
             items: {
                 bg: {
                     type: "sprite",
-                    key: "bg/info_feedback"
+                    key: "modal/bg/info_feedback"
                 },
                 text: {
                     type: "text",

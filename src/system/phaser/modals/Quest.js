@@ -68,7 +68,7 @@ export default class QuestLayout extends Modal {
             items: {
                 star: {
                     type: "sprite",
-                    key: "item/star_disabled",
+                    key: "modal/item/star_disabled",
                     props: { scale: 0.4 }
                 },
                 text: {

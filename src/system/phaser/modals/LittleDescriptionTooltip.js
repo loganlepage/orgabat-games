@@ -3,7 +3,7 @@ import Type from 'system/utils/Type';
 import Modal from 'system/phaser/Modal';
 
 /** Small Description Tooltip Modal */
-export default class SmallDescriptionTooltip extends Modal {
+export default class LittleDescriptionTooltip extends Modal {
 
     /**
      * Constructor for a new modal
@@ -19,7 +19,7 @@ export default class SmallDescriptionTooltip extends Modal {
         } catch (e) {
             console.error(e.name + ": " + e.message);
         }
-        super(Type.deepMerge(SmallDescriptionTooltip.pattern, data), manager, game);
+        super(Type.deepMerge(LittleDescriptionTooltip.pattern, data), manager, game);
         this.m = materialModal;
         this.offsetY = 0;
         this.state = {
@@ -104,7 +104,7 @@ export default class SmallDescriptionTooltip extends Modal {
             items: {
                 bg: {
                     type: "sprite",
-                    key: "bg/small_tooltip_top"
+                    key: "modal/bg/small_tooltip_top"
                 },
                 name: {
                     type: "text",
@@ -133,13 +133,13 @@ export default class SmallDescriptionTooltip extends Modal {
                     items: {
                         a: {
                             type: "sprite",
-                            key: "item/button_a",
+                            key: "modal/item/button_a",
                             props: { scale: 0.4 }
                         },
                         e: {
                             type: "sprite",
                             y: 25,
-                            key: "item/button_e",
+                            key: "modal/item/button_e",
                             props: { scale: 0.4 }
                         }
                     }

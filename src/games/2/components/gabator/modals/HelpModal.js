@@ -35,7 +35,7 @@ export default class HelpModal extends Modal {
             items: {
                 bg: {
                     type: "sprite",
-                    key: "bg/gabator_help_tooltip"
+                    key: "modal/bg/gabator_help_tooltip"
                 },
                 title: {
                     type: "text",

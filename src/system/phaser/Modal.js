@@ -54,7 +54,7 @@ class Sprite extends Phaser.Sprite {
         } catch (e) {
             console.error(e.name + ": " + e.message);
         }
-        super(game, game.uiScale(x), game.uiScale(y), 'atlas', `modal/${key}`);
+        super(game, game.uiScale(x), game.uiScale(y), 'atlas', key);
         this.scale.setTo(game.uiScale(Type.isNumber(props.scale) ? props.scale : 1));
         this.visible = Type.isBoolean(props.visible) ? props.visible : true;
         this.inputEnabled = Type.isBoolean(props.inputEnabled) ? props.inputEnabled : false;
@@ -336,7 +336,12 @@ export class StackManager extends Manager {
                 this.game.canvas.width - 10,
                 this.game.canvas.height - 10,
                 this.game,
-                {axe: Stack.VERTICAL, direction: Stack.TOP, anchorX: 1, anchorY: 1 })
+                {axe: Stack.VERTICAL, direction: Stack.TOP, anchorX: 1, anchorY: 1 }),
+            BOTTOM_LEFT: new Stack(
+                20,
+                this.game.canvas.height,
+                this.game,
+                {axe: Stack.HORIZONTAL, direction: Stack.RIGHT, offsetX: 32, offsetY: 5, anchorY: 1 })
         };
     }
 

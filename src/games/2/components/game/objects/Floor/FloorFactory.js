@@ -8,7 +8,6 @@ export default class FloorFactory extends GameFactory {
     /**
      * Constructor for a new material group
      * @param game
-     * @param layer
      * @param floors
      */
     constructor(game, floors) {

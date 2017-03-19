@@ -88,7 +88,7 @@ export default class EndInfoModal extends Modal {
             items: {
                 bg: {
                     type: "sprite",
-                    key: "bg/big_modal"
+                    key: "modal/bg/big_modal"
                 },
                 c: {
                     type: "group",
@@ -109,17 +109,17 @@ export default class EndInfoModal extends Modal {
                             items: {
                                 star1: {
                                     type: "sprite",
-                                    key: "item/star_disabled"
+                                    key: "modal/item/star_disabled"
                                 },
                                 star2: {
                                     type: "sprite",
                                     x: 80,
-                                    key: "item/star_disabled"
+                                    key: "modal/item/star_disabled"
                                 },
                                 star3: {
                                     type: "sprite",
                                     x: 160,
-                                    key: "item/star_disabled"
+                                    key: "modal/item/star_disabled"
                                 },
                             }
                         },
@@ -143,7 +143,7 @@ export default class EndInfoModal extends Modal {
                                     items: {
                                         icon: {
                                             type: "sprite",
-                                            key: "item/button_a",
+                                            key: "modal/item/button_a",
                                             props: { scale: 0.53, inputEnabled: true }
                                         },
                                         text: {
@@ -166,7 +166,7 @@ export default class EndInfoModal extends Modal {
                                     items: {
                                         icon: {
                                             type: "sprite",
-                                            key: "item/button_e",
+                                            key: "modal/item/button_e",
                                             props: { scale: 0.53, inputEnabled: true }
                                         },
                                         text: {

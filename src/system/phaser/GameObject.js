@@ -1,14 +1,16 @@
 'use strict';
 import {Math, Signal} from 'phaser';
 import Type from '../utils/Type';
+import AbstractObject from './AbstractObject';
 
 /** Abstract gameObject (parent for all gameObjects) */
-export default class GameObject {
+export default class GameObject extends AbstractObject {
+
+    onCollisionEndHandled = new Signal();
+
     constructor(game, layer) {
-        this.game = game;
+        super(game);
         this.layer = layer;
-        this.onCollisionEndHandled = new Signal();
-        this.onMouseOutHandled = new Signal();
     }
 
     /** @returns {boolean} */
@@ -26,9 +28,6 @@ export default class GameObject {
         this.sprite.onCollisionHandled.add(this.onCollisionBegin, this);
         this.sprite.onMouseOverHandled.add(this.onMouseOver, this);
         this.sprite.onMouseOutHandled.add(this.onMouseOut, this);
-    }
-    addModal(modal) {
-        this.modal = modal;
     }
     update() {
         this.refreshObjectInCollision();
