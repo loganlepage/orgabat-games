@@ -1,8 +1,8 @@
 "use strict";
-import GameModal from 'system/phaser/GameModal';
-import DescriptionTooltip from 'system/phaser/modals/DescriptionTooltip';
-import {TooltipManager, StackManager, Stack} from 'system/phaser/Modal';
-import MaterialModal from '../../modals/MaterialModal';
+import GameModal from "system/phaser/GameModal";
+import DescriptionTooltip from "system/phaser/modals/DescriptionTooltip";
+import {TooltipManager, StackManager, Stack} from "system/phaser/Modal";
+import MaterialModal from "../../modals/MaterialModal";
 
 /** Material Modal (called by the material gameObject) */
 export default class MaterialModalHandler extends GameModal {
@@ -15,13 +15,13 @@ export default class MaterialModalHandler extends GameModal {
      * @param materialObj
      * @param game
      */
-    constructor(properties, materialObj, game) {
+    constructor(properties, obj, game) {
         super(game);
         this.properties = properties;
-        this.obj = materialObj;
+        this.obj = obj;
         this.modal = new MaterialModal({items: {
             bg: { key: `jeu2/material/${this.obj.type}`}
-        }}, StackManager, this, this.game);
+        }}, this.obj.type, StackManager, this, this.game);
     }
 
 

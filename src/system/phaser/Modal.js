@@ -35,7 +35,7 @@ class Button extends Phaser.Button {
 }
 
 /** Make a sprite item for modal */
-class Sprite extends Phaser.Sprite {
+export class Sprite extends Phaser.Sprite {
     /**
      * Constructor for a new Image item
      * @param game
@@ -45,6 +45,7 @@ class Sprite extends Phaser.Sprite {
      * @param props
      */
     constructor(game, x, y, key, props) {
+
         props = props || {};
         try {
             Type.isExist(game, true);

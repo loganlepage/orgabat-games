@@ -13,7 +13,8 @@ export default class Floor extends GameObject {
     /**
      * Constructor for a new floor object
      * @param game
-     * @param name
+     * @param layer
+     * @param type
      * @param properties
      * @param x
      * @param y
