@@ -11,10 +11,10 @@ export default class MaterialModal extends Modal {
     onMouseOver = new Signal();
     onMouseOut = new Signal();
     onDragStart = new Signal();
-    onDragStop = new Signal();
 
     /**
      * Constructor for a new modal
+     * @param data
      * @param name
      * @param manager
      * @param handler
@@ -37,13 +37,9 @@ export default class MaterialModal extends Modal {
             this.onMouseOut.dispatch()
         }, this);
         bg.input.enableDrag();
-        bg.events.onDragStart.add(() => {
+        bg.events.onDragStart.add((sprite, pointer) => {
             this.game.canvas.style.cursor = "drag";
-            this.onDragStart.dispatch(this)
-        }, this);
-        bg.events.onDragStop.add(() => {
-            this.game.canvas.style.cursor = "default";
-            this.onDragStop.dispatch()
+            this.onDragStart.dispatch(this, pointer)
         }, this);
     }
 
@@ -51,19 +47,11 @@ export default class MaterialModal extends Modal {
         bg.events.onInputOver.removeAll(this);
         bg.events.onInputOut.removeAll(this);
         bg.events.onDragStart.removeAll(this);
-        bg.events.onDragStop.removeAll(this);
     }
 
     set count(nb) {
         this.items.text.text = `x${nb}`;
         this.items.text.alignTo(this.items.bg, Phaser.RIGHT_TOP);
-    }
-
-    clone(bg) {
-        this.items.bg = new Sprite(this.game, 0, 0, bg._frame.name, {scale: 0.5, inputEnabled: true});
-        this.add(this.items.bg);
-        this.initEvents(this.items.bg);
-        this.destroyEvents(bg);
     }
 
     static get pattern() {

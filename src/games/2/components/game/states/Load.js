@@ -15,7 +15,6 @@ export default class Load extends State {
         this.game.stage.backgroundColor = '#FFFFFF';
         this.showLoadingText();
         this.loadAssets();
-        this.loadModulesAssets();
     }
 
     /** Called by preload to show loading text */
@@ -31,10 +30,6 @@ export default class Load extends State {
     /** Called by preload to load assets */
     loadAssets(){
         this.game.load.atlasJSONHash('atlas', `${assets_path}${Config.atlas}.png`, `${assets_path}${Config.atlas}.json`);
-    }
-
-    loadModulesAssets(){
-        Joystick.preload(this.game);
     }
 
     /** Called when the state must be created */

@@ -3,6 +3,7 @@ import GameModal from "system/phaser/GameModal";
 import DescriptionTooltip from "system/phaser/modals/DescriptionTooltip";
 import {TooltipManager, StackManager, Stack} from "system/phaser/Modal";
 import MaterialModal from "../../modals/MaterialModal";
+import Material from "./Material";
 
 /** Material Modal (called by the material gameObject) */
 export default class MaterialModalHandler extends GameModal {
@@ -12,7 +13,7 @@ export default class MaterialModalHandler extends GameModal {
     /**
      * Constructor for a new material modal
      * @param properties
-     * @param materialObj
+     * @param obj
      * @param game
      */
     constructor(properties, obj, game) {
@@ -60,6 +61,6 @@ export default class MaterialModalHandler extends GameModal {
 
     materialModal(visible = true) {
         this.modal.toggle(visible, {stack: 'BOTTOM_LEFT'});
-        this.modal.count = 5;
+        this.modal.count = Material.MAX_ENTITIES;
     }
 };

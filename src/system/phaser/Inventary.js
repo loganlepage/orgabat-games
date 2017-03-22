@@ -9,10 +9,10 @@ export default class Inventary {
      * @param data
      * @param items
      */
-    constructor(containerSize, data, items) {
+    constructor(containerSize, data, items = []) {
         this.materialsData = data;
         this.size = (containerSize === undefined) ? null : containerSize;
-        this.items = (items === undefined) ? [] : items;
+        this.items = items;
     }
 
     /**
@@ -32,9 +32,8 @@ export default class Inventary {
      * @param name
      * @param amount
      */
-    addItem(name, amount) {
+    addItem(name, amount = 1) {
         if(!this.isMaterialExist(name)) throw new Error(`Material "${name}" inexistant.`);
-        if(amount === undefined) amount = 1;
         if(amount === 0) return;
         if(!Type.isExist(this.items[name])) this.items[name] = {amount: 0};
         if(this.getSizeLeft() >= amount)
@@ -48,8 +47,7 @@ export default class Inventary {
      * @param name
      * @param amount
      */
-    delItem(name, amount) {
-        if(amount === undefined) amount = 1;
+    delItem(name, amount = 1) {
         if(amount === 0) return;
         if(this.items[name] !== undefined)
             this.items[name].amount -= amount;
@@ -81,5 +79,13 @@ export default class Inventary {
      */
     getSizeLeft() {
         return (this.size - this.getSizeUsed());
+    }
+
+    /**
+     * Return the last item
+     * @returns {item}
+     */
+    getLast() {
+        return this.items[this.getSizeUsed()];
     }
 };

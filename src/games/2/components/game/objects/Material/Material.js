@@ -1,13 +1,16 @@
 "use strict";
 
-import {Group} from 'phaser';
-import MaterialModalHandler from './MaterialModalHandler';
-import AbstractObject from 'system/phaser/AbstractObject';
+import MaterialModalHandler from "./MaterialModalHandler";
+import AbstractObject from "system/phaser/AbstractObject";
+import MaterialSprite from "./MaterialSprite";
+import MyArray from "system/utils/MyArray";
 
 
 /** Material Object (include sprite and modals) */
 export default class Material extends AbstractObject {
 
+    /** @return {number} */
+    static get MAX_ENTITIES() { return 3 };
     ready = false;
 
     /**
@@ -18,14 +21,13 @@ export default class Material extends AbstractObject {
      */
     constructor(game, type, properties) {
         super(game);
-        this.materialModals = new Group(game);
+        this.entities = [];
         this.configure(properties);
         this.type = type;
         this.addModalHandler(new MaterialModalHandler(properties, this, game));
         this.modalHandler.modal.onMouseOver.add(this.onMouseOver, this);
         this.modalHandler.modal.onMouseOut.add(this.onMouseOut, this);
         this.modalHandler.modal.onDragStart.add(this.onDragStart, this);
-        this.modalHandler.modal.onDragStop.add(this.onDragStop, this);
         this.modalHandler.materialModal();
         this.ready = true;
     }
@@ -43,12 +45,21 @@ export default class Material extends AbstractObject {
         this.onMouseOutHandled.dispatch();
     }
 
-    onDragStart(modalBg) {
-        modalBg.items.bg.scale.set(this.game.SCALE);
-        modalBg.clone(modalBg.items.bg);
+    onDragStart(modalBg, pointer) {
+        modalBg.items.bg.input.stopDrag(pointer);
+        if(Material.MAX_ENTITIES - this.entities.length == 0) return; //Plus d'entitée disponible
+        const entity = new MaterialSprite(this.game, modalBg.items.bg.world.x, modalBg.items.bg.world.y, 'atlas', modalBg.items.bg._frame.name);
+        this.entities.push(entity);
+        entity.onDragStop.add(this.onDragStop, this);
+        this.modalHandler.modal.count = Material.MAX_ENTITIES - this.entities.length;
+        entity.input.startDrag(pointer);
     }
 
-    onDragStop() {
-
+    onDragStop(entity) {
+        if (entity.overlap(this.modalHandler.modal.items.bg)) {
+            entity.destroy();
+            MyArray.remove(this.entities, entity);
+            this.modalHandler.modal.count = Material.MAX_ENTITIES - this.entities.length;
+        }
     }
 };
