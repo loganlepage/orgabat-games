@@ -49,10 +49,10 @@ export default class Material extends AbstractObject {
         modalBg.items.bg.input.stopDrag(pointer);
         if(Material.MAX_ENTITIES - this.entities.length == 0) return; //Plus d'entitée disponible
         const entity = new MaterialSprite(this.game, modalBg.items.bg.world.x, modalBg.items.bg.world.y, 'atlas', modalBg.items.bg._frame.name);
+        entity.input.startDrag(pointer);
         this.entities.push(entity);
         entity.onDragStop.add(this.onDragStop, this);
         this.modalHandler.modal.count = Material.MAX_ENTITIES - this.entities.length;
-        entity.input.startDrag(pointer);
     }
 
     onDragStop(entity) {
@@ -60,6 +60,8 @@ export default class Material extends AbstractObject {
             entity.destroy();
             MyArray.remove(this.entities, entity);
             this.modalHandler.modal.count = Material.MAX_ENTITIES - this.entities.length;
+        } else {
+            entity.onDropped();
         }
     }
 };

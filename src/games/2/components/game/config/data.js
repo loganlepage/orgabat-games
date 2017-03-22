@@ -24,5 +24,12 @@ export default {
             {name: "barriere", prop: {name: "Barrière de protection"}},
             {name: "peinture", prop: {name: "Panneau peinture fraîche"}}
         ]
-    }
+    },
+    depot: [
+        {name: "passerelle", x: 100, y: 584},
+        {name: "passerelle", x: 422, y: 584},
+        {name: "tremi", x: 334, y: 531},
+        {name: "tremi", x: 334, y: 393},
+        {name: "peinture", x: 222, y: 222}
+    ]
 }
