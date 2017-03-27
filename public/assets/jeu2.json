@@ -2,7 +2,7 @@
 
 "jeu2/house/1st":
 {
-	"frame": {"x":606,"y":237,"w":600,"h":140},
+	"frame": {"x":3,"y":237,"w":600,"h":140},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":600,"h":140},
@@ -10,7 +10,7 @@
 },
 "jeu2/house/2nd":
 {
-	"frame": {"x":3,"y":237,"w":600,"h":140},
+	"frame": {"x":606,"y":237,"w":600,"h":140},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":600,"h":140},
@@ -40,15 +40,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":600,"h":132},
 	"sourceSize": {"w":600,"h":132}
 },
-"jeu2/material/baie_ouverte":
-{
-	"frame": {"x":1421,"y":237,"w":207,"h":143},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":207,"h":143},
-	"sourceSize": {"w":207,"h":143}
-},
-"jeu2/material/barriere":
+"jeu2/material/barriere_de_protection":
 {
 	"frame": {"x":496,"y":383,"w":192,"h":145},
 	"rotated": false,
@@ -56,15 +48,15 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":192,"h":145},
 	"sourceSize": {"w":192,"h":145}
 },
-"jeu2/material/passerelle":
+"jeu2/material/garde_corps_tremie":
 {
-	"frame": {"x":1631,"y":237,"w":205,"h":143},
+	"frame": {"x":1209,"y":237,"w":209,"h":141},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":205,"h":143},
-	"sourceSize": {"w":205,"h":143}
+	"spriteSourceSize": {"x":0,"y":0,"w":209,"h":141},
+	"sourceSize": {"w":209,"h":141}
 },
-"jeu2/material/peinture":
+"jeu2/material/panneau_peinture_fraiche":
 {
 	"frame": {"x":3,"y":383,"w":196,"h":144},
 	"rotated": false,
@@ -72,13 +64,21 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":196,"h":144},
 	"sourceSize": {"w":196,"h":144}
 },
-"jeu2/material/tremi":
+"jeu2/material/passerelle_garde_corps":
 {
-	"frame": {"x":1209,"y":237,"w":209,"h":141},
+	"frame": {"x":1421,"y":237,"w":205,"h":143},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":209,"h":141},
-	"sourceSize": {"w":209,"h":141}
+	"spriteSourceSize": {"x":0,"y":0,"w":205,"h":143},
+	"sourceSize": {"w":205,"h":143}
+},
+"jeu2/material/protection_baie_ouverte":
+{
+	"frame": {"x":1629,"y":237,"w":207,"h":143},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":207,"h":143},
+	"sourceSize": {"w":207,"h":143}
 },
 "joystick/button_a.0":
 {
@@ -146,7 +146,7 @@
 },
 "joystick/pad_arrow.0":
 {
-	"frame": {"x":527,"y":102,"w":120,"h":120},
+	"frame": {"x":773,"y":102,"w":120,"h":120},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":120,"h":120},
@@ -154,7 +154,7 @@
 },
 "joystick/pad_arrow.1":
 {
-	"frame": {"x":773,"y":102,"w":120,"h":120},
+	"frame": {"x":527,"y":102,"w":120,"h":120},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":120,"h":120},
@@ -194,7 +194,7 @@
 },
 "modal/bg/big_tooltip_left":
 {
-	"frame": {"x":1044,"y":383,"w":350,"h":150},
+	"frame": {"x":691,"y":383,"w":350,"h":150},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":350,"h":150},
@@ -202,7 +202,7 @@
 },
 "modal/bg/big_tooltip_right":
 {
-	"frame": {"x":691,"y":383,"w":350,"h":150},
+	"frame": {"x":1044,"y":383,"w":350,"h":150},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":350,"h":150},
@@ -351,6 +351,6 @@
 	"format": "RGBA8888",
 	"size": {"w":2015,"h":889},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:70ab98e763d3a6452339a6ec823dc657:27c99e71d3b3692779b23ab40e1daf27:999e10a2ec532fc342d232f75b5e4e9a$"
+	"smartupdate": "$TexturePacker:SmartUpdate:a44bdd66639376f75dfb4b897d37309e:eab7a22aa29799d344789186bd966fb3:999e10a2ec532fc342d232f75b5e4e9a$"
 }
 }

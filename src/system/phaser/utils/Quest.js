@@ -35,25 +35,26 @@ export class Quest {
 
 export default class QuestManager {
 
+    onAdd = new Phaser.Signal();
+    onDelete = new Phaser.Signal();
+    onNbQuestsDoneChange = new Phaser.Signal();
+
     _quests = {};
     _nbQuestsDone = 0;
 
-    constructor() {
-        this.onAdd = new Phaser.Signal();
-        this.onDelete = new Phaser.Signal();
-        this.onNbQuestsDoneChange = new Phaser.Signal();
-    }
+    constructor() {}
+    get nbQuestsDone() { return this._nbQuestsDone ; }
     set nbQuestsDone(value) {
         this._nbQuestsDone += value;
         this.onNbQuestsDoneChange.dispatch(this._nbQuestsDone);
     }
     add(quest) {
         if(Type.isExist(this.get(quest.key) && this.get(quest.key) !== quest))
-            throw `An other quest with key '${quest.key}' already exist`;
+            console.error(`An other quest with key '${quest.key}' already exist`);
 
         this._quests[quest.key] = quest;
         this._quests[quest.key].onDone.addOnce(this.isDone, this);
-        this.nbQuestsDone = +1;
+        this._nbQuestsDone += 1;
         this.onAdd.dispatch(quest);
     }
     del(quest) {
@@ -99,7 +100,7 @@ export class GuiQuestList {
     }
     add(quest) {
         if(Type.isExist(this.get(quest.key)) && this.get(quest.key) !== quest)
-            throw `An other quest with key '${quest.key}' already exist`;
+            console.error(`An other quest with key '${quest.key}' already exist`);
 
         this.quests[quest.key] = {
             quest: quest,

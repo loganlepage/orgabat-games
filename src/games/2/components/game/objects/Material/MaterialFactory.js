@@ -1,9 +1,10 @@
 'use strict';
-import GameFactory from 'system/phaser/GameFactory';
 import Material from './Material';
 
 /** material Group Factory (called by play state) */
 export default class MaterialFactory {
+
+    _obj = [];
 
     /**
      * Constructor for a new material group
@@ -12,7 +13,13 @@ export default class MaterialFactory {
      */
     constructor(game, materials) {
         for(let i in materials) {
-            new Material(game, materials[i].name, materials[i].prop);
+            this._obj.push(new Material(game, materials[i].name, materials[i].prop));
+        }
+    }
+
+    forEach(cb=()=>{}) {
+        for(const i in this._obj) {
+            cb(this._obj[i]);
         }
     }
 };

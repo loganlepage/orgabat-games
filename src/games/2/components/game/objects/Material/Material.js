@@ -1,10 +1,11 @@
 "use strict";
 
+import {Signal} from 'phaser';
+import Config from '../../config/data';
 import MaterialModalHandler from "./MaterialModalHandler";
 import AbstractObject from "system/phaser/AbstractObject";
 import MaterialSprite from "./MaterialSprite";
 import MyArray from "system/utils/MyArray";
-
 
 /** Material Object (include sprite and modals) */
 export default class Material extends AbstractObject {
@@ -12,6 +13,7 @@ export default class Material extends AbstractObject {
     /** @return {number} */
     static get MAX_ENTITIES() { return 3 };
     ready = false;
+    onProtect = new Signal();
 
     /**
      * Constructor for a new Material object
@@ -46,12 +48,14 @@ export default class Material extends AbstractObject {
     }
 
     onDragStart(modalBg, pointer) {
+        if(!this.game.controlsEnabled) return;
         modalBg.items.bg.input.stopDrag(pointer);
         if(Material.MAX_ENTITIES - this.entities.length == 0) return; //Plus d'entitée disponible
         const entity = new MaterialSprite(this.game, modalBg.items.bg.world.x, modalBg.items.bg.world.y, 'atlas', modalBg.items.bg._frame.name);
         entity.input.startDrag(pointer);
         this.entities.push(entity);
         entity.onDragStop.add(this.onDragStop, this);
+        entity.onDroppedHandled.add(this.onDroppedHandled, this);
         this.modalHandler.modal.count = Material.MAX_ENTITIES - this.entities.length;
     }
 
@@ -62,6 +66,14 @@ export default class Material extends AbstractObject {
             this.modalHandler.modal.count = Material.MAX_ENTITIES - this.entities.length;
         } else {
             entity.onDropped();
+        }
+    }
+
+    onDroppedHandled(entity) {
+        if(entity.currentDepot != null && Config.depotProtects[entity.currentDepot.name].indexOf(this.type) >= 0) {
+            entity.finish();
+            entity.currentDepot.isProtected = true;
+            this.onProtect.dispatch();
         }
     }
 };

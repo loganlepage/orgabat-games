@@ -14,6 +14,10 @@ import Player from '../Player/Player';
 export default class Tool extends GameObject {
 
     ready = false;
+    onFull = new Signal();
+    onVehicleStartHandled = new Signal();
+    onVehicleStopHandled = new Signal();
+    onAmountChange = new Signal();
 
     /**
      * Constructor for a new tool object
@@ -26,13 +30,9 @@ export default class Tool extends GameObject {
      */
     constructor(game, layer, type, properties, x, y) {
         super(game, layer);
-        this.onFull = new Signal();
         this.addSprite(new ToolSprite(this.game, Position.getPixelAt(x), Position.getPixelAt(y), type, this));
         this.addModalHandler(new ToolModalHandler(properties, this, game));
         this.configure(properties);
-        this.onVehicleStartHandled = new Signal();
-        this.onVehicleStopHandled = new Signal();
-        this.onAmountChange = new Signal();
         this.type = type;
         this.ready = true;
     }

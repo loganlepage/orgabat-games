@@ -1,5 +1,5 @@
 "use strict";
-import Phaser, {State, Physics, Easing} from 'phaser';
+import Phaser, {State, Easing, Signal} from 'phaser';
 import Config from '../config/data';
 import FloorFactory from '../objects/Floor/FloorFactory';
 import MaterialFactory from '../objects/Material/MaterialFactory';
@@ -10,6 +10,9 @@ import EndInfoModal from '../modals/EndInfoModal';
 import {DefaultManager} from 'system/phaser/Modal';
 
 import QuestManager, {GuiQuestList} from 'system/phaser/utils/Quest';
+import TremisProtectQuest from '../quests/TremisProtectQuest';
+import PeintureProtectQuest from '../quests/PeintureProtectQuest';
+import BaieOuverteProtectQuest from '../quests/BaieOuverteProtectQuest';
 
 /** State when we start the game */
 export default class Play extends State {
@@ -27,6 +30,7 @@ export default class Play extends State {
      */
     create() {
         this.game.controlsEnabled = false;
+        this.game.controlsSignal = new Signal();
 
         this.initUI();
         this.addFloors();
@@ -91,7 +95,11 @@ class GameProcess {
 
         //On prépare les quêtes
         this.quests = new QuestManager(this.game);
+        this.quests.onNbQuestsDoneChange.add(this._onQuestChange, this);
         new GuiQuestList(this.game.canvas.width - 10, 30, this.quests, this.game);
+        this.quests.add(new TremisProtectQuest(this.game));
+        this.quests.add(new BaieOuverteProtectQuest(this.game));
+        this.quests.add(new PeintureProtectQuest(this.game));
     }
     init() {
         if(this.bootTweenTime > 0) this.bootTween.start().onComplete.add(() => this._onAnimationEnd());
@@ -118,14 +126,16 @@ class GameProcess {
         //Ferme la modale et active les controls
         this.startInfoModal.toggle(false, {});
         this.game.controlsEnabled = true;
-
-        //Si on termine la partie
-       // this.quests.get('depot_fill').onDone.addOnce(this._onFinish, this);
+        this.game.controlsSignal.dispatch();
 
         this._timeStart = this.game.time.now;
     }
+    _onQuestChange() {
+        if(this.quests.nbQuestsDone == 0) this._onFinish();
+    }
     _onFinish() {
         this.game.controlsEnabled = false;
+        this.game.controlsSignal.dispatch();
         this._timeEnd = this.game.time.now;
 
         //On affiche la modale de fin

@@ -8,6 +8,7 @@ export default class MaterialModal extends Modal {
 
     name;
     h;
+    game;
     onMouseOver = new Signal();
     onMouseOut = new Signal();
     onDragStart = new Signal();
@@ -24,6 +25,7 @@ export default class MaterialModal extends Modal {
         super(Type.deepMerge(MaterialModal.pattern, data), manager, game);
         this.name = name;
         this.h = handler;
+        this.game = game;
         this.initEvents(this.items.bg);
     }
 
@@ -36,7 +38,10 @@ export default class MaterialModal extends Modal {
             this.game.canvas.style.cursor = "default";
             this.onMouseOut.dispatch()
         }, this);
-        bg.input.enableDrag();
+        this.game.controlsSignal.add(()=>{
+            if(this.game.controlsEnabled) bg.input.enableDrag();
+            else bg.input.draggable = false;
+        }, this);
         bg.events.onDragStart.add((sprite, pointer) => {
             this.game.canvas.style.cursor = "drag";
             this.onDragStart.dispatch(this, pointer)
@@ -47,6 +52,7 @@ export default class MaterialModal extends Modal {
         bg.events.onInputOver.removeAll(this);
         bg.events.onInputOut.removeAll(this);
         bg.events.onDragStart.removeAll(this);
+        this.game.controlsSignal.removeAll(this);
     }
 
     set count(nb) {

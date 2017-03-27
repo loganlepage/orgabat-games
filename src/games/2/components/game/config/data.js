@@ -18,18 +18,23 @@ export default {
             {name: "ext", prop: {name: "Extérieur"}},
         ],
         materials: [
-            {name: "passerelle", prop: {name: "Passerelle avec garde corps"}},
-            {name: "tremi", prop: {name: "Garde corps de trémi"}},
-            {name: "baie_ouverte", prop: {name: "Protection des baies ouvertes"}},
-            {name: "barriere", prop: {name: "Barrière de protection"}},
-            {name: "peinture", prop: {name: "Panneau peinture fraîche"}}
+            {name: "passerelle_garde_corps", prop: {name: "Passerelle avec garde corps"}},
+            {name: "garde_corps_tremie", prop: {name: "Garde corps de trémi"}},
+            {name: "protection_baie_ouverte", prop: {name: "Protection des baies ouvertes"}},
+            {name: "barriere_de_protection", prop: {name: "Barrière de protection"}},
+            {name: "panneau_peinture_fraiche", prop: {name: "Panneau peinture fraîche"}}
         ]
     },
     depot: [
-        {name: "passerelle", x: 100, y: 584},
-        {name: "passerelle", x: 422, y: 584},
-        {name: "tremi", x: 334, y: 531},
-        {name: "tremi", x: 334, y: 393},
-        {name: "peinture", x: 222, y: 222}
-    ]
+        {name: "baie_ouverte", x: 100, y: 584, isProtected: false},
+        {name: "baie_ouverte", x: 422, y: 584, isProtected: false},
+        {name: "tremie", x: 334, y: 531, isProtected: false},
+        {name: "tremie", x: 334, y: 393, isProtected: false},
+        {name: "peinture", x: 222, y: 222, isProtected: false}
+    ],
+    depotProtects: {
+        "baie_ouverte": ["protection_baie_ouverte"],
+        "tremie": ["garde_corps_tremie"],
+        "peinture": ["panneau_peinture_fraiche"]
+    }
 }
