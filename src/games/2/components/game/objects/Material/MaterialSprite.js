@@ -21,10 +21,11 @@ export default class MaterialSprite extends Sprite {
      */
     constructor(game, x, y, key, frame) {
         super(game, x, y, key, frame);
-        this.scale.set(this.game.SCALE * 0.5);
         this.inputEnabled = true;
         this.input.enableDrag();
+        this.scale.set(this.game.SCALE * 0.5);
         this.game.layer.zDepth3.add(this);
+        this.anchor.set(0.5);
         this.events.onDragStop.add(() => {
             this.onDragStop.dispatch(this);
         }, this);

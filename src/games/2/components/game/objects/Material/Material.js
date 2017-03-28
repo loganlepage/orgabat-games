@@ -29,7 +29,7 @@ export default class Material extends AbstractObject {
         this.addModalHandler(new MaterialModalHandler(properties, this, game));
         this.modalHandler.modal.onMouseOver.add(this.onMouseOver, this);
         this.modalHandler.modal.onMouseOut.add(this.onMouseOut, this);
-        this.modalHandler.modal.onDragStart.add(this.onDragStart, this);
+        this.modalHandler.modal.onMouseDown.add(this.onMouseDown, this);
         this.modalHandler.materialModal();
         this.ready = true;
     }
@@ -47,18 +47,31 @@ export default class Material extends AbstractObject {
         this.onMouseOutHandled.dispatch();
     }
 
-    onDragStart(modalBg, pointer) {
+    /**
+     * Create a material sprite at cursor on container (material modal) drag
+     * @param modalBg
+     */
+    onMouseDown(modalBg) {
         if(!this.game.controlsEnabled) return;
-        modalBg.items.bg.input.stopDrag(pointer);
-        if(Material.MAX_ENTITIES - this.entities.length == 0) return; //Plus d'entitée disponible
-        const entity = new MaterialSprite(this.game, modalBg.items.bg.world.x, modalBg.items.bg.world.y, 'atlas', modalBg.items.bg._frame.name);
-        entity.input.startDrag(pointer);
-        this.entities.push(entity);
-        entity.onDragStop.add(this.onDragStop, this);
-        entity.onDroppedHandled.add(this.onDroppedHandled, this);
-        this.modalHandler.modal.count = Material.MAX_ENTITIES - this.entities.length;
+        let entity = new MaterialSprite(this.game, modalBg.items.bg.world.x, modalBg.items.bg.world.y, 'atlas', modalBg.items.bg._frame.name);
+        if (this.game.input.activePointer.isDown) {
+            this.entities.push(entity);
+            entity.onDragStop.add(this.onDragStop, this);
+            entity.onDroppedHandled.add(this.onDroppedHandled, this);
+            entity.x = this.game.input.x + this.game.camera.x;
+            entity.y = this.game.input.y + this.game.camera.y;
+            entity.input.startDrag(this.game.input.activePointer);
+            this.modalHandler.modal.count = Material.MAX_ENTITIES - this.entities.length;
+        }
+        else {
+            entity.destroy();
+        }
     }
 
+    /**
+     * destroy the entity on drag stop on container (material modal)
+     * @param entity
+     */
     onDragStop(entity) {
         if (entity.overlap(this.modalHandler.modal.items.bg)) {
             entity.destroy();
@@ -69,6 +82,10 @@ export default class Material extends AbstractObject {
         }
     }
 
+    /**
+     * When a material is dropped on protectable container
+     * @param entity
+     */
     onDroppedHandled(entity) {
         if(entity.currentDepot != null && Config.depotProtects[entity.currentDepot.name].indexOf(this.type) >= 0) {
             entity.finish();

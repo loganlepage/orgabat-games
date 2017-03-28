@@ -11,7 +11,7 @@ export default class MaterialModal extends Modal {
     game;
     onMouseOver = new Signal();
     onMouseOut = new Signal();
-    onDragStart = new Signal();
+    onMouseDown = new Signal();
 
     /**
      * Constructor for a new modal
@@ -38,21 +38,15 @@ export default class MaterialModal extends Modal {
             this.game.canvas.style.cursor = "default";
             this.onMouseOut.dispatch()
         }, this);
-        this.game.controlsSignal.add(()=>{
-            if(this.game.controlsEnabled) bg.input.enableDrag();
-            else bg.input.draggable = false;
-        }, this);
-        bg.events.onDragStart.add((sprite, pointer) => {
-            this.game.canvas.style.cursor = "drag";
-            this.onDragStart.dispatch(this, pointer)
+        bg.events.onInputDown.add(() => {
+            this.onMouseDown.dispatch(this)
         }, this);
     }
 
     destroyEvents(bg) {
         bg.events.onInputOver.removeAll(this);
         bg.events.onInputOut.removeAll(this);
-        bg.events.onDragStart.removeAll(this);
-        this.game.controlsSignal.removeAll(this);
+        bg.events.onInputDown.removeAll(this);
     }
 
     set count(nb) {
