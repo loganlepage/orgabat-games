@@ -1,7 +1,8 @@
 "use strict";
-import Phaser, {State, Easing, Signal} from 'phaser';
+import Phaser, {State, Signal} from 'phaser';
 import Config from '../config/data';
 import FloorFactory from '../objects/Floor/FloorFactory';
+import FloorCameraUtils from '../objects/Floor/FloorCameraUtils';
 import MaterialFactory from '../objects/Material/MaterialFactory';
 import PhaserManager from 'system/phaser/utils/PhaserManager';
 
@@ -86,13 +87,6 @@ class GameProcess {
         this.play = playState;
         this.game = playState.game;
 
-        //Animation de la caméra
-        //On ajuste sa durée par rapport au mouvement à effectuer (peut être égal à 0)
-        this.bootTweenTime = (this.game.world.height - this.game.camera.height) * 2;
-        this.bootTween = this.game.add.tween(this.game.camera).to({
-            y: this.game.floorGroup.height - this.game.canvas.height
-        }, this.bootTweenTime , Easing.Quadratic.InOut, false, 600);
-
         //On prépare les quêtes
         this.quests = new QuestManager(this.game);
         this.quests.onNbQuestsDoneChange.add(this._onQuestChange, this);
@@ -102,8 +96,8 @@ class GameProcess {
         this.quests.add(new PeintureProtectQuest(this.game));
     }
     init() {
-        if(this.bootTweenTime > 0) this.bootTween.start().onComplete.add(() => this._onAnimationEnd());
-        else this._onAnimationEnd();
+        let floorCameraUtils = new FloorCameraUtils(this.game, this.game.floorGroup);
+        floorCameraUtils.moveToLast(this._onAnimationEnd).onComplete.addOnce(this._onAnimationEnd, this);
     }
     _onAnimationEnd() {
         //On affiche la modale d'information du début

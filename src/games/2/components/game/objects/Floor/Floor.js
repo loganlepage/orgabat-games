@@ -1,8 +1,6 @@
 "use strict";
-import {Signal} from 'phaser'
-import GameObject from 'system/phaser/GameObject';
-import FloorSprite from './FloorSprite';
-import Position from 'system/phaser/utils/Position';
+import GameObject from "system/phaser/GameObject";
+import FloorSprite from "./FloorSprite";
 
 
 /** Floor Object (include sprite and modals) */

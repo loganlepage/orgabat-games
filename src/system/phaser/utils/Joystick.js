@@ -14,7 +14,7 @@ export class Button extends Sprite {
      * @see https://developer.mozilla.org/fr/docs/Web/API/KeyboardEvent/initKeyboardEvent
      * @see https://developer.mozilla.org/fr/docs/Web/API/KeyboardEvent/initKeyEvent
      * @param type
-     * @param keyCode
+     * @param key
      */
     static _old_dispatch(type, key) {
         const e = document.createEvent('KeyboardEvent');
