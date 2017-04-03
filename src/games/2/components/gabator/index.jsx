@@ -34,12 +34,11 @@ export default class Gabator extends React.Component {
         this.state = {
             health: Config.stats.health.default,
             organization: Config.stats.organization.default,
-            enterprise: Config.stats.enterprise.default,
-            info: Config.info
+            enterprise: Config.stats.enterprise.default
         };
         this.healthMax = Config.stats.health.max;
-        this.organizationMax = Config.stats.health.max;
-        this.enterpriseMax = Config.stats.health.max;
+        this.organizationMax = Config.stats.organization.max;
+        this.enterpriseMax = Config.stats.enterprise.max;
     }
     componentDidMount() {
         const gabator = new Canvas(this.props.width, this.props.height, Phaser.CANVAS,
@@ -73,10 +72,6 @@ export default class Gabator extends React.Component {
                                      current={this.state.organization} max={this.organizationMax} />
                         <ProgressBar name="Notoriété de l'entreprise" class="progress-bar-warning" scale={scale}
                                      current={this.state.enterprise} max={this.enterpriseMax} />
-                    </div>
-                    <div id="gabator-panel-info">
-                        <h4 style={titleStyle}>Informations</h4>
-                        <p id="gabator-panel-info-text">{this.state.info}</p>
                     </div>
                 </div>
             </div>

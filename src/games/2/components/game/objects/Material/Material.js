@@ -13,6 +13,7 @@ export default class Material extends AbstractObject {
     /** @return {number} */
     static get MAX_ENTITIES() { return 3 };
     ready = false;
+    onDropped = new Signal();
     onProtect = new Signal();
 
     /**
@@ -78,7 +79,12 @@ export default class Material extends AbstractObject {
             MyArray.remove(this.entities, entity);
             this.modalHandler.modal.count = Material.MAX_ENTITIES - this.entities.length;
         } else {
-            entity.onDropped();
+            //décommenter pour récupérer la position d'un matérial
+            console.log(entity.world.x / this.game.SCALE + ", " + entity.world.y / this.game.SCALE);
+            entity.onDropped(this);
+            if(entity.currentDepot) {
+                this.onDropped.dispatch(entity.currentDepot.name);
+            }
         }
     }
 

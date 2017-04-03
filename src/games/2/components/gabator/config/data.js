@@ -3,17 +3,16 @@ export default {
     atlas: "gabator",
     stats: {
         health: {
-            max: 2,
-            default: 2
+            max: 3,
+            default: 3
         },
         organization: {
-            max: 2,
-            default: 2
+            max: 5,
+            default: 5
         },
         enterprise: {
             max: 2,
             default: 2
         }
-    },
-    info: "Attention: Vous n'avez pas de permis élévateur."
+    }
 }

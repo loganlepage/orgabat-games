@@ -22,17 +22,19 @@ export default {
             {name: "garde_corps_tremie", prop: {name: "Garde corps de trémi"}},
             {name: "protection_baie_ouverte", prop: {name: "Protection des baies ouvertes"}},
             {name: "barriere_de_protection", prop: {name: "Barrière de protection"}},
-            {name: "panneau_peinture_fraiche", prop: {name: "Panneau peinture fraîche"}}
+            {name: "panneau_peinture_fraiche", prop: {name: "Panneau peinture fraîche"}},
         ]
     },
     depot: [
-        {name: "baie_ouverte", x: 100, y: 584, isProtected: false},
-        {name: "baie_ouverte", x: 422, y: 584, isProtected: false},
-        {name: "tremie", x: 334, y: 531, isProtected: false},
-        {name: "tremie", x: 334, y: 393, isProtected: false},
-        {name: "peinture", x: 222, y: 222, isProtected: false}
+        {name: "soubassement", x: 270, y: 748, isProtected: false},
+        {name: "baie_ouverte", x: 150, y: 622, isProtected: false},
+        {name: "baie_ouverte", x: 478, y: 622, isProtected: false},
+        {name: "tremie", x: 390, y: 560, isProtected: false},
+        {name: "tremie", x: 390, y: 425, isProtected: false},
+        {name: "peinture", x: 280, y: 250, isProtected: false},
     ],
     depotProtects: {
+        "soubassement": ["passerelle_garde_corps"],
         "baie_ouverte": ["protection_baie_ouverte"],
         "tremie": ["garde_corps_tremie"],
         "peinture": ["panneau_peinture_fraiche"]
