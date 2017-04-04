@@ -121,30 +121,32 @@ class GameProcess {
 
         this.game.materialGroup.forEach((material) => {
             material.onDropped.add((depot)=>{
-                if(depot == "peinture" && material.type != "panneau_peinture_fraiche") {
-                    PhaserManager.get('gabator').stats.changeValues({
-                        organization: PhaserManager.get('gabator').stats.state.organization - 1,
-                        enterprise: PhaserManager.get('gabator').stats.state.enterprise - 1
-                    });
+                if(!depot.tested) {
+                    depot.tested = true;
+                    if(depot.name == "peinture" && material.type != "panneau_peinture_fraiche") {
+                        PhaserManager.get('gabator').stats.changeValues({
+                            organization: PhaserManager.get('gabator').stats.state.organization - 1,
+                            enterprise: PhaserManager.get('gabator').stats.state.enterprise - 1
+                        });
+                    }
+                    if(depot.name == "tremie" && material.type != "garde_corps_tremie") {
+                        PhaserManager.get('gabator').stats.changeValues({
+                            organization: PhaserManager.get('gabator').stats.state.organization - 1,
+                            health: PhaserManager.get('gabator').stats.state.health - 1
+                        });
+                    }
+                    if(depot.name == "baie_ouverte" && material.type != "protection_baie_ouverte") {
+                        PhaserManager.get('gabator').stats.changeValues({
+                            organization: PhaserManager.get('gabator').stats.state.organization - 1,
+                            enterprise: PhaserManager.get('gabator').stats.state.enterprise - 1
+                        });
+                    }
+                    if(depot.name == "soubassement" && material.type != "passerelle_garde_corps") {
+                        PhaserManager.get('gabator').stats.changeValues({
+                            organization: PhaserManager.get('gabator').stats.state.organization - 1
+                        });
+                    }
                 }
-                if(depot == "tremie" && material.type != "garde_corps_tremie") {
-                    PhaserManager.get('gabator').stats.changeValues({
-                        organization: PhaserManager.get('gabator').stats.state.organization - 1,
-                        health: PhaserManager.get('gabator').stats.state.health - 1
-                    });
-                }
-                if(depot == "baie_ouverte" && material.type != "protection_baie_ouverte") {
-                    PhaserManager.get('gabator').stats.changeValues({
-                        organization: PhaserManager.get('gabator').stats.state.organization - 1,
-                        enterprise: PhaserManager.get('gabator').stats.state.enterprise - 1
-                    });
-                }
-                if(depot == "soubassement" && material.type != "passerelle_garde_corps") {
-                    PhaserManager.get('gabator').stats.changeValues({
-                        organization: PhaserManager.get('gabator').stats.state.organization - 1
-                    });
-                }
-                console.log(depot + ", " + material.type);
             }, this);
         });
 

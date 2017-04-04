@@ -26,12 +26,12 @@ export default {
         ]
     },
     depot: [
-        {name: "soubassement", x: 270, y: 748, isProtected: false, current: null},
-        {name: "baie_ouverte", x: 150, y: 622, isProtected: false, current: null},
-        {name: "baie_ouverte", x: 478, y: 622, isProtected: false, current: null},
-        {name: "tremie", x: 390, y: 560, isProtected: false, current: null},
-        {name: "tremie", x: 390, y: 425, isProtected: false, current: null},
-        {name: "peinture", x: 280, y: 250, isProtected: false, current: null},
+        {name: "soubassement", x: 270, y: 748, isProtected: false, current: null, tested: false},
+        {name: "baie_ouverte", x: 150, y: 622, isProtected: false, current: null, tested: false},
+        {name: "baie_ouverte", x: 478, y: 622, isProtected: false, current: null, tested: false},
+        {name: "tremie", x: 390, y: 560, isProtected: false, current: null, tested: false},
+        {name: "tremie", x: 390, y: 425, isProtected: false, current: null, tested: false},
+        {name: "peinture", x: 280, y: 250, isProtected: false, current: null, tested: false}
     ],
     depotProtects: {
         "soubassement": ["passerelle_garde_corps"],

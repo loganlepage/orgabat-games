@@ -53,7 +53,7 @@ export default class Material extends AbstractObject {
      * @param modalBg
      */
     onMouseDown(modalBg) {
-        if(!this.game.controlsEnabled) return;
+        if(!this.game.controlsEnabled || Material.MAX_ENTITIES - this.entities.length <= 0) return;
         let entity = new MaterialSprite(this.game, modalBg.items.bg.world.x, modalBg.items.bg.world.y, 'atlas', modalBg.items.bg._frame.name);
         if (this.game.input.activePointer.isDown) {
             this.entities.push(entity);
@@ -82,9 +82,8 @@ export default class Material extends AbstractObject {
             //décommenter pour récupérer la position d'un matérial
             //console.log(entity.world.x / this.game.SCALE + ", " + entity.world.y / this.game.SCALE);
             entity.onDropped(this);
-            console.log(entity.currentDepot);
             if(entity.currentDepot != null) {
-                this.onDropped.dispatch(entity.currentDepot.name);
+                this.onDropped.dispatch(entity.currentDepot);
             }
         }
     }
