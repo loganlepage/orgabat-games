@@ -80,9 +80,10 @@ export default class Material extends AbstractObject {
             this.modalHandler.modal.count = Material.MAX_ENTITIES - this.entities.length;
         } else {
             //décommenter pour récupérer la position d'un matérial
-            console.log(entity.world.x / this.game.SCALE + ", " + entity.world.y / this.game.SCALE);
+            //console.log(entity.world.x / this.game.SCALE + ", " + entity.world.y / this.game.SCALE);
             entity.onDropped(this);
-            if(entity.currentDepot) {
+            console.log(entity.currentDepot);
+            if(entity.currentDepot != null) {
                 this.onDropped.dispatch(entity.currentDepot.name);
             }
         }
