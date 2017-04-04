@@ -333,16 +333,16 @@ export class StackManager extends Manager {
         super(game);
         this.debug = debug;
         this.stacks = {
-            BOTTOM_RIGHT: new Stack(
-                this.game.canvas.width - 10,
-                this.game.canvas.height - 10,
-                this.game,
-                {axe: Stack.VERTICAL, direction: Stack.TOP, anchorX: 1, anchorY: 1 }),
             BOTTOM_LEFT: new Stack(
                 20,
                 this.game.canvas.height,
                 this.game,
-                {axe: Stack.HORIZONTAL, direction: Stack.RIGHT, offsetX: 32, offsetY: 5, anchorY: 1 })
+                {axe: Stack.HORIZONTAL, direction: Stack.RIGHT, offsetX: 32, offsetY: 5, anchorY: 1 }),
+            BOTTOM_RIGHT: new Stack(
+                this.game.canvas.width - 10,
+                this.game.canvas.height - 10,
+                this.game,
+                {axe: Stack.VERTICAL, direction: Stack.TOP, anchorX: 1, anchorY: 1 })
         };
     }
 

@@ -14,6 +14,7 @@ import QuestManager, {GuiQuestList} from 'system/phaser/utils/Quest';
 import TremisProtectQuest from '../quests/TremisProtectQuest';
 import PeintureProtectQuest from '../quests/PeintureProtectQuest';
 import BaieOuverteProtectQuest from '../quests/BaieOuverteProtectQuest';
+import SoubassementProtectQuest from '../quests/SoubassementProtectQuest';
 
 /** State when we start the game */
 export default class Play extends State {
@@ -91,8 +92,9 @@ class GameProcess {
         this.quests = new QuestManager(this.game);
         this.quests.onNbQuestsDoneChange.add(this._onQuestChange, this);
         new GuiQuestList(this.game.canvas.width - 10, 30, this.quests, this.game);
-        this.quests.add(new TremisProtectQuest(this.game));
+        this.quests.add(new SoubassementProtectQuest(this.game));
         this.quests.add(new BaieOuverteProtectQuest(this.game));
+        this.quests.add(new TremisProtectQuest(this.game));
         this.quests.add(new PeintureProtectQuest(this.game));
     }
     init() {
@@ -116,18 +118,6 @@ class GameProcess {
 
         this.game.keys.addKey(Phaser.Keyboard.ENTER).onDown.remove(this._onStartInfoClose, this);
         this.game.keys.addKey(Phaser.Keyboard.A).onDown.remove(this._onStartInfoClose, this);
-
-        //Si on rentre en collision
-       /* this.collided = { wall: false, vehicle: false };
-        this.game.vehicleGroup.forEach((vehicle) => {
-            vehicle.obj.onCollision.add(this._onCollide, this);
-        });
-
-        //Si on monte un élévator
-        this.elevatorMounted = false;
-        this.game.vehicleGroup.forEach((vehicle) => {
-            vehicle.obj.onMounted.add(this._onMount, this);
-        });*/
 
         this.game.materialGroup.forEach((material) => {
             material.onDropped.add((depot)=>{
