@@ -5,7 +5,6 @@ import {Easing} from "phaser";
 export default class FloorCameraUtils {
 
     game;
-    offsetTime;
     floors;
     current;
 
@@ -15,8 +14,6 @@ export default class FloorCameraUtils {
     constructor(game, floors) {
         this.game = game;
         this.floors = floors;
-        //this.offsetTime = this.bootTweenTime = (this.game.world.height - this.game.camera.height) * 2;
-        this.offsetTime = this.bootTweenTime = 500;
         this.current = this.floors.children[0] ? 0 : -1;
         if (this.current == -1) console.error("there are no floors.");
 
@@ -52,6 +49,10 @@ export default class FloorCameraUtils {
         return this.floors.children.length - 1;
     }
 
+    getOffsetTime(from, to) {
+        return Math.abs(from - to);
+    }
+
     buildButton(context, x, y) {
         context = this.game.add.sprite(0, 0, 'atlas', 'modal/item/button_a');
         context.scale.set(this.game.uiScale(0.8));
@@ -63,11 +64,11 @@ export default class FloorCameraUtils {
     }
 
     handlePrevButtonDisplay() {
-          this.prevButton.visible = this.current > this.minFloor;
+        this.prevButton.visible = this.current > this.minFloor;
     }
 
     handleNextButtonDisplay() {
-          this.nextButton.visible = this.current < this.maxFloor;
+        this.nextButton.visible = this.current < this.maxFloor;
     }
 
     moveToPrev() {
@@ -106,12 +107,14 @@ export default class FloorCameraUtils {
 
     setCurrent(i) {
         this.current = i;
+        const to = this.floors.children[i].y - (this.game.canvas.height - this.floors.children[i].height) / 2;
         if (this.current >= this.minFloor && this.current <= this.maxFloor) {
             this.handlePrevButtonDisplay();
             this.handleNextButtonDisplay();
-            return this.game.add.tween(this.game.camera).to({ //async, ok for break
-                y: this.floors.children[i].y - (this.game.canvas.height - this.floors.children[i].height) / 2
-            }, this.bootTweenTime, Easing.Quadratic.InOut, false, 0).start();
+            return this.game.add.tween(this.game.camera).to(
+                {y: to},
+                this.getOffsetTime(this.game.camera.y, to), Easing.Quadratic.InOut, false, 0
+            ).start();
         } else {
             return null;
         }
