@@ -81,6 +81,7 @@ export default class Material extends AbstractObject {
         } else {
             //décommenter pour récupérer la position d'un matérial
             //console.log(entity.world.x / this.game.SCALE + ", " + entity.world.y / this.game.SCALE);
+            //commenter les lignes suivantes pour empêcher le dépôt
             entity.onDropped(this);
             if(entity.currentDepot != null) {
                 this.onDropped.dispatch(entity.currentDepot);

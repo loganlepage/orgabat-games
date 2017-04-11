@@ -33,6 +33,7 @@ export default class Play extends State {
     create() {
         this.game.controlsEnabled = false;
         this.game.controlsSignal = new Signal();
+       // this.game.stage.backgroundColor = '#82D178'; //green background
 
         this.initUI();
         this.addFloors();
@@ -71,6 +72,7 @@ export default class Play extends State {
             this.game.time.advancedTiming = true; //SEE FPS
             this.game.debug.text(this.game.time.fps, 2, 14, "#00ff00");
        // }
+       // this.game.debug.spriteInfo(window.a_sprite, 32, 32);
     }
 
     /**

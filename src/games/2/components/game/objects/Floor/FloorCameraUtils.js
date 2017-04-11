@@ -1,6 +1,7 @@
 "use strict";
 
 import {Easing} from "phaser";
+import Config from '../../config/data';
 
 export default class FloorCameraUtils {
 
@@ -24,9 +25,7 @@ export default class FloorCameraUtils {
         this.prevButton.cameraOffset.setTo(this.game.uiScale(50), this.game.uiScale(50));
         this.prevButton.inputEnabled = true;
         this.game.layer.zDepth3.add(this.prevButton);
-        this.prevButton.events.onInputDown.add(() => {
-            this.moveToPrev();
-        }, this);
+        this.prevButton.events.onInputDown.add(this.moveToPrev, this);
 
         this.nextButton = this.game.add.sprite(0, 0, 'atlas', 'modal/item/arrow_up');
         this.nextButton.scale.set(this.game.uiScale(0.8));
@@ -36,17 +35,7 @@ export default class FloorCameraUtils {
         this.nextButton.cameraOffset.setTo(this.game.uiScale(50), this.game.canvas.height - this.game.uiScale(150));
         this.nextButton.inputEnabled = true;
         this.game.layer.zDepth3.add(this.nextButton);
-        this.nextButton.events.onInputDown.add(() => {
-            this.moveToNext();
-        }, this);
-    }
-
-    get minFloor() {
-        return 0;
-    }
-
-    get maxFloor() {
-        return this.floors.children.length - 1;
+        this.nextButton.events.onInputDown.add(this.moveToNext, this);
     }
 
     getOffsetTime(from, to) {
@@ -64,17 +53,16 @@ export default class FloorCameraUtils {
     }
 
     handlePrevButtonDisplay() {
-        this.prevButton.visible = this.current > this.minFloor;
+        this.prevButton.visible = this.current < this.floors.children.length - 1;
     }
 
     handleNextButtonDisplay() {
-        this.nextButton.visible = this.current < this.maxFloor;
+        this.nextButton.visible = this.current > 0;
     }
 
     moveToPrev() {
         let floor;
-        console.log(this.current);
-        for (let i = this.current - 1; i >= this.minFloor; --i) {
+        for (let i = this.current + 1; i <= this.floors.children.length - 1; ++i) {
             if (this.floors.children[i]) {
                 floor = this.floors.children[i];
                 if (floor.y > this.game.camera.y) {
@@ -88,8 +76,7 @@ export default class FloorCameraUtils {
 
     moveToNext() {
         let floor;
-        console.log(this.current);
-        for (let i = this.current + 1; i <= this.maxFloor; ++i) {
+        for (let i = this.current - 1; i >= 0; --i) {
             if (this.floors.children[i]) {
                 floor = this.floors.children[i];
                 if (floor.y + floor.height < this.game.camera.y + this.game.canvas.height) {
@@ -102,13 +89,13 @@ export default class FloorCameraUtils {
     }
 
     moveToLast() {
-        return this.setCurrent(this.maxFloor);
+        return this.setCurrent(0);
     }
 
     setCurrent(i) {
         this.current = i;
-        const to = this.floors.children[i].y - (this.game.canvas.height - this.floors.children[i].height) / 2;
-        if (this.current >= this.minFloor && this.current <= this.maxFloor) {
+        const to = this.floors.children[i].y - (this.game.canvas.height - this.floors.children[i].height - Config.offsetHeight) / 2;
+        if (this.current >= 0 && this.current <= this.floors.children.length - 1) {
             this.handlePrevButtonDisplay();
             this.handleNextButtonDisplay();
             return this.game.add.tween(this.game.camera).to(

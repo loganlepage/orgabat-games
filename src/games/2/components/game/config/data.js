@@ -8,7 +8,8 @@ export default {
     canvasParent: "#gameDiv",
     atlas: "jeu2",
     defaultWidth: 600, //house width
-    defaultHeight: 172 /*ext*/ + 132 /*rdc*/ + 140 /*1st*/ + 304 /*2nd*/, //house height
+    defaultHeight: 371 /*ext*/ + 409 /*rdc*/ + 371 /*1st*/ + 371 /*2nd*/ + 420 /*3rd*/, //house height
+    offsetHeight: 240,
     entities: {
         floors: [
             {name: "3rd", prop: {name: "3e étage"}},
@@ -26,12 +27,13 @@ export default {
         ]
     },
     depot: [
-        {name: "soubassement", x: 270, y: 748, isProtected: false, current: null, tested: false},
-        {name: "baie_ouverte", x: 150, y: 622, isProtected: false, current: null, tested: false},
-        {name: "baie_ouverte", x: 478, y: 622, isProtected: false, current: null, tested: false},
-        {name: "tremie", x: 390, y: 560, isProtected: false, current: null, tested: false},
-        {name: "tremie", x: 390, y: 425, isProtected: false, current: null, tested: false},
-        {name: "peinture", x: 280, y: 250, isProtected: false, current: null, tested: false}
+        {name: "soubassement", floor: "ext", x: 170, y: 830, isProtected: false, current: null, tested: false},
+        {name: "baie_ouverte", floor: "rdc", x: 440, y: 622, isProtected: false, current: null, tested: false},
+        {name: "baie_ouverte", floor: "rdc", x: 153, y: 669, isProtected: false, current: null, tested: false},
+        {name: "tremie", floor: "1st", x: 282, y: 619, isProtected: false, current: null, tested: false},
+        {name: "tremie", floor: "2nd", x: 282, y: 488, isProtected: false, current: null, tested: false},
+        {name: "tremie", floor: "3rd", x: 282, y: 359, isProtected: false, current: null, tested: false},
+        {name: "peinture", floor: "3rd", x: 188, y: 245, isProtected: false, current: null, tested: false}
     ],
     depotProtects: {
         "soubassement": ["passerelle_garde_corps"],
