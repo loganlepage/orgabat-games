@@ -41,7 +41,7 @@ export default class VehicleModalHandler extends GameModal {
     /** ------------------------------------------
      * Modals
      * ------------------------------------------ */
-    prepareTooltip(tooltip, isButton) {
+    _prepareTooltip(tooltip, isButton) {
         tooltip.items.useButton.visible = isButton;
         const dir = this.isPossibleToOuterRightToSprite(this.obj.sprite, this.obj.sprite.world, 10, tooltip.items.bg) ? 'right' : 'left';
         tooltip.y =  this.getInnerTopToSprite(this.obj.sprite, this.obj.sprite.world) + 10;
@@ -65,7 +65,7 @@ export default class VehicleModalHandler extends GameModal {
             this.isShowMouseUsable = true;
         }, this);
 
-        this.prepareTooltip(tooltip, isCollide);
+        this._prepareTooltip(tooltip, isCollide);
         tooltip.toggle(true, {context: this},
             (err) => { if(err.code === 403) {
                 tooltip.delete(); //Si on a créé un objet non utilisé
@@ -87,7 +87,7 @@ export default class VehicleModalHandler extends GameModal {
             this.isShowUsable = true;
         }, this);
 
-        this.prepareTooltip(tooltip, true);
+        this._prepareTooltip(tooltip, true);
         tooltip.toggle(true, {fixed: true, controls: false, context: this});
     }
     

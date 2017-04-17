@@ -2,7 +2,6 @@
 import GameObject from "system/phaser/GameObject";
 import FloorSprite from "./FloorSprite";
 
-
 /** Floor Object (include sprite and modals) */
 export default class Floor extends GameObject {
 

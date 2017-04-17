@@ -7,7 +7,6 @@ import Phaser, {Signal} from "phaser";
 export default class MaterialModal extends Modal {
 
     name;
-    h;
     game;
     onMouseOver = new Signal();
     onMouseOut = new Signal();
@@ -21,10 +20,9 @@ export default class MaterialModal extends Modal {
      * @param handler
      * @param game
      */
-    constructor(data, name, manager, handler, game) {
+    constructor(data, name, manager, game) {
         super(Type.deepMerge(MaterialModal.pattern, data), manager, game);
         this.name = name;
-        this.h = handler;
         this.game = game;
         this.initEvents(this.items.bg);
     }

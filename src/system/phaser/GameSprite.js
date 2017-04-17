@@ -1,41 +1,24 @@
 'use strict';
-import Phaser, {Signal} from 'phaser';
+import {Signal} from 'phaser';
+import BasicGameSprite from "./BasicGameSprite";
 
 /** Abstract gameSprite (parent for all gameSprites) */
-export default class GameSprite extends Phaser.Sprite {
+export default class GameSprite extends BasicGameSprite {
+
+    onCollisionHandled = new Signal();
+
     constructor(game, x, y, key, gameObject) {
-        super(game, x, y, 'atlas', key);
-        this.onCollisionHandled = new Signal();
-        this.onMouseOverHandled = new Signal();
-        this.onMouseOutHandled = new Signal();
-        this.scale.set(game.SCALE);
-        this.obj = gameObject;
-        this.inputEnabled = true;
-        this.events.onInputOver.add(this.onMouseOver, this);
-        this.events.onInputOut.add(this.onMouseOut, this);
+        super(game, x, y, key, gameObject);
     }
 
     /** Events */
-    onCollision(obj1, obj2) {
-        obj1.class = obj1.class === undefined ? 'gameObject' : obj1.class;
-        obj2.class = obj2.class === undefined ? 'gameObject' : obj2.class;
-        this.onCollisionHandled.dispatch({me: obj1, object: obj2});
+    onCollision(from, to) {
+        from.class = from.class === undefined ? 'gameObject' : from.class;
+        to.class = to.class === undefined ? 'gameObject' : to.class;
+        this.onCollisionHandled.dispatch({me: from, object: to});
     }
-    wallCollision(obj1, obj2) {
-        obj2.class = 'layer';
-        this.onCollision(obj1, obj2);
-    }
-    onMouseOver(sprite) {
-        if(!this.game.controlsEnabled) return;
-        this.onMouseOverHandled.dispatch(sprite);
-    }
-    onMouseOut(sprite) {
-        if(!this.game.controlsEnabled) return;
-        this.onMouseOutHandled.dispatch(sprite);
-    }
-    update() {
-        if(!this.game.controlsEnabled) return;
-        if(this.obj.update !== undefined)
-            this.obj.update();
+    wallCollision(from, to) {
+        to.class = 'layer';
+        this.onCollision(from, to);
     }
 };

@@ -27,7 +27,7 @@ export default class Player extends GameObject {
     constructor(game, layer, x, y) {
         super(game, layer);
         this.addSprite(new PlayerSprite(game, Position.getPixelAt(x), Position.getPixelAt(y), 'player/0', this));
-        this.game.layer.zDepth0.add(this.sprite);
+        this.game.layer.zDepth1.add(this.sprite);
         this.configure();
         this.ready = true;
     }
@@ -94,6 +94,7 @@ export default class Player extends GameObject {
         }
     }
     onCollisionBegin(o) {
+        console.log("aze");
         if( this.vehicleInUse.object !== null ) return;
         this.objectInCollision = o.object;
     }

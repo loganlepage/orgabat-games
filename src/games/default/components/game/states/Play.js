@@ -13,8 +13,6 @@ import QuestManager, {GuiQuestList} from 'system/phaser/utils/Quest';
 /** State when we start the game */
 export default class Play extends State {
 
-    layers = [];
-
     /** Constructor for a new play state */
     constructor() {
         super();
@@ -28,6 +26,7 @@ export default class Play extends State {
         this.game.controlsEnabled = false;
 
         this.initUI();
+        //initialissation des éléments de la scène ici (voir jeu 1 ou jeu 2)
         PhaserManager.ready('game', 'play');
 
         this.start();
@@ -108,12 +107,11 @@ class GameProcess {
         this.game.keys.addKey(Phaser.Keyboard.ENTER).onDown.remove(this._onStartInfoClose, this);
         this.game.keys.addKey(Phaser.Keyboard.A).onDown.remove(this._onStartInfoClose, this);
 
+        //Evenements de progression du jeu ici (voir jeu 1 ou jeu 2)
+
         //Ferme la modale et active les controls
         this.startInfoModal.toggle(false, {});
         this.game.controlsEnabled = true;
-
-        //Si on termine la partie
-        this.quests.get('depot_fill').onDone.addOnce(this._onFinish, this);
 
         this._timeStart = this.game.time.now;
     }

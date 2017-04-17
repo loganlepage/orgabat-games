@@ -1,25 +1,21 @@
 "use strict";
-import Phaser, {State, Signal} from 'phaser';
-import Config from '../config/data';
-import FloorFactory from '../objects/Floor/FloorFactory';
-import FloorCameraUtils from '../objects/Floor/FloorCameraUtils';
-import MaterialFactory from '../objects/Material/MaterialFactory';
-import PhaserManager from 'system/phaser/utils/PhaserManager';
-
-import StartInfoModal from '../modals/StartInfoModal';
-import EndInfoModal from '../modals/EndInfoModal';
-import {DefaultManager} from 'system/phaser/Modal';
-
-import QuestManager, {GuiQuestList} from 'system/phaser/utils/Quest';
-import TremisProtectQuest from '../quests/TremisProtectQuest';
-import PeintureProtectQuest from '../quests/PeintureProtectQuest';
-import BaieOuverteProtectQuest from '../quests/BaieOuverteProtectQuest';
-import SoubassementProtectQuest from '../quests/SoubassementProtectQuest';
+import Phaser, {State} from "phaser";
+import Config from "../config/data";
+import FloorFactory from "../objects/Floor/FloorFactory";
+import FloorCameraUtils from "../objects/Floor/FloorCameraUtils";
+import MaterialFactory from "../objects/Material/MaterialFactory";
+import PhaserManager from "system/phaser/utils/PhaserManager";
+import StartInfoModal from "../modals/StartInfoModal";
+import EndInfoModal from "../modals/EndInfoModal";
+import {DefaultManager} from "system/phaser/Modal";
+import QuestManager, {GuiQuestList} from "system/phaser/utils/Quest";
+import TremisProtectQuest from "../quests/TremisProtectQuest";
+import PeintureProtectQuest from "../quests/PeintureProtectQuest";
+import BaieOuverteProtectQuest from "../quests/BaieOuverteProtectQuest";
+import SoubassementProtectQuest from "../quests/SoubassementProtectQuest";
 
 /** State when we start the game */
 export default class Play extends State {
-
-    layers = [];
 
     /** Constructor for a new play state */
     constructor() {
@@ -32,8 +28,7 @@ export default class Play extends State {
      */
     create() {
         this.game.controlsEnabled = false;
-        this.game.controlsSignal = new Signal();
-       // this.game.stage.backgroundColor = '#82D178'; //green background
+        // this.game.stage.backgroundColor = '#82D178'; //green background
 
         this.initUI();
         this.addFloors();
@@ -58,21 +53,18 @@ export default class Play extends State {
     addFloors() {
         this.game.floorGroup = new FloorFactory(this.game, Config.entities.floors);
     }
+
     addMaterials() {
         this.game.materialGroup = new MaterialFactory(this.game, Config.entities.materials);
-    }
-    /** Called by a delegated event to follow an object */
-    follow(object) {
-        this.game.camera.follow(object.sprite);
     }
 
     /** Called by Phaser to render */
     render() {
         //if(Config.developer.debug) {
-            this.game.time.advancedTiming = true; //SEE FPS
-            this.game.debug.text(this.game.time.fps, 2, 14, "#00ff00");
-       // }
-       // this.game.debug.spriteInfo(window.a_sprite, 32, 32);
+        this.game.time.advancedTiming = true; //SEE FPS
+        this.game.debug.text(this.game.time.fps, 2, 14, "#00ff00");
+        // }
+        // this.game.debug.spriteInfo(window.a_sprite, 32, 32);
     }
 
     /**
@@ -99,10 +91,12 @@ class GameProcess {
         this.quests.add(new TremisProtectQuest(this.game));
         this.quests.add(new PeintureProtectQuest(this.game));
     }
+
     init() {
         let floorCameraUtils = new FloorCameraUtils(this.game, this.game.floorGroup);
         floorCameraUtils.moveToLast(this._onAnimationEnd).onComplete.addOnce(this._onAnimationEnd, this);
     }
+
     _onAnimationEnd() {
         //On affiche la modale d'information du début
         this.startInfoModal = new StartInfoModal({}, DefaultManager, this.game);
@@ -110,40 +104,43 @@ class GameProcess {
         this.game.keys.addKey(Phaser.Keyboard.A).onDown.addOnce(this._onStartInfoClose, this);
         this.startInfoModal.items.close.items.iconA.events.onInputDown.add(this._onStartInfoClose, this);
         this.startInfoModal.items.close.items.textA.events.onInputDown.add(this._onStartInfoClose, this);
-        this.startInfoModal.onDeleted.addOnce(()=>{delete this.startInfoModal}, this);
+        this.startInfoModal.onDeleted.addOnce(() => {
+            delete this.startInfoModal
+        }, this);
         this.startInfoModal.toggle(true);
     }
+
     _onStartInfoClose() {
         //On active Gabator
-        if(PhaserManager.get('gabator').state.current == "play")
+        if (PhaserManager.get('gabator').state.current == "play")
             PhaserManager.get('gabator').state.getCurrentState().start();
 
         this.game.keys.addKey(Phaser.Keyboard.ENTER).onDown.remove(this._onStartInfoClose, this);
         this.game.keys.addKey(Phaser.Keyboard.A).onDown.remove(this._onStartInfoClose, this);
 
         this.game.materialGroup.forEach((material) => {
-            material.onDropped.add((depot)=>{
-                if(!depot.tested) {
+            material.onDropped.add((depot) => {
+                if (!depot.tested) {
                     depot.tested = true;
-                    if(depot.name == "peinture" && material.type != "panneau_peinture_fraiche") {
+                    if (depot.name == "peinture" && material.type != "panneau_peinture_fraiche") {
                         PhaserManager.get('gabator').stats.changeValues({
                             organization: PhaserManager.get('gabator').stats.state.organization - 1,
                             enterprise: PhaserManager.get('gabator').stats.state.enterprise - 1
                         });
                     }
-                    if(depot.name == "tremie" && material.type != "garde_corps_tremie") {
+                    if (depot.name == "tremie" && material.type != "garde_corps_tremie") {
                         PhaserManager.get('gabator').stats.changeValues({
                             organization: PhaserManager.get('gabator').stats.state.organization - 1,
                             health: PhaserManager.get('gabator').stats.state.health - 1
                         });
                     }
-                    if(depot.name == "baie_ouverte" && material.type != "protection_baie_ouverte") {
+                    if (depot.name == "baie_ouverte" && material.type != "protection_baie_ouverte") {
                         PhaserManager.get('gabator').stats.changeValues({
                             organization: PhaserManager.get('gabator').stats.state.organization - 1,
                             enterprise: PhaserManager.get('gabator').stats.state.enterprise - 1
                         });
                     }
-                    if(depot.name == "soubassement" && material.type != "passerelle_garde_corps") {
+                    if (depot.name == "soubassement" && material.type != "passerelle_garde_corps") {
                         PhaserManager.get('gabator').stats.changeValues({
                             organization: PhaserManager.get('gabator').stats.state.organization - 1
                         });
@@ -156,16 +153,16 @@ class GameProcess {
         //Ferme la modale et active les controls
         this.startInfoModal.toggle(false, {});
         this.game.controlsEnabled = true;
-        this.game.controlsSignal.dispatch();
 
         this._timeStart = this.game.time.now;
     }
+
     _onQuestChange() {
-        if(this.quests.nbQuestsDone == 0) this._onFinish();
+        if (this.quests.nbQuestsDone == 0) this._onFinish();
     }
+
     _onFinish() {
         this.game.controlsEnabled = false;
-        this.game.controlsSignal.dispatch();
         this._timeEnd = this.game.time.now;
 
         const current = PhaserManager.get('gabator').stats.state.health +
@@ -193,10 +190,11 @@ class GameProcess {
         //Et on envoie le score à l'API
         window.api.sendScore({
             exerciseId: game_id,
-            time: Math.round((this._timeEnd - this._timeStart)/1000),
+            time: Math.round((this._timeEnd - this._timeStart) / 1000),
             health: PhaserManager.get('gabator').stats.state.health,
             organization: PhaserManager.get('gabator').stats.state.organization,
             business: PhaserManager.get('gabator').stats.state.enterprise
-        }, ()=>{});
+        }, () => {
+        });
     }
 }

@@ -22,7 +22,7 @@ export default class MaterialModalHandler extends GameModal {
         this.obj = obj;
         this.modal = new MaterialModal({items: {
             bg: { key: `jeu2/material/${this.obj.type}`}
-        }}, this.obj.type, StackManager, this, this.game);
+        }}, this.obj.type, StackManager, this.game);
     }
 
 

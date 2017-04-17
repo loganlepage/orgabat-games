@@ -38,7 +38,7 @@ export default class Vehicle extends GameObject {
      * Constructor for a new vehicle object
      * @param game
      * @param layer
-     * @param name
+     * @param type
      * @param properties
      * @param x
      * @param y

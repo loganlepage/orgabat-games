@@ -40,9 +40,9 @@ export default class StartInfoModal extends Modal {
                     type: "text",
                     x: 20,
                     y: 85,
-                    text: "Bienvenue sur le chantier.\n\n" +
-                    "Avant  de  quitter  le  chantier,  repère  les  dangers  et  les  risques," +
-                    "puis  utilise  les  différents  éléments  mis  à  ta disposition pour sécuriser au mieux ton chantier. " +
+                    text: "Nous allons bientôt quitter le chantier...\n\n" +
+                    "Avant de partir, repère  les  risques et dangers, puis  utilise  les  différents " +
+                    "éléments  mis  à  ta disposition pour sécuriser au mieux ton chantier. \n" +
                     "(sous forme de glissé-déposé)",
                     style: {
                         fill: "#5F4D21",

@@ -1,5 +1,4 @@
 "use strict";
-import Config from '../../config/data';
 import GameSprite from 'system/phaser/GameSprite';
 
 /** Material Sprite (called by the material gameObject) */
@@ -13,7 +12,8 @@ export default class FloorSprite extends GameSprite {
      * @param key
      * @param obj
      */
-    constructor(game, x, y, name, obj) {
-        super(game, x, y, `jeu2/house/${name}`, obj);
+    constructor(game, x, y, key, obj) {
+        super(game, x, y, `jeu2/house/${key}`, obj);
+        window.a_sprite = this;
     }
 };

@@ -1,5 +1,5 @@
 "use strict";
-import Phaser, {State, Keyboard} from 'phaser';
+import {State, Keyboard} from 'phaser';
 import AJoystick from 'system/phaser/utils/joysticks/AJoystick';
 
 /** State when we the game is loaded */
@@ -7,10 +7,11 @@ export default class Rules extends State {
 
     /** Called when the state must be created */
     create() {
-        this.game.add.text(this.game.uiScale(80), this.game.uiScale(80), "Repli de chantier",
+        this.game.add.text(this.game.uiScale(80), this.game.uiScale(80), "Repli de chantier : Repérer les risques et dangers " +
+            "\npour sécuriser le chantier avant de partir.",
             { font: 'Arial', fill: '#272727', fontSize: this.game.uiScale(21) });
 
-        this.game.add.text(this.game.uiScale(80), this.game.uiScale(160),
+        this.game.add.text(this.game.uiScale(80), this.game.uiScale(180),
             "Avant  de  quitter  le  chantier,  repére  les  dangers  et  les  risques," +
             "puis  utilise  les  différents  éléments  mis  à  ta disposition pour sécuriser au mieux ton chantier. " +
             "(sous forme de glissé-déposé)",
@@ -27,7 +28,7 @@ export default class Rules extends State {
 
         const text = this.game.add.text(
             this.game.uiScale(135), this.game.world.height - this.game.uiScale(80),
-            "Voir l'introduction",
+            "Jouer",
             { font: 'Arial', fill: '#c0392b', fontSize: this.game.uiScale(16) }
         );
         text.inputEnabled = true;

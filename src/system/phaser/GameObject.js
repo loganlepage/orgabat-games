@@ -1,10 +1,10 @@
 'use strict';
 import {Math, Signal} from 'phaser';
 import Type from '../utils/Type';
-import AbstractObject from './AbstractObject';
+import BasicGameObject from './BasicGameObject';
 
 /** Abstract gameObject (parent for all gameObjects) */
-export default class GameObject extends AbstractObject {
+export default class GameObject extends BasicGameObject {
 
     onCollisionEndHandled = new Signal();
 
@@ -20,14 +20,11 @@ export default class GameObject extends AbstractObject {
 
     /** Initialize a sprite & modal */
     addSprite(sprite) {
-        this.sprite = sprite;
-        this.game.add.existing(this.sprite);
+        super.addSprite(sprite);
         this.objectInCollision = null;
         this.objectInitialDistance = null;
         this.collisionEventEnabled = true;
         this.sprite.onCollisionHandled.add(this.onCollisionBegin, this);
-        this.sprite.onMouseOverHandled.add(this.onMouseOver, this);
-        this.sprite.onMouseOutHandled.add(this.onMouseOut, this);
     }
     update() {
         this.refreshObjectInCollision();
@@ -62,8 +59,6 @@ export default class GameObject extends AbstractObject {
     }
     onCollisionBegin() {}
     onCollisionEnd(s){}
-    onMouseOver(){}
-    onMouseOut(){}
 
     isCollidWith(type, o = this.objectInCollision) {
         return Type.isExist(o) && o.sprite.obj.constructor === type;
