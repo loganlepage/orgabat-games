@@ -11,7 +11,7 @@ export default class BasicGameObject extends AbstractObject {
     /** Initialize a sprite & modal */
     addSprite(sprite) {
         this.sprite = sprite;
-        this.game.add.existing(this.sprite);
+        this.game.layer.zDepth1.add(this.sprite);
         this.sprite.onMouseOverHandled.add(this.onMouseOver, this);
         this.sprite.onMouseOutHandled.add(this.onMouseOut, this);
         this.sprite.onMouseDownHandled.add(this.onMouseDown, this);

@@ -94,7 +94,6 @@ export default class Player extends GameObject {
         }
     }
     onCollisionBegin(o) {
-        console.log("aze");
         if( this.vehicleInUse.object !== null ) return;
         this.objectInCollision = o.object;
     }

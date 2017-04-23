@@ -1,15 +1,17 @@
 "use strict";
 import Type from "system/utils/Type";
 import Modal from "system/phaser/Modal";
-import WasteTooltip from "./WasteTooltip";
 import {TooltipManager} from "system/phaser/Modal";
+import InventaryItemTooltip from "./InventaryItemTooltip";
+import {Signal} from "phaser";
 
 
 /** Description Tooltip Modal */
-export default class WasteActionModal extends Modal {
+export default class InventaryItemModal extends Modal {
 
     data;
     isTooltipUsable = true;
+    onClick = new Signal();
 
     /**
      * Constructor for a new modal
@@ -18,7 +20,7 @@ export default class WasteActionModal extends Modal {
      * @param game
      */
     constructor(data, manager, game) {
-        super(Type.deepMerge(WasteActionModal.pattern, {items: {image: {key: `jeu3/actions/${data.name}`}}}), manager, game);
+        super(Type.deepMerge(InventaryItemModal.pattern, {items: {image: {key: `jeu3/epi/${data.name}`}}}), manager, game);
         this.data = data;
         this.initEvents(this.items.image);
     }
@@ -34,13 +36,14 @@ export default class WasteActionModal extends Modal {
             this.items.image.alpha = 1;
         }, this);
         image.events.onInputDown.add(() => {
+            this.onClick.dispatch(this);
         }, this);
     }
 
     showTooltip() {
         if(!this.isTooltipUsable) return;
         this.isTooltipUsable = false;
-        const tooltip = new WasteTooltip({items: {
+        const tooltip = new InventaryItemTooltip({items: {
             name: { text: this.data.info }
         }}, TooltipManager, this.game);
 
@@ -51,14 +54,14 @@ export default class WasteActionModal extends Modal {
         }, this);
 
         /** UI */
-        tooltip.x = this.items.image.world.x + this.items.image.width / 2;
-        tooltip.y = this.items.image.world.y + this.items.image.height + this.game.uiScale(12);
+        tooltip.x = this.items.image.width / 2;
+        tooltip.y = this.items.image.height + this.game.uiScale(1);
         tooltip.toggle(true, {},
             (err) => { if(err.code === 403) {
                 tooltip.delete(); //Si on a créé un objet non utilisé
                 this.isShowMouseUsable = true;
             }});
-        this.game.world.addChild(tooltip);
+        this.addChild(tooltip);
     }
 
     static get pattern() {
@@ -68,7 +71,7 @@ export default class WasteActionModal extends Modal {
                 image: {
                     type: "sprite",
                     key: "[changer cette clé]",
-                    props: {scale: 0.297, inputEnabled: true}
+                    props: {scale: 0.7, inputEnabled: true}
                 }
             }
         }

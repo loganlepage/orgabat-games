@@ -6,6 +6,7 @@ import EndInfoModal from "../modals/EndInfoModal";
 import {DefaultManager} from "system/phaser/Modal";
 import QuestManager, {GuiQuestList} from "system/phaser/utils/Quest";
 import WasteFactory from "../objects/Waste/WasteFactory";
+import Inventary from "../objects/Inventary/Inventary";
 import Config from "../config/data";
 
 /** State when we start the game */
@@ -26,6 +27,7 @@ export default class Play extends State {
         this.initMap();
         this.initUI();
         this.addWastes();
+        this.addInventary();
         PhaserManager.ready('game', 'play');
 
         this.start();
@@ -52,6 +54,10 @@ export default class Play extends State {
     addWastes() {
         this.game.wasteGroup = new WasteFactory(this.game, Config.entities.wastes);
         this.map.addChild(this.game.wasteGroup);
+    }
+
+    addInventary() {
+        new Inventary(this.game, 5, 5);
     }
 
     /** Called by Phaser to update */
@@ -98,26 +104,28 @@ class GameProcess {
     }
     _onAnimationEnd() {
         //On affiche la modale d'information du début
-        this.startInfoModal = new StartInfoModal({}, DefaultManager, this.game);
-        this.game.keys.addKey(Phaser.Keyboard.ENTER).onDown.addOnce(this._onStartInfoClose, this);
-        this.game.keys.addKey(Phaser.Keyboard.A).onDown.addOnce(this._onStartInfoClose, this);
-        this.startInfoModal.items.close.items.iconA.events.onInputDown.add(this._onStartInfoClose, this);
-        this.startInfoModal.items.close.items.textA.events.onInputDown.add(this._onStartInfoClose, this);
-        this.startInfoModal.onDeleted.addOnce(()=>{delete this.startInfoModal}, this);
-        this.startInfoModal.toggle(true);
+        const startInfoModal = new StartInfoModal({}, DefaultManager, this.game);
+        const startTheGame = () => {
+            startInfoModal.toggle(false);
+            this._onStart();
+        }
+
+        this.game.keys.addKey(Phaser.Keyboard.ENTER).onDown.addOnce(startTheGame, this);
+        this.game.keys.addKey(Phaser.Keyboard.A).onDown.addOnce(startTheGame, this);
+        startInfoModal.items.close.items.iconA.events.onInputDown.add(startTheGame, this);
+        startInfoModal.items.close.items.textA.events.onInputDown.add(startTheGame, this);
+        startInfoModal.onDeleted.addOnce(()=>{
+            this.game.keys.addKey(Phaser.Keyboard.ENTER).onDown.removeAll(this);
+            this.game.keys.addKey(Phaser.Keyboard.A).onDown.removeAll(this);
+        }, this);
+        startInfoModal.toggle(true);
     }
-    _onStartInfoClose() {
+    _onStart() {
         //On active Gabator
         if(PhaserManager.get('gabator').state.current == "play")
             PhaserManager.get('gabator').state.getCurrentState().start();
 
-        this.game.keys.addKey(Phaser.Keyboard.ENTER).onDown.remove(this._onStartInfoClose, this);
-        this.game.keys.addKey(Phaser.Keyboard.A).onDown.remove(this._onStartInfoClose, this);
-
-        //Ferme la modale et active les controls
-        this.startInfoModal.toggle(false, {});
         this.game.controlsEnabled = true;
-
         this._timeStart = this.game.time.now;
     }
     _onFinish() {

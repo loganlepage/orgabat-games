@@ -1,7 +1,7 @@
 "use strict";
-import Phaser from 'phaser';
-import Type from '../utils/Type';
-import GameModal from './GameModal';
+import Phaser from "phaser";
+import Type from "../utils/Type";
+import GameModal from "./GameModal";
 
 /** Make a sprite item for modal */
 class Button extends Phaser.Button {
@@ -52,9 +52,10 @@ export class Sprite extends Phaser.Sprite {
      * @param x
      * @param y
      * @param key
+     * @param style
      * @param props
      */
-    constructor(game, x, y, key, props) {
+    constructor(game, x, y, key, style, props) {
 
         props = props || {};
         try {
@@ -66,6 +67,8 @@ export class Sprite extends Phaser.Sprite {
             console.error(e.name + ": " + e.message);
         }
         super(game, game.uiScale(x), game.uiScale(y), 'atlas', key);
+        style = Type.isExist(style) ? style : {};
+        if (style.tint) this.tint = style.tint;
         this.scale.setTo(game.uiScale(Type.isNumber(props.scale) ? props.scale : 1));
         this.visible = Type.isBoolean(props.visible) ? props.visible : true;
         this.inputEnabled = Type.isBoolean(props.inputEnabled) ? props.inputEnabled : false;
@@ -96,7 +99,6 @@ class Text extends Phaser.Text {
      * @param props
      */
     constructor(game, x, y, text, style, props) {
-        props = props || {};
         try {
             Type.isExist(game, true);
             Type.isNumber(x, true);
@@ -133,9 +135,9 @@ class Text extends Phaser.Text {
 
 /** Modal Manager Strategy */
 class Manager extends GameModal {
+
     constructor(game) {
         super(game);
-        Manager.game = game;
     }
 
     static getInstance(game, debug) {
@@ -145,8 +147,7 @@ class Manager extends GameModal {
     }
 
     /** Show modal view */
-    static show(modal, group, quick = false, callback = () => {
-    }) {
+    show(modal, group, quick = false, callback = () => {}) {
         try {
             Type.isExist(modal, true);
         } catch (e) {
@@ -168,13 +169,13 @@ class Manager extends GameModal {
         }
         else {
             m.alpha = 0;
-            this.game.add.tween(m).to({alpha: 1}, 100, Phaser.Easing.Linear.None, true).onComplete.add(todo, this);
+            this.game.add.tween(m).to({alpha: 1}, 100, Phaser.Easing.Linear.None, true)
+                .onComplete.add(todo, this);
         }
     }
 
     /** Hide modal view */
-    static hide(modal, quick = false, callback = () => {
-    }) {
+    hide(modal, quick = false, callback = () => {}) {
         try {
             Type.isExist(modal, true);
         } catch (e) {
@@ -193,14 +194,14 @@ class Manager extends GameModal {
         }
         else {
             m.alpha = 1;
-            this.game.add.tween(m).to({alpha: 0}, 100, Phaser.Easing.Linear.None, true).onComplete.add(todo, this);
+            this.game.add.tween(m).to({alpha: 0}, 100, Phaser.Easing.Linear.None, true)
+                .onComplete.add(todo, this);
         }
     }
 
     /** Move modal */
-    static moveTo(modal, to = {}, callback = () => {
-    }) {
-        this.game.add.tween(modal).to(to, 100, Phaser.Easing.Linear.None, true)
+    static moveTo(modal, to = {}, game, callback = () => {}) {
+        game.add.tween(modal).to(to, 100, Phaser.Easing.Linear.None, true)
             .onComplete.add(() => callback(), this);
     }
 }
@@ -215,7 +216,7 @@ export class TooltipManager extends Manager {
 
     /** Controls */
     _showFixed(modal, quick = false) {
-        Manager.show(modal, this.game.layer.zDepth1, quick);
+        super.show(modal, this.game.layer.zDepth1, quick);
         modal.params.fixeMe = null;
         modal.params.fixed = true;
         if (modal === this.current)
@@ -223,7 +224,7 @@ export class TooltipManager extends Manager {
     }
 
     _hideFixed(modal, quick = false) {
-        Manager.hide(modal, quick);
+        super.hide(modal, quick);
         modal.params.fixeMe = null;
         modal.params.fixed = false;
     }
@@ -233,10 +234,10 @@ export class TooltipManager extends Manager {
             if (this.current && this.current !== modal)
                 this._setCurrent(this.current, false, quick);
             this.current = modal;
-            Manager.show(this.current, this.game.layer.zDepth1, quick);
+            super.show(this.current, this.game.layer.zDepth1, quick);
         }
         else if (this.current && this.current === modal) {
-            Manager.hide(this.current, quick);
+            super.hide(this.current, quick);
             this.current = null;
         }
     }
@@ -296,6 +297,7 @@ export class Stack extends Phaser.Group {
             y: Type.isNumber(params.anchorY) ? params.anchorY : 0,
         };
         this.sort = Type.isNumber(params.sort) ? params.sort : Stack.DESC;
+        this.maxGridSize = Type.isNumber(params.maxGridSize) ? params.maxGridSize : -1;
         this.toAdd = [];
     }
 
@@ -322,35 +324,41 @@ export class Stack extends Phaser.Group {
     }
 
     _reorganize() {
-        let x = 0, y = 0, counter = 0;
         const start = this.sort == Stack.DESC ? this.children.length - 1 : 0;
         const condition = (i) => this.sort == Stack.DESC ? i >= 0 : i < this.children.length;
         const increment = this.sort;
         const reorganize = (cbCondition) => {
+            let x = 0, y = 0, counter = 0, caseI = 0, caseJ = 0;
             for (let i = start; condition(i); i += increment) {
+                if (this.maxGridSize > 0) {
+                    caseI = counter % this.maxGridSize;
+                    caseJ = parseInt(counter / this.maxGridSize, 10);
+                }
                 if (cbCondition(this.children[i])) {
                     switch (this.axe) {
                         case Stack.HORIZONTAL:
-                            if (counter == 0) {
+                            if (counter === 0 || (this.maxGridSize > 0 && caseI === 0)) {
                                 x = this.children[i].width * -this.anchor.x;
-                            } else if (this.direction == Stack.LEFT) {
+                            } else if (this.direction === Stack.LEFT) {
                                 x -= this.children[i].width + this.offset.x;
                             }
-                            y = (this.children[i].height + this.offset.y) * (1 - this.anchor.y * 2);
-                            Manager.moveTo(this.children[i], {x: x, y: y});
-                            if (this.direction == Stack.RIGHT) {
+                            y = (this.children[i].height + this.offset.y) * (this.anchor.y == 1 ? -1 : caseJ);
+                            Manager.moveTo(this.children[i], {x: x, y: y}, this.game);
+                            if (this.direction === Stack.RIGHT) {
                                 x += this.children[i].width + this.offset.x;
                             }
                             break;
+
                         case Stack.VERTICAL:
-                            if (counter == 0) {
+                            if (counter === 0) {
                                 y = this.children[i].height * -this.anchor.y;
                             } else if (this.direction == Stack.TOP) {
                                 y -= this.children[i].height + this.offset.y;
                             }
+
                             x = (this.children[i].width + this.offset.x) * (1 - this.anchor.x * 2);
-                            Manager.moveTo(this.children[i], {x: x, y: y});
-                            if (this.direction == Stack.BOTTOM) {
+                            Manager.moveTo(this.children[i], {x: x, y: y}, this.game);
+                            if (this.direction === Stack.BOTTOM) {
                                 y += this.children[i].height + this.offset.y;
                             }
                             break;
@@ -424,11 +432,11 @@ export class StackManager extends Manager {
             this.stacks[stack].add(modal);
         else if (Type.isInstanceOf(stack, Stack))
             stack.add(modal);
-        Manager.show(modal);
+        super.show(modal);
     }
 
     _del(modal, stack) {
-        Manager.hide(modal, false, () => {
+        super.hide(modal, false, () => {
             if (Type.isString(stack))
                 this.stacks[stack].remove(modal);
             else if (Type.isInstanceOf(stack, Stack))
@@ -444,15 +452,18 @@ export class StackManager extends Manager {
 
 /** Default Modal Manager Strategy */
 export class DefaultManager extends Manager {
+
+    blackBackground;
+
     constructor(game, debug) {
         super(game);
         this.debug = debug;
+
         const rect = game.add.graphics(0, 0);
         rect.beginFill(0x000000, 0.75);
         rect.drawRect(0, 0, game.canvas.width, game.canvas.height);
         rect.endFill();
         this.blackBackground = new Phaser.Group(game);
-        this.blackBackground.alpha = 0;
         this.blackBackground.fixedToCamera = true;
         this.blackBackground.add(rect);
         this.game.layer.zDepthOverAll.add(this.blackBackground);
@@ -479,14 +490,14 @@ export class DefaultManager extends Manager {
                 }, this);
             });
         }
-        Manager.show(this.blackBackground);
-        Manager.show(modal, this.game.world);
+        super.show(this.blackBackground);
+        super.show(modal, this.game.world);
     }
 
     _del(modal) {
         modal.fixedToCamera = modal.fixedToCameraDefault;
-        Manager.hide(this.blackBackground);
-        Manager.hide(modal);
+        super.hide(this.blackBackground);
+        super.hide(modal);
     }
 
     /** Toggle Show / Hide modal */
@@ -552,14 +563,14 @@ class Factory extends Phaser.Group {
         let item;
         switch (data.type) {
             case 'text':
-                item = new Text(this.game, data.x || 0, data.y || 0, data.text, data.style, data.props);
+                item = new Text(this.game, data.x || 0, data.y || 0, data.text, data.style || {}, data.props || {});
                 break;
             case 'sprite':
-                item = new Sprite(this.game, data.x || 0, data.y || 0, data.key, data.props);
+                item = new Sprite(this.game, data.x || 0, data.y || 0, data.key, data.style || {}, data.props || {});
                 break;
             case 'button':
                 item = new Button(this.game, data.x || 0, data.y || 0, data.overFrame || null,
-                    data.outFrame || null, data.downFrame || null, data.upFrame || null, data.props);
+                    data.outFrame || null, data.downFrame || null, data.upFrame || null, data.props || {});
                 break;
         }
         if (item) {
@@ -576,6 +587,7 @@ export default class Modal extends Factory {
     onShow = new Phaser.Signal();
     onHide = new Phaser.Signal();
     onDeleted = new Phaser.Signal();
+    beforeDelete = new Phaser.Signal();
 
     /**
      * Constructor for a new modal
@@ -592,6 +604,7 @@ export default class Modal extends Factory {
     }
 
     delete() {
+        this.beforeDelete.dispatch();
         this.items = {}; //on supprime les références
         this.destroy(true); //on supprime les objets réels
         this.onDeleted.dispatch();

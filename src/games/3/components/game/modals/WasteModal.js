@@ -6,7 +6,7 @@ import Config from "../config/data";
 
 
 /** Description Tooltip Modal */
-export default class WasteActionsModal extends Modal {
+export default class WasteModal extends Modal {
 
     /**
      * Constructor for a new modal
@@ -15,19 +15,19 @@ export default class WasteActionsModal extends Modal {
      * @param game
      */
     constructor(data, manager, game) {
-        super(Type.deepMerge(WasteActionsModal.pattern, data), manager, game);
+        super(Type.deepMerge(WasteModal.pattern, data), manager, game);
         this.items.description.x = this.items.bg.width - this.items.description.width - game.uiScale(30);
 
         //Initialisation de la barre d'action
         this.items.actions = new Stack(
-            20, this.items.bg.height, this.game,
-            {axe: Stack.HORIZONTAL, direction: Stack.RIGHT, offsetX: 4, offsetY: 10, anchorY: 1}
+            20, this.game.uiScale(292), this.game,
+            {axe: Stack.HORIZONTAL, direction: Stack.RIGHT, offsetX: 4, offsetY: 10}
         );
         this.add(this.items.actions);
 
         //Ajout des actions
         Config.entities.actions.forEach((action) => {
-            new WasteActionModal(action, StackManager, this, this.game).toggle(true, {stack: this.items.actions});
+            new WasteActionModal(action, StackManager, this.game).toggle(true, {stack: this.items.actions});
         });
 
         //Events

@@ -17,6 +17,18 @@ export default {
             {name: "dechets_inertes", info: "Déchets inertes"},
             {name: "dechets_industriels_banals", info: "Déchets industriels banals"},
             {name: "dechets_industriels_speciaux", info: "Déchets industriels spéciaux"},
+        ],
+        epi: [
+            {name: "anti_chute", info: "Harnais antichute"},
+            {name: "protection_auditive", info: "Casque antibruit"},
+            {name: "protection_des_mains", info: "Gants de protection"},
+            {name: "protection_des_pieds", info: "Chaussures de sécurité"},
+            {name: "protection_des_voies", info: "Masque anti poussière"},
+            {name: "protection_des_yeux", info: "Lunettes de protection"},
+            {name: "protection_du_casque", info: "Casque de sécurité"},
+            {name: "protection_du_corps", info: "Combinaison de protection"},
+            {name: "protection_du_visage", info: "Visière de protection"},
+            {name: "protection_pour_pieton", info: "Protection pour pieton"},
         ]
     },
     infos: {
