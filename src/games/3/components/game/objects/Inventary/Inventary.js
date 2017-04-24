@@ -25,6 +25,8 @@ export default class Inventary extends BasicGameObject {
         this.addSprite(new InventarySprite(this.game, x, y, this));
         this.modalHandler = new InventaryModalHandler(this, game);
         this.equipped = [];
+
+        //events
         this.modalHandler.onInventaryClick.add((stuff) => {
             if(this.indexOf(stuff) === -1 && this.equipped.length < Inventary.MAX_EQUIPPED_SIZE) {
                 this.equipped.push(stuff);
@@ -38,6 +40,10 @@ export default class Inventary extends BasicGameObject {
                 this.onStuffDel.dispatch(stuff);
             }
         }, this);
+
+        //init ui
+        this.modalHandler.showEquipped();
+
         this.ready = true;
     }
 

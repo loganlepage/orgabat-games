@@ -51,14 +51,14 @@ export default class WasteActionModal extends Modal {
         }, this);
 
         /** UI */
-        tooltip.x = this.items.image.world.x + this.items.image.width / 2;
-        tooltip.y = this.items.image.world.y + this.items.image.height + this.game.uiScale(12);
+        tooltip.x = this.items.image.width / 2;
+        tooltip.y = this.items.image.height + this.game.uiScale(12);
         tooltip.toggle(true, {},
             (err) => { if(err.code === 403) {
                 tooltip.delete(); //Si on a créé un objet non utilisé
                 this.isShowMouseUsable = true;
             }});
-        this.game.world.addChild(tooltip);
+        this.addChild(tooltip);
     }
 
     static get pattern() {

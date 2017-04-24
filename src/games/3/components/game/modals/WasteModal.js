@@ -3,6 +3,7 @@ import Type from "system/utils/Type";
 import Modal, {Stack, StackManager} from "system/phaser/Modal";
 import WasteActionModal from "./WasteActionModal";
 import Config from "../config/data";
+import {Keyboard} from "phaser";
 
 
 /** Description Tooltip Modal */
@@ -31,13 +32,16 @@ export default class WasteModal extends Modal {
         });
 
         //Events
-        this.items.close.events.onInputDown.addOnce(()=>{
-            this.toggle(false);
-        }, this);
-    }
+        this.items.close.events.onInputDown.addOnce(()=>{this.toggle(false);}, this);
+        this.game.keys.addKey(Keyboard.ENTER).onDown.addOnce(()=>{this.toggle(false);}, this);
+        this.game.keys.addKey(Keyboard.ESC).onDown.addOnce(()=>{this.toggle(false);}, this);
 
-    set choice(choice) {
-        this.items.choice.text = `Choisir une action : ${choice}`;
+        this.beforeDelete.addOnce(()=> {
+            this.items.close.events.onInputDown.removeAll(this);
+            this.game.keys.addKey(Keyboard.ENTER).onDown.removeAll(this);
+            this.game.keys.addKey(Keyboard.ESC).onDown.removeAll(this);
+            this.game.canvas.style.cursor = "default";
+        });
     }
 
     static get pattern() {

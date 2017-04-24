@@ -481,13 +481,12 @@ export class DefaultManager extends Manager {
             //hide on click next of the modal
             this.blackBackground.forEach((elt) => {
                 elt.inputEnabled = true;
-                elt.events.onInputDown.add((rect, pointer) => {
+                elt.events.onInputDown.addOnce((rect, pointer) => {
                     if (pointer.x < modal.x || pointer.x > modal.x + modal.width ||
                         pointer.y < modal.y || pointer.y > modal.y + modal.height) {
-                        elt.events.onInputDown.removeAll(this);
-                        this._del(modal)
+                        this._del(modal);
                     }
-                }, this);
+                }, modal);
             });
         }
         super.show(this.blackBackground);
@@ -496,6 +495,9 @@ export class DefaultManager extends Manager {
 
     _del(modal) {
         modal.fixedToCamera = modal.fixedToCameraDefault;
+        this.blackBackground.forEach((elt) => {
+            elt.events.onInputDown.removeAll(modal);
+        });
         super.hide(this.blackBackground);
         super.hide(modal);
     }
