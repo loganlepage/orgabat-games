@@ -3,6 +3,7 @@ import Type from "system/utils/Type";
 import Modal from "system/phaser/Modal";
 import WasteTooltip from "./WasteTooltip";
 import {TooltipManager} from "system/phaser/Modal";
+import {Signal} from "phaser";
 
 
 /** Description Tooltip Modal */
@@ -10,6 +11,7 @@ export default class WasteActionModal extends Modal {
 
     data;
     isTooltipUsable = true;
+    onClick = new Signal();
 
     /**
      * Constructor for a new modal
@@ -34,6 +36,7 @@ export default class WasteActionModal extends Modal {
             this.items.image.alpha = 1;
         }, this);
         image.events.onInputDown.add(() => {
+            this.onClick.dispatch(this);
         }, this);
     }
 

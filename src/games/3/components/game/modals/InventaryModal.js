@@ -3,8 +3,7 @@ import Type from "system/utils/Type";
 import Modal, {Stack, StackManager} from "system/phaser/Modal";
 import InventaryItemModal from "./InventaryItemModal";
 import Config from "../config/data";
-import {Signal} from "phaser";
-import {Keyboard} from "phaser";
+import {Keyboard, Signal} from "phaser";
 
 
 /** Description Tooltip Modal */

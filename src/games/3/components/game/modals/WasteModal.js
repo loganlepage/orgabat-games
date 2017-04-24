@@ -3,20 +3,26 @@ import Type from "system/utils/Type";
 import Modal, {Stack, StackManager} from "system/phaser/Modal";
 import WasteActionModal from "./WasteActionModal";
 import Config from "../config/data";
-import {Keyboard} from "phaser";
+import {Keyboard, Signal} from "phaser";
 
 
 /** Description Tooltip Modal */
 export default class WasteModal extends Modal {
 
+    onActionClick = new Signal();
+    obj;
+
     /**
      * Constructor for a new modal
      * @param data
      * @param manager
+     * @param type
      * @param game
      */
-    constructor(data, manager, game) {
+    constructor(data, manager, obj, game) {
         super(Type.deepMerge(WasteModal.pattern, data), manager, game);
+        this.obj = obj;
+
         this.items.description.x = this.items.bg.width - this.items.description.width - game.uiScale(30);
 
         //Initialisation de la barre d'action
@@ -28,7 +34,9 @@ export default class WasteModal extends Modal {
 
         //Ajout des actions
         Config.entities.actions.forEach((action) => {
-            new WasteActionModal(action, StackManager, this.game).toggle(true, {stack: this.items.actions});
+            const modal = new WasteActionModal(action, StackManager, this.game);
+            modal.toggle(true, {stack: this.items.actions});
+            modal.onClick.add((action) => this.onActionClick.dispatch(action, this), this);
         });
 
         //Events

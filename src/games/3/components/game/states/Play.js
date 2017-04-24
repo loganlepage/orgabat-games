@@ -1,16 +1,23 @@
 "use strict";
-import Phaser, {State, Easing} from "phaser";
+import Phaser, {State, Easing, Signal} from "phaser";
 import PhaserManager from "system/phaser/utils/PhaserManager";
 import StartInfoModal from "../modals/StartInfoModal";
 import EndInfoModal from "../modals/EndInfoModal";
-import {DefaultManager} from "system/phaser/Modal";
+import {DefaultManager, StackManager} from "system/phaser/Modal";
 import QuestManager, {GuiQuestList} from "system/phaser/utils/Quest";
 import WasteFactory from "../objects/Waste/WasteFactory";
 import Inventary from "../objects/Inventary/Inventary";
 import Config from "../config/data";
+import Feedback from "system/phaser/modals/Feedback";
+import OuvrirBoiteEpiQuest from "../quests/OuvrirBoiteEpiQuest";
+import MettreUnEquipementQuest from "../quests/MettreUnEquipementQuest";
+import EnleverUnEquipementQuest from "../quests/EnleverUnEquipementQuest";
+import JeterUnDechetQuest from "../quests/JeterUnDechetQuest";
 
 /** State when we start the game */
 export default class Play extends State {
+
+    inventary;
 
     /** Constructor for a new play state */
     constructor() {
@@ -26,8 +33,8 @@ export default class Play extends State {
 
         this.initMap();
         this.initUI();
-        this.addWastes();
         this.addInventary();
+        this.addWastes();
         PhaserManager.ready('game', 'play');
 
         this.start();
@@ -51,24 +58,25 @@ export default class Play extends State {
         };
     }
 
+    addInventary() {
+        this.game.inventary = new Inventary(this.game, 5, 5);
+    }
+
     addWastes() {
         this.game.wasteGroup = new WasteFactory(this.game, Config.entities.wastes);
         this.map.addChild(this.game.wasteGroup);
     }
 
-    addInventary() {
-        new Inventary(this.game, 5, 5);
-    }
-
     /** Called by Phaser to update */
-    update() {}
+    update() {
+    }
 
     /** Called by Phaser to render */
     render() {
         //if(Config.developer.debug) {
-            this.game.time.advancedTiming = true; //SEE FPS
-            this.game.debug.text(this.game.time.fps, 2, 14, "#00ff00");
-       // }
+        this.game.time.advancedTiming = true; //SEE FPS
+        this.game.debug.text(this.game.time.fps, 2, 14, "#00ff00");
+        // }
     }
 
     /**
@@ -85,6 +93,8 @@ class GameProcess {
     constructor(playState) {
         this.play = playState;
         this.game = playState.game;
+        this.game.custom_events = {};
+        this.game.custom_events.dropAWaste = new Signal();
         this.game.camera.y = this.game.camera.height;
 
         //Animation de la caméra
@@ -92,42 +102,124 @@ class GameProcess {
         this.bootTweenTime = (this.game.world.height - this.game.camera.height) * 4.5;
         this.bootTween = this.game.add.tween(this.game.camera).to({
             y: this.game.canvas.height
-        }, this.bootTweenTime , Easing.Quadratic.InOut, false, 600);
+        }, this.bootTweenTime, Easing.Quadratic.InOut, false, 600);
 
         //On prépare les quêtes
         this.quests = new QuestManager(this.game);
         new GuiQuestList(this.game.canvas.width - 10, 30, this.quests, this.game);
+        this.quests.add(new OuvrirBoiteEpiQuest(this.game));
+        this.quests.add(new MettreUnEquipementQuest(this.game));
+        this.quests.add(new EnleverUnEquipementQuest(this.game));
+        this.quests.add(new JeterUnDechetQuest(this.game));
     }
+
     init() {
-        if(this.bootTweenTime > 0) this.bootTween.start().onComplete.add(() => this._onAnimationEnd());
+        if (this.bootTweenTime > 0) this.bootTween.start().onComplete.add(() => this._onAnimationEnd());
         else this._onAnimationEnd();
     }
+
     _onAnimationEnd() {
         //On affiche la modale d'information du début
         const startInfoModal = new StartInfoModal({}, DefaultManager, this.game);
         const startTheGame = () => {
             startInfoModal.toggle(false);
             this._onStart();
-        }
+        };
 
         this.game.keys.addKey(Phaser.Keyboard.ENTER).onDown.addOnce(startTheGame, this);
         this.game.keys.addKey(Phaser.Keyboard.A).onDown.addOnce(startTheGame, this);
         startInfoModal.items.close.items.iconA.events.onInputDown.add(startTheGame, this);
         startInfoModal.items.close.items.textA.events.onInputDown.add(startTheGame, this);
-        startInfoModal.onDeleted.addOnce(()=>{
+        startInfoModal.onDeleted.addOnce(() => {
             this.game.keys.addKey(Phaser.Keyboard.ENTER).onDown.removeAll(this);
             this.game.keys.addKey(Phaser.Keyboard.A).onDown.removeAll(this);
         }, this);
         startInfoModal.toggle(true);
     }
+
     _onStart() {
         //On active Gabator
-        if(PhaserManager.get('gabator').state.current == "play")
+        if (PhaserManager.get('gabator').state.current == "play")
             PhaserManager.get('gabator').state.getCurrentState().start();
+
+        //events
+        let isNotValidModalUsable = true;
+        const feedbackModal = (fail_info) => {
+            if (!isNotValidModalUsable) return;
+            isNotValidModalUsable = false;
+            const dropped = new Feedback({}, StackManager, this.game);
+            dropped.setInfo(fail_info);
+            dropped.toggle(true, {stack: 'BOTTOM_RIGHT'});
+            setTimeout(() => {
+                dropped.toggle(false, {stack: 'BOTTOM_RIGHT'});
+                isNotValidModalUsable = true;
+            }, 2000);
+        };
+
+        this.game.wasteGroup.forEach((waste) => {
+            waste.obj.onActionClick.add((action, waste) => {
+                if (Config.infos.wastes[waste.obj.type]) {
+
+                    //Action validation
+                    let isValidAction = Config.infos.wastes[waste.obj.type].action.indexOf(action.data.name) > -1;
+                    let isAllEpiSetted = true;
+                    Config.infos.wastes[waste.obj.type].epi.forEach((epi) => {
+                        if (this.game.inventary.equipped.map((e) => e.data.name).indexOf(epi) === -1) {
+                            isAllEpiSetted = false;
+                        }
+                    });
+                    let isTooMuchEpi = false;
+                    this.game.inventary.equipped.forEach((epi) => {
+                        if (Config.infos.wastes[waste.obj.type].epi.indexOf(epi.data.name) === -1) {
+                            isTooMuchEpi = true;
+                        }
+                    });
+
+                    //Do something after the validation
+                    waste.toggle(false);
+                    if (Config.infos.actions[action.data.name]) {
+                        let doAction = false;
+                        if (!isValidAction) {
+                            if(!waste.obj.properties.isFail) {
+                                waste.obj.properties.isFail = true;
+                                feedbackModal(Config.infos.actions[action.data.name].fail);
+                                PhaserManager.get('gabator').stats.changeValues({
+                                    organization: PhaserManager.get('gabator').stats.state.organization - 1,
+                                    enterprise: PhaserManager.get('gabator').stats.state.enterprise - 1,
+                                });
+                            }
+                        } else if (!isAllEpiSetted) {
+                            if(!waste.obj.properties.isNotEquipped) {
+                                waste.obj.properties.isNotEquipped = true;
+                                feedbackModal("Vous n'êtes pas équipé pour déplacer ce déchet.");
+                                PhaserManager.get('gabator').stats.changeValues({
+                                    organization: PhaserManager.get('gabator').stats.state.organization - 1,
+                                    health: PhaserManager.get('gabator').stats.state.health - 1,
+                                });
+                            }
+                        } else if (isTooMuchEpi) {
+                            feedbackModal("Vous êtes trop équipé, mais vous traitez le déchet.");
+                            PhaserManager.get('gabator').stats.changeValues({
+                                organization: PhaserManager.get('gabator').stats.state.organization - 1,
+                            });
+                            doAction = true;
+                        } else {
+                            feedbackModal(Config.infos.actions[action.data.name].success);
+                            doAction = true;
+                        }
+                        if (doAction) {
+                            waste.obj.sprite.destroy();
+                            this.game.custom_events.dropAWaste.dispatch();
+                        }
+                    }
+                }
+            });
+        });
 
         this.game.controlsEnabled = true;
         this._timeStart = this.game.time.now;
     }
+
     _onFinish() {
         this.game.controlsEnabled = false;
         this._timeEnd = this.game.time.now;
@@ -153,10 +245,11 @@ class GameProcess {
         //Et on envoie le score à l'API
         window.api.sendScore({
             exerciseId: game_id,
-            time: Math.round((this._timeEnd - this._timeStart)/1000),
+            time: Math.round((this._timeEnd - this._timeStart) / 1000),
             health: PhaserManager.get('gabator').stats.state.health,
             organization: PhaserManager.get('gabator').stats.state.organization,
             business: PhaserManager.get('gabator').stats.state.enterprise
-        }, ()=>{});
+        }, () => {
+        });
     }
 }

@@ -11,8 +11,10 @@ export default class Inventary extends BasicGameObject {
     static get MAX_EQUIPPED_SIZE() { return 4};
 
     ready = false;
+    equipped = [];
     onStuffAdd = new Signal();
     onStuffDel = new Signal();
+    onOpen = new Signal();
 
     /**
      * Constructor for a new Inventary object
@@ -24,7 +26,6 @@ export default class Inventary extends BasicGameObject {
         super(game);
         this.addSprite(new InventarySprite(this.game, x, y, this));
         this.modalHandler = new InventaryModalHandler(this, game);
-        this.equipped = [];
 
         //events
         this.modalHandler.onInventaryClick.add((stuff) => {
@@ -56,6 +57,7 @@ export default class Inventary extends BasicGameObject {
 
     onMouseDown() {
         this.modalHandler.showActions();
+        this.onOpen.dispatch();
     }
     onMouseOut() {
         this.onMouseOutHandled.dispatch();

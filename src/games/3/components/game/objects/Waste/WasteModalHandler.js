@@ -1,14 +1,15 @@
 "use strict";
 import GameModal from "system/phaser/GameModal";
-import {TooltipManager, DefaultManager} from "system/phaser/Modal";
+import {TooltipManager, DefaultManager, Stack, StackManager} from "system/phaser/Modal";
 import WasteModal from "../../modals/WasteModal";
 import Config from "../../config/data";
-import {Stack, StackManager} from "system/phaser/Modal";
+import {Signal} from "phaser";
 
 /** Waste Modal (called by the material gameObject) */
 export default class WasteModalHandler extends GameModal {
 
     isShowUsable = true;
+    onActionClick = new Signal();
 
     /**
      * Constructor for a new material modal
@@ -28,14 +29,20 @@ export default class WasteModalHandler extends GameModal {
      * ------------------------------------------ */
 
     showActions() {
-        if(!this.isShowUsable) return;
+        if (!this.isShowUsable) return;
         this.isShowUsable = false;
 
-        const modal = new WasteModal({items: {
-            waste: { key: `jeu3/dechets/${this.obj.type}` },
-            title: { text: Config.infos.wastes[this.obj.type].title },
-            description: { text: Config.infos.wastes[this.obj.type].description }
-        }}, DefaultManager, this.game);
+        const modal = new WasteModal({
+            items: {
+                waste: {key: `jeu3/dechets/${this.obj.type}`},
+                title: {text: Config.infos.wastes[this.obj.type].title},
+                description: {text: Config.infos.wastes[this.obj.type].description}
+            }
+        }, DefaultManager, this.obj, this.game);
+
+        modal.onActionClick.add(
+            (action, waste) => this.onActionClick.dispatch(action, waste), this
+        );
 
         modal.onDeleted.addOnce(() => {
             this.isShowUsable = true;

@@ -1,8 +1,7 @@
 "use strict";
 import GameModal from "system/phaser/GameModal";
-import {TooltipManager, DefaultManager} from "system/phaser/Modal";
+import {TooltipManager, DefaultManager, Stack, StackManager} from "system/phaser/Modal";
 import InventaryModal from "../../modals/InventaryModal";
-import {Stack, StackManager} from "system/phaser/Modal";
 import {Signal} from "phaser";
 import InventaryItemModal from "../../modals/InventaryItemModal";
 
