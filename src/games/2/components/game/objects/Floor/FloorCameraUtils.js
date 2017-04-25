@@ -36,6 +36,11 @@ export default class FloorCameraUtils {
         this.nextButton.inputEnabled = true;
         this.game.layer.zDepth3.add(this.nextButton);
         this.nextButton.events.onInputDown.add(this.moveToNext, this);
+
+        this.game.keys.addKey(Phaser.Keyboard.Z).onDown.add(this.moveToPrev, this);
+        this.game.keys.addKey(Phaser.Keyboard.UP).onDown.add(this.moveToPrev, this);
+        this.game.keys.addKey(Phaser.Keyboard.S).onDown.add(this.moveToNext, this);
+        this.game.keys.addKey(Phaser.Keyboard.DOWN).onDown.add(this.moveToNext, this);
     }
 
     getOffsetTime(from, to) {
