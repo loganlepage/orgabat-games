@@ -7,9 +7,9 @@ export default {
     },
     canvasParent: "#gameDiv",
     atlas: "jeu2",
-    defaultWidth: 600, //house width
-    defaultHeight: 371 /*ext*/ + 409 /*rdc*/ + 371 /*1st*/ + 371 /*2nd*/ + 420 /*3rd*/, //house height
-    offsetHeight: 240,
+    defaultWidth: 1920, //house width
+    defaultHeight: 960 /*ext*/ + 1312 /*rdc*/ + 1202 /*1st*/ + 1202 /*2nd*/ + 1349 /*3rd*/, //house height
+    offsetHeight: 795,
     entities: {
         floors: [
             {name: "3rd", prop: {name: "3e étage"}},
@@ -23,22 +23,23 @@ export default {
             {name: "garde_corps_tremie", prop: {name: "Garde corps de trémi"}},
             {name: "protection_baie_ouverte", prop: {name: "Protection des baies ouvertes"}},
             {name: "barriere_de_protection", prop: {name: "Barrière de protection"}},
-            {name: "panneau_peinture_fraiche", prop: {name: "Panneau peinture fraîche"}},
+            {name: "panneau_peinture_fraiche", prop: {name: "Panneau peinture fraîche"}}
         ]
     },
     depot: [
-        {name: "soubassement", floor: "ext", x: 170, y: 830, isProtected: false, current: null, tested: false},
-        {name: "baie_ouverte", floor: "rdc", x: 440, y: 622, isProtected: false, current: null, tested: false},
-        {name: "baie_ouverte", floor: "rdc", x: 153, y: 669, isProtected: false, current: null, tested: false},
-        {name: "tremie", floor: "1st", x: 282, y: 619, isProtected: false, current: null, tested: false},
-        {name: "tremie", floor: "2nd", x: 282, y: 488, isProtected: false, current: null, tested: false},
-        {name: "tremie", floor: "3rd", x: 282, y: 359, isProtected: false, current: null, tested: false},
-        {name: "peinture", floor: "3rd", x: 188, y: 245, isProtected: false, current: null, tested: false}
+        {name: "trou", floor: "ext", x: 1545, y: 2480, isProtected: false, current: null, tested: false},
+        {name: "soubassement", floor: "rdc", x: 514, y: 2480, isProtected: false, current: null, tested: false},
+        {name: "baie_ouverte", floor: "rdc", x: 512, y: 2085, isProtected: false, current: null, tested: false},
+        {name: "baie_ouverte", floor: "rdc", x: 812, y: 1935, isProtected: false, current: null, tested: false},
+        {name: "tremie", floor: "1st", x: 900, y: 1946, isProtected: false, current: null, tested: false},
+        {name: "tremie", floor: "2nd", x: 900, y: 1540, isProtected: false, current: null, tested: false},
+        {name: "peinture", floor: "3rd", x: 850, y: 880, isProtected: false, current: null, tested: false}
     ],
     depotProtects: {
         "soubassement": ["passerelle_garde_corps"],
         "baie_ouverte": ["protection_baie_ouverte"],
         "tremie": ["garde_corps_tremie"],
-        "peinture": ["panneau_peinture_fraiche"]
+        "peinture": ["panneau_peinture_fraiche"],
+        "trou": ["barriere_de_protection"]
     }
 }

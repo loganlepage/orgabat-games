@@ -1,5 +1,5 @@
 "use strict";
-import Phaser, {State} from "phaser";
+import Phaser, {State, Sprite} from "phaser";
 import Config from "../config/data";
 import FloorFactory from "../objects/Floor/FloorFactory";
 import FloorCameraUtils from "../objects/Floor/FloorCameraUtils";
@@ -13,6 +13,7 @@ import TremisProtectQuest from "../quests/TremisProtectQuest";
 import PeintureProtectQuest from "../quests/PeintureProtectQuest";
 import BaieOuverteProtectQuest from "../quests/BaieOuverteProtectQuest";
 import SoubassementProtectQuest from "../quests/SoubassementProtectQuest";
+import TrouProtectQuest from "../quests/TrouProtectQuest";
 
 /** State when we start the game */
 export default class Play extends State {
@@ -28,12 +29,19 @@ export default class Play extends State {
      */
     create() {
         this.game.controlsEnabled = false;
-        // this.game.stage.backgroundColor = '#82D178'; //green background
+         this.game.stage.backgroundColor = '#81BAA5'; //green background
 
         this.initUI();
         this.addFloors();
         this.addMaterials();
         this.game.world.setBounds(0, 0, this.game.floorGroup.width, this.game.floorGroup.height);
+
+        const ground = new Sprite(this.game, 0, 0, 'atlas', 'jeu2/background/sol');
+        this.game.layer.zDepth0.add(ground);
+        ground.scale.set(this.game.SCALE);
+        ground.y = this.game.floorGroup.height - ground.height;
+
+
         PhaserManager.ready('game', 'play');
         this.start();
     }
@@ -52,6 +60,7 @@ export default class Play extends State {
     /** Called by create to add floors */
     addFloors() {
         this.game.floorGroup = new FloorFactory(this.game, Config.entities.floors);
+        this.game.layer.zDepth1.add(this.game.floorGroup);
     }
 
     addMaterials() {
@@ -86,6 +95,7 @@ class GameProcess {
         this.quests = new QuestManager(this.game);
         this.quests.onNbQuestsDoneChange.add(this._onQuestChange, this);
         new GuiQuestList(this.game.canvas.width - 10, 30, this.quests, this.game);
+        this.quests.add(new TrouProtectQuest(this.game));
         this.quests.add(new SoubassementProtectQuest(this.game));
         this.quests.add(new BaieOuverteProtectQuest(this.game));
         this.quests.add(new TremisProtectQuest(this.game));
@@ -143,6 +153,12 @@ class GameProcess {
                     if (depot.name == "soubassement" && material.type != "passerelle_garde_corps") {
                         PhaserManager.get('gabator').stats.changeValues({
                             organization: PhaserManager.get('gabator').stats.state.organization - 1
+                        });
+                    }
+                    if (depot.name == "trou" && material.type != "barriere_de_protection") {
+                        PhaserManager.get('gabator').stats.changeValues({
+                            organization: PhaserManager.get('gabator').stats.state.organization - 1,
+                            health: PhaserManager.get('gabator').stats.state.health - 1
                         });
                     }
                 }

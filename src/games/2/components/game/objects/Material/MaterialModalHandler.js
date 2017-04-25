@@ -31,6 +31,7 @@ export default class MaterialModalHandler extends GameModal {
      * ------------------------------------------ */
 
     showTooltip() {
+
         if(!this.isTooltipUsable) return;
         this.isTooltipUsable = false;
         const tooltip = new DescriptionTooltip({items: {

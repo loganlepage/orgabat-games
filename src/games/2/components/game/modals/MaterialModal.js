@@ -17,7 +17,6 @@ export default class MaterialModal extends Modal {
      * @param data
      * @param name
      * @param manager
-     * @param handler
      * @param game
      */
     constructor(data, name, manager, game) {
@@ -60,7 +59,7 @@ export default class MaterialModal extends Modal {
                 bg: {
                     type: "sprite",
                     key: "...", //set a picture
-                    props: {scale: 0.5, inputEnabled: true}
+                    props: {scale: 0.3, inputEnabled: true}
                 },
                 text: {
                     type: "text",
