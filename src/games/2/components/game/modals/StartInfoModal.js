@@ -41,8 +41,27 @@ export default class StartInfoModal extends Modal {
                     x: 20,
                     y: 85,
                     text: "Nous allons bientôt quitter le chantier...\n\n" +
-                    "Avant de partir, repère  les  risques et dangers, puis  utilise  les  différents " +
-                    "éléments  mis  à  ta disposition pour sécuriser au mieux ton chantier. \n" +
+                    "Avant de partir, repère  les  risques et dangers marqués d'une croix blanche au sol :",
+                    style: {
+                        fill: "#5F4D21",
+                        fontFamily: "Arial",
+                        fontSize: 14,
+                        wordWrap: true,
+                        wordWrapWidth: 450 - 40 //sprite.width - margin
+                    }
+                },
+                croix_blanche: {
+                    type: "sprite",
+                    key: "jeu2/other/croix_blanche",
+                    x: 157,
+                    y: 182,
+                    props: { scale: 0.5 }
+                },
+                descriptionEnd: {
+                    type: "text",
+                    x: 20,
+                    y: 250,
+                    text: "Puis  utilise  les  différents éléments  mis  à  ta disposition pour sécuriser au mieux ton chantier. \n" +
                     "(sous forme de glissé-déposé)",
                     style: {
                         fill: "#5F4D21",

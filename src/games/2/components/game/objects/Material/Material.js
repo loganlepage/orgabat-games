@@ -35,18 +35,20 @@ export default class Material extends AbstractObject {
         /**
          * Show tooltip on over
          */
-        this.modalHandler.modal.onMouseOver.add(() => this.modalHandler.showTooltip, this);
+        this.modalHandler.modal.onMouseOver.add(() => {this.modalHandler.showTooltip();}, this
+        );
 
         /**
          * Dispatch mouse out to other
          */
-        this.modalHandler.modal.onMouseOut.add(() => this.onMouseOutHandled.dispatch, this);
+        this.modalHandler.modal.onMouseOut.add(() => {this.onMouseOutHandled.dispatch()}, this);
 
         /**
          * Create a material sprite at cursor on container (material modal) drag
          * @param modalBg
          */
         this.modalHandler.modal.onMouseDown.add((modalBg) => {
+
             if (!this.game.controlsEnabled || Material.MAX_ENTITIES - this.entities.length <= 0) return;
 
             if (this.game.input.activePointer.isDown) {
@@ -71,7 +73,7 @@ export default class Material extends AbstractObject {
                         this.modalHandler.modal.count = Material.MAX_ENTITIES - this.entities.length;
                     } else {
                         //décommenter pour récupérer la position d'un matérial
-                        //console.log(entity.world.x / this.game.SCALE + ", " + entity.world.y / this.game.SCALE);
+                        console.log(entity.world.x / this.game.SCALE + ", " + entity.world.y / this.game.SCALE);
                         //commenter les lignes suivantes pour empêcher le dépôt
                         entity.onDropped(this);
                         if (entity.currentDepot != null) {

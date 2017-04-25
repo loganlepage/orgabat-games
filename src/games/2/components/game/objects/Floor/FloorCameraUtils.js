@@ -94,7 +94,7 @@ export default class FloorCameraUtils {
 
     setCurrent(i) {
         this.current = i;
-        const to = this.floors.children[i].y - (this.game.canvas.height - this.floors.children[i].height - Config.offsetHeight) / 2;
+        const to = this.floors.children[i].y - (this.game.canvas.height - this.floors.children[i].height);
         if (this.current >= 0 && this.current <= this.floors.children.length - 1) {
             this.handlePrevButtonDisplay();
             this.handleNextButtonDisplay();
