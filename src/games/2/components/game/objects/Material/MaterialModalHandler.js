@@ -3,12 +3,13 @@ import GameModal from "system/phaser/GameModal";
 import DescriptionTooltip from "system/phaser/modals/DescriptionTooltip";
 import {TooltipManager, StackManager, Stack} from "system/phaser/Modal";
 import MaterialModal from "../../modals/MaterialModal";
-import Material from "./Material";
 
 /** Material Modal (called by the material gameObject) */
 export default class MaterialModalHandler extends GameModal {
 
     isTooltipUsable = true;
+
+    static get HEIGHT() { return 16; }
 
     /**
      * Constructor for a new material modal
@@ -23,6 +24,10 @@ export default class MaterialModalHandler extends GameModal {
         this.modal = new MaterialModal({items: {
             bg: { key: `jeu2/material/${this.obj.type}`}
         }}, this.obj.type, StackManager, this.game);
+
+        const realHeight = this.modal.items.bg.height / this.game.UI_SCALE;
+        const multiplicator = MaterialModalHandler.HEIGHT / realHeight;
+        this.modal.items.bg.scale.set(multiplicator * this.game.UI_SCALE);
     }
 
 
@@ -61,7 +66,6 @@ export default class MaterialModalHandler extends GameModal {
     }
 
     materialModal(visible = true) {
-        this.modal.toggle(visible, {stack: 'BOTTOM_LEFT'});
-        this.modal.count = Material.MAX_ENTITIES;
+        this.modal.toggle(visible, {stack: this.game.materialStack});
     }
 };

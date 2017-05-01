@@ -32,7 +32,7 @@ export default class FloorCameraUtils {
         this.nextButton.anchor.setTo(0.5, 0.5);
         this.nextButton.angle = 180;
         this.nextButton.fixedToCamera = true;
-        this.nextButton.cameraOffset.setTo(this.game.uiScale(50), this.game.canvas.height - this.game.uiScale(150));
+        this.nextButton.cameraOffset.setTo(this.game.uiScale(50), this.game.canvas.height - this.game.uiScale(127));
         this.nextButton.inputEnabled = true;
         this.game.layer.zDepth3.add(this.nextButton);
         this.nextButton.events.onInputDown.add(this.moveToNext, this);
@@ -104,7 +104,7 @@ export default class FloorCameraUtils {
             this.handlePrevButtonDisplay();
             this.handleNextButtonDisplay();
             return this.game.add.tween(this.game.camera).to(
-                {y: to},
+                {y: to + (100 * this.game.SCALE)},
                 this.getOffsetTime(this.game.camera.y, to), Easing.Quadratic.InOut, false, 0
             ).start();
         } else {

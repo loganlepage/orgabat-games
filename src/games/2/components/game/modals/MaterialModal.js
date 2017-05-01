@@ -46,11 +46,6 @@ export default class MaterialModal extends Modal {
         bg.events.onInputDown.removeAll(this);
     }
 
-    set count(nb) {
-        this.items.text.text = `x${nb}`;
-        this.items.text.alignTo(this.items.bg, Phaser.RIGHT_TOP);
-    }
-
     static get pattern() {
         return {
             type: "group",
@@ -60,18 +55,6 @@ export default class MaterialModal extends Modal {
                     type: "sprite",
                     key: "...", //set a picture
                     props: {scale: 0.3, inputEnabled: true}
-                },
-                text: {
-                    type: "text",
-                    y: 10,
-                    text: "x0",
-                    style: {
-                        fill: "#ffffff",
-                        fontFamily: "Arial",
-                        fontSize: 11,
-                        stroke: "#5F4D21",
-                        strokeThickness: 3
-                    }
                 }
             }
         }

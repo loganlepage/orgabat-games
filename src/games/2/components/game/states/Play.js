@@ -7,7 +7,7 @@ import MaterialFactory from "../objects/Material/MaterialFactory";
 import PhaserManager from "system/phaser/utils/PhaserManager";
 import StartInfoModal from "../modals/StartInfoModal";
 import EndInfoModal from "../modals/EndInfoModal";
-import {DefaultManager} from "system/phaser/Modal";
+import {DefaultManager, Stack} from "system/phaser/Modal";
 import QuestManager, {GuiQuestList} from "system/phaser/utils/Quest";
 import TremisProtectQuest from "../quests/TremisProtectQuest";
 import PeintureProtectQuest from "../quests/PeintureProtectQuest";
@@ -64,6 +64,25 @@ export default class Play extends State {
     }
 
     addMaterials() {
+        const width = this.game.world.width;
+        const height = this.game.uiScale(77);
+        const bmd = this.game.add.bitmapData(width, height);
+        bmd.ctx.beginPath();
+        bmd.ctx.rect(0, 0, width, height);
+        bmd.ctx.fillStyle = '#ffffff';
+        bmd.ctx.fill();
+        const drawnObject = this.game.add.sprite(0, 0, bmd);
+        drawnObject.fixedToCamera = true;
+        drawnObject.cameraOffset.setTo(
+            0, this.game.canvas.height - height
+        );
+        drawnObject.alpha = 0.5;
+        this.game.layer.zDepth1.add(drawnObject);
+
+        this.game.materialStack = new Stack(
+            this.game.uiScale(90), this.game.world.height, this.game,
+            {axe: Stack.HORIZONTAL, direction: Stack.RIGHT, offsetX: 30, offsetY: 10, anchorY: 1}
+        );
         this.game.materialGroup = new MaterialFactory(this.game, Config.entities.materials);
     }
 
@@ -103,7 +122,7 @@ class GameProcess {
     }
 
     init() {
-        let floorCameraUtils = new FloorCameraUtils(this.game, this.game.floorGroup);
+        const floorCameraUtils = new FloorCameraUtils(this.game, this.game.floorGroup);
         floorCameraUtils.moveToLast(this._onAnimationEnd).onComplete.addOnce(this._onAnimationEnd, this);
     }
 
