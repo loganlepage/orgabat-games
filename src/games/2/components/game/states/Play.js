@@ -29,7 +29,7 @@ export default class Play extends State {
      */
     create() {
         this.game.controlsEnabled = false;
-         this.game.stage.backgroundColor = '#81BAA5'; //green background
+        this.game.stage.backgroundColor = '#81BAA5'; //green background
 
         this.initUI();
         this.addFloors();

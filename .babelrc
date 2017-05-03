@@ -1,6 +1,14 @@
 {
-  "presets": [ "es2015", "react" ],
+  "presets": [
+    "es2015",
+    "stage-0",
+    "react"
+  ],
   //transform-flow-strip-types: supprime les annotations en sortie (:string :any ...)
   //transform-class-properties: permet de mettre des variables de classe
-  "plugins": [/* "transform-flow-strip-types", */ "transform-class-properties" ]
+  "plugins": [
+    /* "transform-flow-strip-types", */
+    "transform-class-properties",
+    "transform-async-to-generator"
+  ]
 }

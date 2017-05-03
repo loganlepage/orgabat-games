@@ -327,8 +327,8 @@ export class Stack extends Phaser.Group {
         const start = this.sort == Stack.DESC ? this.children.length - 1 : 0;
         const condition = (i) => this.sort == Stack.DESC ? i >= 0 : i < this.children.length;
         const increment = this.sort;
+        let x = 0, y = 0, counter = 0, caseI = 0, caseJ = 0;
         const reorganize = (cbCondition) => {
-            let x = 0, y = 0, counter = 0, caseI = 0, caseJ = 0;
             for (let i = start; condition(i); i += increment) {
                 if (this.maxGridSize > 0) {
                     caseI = counter % this.maxGridSize;
@@ -349,6 +349,7 @@ export class Stack extends Phaser.Group {
                             }
                             break;
 
+                        //TODO : gérer plusieurs colonnes en vertical, comme pour l'horizontal (caseJ)
                         case Stack.VERTICAL:
                             if (counter === 0) {
                                 y = this.children[i].height * -this.anchor.y;

@@ -7,7 +7,7 @@ export default class Boot extends Phaser.State {
 
     /** Called when the state must be created */
     create() {
-        BootService.initFitScale(this.game, 600, 420);
+        BootService.initFitScale(this.game, 1920, 1080);
         this.game.state.start('load');
     }
 };

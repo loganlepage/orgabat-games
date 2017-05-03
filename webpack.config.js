@@ -16,6 +16,7 @@ module.exports = {
         '1': "./src/games/1/app.jsx", // Jeu 1
         '2': "./src/games/2/app.jsx", // Jeu 2
         '3': "./src/games/3/app.jsx" // Jeu 3
+        '99': "./src/games/test/app.jsx" // Jeu TEST
     },
     /** description de nos sorties */
     output: {
@@ -38,7 +39,7 @@ module.exports = {
             'p2': p2,
         },
         /** On ajoute nos extensions à résoudre lors d'un require() */
-        extensions: [ "", ".js", ".jsx", ".json" ]
+        extensions: ["", ".js", ".jsx", ".json"]
     },
     module: {
         /** Liste de nos loaders (exécutés en ordre inverse) */
@@ -46,17 +47,17 @@ module.exports = {
             {
                 test: /\.jsx?$/,
                 exclude: /node_modules/,
-                loaders: [ 'jsx', 'babel' ]
+                loaders: ['jsx', 'babel']
             },
-            { test: /pixi\.js/, loader: 'expose?PIXI' },
-            { test: /phaser-split\.js$/, loader: 'expose?Phaser' },
-            { test: /p2\.js/, loader: 'expose?p2' },
+            {test: /pixi\.js/, loader: 'expose?PIXI'},
+            {test: /phaser-split\.js$/, loader: 'expose?Phaser'},
+            {test: /p2\.js/, loader: 'expose?p2'},
 
             // à l'inverse de node et browserify, Webpack ne gère pas les json
             // nativement, il faut donc un loader pour que cela soit transparent
             {
                 test: /\.json$/,
-                loaders: [ "json" ]
+                loaders: ["json"]
             }
         ]
     },
@@ -69,23 +70,23 @@ module.exports = {
             // modules ainsi vous pourrez faire dans votre code js
             // if (__PROD__) { ... }
             new webpack.DefinePlugin({
-                "process.env": { NODE_ENV: JSON.stringify(process.env.NODE_ENV || isProd ? 'production' : 'development') }
+                "process.env": {NODE_ENV: JSON.stringify(process.env.NODE_ENV || isProd ? 'production' : 'development')}
             })
         ]
         // en production, on peut rajouter des plugins pour optimiser
-        .concat(
-            isProd
-                ? [
-                    // ici on rajoute uglify.js pour compresser nos sorties
-                    // (vous remarquerez que certain plugins sont directement livrés dans
-                    // le package webpack).
-                    new webpack.optimize.UglifyJsPlugin({
-                        compress: {
-                            warnings: false,
-                        }
-                    })
-                ]
-                : []
-        )
+            .concat(
+                isProd
+                    ? [
+                        // ici on rajoute uglify.js pour compresser nos sorties
+                        // (vous remarquerez que certain plugins sont directement livrés dans
+                        // le package webpack).
+                        new webpack.optimize.UglifyJsPlugin({
+                            compress: {
+                                warnings: false,
+                            }
+                        })
+                    ]
+                    : []
+            )
     ),
 };

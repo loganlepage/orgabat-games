@@ -17,8 +17,6 @@ import JeterUnDechetQuest from "../quests/JeterUnDechetQuest";
 /** State when we start the game */
 export default class Play extends State {
 
-    inventary;
-
     /** Constructor for a new play state */
     constructor() {
         super();
