@@ -1,5 +1,3 @@
-import {Keyboard} from 'phaser';
-
 /** Configs for this game */
 export default {
     developer: {

@@ -1,6 +1,6 @@
 /** State when we start the game */
 "use strict";
-import Phaser, {State, Easing, Point} from 'phaser';
+import Phaser, {State, Easing} from 'phaser';
 import PhaserManager from 'system/phaser/utils/PhaserManager';
 import Canvas from "system/phaser/utils/PhaserManager";
 
@@ -10,8 +10,13 @@ import {DefaultManager} from 'system/phaser/Modal';
 
 import QuestManager, {GuiQuestList} from 'system/phaser/utils/Quest';
 import Truck from "../objects/Truck/Truck";
+import ChargeTruck from "../quests/ChargeTruck";
+import ItemsFactory from "../objects/Items/ItemsFactory";
+import Config from "../config/data";
 
 export default class Play extends State {
+    capacity = 0;
+
     /** Constructor for a new play state */
     constructor() {
         super();
@@ -24,12 +29,11 @@ export default class Play extends State {
     create() {
         this.game.controlsEnabled = false;
         this.game.stage.backgroundColor = '#34495e';
-        this.game.physics.startSystem(Phaser.Physics.ARCADE);    
+        this.text = this.game.add.text(16, 16, `Eléments insérés : ${this.capacity}`, {fill: '#ffffff'});
 
         this.initUI();
         this.addTruck();
-        this.addCopyTruck();
-        //initialissation des éléments de la scène ici (voir jeu 1 ou jeu 2)
+        this.addItems();
         PhaserManager.ready('game', 'play');
 
         this.start();
@@ -47,44 +51,27 @@ export default class Play extends State {
     }
 
     addTruck() {
-        this.truck = new Truck({game:this.game,
-                                x:this.game.world.centerX, 
-                                y: this.game.world.centerY + 300});
-        this.game.physics.arcade.enable(this.truck);
-        this.truck.sprite.input.draggable = false;
-        this.truck.sprite.inputEnabled = false;
-    }
-
-    addCopyTruck() {
-//        x: Math.floor(Math.random() - largeur du jeu - taille du sprite) + 1 apparition random d'un sprite
-        this.truckCopy = new Truck({
+        this.truck = new Truck({
             game: this.game,
-            x:200
+            x: this.game.world.centerX,
+            y: this.game.world.centerY + 300,
+            truckObj: this
         });
-        this.truckCopy.angle = 45;
-        this.game.physics.arcade.enable(this.truckCopy);
-        this.truckCopy.sprite.originalPosition = this.truckCopy.sprite.position.clone();
-        this.truckCopy.sprite.events.onDragStop.add(function(currentSprite){
-            this.checkOverlap(currentSprite, this.truck.sprite);
-        }, this);
     }
 
-    checkOverlap(spriteA, spriteB) {
-        let boundsA = spriteA.getBounds(),
-            boundsB = spriteB.getBounds();
-        if(Phaser.Rectangle.intersects(boundsA,boundsB)){
-            spriteA.input.draggable = false;
-            spriteA.position.copyFrom(spriteB.position); 
-            spriteA.anchor.setTo(spriteB.anchor.x, spriteB.anchor.y);   
-        }
-        else
-            spriteA.position.copyFrom(spriteA.originalPosition);
-    }
+    addItems() {
+        this.game.itemsgroup = new ItemsFactory(this.game, Config.entities.items);
+        this.game.itemsgroup.forEach((item) => {
+            item.events.onDragStop.add(function (currentSprite) {
+                item.obj.checkOverlap(currentSprite, this.truck.sprite)
+            }, this);
+            item.obj.onDropped.add(this.updateQuantity, this);
 
+        });
+    }
 
     /** Called by Phaser to update */
     update() {
-
     }
 
     /** Called by Phaser to render */
@@ -102,6 +89,12 @@ export default class Play extends State {
     start() {
         this.game.gameProcess = new GameProcess(this);
         this.game.gameProcess.init();
+    }
+
+    updateQuantity(currentSprite) {
+        console.log(currentSprite.obj.isNeeded);
+        this.capacity++;
+        this.text.text = `Eléments insérés : ${this.capacity}`;
     }
 };
 
@@ -144,13 +137,13 @@ class GameProcess {
 
     _onStartInfoClose() {
         //On active Gabator
-        if (PhaserManager.get('gabator').state.current == "play"){
+        if (PhaserManager.get('gabator').state.current == "play") {
             PhaserManager.get('gabator').state.getCurrentState().start();
-                Canvas.get('gabator').modal.showHelp(
+            Canvas.get('gabator').modal.showHelp(
+                `
+            Rappel: Capacité maximale du camion: 30 éléments.
             `
-Rappele toi,\nle camion peut supporter jusqu'à 30 éléments.
-`
-        );
+            );
         }
 
         this.game.keys.addKey(Phaser.Keyboard.ENTER).onDown.remove(this._onStartInfoClose, this);

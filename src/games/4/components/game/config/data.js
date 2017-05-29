@@ -1,5 +1,4 @@
-import {Keyboard} from 'phaser';
-
+//Math.floor(Math.random()*(max-min+1)+min) apparition random d'un sprite
 /** Configs for this game */
 export default {
     developer: {
@@ -8,9 +7,13 @@ export default {
     canvasParent: "#gameDiv",
     atlas: 'jeu4',
     entities: {
-        truck: {y: 100},
         items: [
-            {name: "ferraille", category: 'materiaux', isNeeded: true, prop: {name: "Ferraille"}},
+            {
+                name: "ferraille",
+                category: 'materiaux',
+                isNeeded: true,
+                prop: {name: "Ferraille"}
+            },
             {name: "agglos", category: 'materiaux', isNeeded: true, prop: {name: "Agglos"}},
             {name: "briques", category: 'materiaux', isNeeded: false, prop: {name: "Briques"}},
             {name: "béton_cellulaire", category: 'materiaux', isNeeded: false, prop: {name: "Béton cellulaire"}},
