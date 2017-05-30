@@ -10,12 +10,13 @@ import {DefaultManager} from 'system/phaser/Modal';
 
 import QuestManager, {GuiQuestList} from 'system/phaser/utils/Quest';
 import Truck from "../objects/Truck/Truck";
+import Button from "../objects/Button/Button";
 import ChargeTruck from "../quests/ChargeTruck";
 import ItemsFactory from "../objects/Items/ItemsFactory";
 import Config from "../config/data";
 
 export default class Play extends State {
-    capacity = 0;
+    capacity = 29;
 
     /** Constructor for a new play state */
     constructor() {
@@ -59,6 +60,10 @@ export default class Play extends State {
         });
     }
 
+    addButton() {
+        this.button = new Button(this.game, this.game.world.centerX + 300, this.game.world.centerY + 300, null, this);
+    }
+
     addItems() {
         this.game.itemsgroup = new ItemsFactory(this.game, Config.entities.items);
         this.game.itemsgroup.forEach((item) => {
@@ -92,9 +97,12 @@ export default class Play extends State {
     }
 
     updateQuantity(currentSprite) {
-        console.log(currentSprite.obj.isNeeded);
         this.capacity++;
         this.text.text = `Eléments insérés : ${this.capacity}`;
+        if (this.capacity === 30) {
+            this.addButton();
+            console.log('buttonShow');
+        }
     }
 };
 

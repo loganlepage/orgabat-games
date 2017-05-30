@@ -1,4 +1,11 @@
 //Math.floor(Math.random()*(max-min+1)+min) apparition random d'un sprite
+/*
+ Dans les items, le champ category correspond à une des trois
+ catégories du sprite.
+ Le champ isNeeded correspond aux bonnes réponses.
+ Pour faire en sorte d'indiquer les mauvaises réponses lors de la validation il suffira
+ de faire la liste des items avec isNeeded === false
+ */
 /** Configs for this game */
 export default {
     developer: {
