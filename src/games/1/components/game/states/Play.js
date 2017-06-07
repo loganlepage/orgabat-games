@@ -14,7 +14,7 @@ import StartInfoModal from '../modals/StartInfoModal';
 import EndInfoModal from '../modals/EndInfoModal';
 import {DefaultManager} from 'system/phaser/Modal';
 
-import QuestManager, {GuiQuestList} from 'system/phaser/utils/Quest';
+import QuestManager, {DomQuestList} from 'system/phaser/utils/Quest';
 import VehicleMountQuest from '../quests/VehicleMountQuest';
 import VehicleLoadQuest from '../quests/VehicleLoadQuest';
 import DepotFillQuest from '../quests/DepotFillQuest';
@@ -176,7 +176,7 @@ class GameProcess {
 
         //On prépare les quêtes
         this.quests = new QuestManager(this.game);
-        new GuiQuestList(this.game.canvas.width - 10, 30, this.quests, this.game);
+        new DomQuestList(this.quests);
         this.quests.add(new VehicleMountQuest(this.game));
         this.quests.add(new VehicleLoadQuest(this.game));
         this.quests.add(new DepotFillQuest(this.game));

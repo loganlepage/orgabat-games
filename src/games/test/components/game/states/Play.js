@@ -10,7 +10,7 @@ import PlayTest from './PlayTest';
 
 import EnemyFactory from '../objects/Enemy/EnemyFactory'
 
-import QuestManager, {GuiQuestList} from 'system/phaser/utils/Quest';
+import QuestManager, {DomQuestList} from 'system/phaser/utils/Quest';
 import EndGabatorTalkQuest from "../quests/EndGabatorTalkQuest";
 
 /** State when we start the game */
@@ -95,7 +95,7 @@ class GameProcess {
 
         //On prépare les quêtes
         this.quests = new QuestManager(this.game);
-        new GuiQuestList(this.game.canvas.width - 10, 30, this.quests, this.game);
+        new DomQuestList(this.quests);
         this.quests.add(new EndGabatorTalkQuest(this.game));
     }
     init() {

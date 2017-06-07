@@ -12,7 +12,9 @@ import ConfirmModal from '../modals/ConfirmModal';
 export default class Boot extends State {
 
     init(dom) {
-        this.game.stats = dom;
+        this.game.stats = dom.refs.stats;
+        this.game.info = dom.refs.info;
+        this.game.quests = dom.refs.quests;
     }
 
     /** Called when the state must be created */

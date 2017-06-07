@@ -1,7 +1,3 @@
-(function (window) {
-
-})(window);
-
 'use strict';
 
 export default class Event {

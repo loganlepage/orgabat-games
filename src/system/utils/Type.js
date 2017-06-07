@@ -3,14 +3,6 @@
 export default class Type {
 
     /**
-     * @returns {boolean}
-     */
-    static isMobile() {
-        try{ document.createEvent("TouchEvent"); return true; }
-        catch(e){ return false; }
-    }
-
-    /**
      * deep merge two json
      * @param target
      * @param source

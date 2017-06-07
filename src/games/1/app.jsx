@@ -6,6 +6,7 @@ import Gabator from './components/gabator';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Type from 'system/utils/Type';
+import Device from 'system/dom/utils/Device';
 import {Canvas} from './components/game';
 
 class Warning extends React.Component {
@@ -23,14 +24,14 @@ class Content extends React.Component {
     constructor(props) {
         super(props);
     }
-    static get GABATOR_PERCENT_WIDTH() {return 18}
-    static get GABATOR_MAX_WIDTH() {return 250}
+    static get GABATOR_PERCENT_WIDTH() {return 22}
+    static get GABATOR_MAX_WIDTH() {return 300}
     render() {
         const gabatorTmpWidth = this.props.width * Content.GABATOR_PERCENT_WIDTH * 0.01;
         const gabatorWidth = gabatorTmpWidth < Content.GABATOR_MAX_WIDTH ? gabatorTmpWidth : Content.GABATOR_MAX_WIDTH;
         return <div id="game" className="container">
             <Game width={this.props.width - gabatorWidth} height={this.props.height} ref="game" />
-            <Gabator width={gabatorWidth} height={this.props.height} maxWidth={Content.GABATOR_MAX_WIDTH} ref="gabator"/>
+            <Gabator width={gabatorWidth} maxWidth={Content.GABATOR_MAX_WIDTH} ref="gabator"/>
         </div>;
     }
 }
@@ -38,30 +39,21 @@ class Content extends React.Component {
 class App extends React.Component {
     constructor(props) {
         super(props);
-        this.isVertical = false;
+        this.device = new Device(this);
         this.state = {
-            width: this.isVertical ? window.innerHeight : window.innerWidth,
-            height: this.isVertical ? window.innerWidth : window.innerHeight
+            width: this.device.vertical ? window.innerHeight : window.innerWidth,
+            height: this.device.vertical ? window.innerWidth : window.innerHeight
         };
     }
 
     componentWillMount() {
-        window.isMobile = Type.isMobile();
-        if(window.isMobile) {
-            this.isVertical = !(window.orientation == 90 || window.orientation == -90);
-            window.addEventListener('orientationchange', () => {
-                this.isVertical = !(window.orientation == 90 || window.orientation == -90);
-            }, false);
-            window.addEventListener("resize", () => {
-                this.setState({width: window.innerWidth, height: window.innerHeight});
-            }, false);
-        } else
-            this.isVertical = false;
+        window.isMobile = Device.isMobile();
+        this.device.init();
     }
     componentDidMount() { this.bootGame(); }
     componentDidUpdate() { this.bootGame(); }
     bootGame() {
-        if(!this.isVertical
+        if(!this.device.vertical
             && Type.isExist(this.refs['content'])
             && Type.isExist(this.refs['content'].refs['game'])
             && !Type.isInstanceOf(this.refs['content'].refs['game'].game, Canvas))
@@ -70,7 +62,7 @@ class App extends React.Component {
     render() {
         return <div className="container">
             {
-                this.isVertical
+                this.device.vertical
                 ? <Warning />
                 : <Content ref="content" width={this.state.width} height={this.state.height}/>
             }

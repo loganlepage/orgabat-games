@@ -8,7 +8,7 @@ import StartInfoModal from '../modals/StartInfoModal';
 import EndInfoModal from '../modals/EndInfoModal';
 import {DefaultManager} from 'system/phaser/Modal';
 
-import QuestManager, {GuiQuestList} from 'system/phaser/utils/Quest';
+import QuestManager, {DomQuestList} from 'system/phaser/utils/Quest';
 import Truck from "../objects/Truck/Truck";
 import Button from "../objects/Button/Button";
 import ChargeTruck from "../quests/ChargeTruck";
@@ -121,7 +121,7 @@ class GameProcess {
 
         //On prépare les quêtes
         this.quests = new QuestManager(this.game);
-        new GuiQuestList(this.game.canvas.width - 10, 30, this.quests, this.game);
+        new DomQuestList(this.quests);
         this.quests.add(new ChargeTruck(this.game));
     }
 

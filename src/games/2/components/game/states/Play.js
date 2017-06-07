@@ -8,7 +8,7 @@ import PhaserManager from "system/phaser/utils/PhaserManager";
 import StartInfoModal from "../modals/StartInfoModal";
 import EndInfoModal from "../modals/EndInfoModal";
 import {DefaultManager, Stack} from "system/phaser/Modal";
-import QuestManager, {GuiQuestList} from "system/phaser/utils/Quest";
+import QuestManager, {DomQuestList} from "system/phaser/utils/Quest";
 import TremisProtectQuest from "../quests/TremisProtectQuest";
 import PeintureProtectQuest from "../quests/PeintureProtectQuest";
 import BaieOuverteProtectQuest from "../quests/BaieOuverteProtectQuest";
@@ -113,7 +113,7 @@ class GameProcess {
         //On prépare les quêtes
         this.quests = new QuestManager(this.game);
         this.quests.onNbQuestsDoneChange.add(this._onQuestChange, this);
-        new GuiQuestList(this.game.canvas.width - 10, 30, this.quests, this.game);
+        new DomQuestList(this.quests);
         this.quests.add(new TrouProtectQuest(this.game));
         this.quests.add(new SoubassementProtectQuest(this.game));
         this.quests.add(new BaieOuverteProtectQuest(this.game));

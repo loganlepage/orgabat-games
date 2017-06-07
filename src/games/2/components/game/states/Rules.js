@@ -12,7 +12,7 @@ export default class Rules extends State {
             { font: 'Arial', fill: '#272727', fontSize: this.game.uiScale(21) });
 
         this.game.add.text(this.game.uiScale(80), this.game.uiScale(180),
-            "Avant  de  quitter  le  chantier,  repére  les  dangers  et  les  risques," +
+            "Avant  de  quitter  le  chantier,  repére  les  dangers  et  les  risques, " +
             "puis  utilise  les  différents  éléments  mis  à  ta disposition pour sécuriser au mieux ton chantier. " +
             "(sous forme de glissé-déposé)",
             { font: 'Arial', fill: '#272727', fontSize: this.game.uiScale(16),

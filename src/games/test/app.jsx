@@ -24,14 +24,14 @@ class Content extends React.Component {
     constructor(props) {
         super(props);
     }
-    static get GABATOR_PERCENT_WIDTH() {return 18}
-    static get GABATOR_MAX_WIDTH() {return 250}
+    static get GABATOR_PERCENT_WIDTH() {return 22}
+    static get GABATOR_MAX_WIDTH() {return 300}
     render() {
         const gabatorTmpWidth = this.props.width * Content.GABATOR_PERCENT_WIDTH * 0.01;
         const gabatorWidth = gabatorTmpWidth < Content.GABATOR_MAX_WIDTH ? gabatorTmpWidth : Content.GABATOR_MAX_WIDTH;
         return <div id="game" className="container">
             <Game width={this.props.width - gabatorWidth} height={this.props.height} ref="game" />
-            <Gabator width={gabatorWidth} height={this.props.height} maxWidth={Content.GABATOR_MAX_WIDTH} ref="gabator"/>
+            <Gabator width={gabatorWidth} maxWidth={Content.GABATOR_MAX_WIDTH} ref="gabator"/>
         </div>;
     }
 }

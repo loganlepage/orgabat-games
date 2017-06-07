@@ -4,7 +4,7 @@ import PhaserManager from "system/phaser/utils/PhaserManager";
 import StartInfoModal from "../modals/StartInfoModal";
 import EndInfoModal from "../modals/EndInfoModal";
 import {DefaultManager, StackManager} from "system/phaser/Modal";
-import QuestManager, {GuiQuestList} from "system/phaser/utils/Quest";
+import QuestManager, {DomQuestList} from "system/phaser/utils/Quest";
 import WasteFactory from "../objects/Waste/WasteFactory";
 import Inventary from "../objects/Inventary/Inventary";
 import Config from "../config/data";
@@ -104,7 +104,7 @@ class GameProcess {
 
         //On prépare les quêtes
         this.quests = new QuestManager(this.game);
-        new GuiQuestList(this.game.canvas.width - 10, 30, this.quests, this.game);
+        new DomQuestList(this.quests);
         this.quests.add(new OuvrirBoiteEpiQuest(this.game));
         this.quests.add(new MettreUnEquipementQuest(this.game));
         this.quests.add(new EnleverUnEquipementQuest(this.game));

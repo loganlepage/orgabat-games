@@ -1,12 +1,14 @@
 "use strict";
-import Phaser from 'phaser';
-import React from 'react';
-import ReactDOM from 'react-dom';
-import Boot from './states/Boot';
-import Load from './states/Load';
-import Play from './states/Play';
-import ProgressBar from 'system/dom/ProgressBar';
-import Config from './config/data';
+import React from "react";
+import Statistics from "system/dom/gabator/Statistics";
+import Quests from "system/dom/gabator/Quests";
+import Character from "system/dom/gabator/Character";
+import Config from "./config/data";
+import Boot from "./states/Boot";
+import Load from "./states/Load";
+import Play from "./states/Play";
+import Flexbox from "flexbox-react";
+import PropTypes from "prop-types";
 
 /** Init the Gabator canvas */
 class Canvas extends Phaser.Game {
@@ -31,49 +33,32 @@ class Canvas extends Phaser.Game {
 export default class Gabator extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            health: Config.stats.health.default,
-            organization: Config.stats.organization.default,
-            enterprise: Config.stats.enterprise.default
-        };
-        this.healthMax = Config.stats.health.max;
-        this.organizationMax = Config.stats.organization.max;
-        this.enterpriseMax = Config.stats.enterprise.max;
+        this.scale = this.props.width / this.props.maxWidth;
     }
-    componentDidMount() {
-        const gabator = new Canvas(this.props.width, this.props.height, Phaser.CANVAS,
-            ReactDOM.findDOMNode(this), null, false, false);
-        gabator.start(this);
+
+    static propTypes = {
+        width: PropTypes.number.isRequired,
+        maxWidth: PropTypes.number.isRequired
     }
-    changeValues(stats = {}) {
-        this.setState(stats);
-    }
+
     render() {
-        const scale = this.props.width / this.props.maxWidth;
-        const titleStyle = {
-            fontSize: 18 * scale,
-            marginBottom: 15 * scale,
-            marginTop: 15 * scale
-        };
         const defaultStyle = {
             width: this.props.width,
-            fontSize: 14 * scale,
-            paddingLeft: 15 * scale,
-            paddingRight: 15 * scale
+            fontSize: 14 * this.scale
         };
         return (
             <div id="gabator-canvas" style={defaultStyle}>
-                <div id="gabator-panel">
-                    <div id="gabator-panel-stats" style={{paddingBottom:5 * scale}}>
-                        <h4 style={titleStyle}>Statistiques</h4>
-                        <ProgressBar name="Santé" class="progress-bar-success" scale={scale}
-                                     current={this.state.health} max={this.healthMax} />
-                        <ProgressBar name="Organisation" class="progress-bar-info" scale={scale}
-                                     current={this.state.organization} max={this.organizationMax} />
-                        <ProgressBar name="Notoriété de l'entreprise" class="progress-bar-warning" scale={scale}
-                                     current={this.state.enterprise} max={this.enterpriseMax} />
-                    </div>
-                </div>
+                <Flexbox flexDirection="column" height="100vh" id="gabator-panel">
+                    <Flexbox className="gabator-module">
+                        <Statistics stats={Config.stats} scale={this.scale} ref="stats"/>
+                    </Flexbox>
+                    <Flexbox className="gabator-module" flexGrow={1} style={{overflowY: 'auto'}}>
+                        <Quests scale={this.scale} ref="quests"/>
+                    </Flexbox>
+                    <Flexbox className="gabator-module">
+                        <Character canvas={Canvas} width={this.props.width} parent={this}/>
+                    </Flexbox>
+                </Flexbox>
             </div>
         );
     }
