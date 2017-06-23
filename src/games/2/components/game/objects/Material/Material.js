@@ -2,6 +2,7 @@
 
 import {Signal} from "phaser";
 import Config from "../../config/data";
+import Debug from "system/utils/Debug";
 import MaterialModalHandler from "./MaterialModalHandler";
 import AbstractObject from "system/phaser/AbstractObject";
 import MaterialSprite from "./MaterialSprite";
@@ -13,6 +14,19 @@ export default class Material extends AbstractObject {
     ready = false;
     onDropped = new Signal();
     onProtect = new Signal();
+
+    //Dispatch an event when active state change.
+    _active = false;
+    onActive = new Signal();
+
+    set active(active) {
+        this.onActive.dispatch(active);
+        this._active = active;
+    }
+
+    get active() {
+        return this._active;
+    }
 
     /**
      * Constructor for a new Material object
@@ -30,13 +44,19 @@ export default class Material extends AbstractObject {
         /**
          * Show tooltip on over
          */
-        this.modalHandler.modal.onMouseOver.add(() => {this.modalHandler.showTooltip();}, this
+        this.modalHandler.modal.onMouseOver.add(() => {
+                //On affiche une fenêtre d'information uniquement si le matériel est actif.
+                if (!this.active) return;
+                this.modalHandler.showTooltip();
+            }, this
         );
 
         /**
          * Dispatch mouse out to other
          */
-        this.modalHandler.modal.onMouseOut.add(() => {this.onMouseOutHandled.dispatch()}, this);
+        this.modalHandler.modal.onMouseOut.add(() => {
+            this.onMouseOutHandled.dispatch()
+        }, this);
 
         /**
          * Create a material sprite at cursor on container (material modal) drag
@@ -44,34 +64,38 @@ export default class Material extends AbstractObject {
          */
         this.modalHandler.modal.onMouseDown.add((modalBg) => {
 
-            if (!this.game.controlsEnabled) return;
+            if (!this.game.controlsEnabled || !this.active) return;
 
             if (this.game.input.activePointer.isDown) {
 
-                let entity = new MaterialSprite(
-                    this.game,
-                    modalBg.items.bg.world.x,
-                    modalBg.items.bg.world.y,
-                    'atlas',
-                    modalBg.items.bg._frame.name
+                const entity = new MaterialSprite(this.game, modalBg.items.bg.world.x, modalBg.items.bg.world.y,
+                    'atlas', modalBg.items.bg._frame.name, this
                 );
 
                 this.entities.push(entity);
+                Material.debugCircleCreate(entity, this.game);
 
                 /**
                  * destroy the entity on drag stop on container (material modal)
                  */
                 entity.onDragStop.add((entity) => {
-                    //décommenter pour récupérer la position d'un matérial
-                    //console.log(entity.world.x / this.game.SCALE + ", " + entity.world.y / this.game.SCALE);
+                    if (Config.developer.debug) {
+                        //Show the material position on drop
+                        console.log("Materiel " + entity.type + " à la position : "
+                            + (entity.world.x / this.game.SCALE).toFixed(2) + ", "
+                            + (entity.world.y / this.game.SCALE).toFixed(2));
+                    }
 
                     //try to drop the material sprite entity on a floor container
                     entity.drop();
-                    if (entity.currentDepot != null) { //if success
-                        this.onDropped.dispatch(entity.currentDepot);
-                    } else { //else destroy the sprite entity
-                        entity.destroy();
-                        MyArray.remove(this.entities, entity);
+                    Material.debugCirclePurge();
+
+                    if (entity.container !== null) {
+                        //Drop is success !
+                        this.onDropped.dispatch(entity.container);
+                    } else {
+                        //We drop on background, purge material.
+                        this.kill(entity);
                     }
                 }, this);
 
@@ -79,9 +103,9 @@ export default class Material extends AbstractObject {
                  * When a material is dropped on protectable container
                  */
                 entity.onDroppedHandled.add((entity) => {
-                    if (entity.currentDepot != null && Config.depotProtects[entity.currentDepot.name].indexOf(this.type) >= 0) {
+                    if (entity.container !== null && entity.container.protects.indexOf(this.type) >= 0) {
                         entity.finish();
-                        entity.currentDepot.isProtected = true;
+                        entity.container.isProtected = true;
                         this.onProtect.dispatch();
                     }
                 }, this);
@@ -94,5 +118,39 @@ export default class Material extends AbstractObject {
 
         this.modalHandler.materialModal();
         this.ready = true;
+    }
+
+    kill(sprite) {
+        sprite.moveTo(this.modalHandler.modal.items.bg, () => {
+            sprite.destroy();
+            MyArray.remove(this.entities, sprite);
+        })
+    }
+
+    static debugCirclePurge() {
+        if (!Config.developer.debug) return;
+        if (Material.debugCircles) {
+            for (const circle of Material.debugCircles) {
+                circle.pendingDestroy = true;
+            }
+        }
+    }
+
+    static debugCircleCreate(entity, game) {
+        if (!Config.developer.debug) return;
+        Material.debugCircles = Material.debugCircles || [];
+        for (const container of Config.containers) {
+            for (const protectKey in container.area) {
+                if (protectKey === entity.obj.type) {
+                    Material.debugCircles.push(
+                        Debug.circle({
+                            x: container.area[protectKey].from.x,
+                            y: container.area[protectKey].from.y,
+                            diameter: container.area[protectKey].from.radius * 2 * game.SCALE
+                        }, game)
+                    );
+                }
+            }
+        }
     }
 };

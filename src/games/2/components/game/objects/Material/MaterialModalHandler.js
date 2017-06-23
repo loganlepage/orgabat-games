@@ -9,7 +9,9 @@ export default class MaterialModalHandler extends GameModal {
 
     isTooltipUsable = true;
 
-    static get HEIGHT() { return 16; }
+    static get HEIGHT() {
+        return 16;
+    }
 
     /**
      * Constructor for a new material modal
@@ -21,13 +23,15 @@ export default class MaterialModalHandler extends GameModal {
         super(game);
         this.properties = properties;
         this.obj = obj;
-        this.modal = new MaterialModal({items: {
-            bg: { key: `jeu2/material/${this.obj.type}`}
-        }}, this.obj.type, StackManager, this.game);
+        this.modal = new MaterialModal({
+            items: {
+                bg: {key: `jeu2/material/${this.obj.type}`}
+            }
+        }, this.obj.type, StackManager, this.game, this.obj.active);
+        this.obj.onActive.add(this.modal.toggleActive, this.modal);
 
         const realHeight = this.modal.items.bg.height / this.game.UI_SCALE;
-        const multiplicator = MaterialModalHandler.HEIGHT / realHeight;
-        this.modal.items.bg.scale.set(multiplicator * this.game.UI_SCALE);
+        this.modal.items.bg.scale.set((MaterialModalHandler.HEIGHT / realHeight) * this.game.UI_SCALE);
     }
 
 
@@ -37,16 +41,20 @@ export default class MaterialModalHandler extends GameModal {
 
     showTooltip() {
 
-        if(!this.isTooltipUsable) return;
+        if (!this.isTooltipUsable) return;
         this.isTooltipUsable = false;
-        const tooltip = new DescriptionTooltip({items: {
-            name: { text: this.properties.name }
-        }}, TooltipManager, this, this.game);
+        const tooltip = new DescriptionTooltip({
+            items: {
+                name: {text: this.properties.name}
+            }
+        }, TooltipManager, this, this.game);
 
         /** Events */
         const close = (enabled) => tooltip.toggle(false, {fixed: enabled});
-        this.obj.onMouseOutHandled.addOnce(()=>{close(false)}, tooltip);
-        tooltip.onDeleted.addOnce(()=>{
+        this.obj.onMouseOutHandled.addOnce(() => {
+            close(false)
+        }, tooltip);
+        tooltip.onDeleted.addOnce(() => {
             this.obj.onMouseOutHandled.removeAll(tooltip);
             this.isTooltipUsable = true;
         }, this);
@@ -58,10 +66,12 @@ export default class MaterialModalHandler extends GameModal {
             this.getOuterTopToSprite(this.modal.items.bg, this.modal.items.bg.worldPosition, tooltip.items.bg, tooltip.scale.y)
         );
         tooltip.toggle(true, {fixed: false},
-            (err) => { if(err.code === 403) {
-                tooltip.delete(); //Si on a créé un objet non utilisé
-                this.isShowMouseUsable = true;
-            } }
+            (err) => {
+                if (err.code === 403) {
+                    tooltip.delete(); //Si on a créé un objet non utilisé
+                    this.isShowMouseUsable = true;
+                }
+            }
         );
     }
 

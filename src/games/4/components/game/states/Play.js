@@ -10,9 +10,10 @@ import {DefaultManager} from 'system/phaser/Modal';
 
 import QuestManager, {DomQuestList} from 'system/phaser/utils/Quest';
 import Truck from "../objects/Truck/Truck";
+import Shelf from "../objects/Shelf/Shelf";
 import Button from "../objects/Button/Button";
 import ChargeTruck from "../quests/ChargeTruck";
-import ItemsFactory from "../objects/Items/ItemsFactory";
+import ItemFactory from "../objects/Item/ItemFactory";
 import Config from "../config/data";
 
 export default class Play extends State {
@@ -29,10 +30,11 @@ export default class Play extends State {
      */
     create() {
         this.game.controlsEnabled = false;
-        this.game.stage.backgroundColor = '#34495e';
+        this.game.stage.backgroundColor = '#DADAD5';
         this.text = this.game.add.text(16, 16, `Eléments insérés : ${this.capacity}`, {fill: '#ffffff'});
 
         this.initUI();
+        this.addShelf();
         this.addTruck();
         this.addItems();
         PhaserManager.ready('game', 'play');
@@ -51,28 +53,31 @@ export default class Play extends State {
         };
     }
 
+    addShelf() {
+        this.shelf = new Shelf({
+            game: this.game
+        });
+        this.shelf.sprite.anchor.setTo(0.5, 0);
+        this.game.layer.zDepth0.addChild(this.shelf.sprite);
+    }
+
     addTruck() {
         this.truck = new Truck({
             game: this.game,
-            x: this.game.world.centerX,
-            y: this.game.world.centerY + 300,
-            truckObj: this
+            y: this.game.world.height
         });
-    }
-
-    addButton() {
-        this.button = new Button(this.game, this.game.world.centerX + 300, this.game.world.centerY + 300, null, this);
+        this.truck.sprite.anchor.set(0.5, 1);
     }
 
     addItems() {
-        this.game.itemsgroup = new ItemsFactory(this.game, Config.entities.items);
-        this.game.itemsgroup.forEach((item) => {
+        this.game.itemGroup = new ItemFactory(this.game, Config.items);
+        this.game.itemGroup.forEach((item) => {
             item.events.onDragStop.add(function (currentSprite) {
                 item.obj.checkOverlap(currentSprite, this.truck.sprite)
             }, this);
             item.obj.onDropped.add(this.updateQuantity, this);
-
         });
+        this.shelf.sprite.addChild(this.game.itemGroup);
     }
 
     /** Called by Phaser to update */
@@ -94,6 +99,10 @@ export default class Play extends State {
     start() {
         this.game.gameProcess = new GameProcess(this);
         this.game.gameProcess.init();
+    }
+
+    addButton() {
+        this.button = new Button(this.game, this.game.world.centerX + 300, this.game.world.centerY + 300, null, this);
     }
 
     updateQuantity(currentSprite) {

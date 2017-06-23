@@ -13,10 +13,10 @@ var isProd = process.argv.indexOf("-p") > -1;
 module.exports = {
     /** nos points d'entrée, par clé */
     entry: {
-         '1': "./src/games/1/app.jsx", // Jeu 1
-         '2': "./src/games/2/app.jsx", // Jeu 2
-         '3': "./src/games/3/app.jsx", // Jeu 3
-         '4': "./src/games/4/app.jsx", // Jeu 4
+        // '1': "./src/games/1/app.jsx", // Jeu 1
+        '2': "./src/games/2/app.jsx", // Jeu 2
+        // '3': "./src/games/3/app.jsx", // Jeu 3
+        // '4': "./src/games/4/app.jsx", // Jeu 4
         // '99': "./src/games/test/app.jsx" // Jeu TEST
     },
     /** description de nos sorties */

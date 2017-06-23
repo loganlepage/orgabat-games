@@ -1,18 +1,18 @@
 "use strict";
-import ItemsSprite from "./ItemsSprite";
+import ItemSprite from "./ItemSprite";
 import BasicGameObject from "system/phaser/BasicGameObject";
 import Phaser from 'phaser';
 import {Signal} from "phaser";
 
-export default class Items extends BasicGameObject {
+export default class Item extends BasicGameObject {
     ready = false;
     onDropped = new Signal();
 
     constructor(game, key, category, x, y, isNeeded) {
         super(game);
-        this.category = category;
+        this.category = key;
         this.isNeeded = isNeeded;
-        this.addSprite(new ItemsSprite(this.game, x, y, key, this));
+        this.addSprite(new ItemSprite(this.game, x, y, key, this));
         this.ready = true;
     }
 

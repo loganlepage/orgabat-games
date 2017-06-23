@@ -1,18 +1,18 @@
 "use strict";
 import BasicGameObject from "system/phaser/BasicGameObject";
-import TruckSprite from "./TruckSprite";
+import ShelfSprite from "./ShelfSprite";
 import Phaser from 'phaser';
 
-export default class Truck extends BasicGameObject {
+export default class Shelf extends BasicGameObject {
     ready = false;
 
     constructor({game, x = game.world.centerX, y = 0}) {
         super(game);
-        this.addSprite(new TruckSprite({
+        this.addSprite(new ShelfSprite({
             game: this.game,
             x: x,
             y: y,
-            truckObj: this
+            shelfObj: this
         }));
         this.ready = true;
     }

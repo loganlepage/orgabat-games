@@ -9,6 +9,7 @@ import StartInfoModal from "../modals/StartInfoModal";
 import EndInfoModal from "../modals/EndInfoModal";
 import {DefaultManager, Stack} from "system/phaser/Modal";
 import QuestManager, {DomQuestList} from "system/phaser/utils/Quest";
+import DangerProtectQuest from "../quests/DangerProtectQuest";
 import TremisProtectQuest from "../quests/TremisProtectQuest";
 import PeintureProtectQuest from "../quests/PeintureProtectQuest";
 import BaieOuverteProtectQuest from "../quests/BaieOuverteProtectQuest";
@@ -105,7 +106,101 @@ export default class Play extends State {
     }
 };
 
+class PartOne {
+
+    finish = new Phaser.Signal();
+
+    constructor(gameProcess) {
+        this.process = gameProcess;
+    }
+
+    onReady() {
+        this.process.quests.add(new DangerProtectQuest(this.process.game));
+        this.process.questsCleaned.addOnce(this.onQuestsCleaned, this);
+        this.process.game.materialGroup.forEach((material) => {
+
+            //enable panneau_danger.
+            if (Config.developer.debug) {
+                material.active = true;
+            } else if (material.type === "panneau_danger") {
+                material.active = true;
+            }
+        });
+    }
+
+    onQuestsCleaned() {
+        this.finish.dispatch();
+    }
+}
+
+class PartTwo {
+
+    finish = new Phaser.Signal();
+
+    constructor(gameProcess) {
+        this.process = gameProcess;
+    }
+
+    onReady() {
+        this.process.quests.add(new TrouProtectQuest(this.process.game));
+        this.process.quests.add(new SoubassementProtectQuest(this.process.game));
+        this.process.quests.add(new BaieOuverteProtectQuest(this.process.game));
+        this.process.quests.add(new TremisProtectQuest(this.process.game));
+        this.process.quests.add(new PeintureProtectQuest(this.process.game));
+        this.process.questsCleaned.addOnce(this.onQuestsCleaned, this);
+        this.process.game.materialGroup.forEach((material) => {
+
+            //disable panneau_danger and enable others.
+            material.active = !(material.type === "panneau_danger");
+
+            //Change stats on drop.
+            material.onDropped.add((container) => {
+                if (!container.tested) {
+                    container.tested = true;
+                    if (container.name == "peinture" && material.type != "panneau_peinture_fraiche") {
+                        PhaserManager.get('gabator').stats.changeValues({
+                            organization: PhaserManager.get('gabator').stats.state.organization - 1,
+                            enterprise: PhaserManager.get('gabator').stats.state.enterprise - 1
+                        });
+                    }
+                    if (container.name == "tremie" && material.type != "garde_corps_tremie") {
+                        PhaserManager.get('gabator').stats.changeValues({
+                            organization: PhaserManager.get('gabator').stats.state.organization - 1,
+                            health: PhaserManager.get('gabator').stats.state.health - 1
+                        });
+                    }
+                    if (container.name == "baie_ouverte" && material.type != "protection_baie_ouverte") {
+                        PhaserManager.get('gabator').stats.changeValues({
+                            organization: PhaserManager.get('gabator').stats.state.organization - 1,
+                            enterprise: PhaserManager.get('gabator').stats.state.enterprise - 1
+                        });
+                    }
+                    if (container.name == "soubassement" && material.type != "passerelle_garde_corps") {
+                        PhaserManager.get('gabator').stats.changeValues({
+                            organization: PhaserManager.get('gabator').stats.state.organization - 1
+                        });
+                    }
+                    if (container.name == "trou" && material.type != "barriere_de_protection") {
+                        PhaserManager.get('gabator').stats.changeValues({
+                            organization: PhaserManager.get('gabator').stats.state.organization - 1,
+                            health: PhaserManager.get('gabator').stats.state.health - 1
+                        });
+                    }
+                }
+            }, this);
+        });
+    }
+
+    onQuestsCleaned() {
+        this.finish.dispatch();
+    }
+}
+
+
 class GameProcess {
+
+    questsCleaned = new Phaser.Signal();
+
     constructor(playState) {
         this.play = playState;
         this.game = playState.game;
@@ -114,11 +209,16 @@ class GameProcess {
         this.quests = new QuestManager(this.game);
         this.quests.onNbQuestsDoneChange.add(this._onQuestChange, this);
         new DomQuestList(this.quests);
-        this.quests.add(new TrouProtectQuest(this.game));
-        this.quests.add(new SoubassementProtectQuest(this.game));
-        this.quests.add(new BaieOuverteProtectQuest(this.game));
-        this.quests.add(new TremisProtectQuest(this.game));
-        this.quests.add(new PeintureProtectQuest(this.game));
+
+        this.partOne = new PartOne(this);
+        this.partTwo = new PartTwo(this);
+    }
+
+    _initParts() {
+        //When ready, lets init parts.
+        this.partOne.finish.addOnce(this.partTwo.onReady, this.partTwo);
+        this.partTwo.finish.addOnce(this._onFinish, this);
+        this.partOne.onReady();
     }
 
     init() {
@@ -141,49 +241,13 @@ class GameProcess {
 
     _onStartInfoClose() {
         //On active Gabator
-        if (PhaserManager.get('gabator').state.current == "play")
+        if (PhaserManager.get('gabator').state.current === "play")
             PhaserManager.get('gabator').state.getCurrentState().start();
 
         this.game.keys.addKey(Phaser.Keyboard.ENTER).onDown.remove(this._onStartInfoClose, this);
         this.game.keys.addKey(Phaser.Keyboard.A).onDown.remove(this._onStartInfoClose, this);
 
-        this.game.materialGroup.forEach((material) => {
-            material.onDropped.add((depot) => {
-                if (!depot.tested) {
-                    depot.tested = true;
-                    if (depot.name == "peinture" && material.type != "panneau_peinture_fraiche") {
-                        PhaserManager.get('gabator').stats.changeValues({
-                            organization: PhaserManager.get('gabator').stats.state.organization - 1,
-                            enterprise: PhaserManager.get('gabator').stats.state.enterprise - 1
-                        });
-                    }
-                    if (depot.name == "tremie" && material.type != "garde_corps_tremie") {
-                        PhaserManager.get('gabator').stats.changeValues({
-                            organization: PhaserManager.get('gabator').stats.state.organization - 1,
-                            health: PhaserManager.get('gabator').stats.state.health - 1
-                        });
-                    }
-                    if (depot.name == "baie_ouverte" && material.type != "protection_baie_ouverte") {
-                        PhaserManager.get('gabator').stats.changeValues({
-                            organization: PhaserManager.get('gabator').stats.state.organization - 1,
-                            enterprise: PhaserManager.get('gabator').stats.state.enterprise - 1
-                        });
-                    }
-                    if (depot.name == "soubassement" && material.type != "passerelle_garde_corps") {
-                        PhaserManager.get('gabator').stats.changeValues({
-                            organization: PhaserManager.get('gabator').stats.state.organization - 1
-                        });
-                    }
-                    if (depot.name == "trou" && material.type != "barriere_de_protection") {
-                        PhaserManager.get('gabator').stats.changeValues({
-                            organization: PhaserManager.get('gabator').stats.state.organization - 1,
-                            health: PhaserManager.get('gabator').stats.state.health - 1
-                        });
-                    }
-                }
-            }, this);
-        });
-
+        this._initParts();
 
         //Ferme la modale et active les controls
         this.startInfoModal.toggle(false, {});
@@ -193,7 +257,9 @@ class GameProcess {
     }
 
     _onQuestChange() {
-        if (this.quests.nbQuestsDone == 0) this._onFinish();
+        if (this.quests.nbQuestsDone === 0) {
+            this.questsCleaned.dispatch();
+        }
     }
 
     _onFinish() {
@@ -215,7 +281,7 @@ class GameProcess {
         endInfoModal.toggle(true, {}, {
             star1: current > 2,
             star2: current > 6,
-            star3: current == 10
+            star3: current === 10
         }, {
             health: PhaserManager.get('gabator').stats.state.health,
             organization: PhaserManager.get('gabator').stats.state.organization,

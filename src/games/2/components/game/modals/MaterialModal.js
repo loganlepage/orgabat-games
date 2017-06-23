@@ -1,7 +1,7 @@
 "use strict";
 import Type from "system/utils/Type";
 import Modal, {Sprite} from "system/phaser/Modal";
-import Phaser, {Signal} from "phaser";
+import {Signal} from "phaser";
 
 /** Feedback Modal */
 export default class MaterialModal extends Modal {
@@ -11,6 +11,7 @@ export default class MaterialModal extends Modal {
     onMouseOver = new Signal();
     onMouseOut = new Signal();
     onMouseDown = new Signal();
+    active;
 
     /**
      * Constructor for a new modal
@@ -19,16 +20,31 @@ export default class MaterialModal extends Modal {
      * @param manager
      * @param game
      */
-    constructor(data, name, manager, game) {
+    constructor(data, name, manager, game, active = true) {
         super(Type.deepMerge(MaterialModal.pattern, data), manager, game);
         this.name = name;
         this.game = game;
+        this.active = active;
         this.initEvents(this.items.bg);
+        this.toggleActive(this.active);
+    }
+
+    toggleActive(active = true) {
+        this.active = active;
+        if (this.active) {
+            this.items.bg.tint = 0xffffff;
+            this.items.bg.alpha = 1;
+        } else {
+            this.items.bg.tint = 0x484848;
+            this.items.bg.alpha = .5;
+        }
     }
 
     initEvents(bg) {
         bg.events.onInputOver.add(() => {
-            this.game.canvas.style.cursor = "move";
+            if (this.active) {
+                this.game.canvas.style.cursor = "move";
+            }
             this.onMouseOver.dispatch()
         }, this);
         bg.events.onInputOut.add(() => {

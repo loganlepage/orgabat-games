@@ -1,5 +1,5 @@
-import {Quest} from 'system/phaser/utils/Quest';
-import Config from '../config/data';
+import {Quest} from "system/phaser/utils/Quest";
+import Config from "../config/data";
 
 export default class PeintureProtectQuest extends Quest {
 
@@ -10,15 +10,17 @@ export default class PeintureProtectQuest extends Quest {
     constructor(game) {
         super(game);
         game.materialGroup.forEach((material) => {
-            for(let i = 0; i < Config.depotProtects['peinture'].length; ++i) {
-                if(material.type === Config.depotProtects['peinture'][i]) {
+            for (const protect of Config.containers[Config.containerIndex['peinture']].protects) {
+                if (material.type === protect) {
 
                     //dès qu'un matériel compatible va protéger une trémie
-                    material.onProtect.add(()=>{this.onProtect(material)}, this);
+                    material.onProtect.add(() => {
+                        this.onProtect(material)
+                    }, this);
                 }
             }
         });
-        if(Config.developer.debug) {
+        if (Config.developer.debug) {
             window.quest = window.quest || {};
             window.quest.peintureProtect = this;
         }
@@ -26,10 +28,10 @@ export default class PeintureProtectQuest extends Quest {
 
     onProtect(material) {
         let isFinished = true;
-        for(let i = 0; i < Config.depot.length; ++i)
-            if(Config.depot[i].name == "peinture" && Config.depot[i].isProtected == false)
-                isFinished = false;
-        if(isFinished) {
+        if (Config.containers[Config.containerIndex['peinture']].isProtected === false) {
+            isFinished = false;
+        }
+        if (isFinished) {
             material.onProtect.remove(this.onProtect, this);
             this.done();
         }
