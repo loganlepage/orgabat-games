@@ -35,9 +35,12 @@ export default class Statistics extends React.Component {
             organization: props.stats.organization.default,
             enterprise: props.stats.enterprise.default,
         };
+        this.health = props.stats.health.default;
+        this.organization = props.stats.organization.default;
+        this.enterprise = props.stats.enterprise.default;
         this.healthMax = props.stats.health.max;
-        this.organizationMax = props.stats.health.max;
-        this.enterpriseMax = props.stats.health.max;
+        this.organizationMax = props.stats.organization.max;
+        this.enterpriseMax = props.stats.enterprise.max;
     }
 
     static get statValueType() {
@@ -54,6 +57,9 @@ export default class Statistics extends React.Component {
     }
 
     changeValues(stats = {}) {
+        this.health = stats.health !== undefined ? stats.health : this.health;
+        this.organization = stats.organization !== undefined ? stats.organization : this.organization;
+        this.enterprise = stats.enterprise !== undefined ? stats.enterprise : this.enterprise;
         this.setState(stats);
     }
 

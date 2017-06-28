@@ -17,8 +17,7 @@ class Button extends Phaser.Button {
      * @param upFrame
      * @param props
      */
-    constructor(game, x, y, overFrame, outFrame, downFrame, upFrame, props) {
-        props = props || {};
+    constructor(game, x = 0, y = 0, overFrame, outFrame, downFrame, upFrame, props = {}) {
         try {
             Type.isExist(game, true);
             Type.isNumber(x, true);
@@ -55,9 +54,7 @@ export class Sprite extends Phaser.Sprite {
      * @param style
      * @param props
      */
-    constructor(game, x, y, key, style, props) {
-
-        props = props || {};
+    constructor(game, x = 0, y = 0, key, style = {}, props = {}) {
         try {
             Type.isExist(game, true);
             Type.isNumber(x, true);
@@ -98,7 +95,7 @@ class Text extends Phaser.Text {
      * @param style
      * @param props
      */
-    constructor(game, x, y, text, style, props) {
+    constructor(game, x = 0, y = 0, text, style = {}, props = {}) {
         try {
             Type.isExist(game, true);
             Type.isNumber(x, true);
@@ -490,7 +487,9 @@ export class DefaultManager extends Manager {
                 }, modal);
             });
         }
-        super.show(this.blackBackground);
+        if(params.light === undefined || params.light === false) {
+            super.show(this.blackBackground)
+        }
         super.show(modal, this.game.world);
     }
 
@@ -566,14 +565,14 @@ class Factory extends Phaser.Group {
         let item;
         switch (data.type) {
             case 'text':
-                item = new Text(this.game, data.x || 0, data.y || 0, data.text, data.style || {}, data.props || {});
+                item = new Text(this.game, data.x, data.y, data.text, data.style, data.props);
                 break;
             case 'sprite':
-                item = new Sprite(this.game, data.x || 0, data.y || 0, data.key, data.style || {}, data.props || {});
+                item = new Sprite(this.game, data.x, data.y, data.key, data.style, data.props);
                 break;
             case 'button':
-                item = new Button(this.game, data.x || 0, data.y || 0, data.overFrame || null,
-                    data.outFrame || null, data.downFrame || null, data.upFrame || null, data.props || {});
+                item = new Button(this.game, data.x, data.y, data.overFrame || null,
+                    data.outFrame || null, data.downFrame || null, data.upFrame || null, data.props);
                 break;
         }
         if (item) {
