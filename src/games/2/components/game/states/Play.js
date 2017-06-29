@@ -6,6 +6,7 @@ import FloorCameraUtils from "../objects/Floor/FloorCameraUtils";
 import MaterialFactory from "../objects/Material/MaterialFactory";
 import PhaserManager from "system/phaser/utils/PhaserManager";
 import StartInfoModal from "../modals/StartInfoModal";
+import Part2tInfoModal from "../modals/Part2InfoModal";
 import EndInfoModal from "../modals/EndInfoModal";
 import {DefaultManager, Stack} from "system/phaser/Modal";
 import QuestManager, {DomQuestList} from "system/phaser/utils/Quest";
@@ -141,7 +142,24 @@ class PartTwo {
         this.process = gameProcess;
     }
 
-    onReady() {
+    startMenu() {
+        //On affiche la modale d'information de la 2e partie
+        this.part2tInfoModal = new Part2tInfoModal({}, DefaultManager, this.process.game);
+        this.process.game.keys.addKey(Phaser.Keyboard.ENTER).onDown.addOnce(this._onReady, this);
+        this.process.game.keys.addKey(Phaser.Keyboard.A).onDown.addOnce(this._onReady, this);
+        this.part2tInfoModal.items.close.items.iconA.events.onInputDown.add(this._onReady, this);
+        this.part2tInfoModal.items.close.items.textA.events.onInputDown.add(this._onReady, this);
+        this.part2tInfoModal.onDeleted.addOnce(() => {
+            delete this.part2tInfoModal
+        }, this);
+        this.part2tInfoModal.toggle(true);
+    }
+
+    _onReady() {
+        this.process.game.keys.addKey(Phaser.Keyboard.ENTER).onDown.remove(this._onReady, this);
+        this.process.game.keys.addKey(Phaser.Keyboard.A).onDown.remove(this._onReady, this);
+        this.part2tInfoModal.toggle(false, {});
+
         this.process.quests.add(new TrouProtectQuest(this.process.game));
         this.process.quests.add(new SoubassementProtectQuest(this.process.game));
         this.process.quests.add(new BaieOuverteProtectQuest(this.process.game));
@@ -216,7 +234,7 @@ class GameProcess {
 
     _initParts() {
         //When ready, lets init parts.
-        this.partOne.finish.addOnce(this.partTwo.onReady, this.partTwo);
+        this.partOne.finish.addOnce(this.partTwo.startMenu, this.partTwo);
         this.partTwo.finish.addOnce(this._onFinish, this);
         this.partOne.onReady();
     }

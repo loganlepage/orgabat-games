@@ -3,7 +3,6 @@ import {Sprite, Signal, Math} from "phaser";
 import Config from "../../config/data";
 import FloorSprite from "../Floor/FloorSprite";
 import Animation from "system/utils/Animation";
-import Debug from "system/utils/Debug";
 
 /** Material Sprite (called by the material gameObject) */
 export default class MaterialSprite extends Sprite {
@@ -68,7 +67,7 @@ export default class MaterialSprite extends Sprite {
 
         //get all valid containers around the dropped material
         let containers = [];
-        for(const container of Config.containers) {
+        for (const container of Config.containers) {
             const area = container.area[this.obj.type];
 
             //if we drop on a container
@@ -82,12 +81,15 @@ export default class MaterialSprite extends Sprite {
                 if (container.current !== this) {
                     allow = true;
                     if (container.current !== null
-                        && container.protects.indexOf(container.current.obj.type) >= 0
+                        && (
+                            container.protectsSwitchable.indexOf(container.current.obj.type) === -1
+                            && container.protects.indexOf(container.current.obj.type) >= 0
+                        )
                         && container.protects.indexOf(this.obj.type) === -1) {
                         allow = false;
                     }
                 }
-                if(allow) {
+                if (allow) {
                     containers.push(container);
                 }
             }
@@ -95,7 +97,7 @@ export default class MaterialSprite extends Sprite {
 
         //get the best result
         let bestContainer = null;
-        for(const container of containers) {
+        for (const container of containers) {
             if (bestContainer === null) {
                 bestContainer = container;
             } else if (Math.distance(bestContainer.area[this.obj.type].to.x, bestContainer.area[this.obj.type].to.y, this.x, this.y) >

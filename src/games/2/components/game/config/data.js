@@ -35,6 +35,7 @@ export default {
         {
             name: "trou", floor: "ext", x: 1032, y: 1377, isProtected: false, current: null, tested: false,
             protects: ["barriere_de_protection", "panneau_danger"],
+            protectsSwitchable: ["panneau_danger"],
             area: {
                 "passerelle_garde_corps": {
                     from: {x: 1030, y: 1433, radius: 100}, to: {x: 1030, y: 1433}
@@ -59,6 +60,7 @@ export default {
         {
             name: "soubassement", floor: "rdc", x: 331, y: 1374, isProtected: false, current: null, tested: false,
             protects: ["passerelle_garde_corps", "panneau_danger"],
+            protectsSwitchable: ["panneau_danger"],
             area: {
                 "passerelle_garde_corps": {
                     from: {x: 350, y: 1400, radius: 90}, to: {x: 360, y: 1386}
@@ -83,6 +85,7 @@ export default {
         {
             name: "baie_ouverte", floor: "rdc", x: 341, y: 1115, isProtected: false, current: null, tested: false,
             protects: ["protection_baie_ouverte", "panneau_danger"],
+            protectsSwitchable: ["panneau_danger"],
             area: {
                 "passerelle_garde_corps": {
                     from: {x: 373, y: 1192, radius: 100}, to: {x: 373, y: 1192}
@@ -107,6 +110,7 @@ export default {
         {
             name: "tremie", floor: "1st", x: 600, y: 1025, isProtected: false, current: null, tested: false,
             protects: ["garde_corps_tremie", "panneau_danger"],
+            protectsSwitchable: ["panneau_danger"],
             area: {
                 "passerelle_garde_corps": {
                     from: {x: 598, y: 1059, radius: 80}, to: {x: 598, y: 1059}
@@ -131,6 +135,7 @@ export default {
         {
             name: "peinture", floor: "2nd", x: 593, y: 650, isProtected: false, current: null, tested: false,
             protects: ["panneau_peinture_fraiche", "panneau_danger"],
+            protectsSwitchable: ["panneau_danger"],
             area: {
                 "passerelle_garde_corps": {
                     from: {x: 606, y: 611, radius: 300}, to: {x: 508, y: 523}
