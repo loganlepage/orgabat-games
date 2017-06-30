@@ -40,9 +40,8 @@ export default class QcmInfoModal extends Modal {
         window.picture = picture;
         window.bg = bg;
 
-        const scale = this.game.uiScale((bg.width - 15 /*padding left*/ - 250 /*answer pane*/) / picture.width);
+        const scale = bg.width / picture.width;
         picture.scale.set(scale);
-
         picture.y = bg.height - picture.height - this.game.uiScale(15) /*padding bottom*/;
     }
 

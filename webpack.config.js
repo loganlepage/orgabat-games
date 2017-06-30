@@ -7,17 +7,18 @@ var phaserModule = path.join(__dirname, '/node_modules/phaser/');
 var phaser = path.join(phaserModule, 'build/custom/phaser-split.js'),
     pixi = path.join(phaserModule, 'build/custom/pixi.js'),
     p2 = path.join(phaserModule, 'build/custom/p2.js');
-
+//
 var isProd = process.argv.indexOf("-p") > -1;
 
 module.exports = {
     /** nos points d'entrée, par clé */
     entry: {
-      //   '1': "./src/games/1/app.jsx", // Jeu 1
+        '1': "./src/games/1/app.jsx", // Jeu 1
         '2': "./src/games/2/app.jsx", // Jeu 2
-       //  '3': "./src/games/3/app.jsx", // Jeu 3
-      //   '4': "./src/games/4/app.jsx", // Jeu 4
-     //     '5': "./src/games/5/app.jsx" // Jeu 5
+        '3': "./src/games/3/app.jsx", // Jeu 3
+        '4': "./src/games/4/app.jsx", // Jeu 4
+        '5': "./src/games/5/app.jsx", // Jeu 5
+        '99': "./src/games/6/app.jsx" // Jeu 99
     },
     /** description de nos sorties */
     output: {
