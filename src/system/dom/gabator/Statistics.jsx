@@ -74,15 +74,25 @@ export default class Statistics extends React.Component {
             paddingRight: 15 * this.props.scale,
             paddingBottom: 5 * this.props.scale
         };
+        let healthBar, organizationBar, entrepriseBar = null;
+        if (this.healthMax > 0) {
+            healthBar = <ProgressBar name="Santé" class="progress-bar-success" 
+            scale={this.props.scale} current={this.state.health} max={this.healthMax}/>;
+        }
+        if (this.organizationMax > 0) {
+            organizationBar = <ProgressBar name="Organisation" class="progress-bar-info" 
+            scale={this.props.scale} current={this.state.organization} max={this.organizationMax}/>;
+        }
+        if (this.enterpriseMax > 0) {
+            entrepriseBar = <ProgressBar name="Notoriété de l'entreprise" class="progress-bar-warning" 
+            scale={this.props.scale} current={this.state.enterprise} max={this.enterpriseMax}/>;
+        }
         return (
             <div id="gabator-panel-stats" style={paddingStyle}>
                 <h4 style={titleStyle}>Statistiques</h4>
-                <ProgressBar name="Santé" class="progress-bar-success" scale={this.props.scale}
-                             current={this.state.health} max={this.healthMax}/>
-                <ProgressBar name="Organisation" class="progress-bar-info" scale={this.props.scale}
-                             current={this.state.organization} max={this.organizationMax}/>
-                <ProgressBar name="Notoriété de l'entreprise" class="progress-bar-warning" scale={this.props.scale}
-                             current={this.state.enterprise} max={this.enterpriseMax}/>
+                {healthBar}
+                {organizationBar}
+                {entrepriseBar}
             </div>
         );
     }

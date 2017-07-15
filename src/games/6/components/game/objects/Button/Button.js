@@ -4,6 +4,7 @@ import ButtonSprite from "./ButtonSprite";
 import Phaser from 'phaser';
 
 export default class Button extends BasicGameObject {
+
     ready = false;
 
     constructor(game, x, y) {
@@ -24,5 +25,29 @@ export default class Button extends BasicGameObject {
             this
         ));*/
         this.ready = true;
+    }
+
+    destroy() {
+        this.sprite.destroy(true);
+    }
+
+    preUpdate() {
+        //
+    }
+
+    update() {
+        //
+    }
+
+    postUpdate() {
+        //
+    }
+
+    updateTransform() {
+        //
+    }
+
+    _renderCanvas() {
+        //
     }
 }

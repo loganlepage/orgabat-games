@@ -305,6 +305,90 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
+            <key type="filename">files/jeu6/mapStep1 copie.png</key>
+            <key type="filename">files/jeu6/mapStep1.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>99,96,198,193</rect>
+                <key>scale9Paddings</key>
+                <rect>99,96,198,193</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">files/jeu6/mapStep2 copie.png</key>
+            <key type="filename">files/jeu6/mapStep2.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>93,98,185,196</rect>
+                <key>scale9Paddings</key>
+                <rect>93,98,185,196</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">files/jeu6/mapStep3 copie.png</key>
+            <key type="filename">files/jeu6/mapStep3.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>98,97,196,195</rect>
+                <key>scale9Paddings</key>
+                <rect>98,97,196,195</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">files/jeu6/mapStep4 copie.png</key>
+            <key type="filename">files/jeu6/mapStep4.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>98,98,197,196</rect>
+                <key>scale9Paddings</key>
+                <rect>98,98,197,196</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">files/jeu6/mapStep5 copie.png</key>
+            <key type="filename">files/jeu6/mapStep5.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>98,98,196,196</rect>
+                <key>scale9Paddings</key>
+                <rect>98,98,196,196</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">files/jeu6/mapStep6 copie.png</key>
+            <key type="filename">files/jeu6/mapStep6.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>98,98,196,195</rect>
+                <key>scale9Paddings</key>
+                <rect>98,98,196,195</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
             <key type="filename">files/jeu6/materiel.psd</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>

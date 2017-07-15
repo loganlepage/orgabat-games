@@ -17,7 +17,7 @@ export default class Shelf extends BasicGameObject {
         this.ready = true;
     }
 
-    checkOverlap(currentSprite, spriteToOverlap) {
+    /*checkOverlap(currentSprite, spriteToOverlap) {
         let boundsA = currentSprite.getBounds(),
             boundsB = spriteToOverlap.getBounds();
         if (Phaser.Rectangle.intersects(boundsA, boundsB)) {
@@ -27,5 +27,5 @@ export default class Shelf extends BasicGameObject {
         }
         else
             currentSprite.position.copyFrom(currentSprite.originalPosition);
-    }
+    }*/
 }

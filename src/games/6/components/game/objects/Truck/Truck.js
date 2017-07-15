@@ -17,15 +17,15 @@ export default class Truck extends BasicGameObject {
         this.ready = true;
     }
 
-    checkOverlap(currentSprite, spriteToOverlap) {
-        let boundsA = currentSprite.getBounds(),
-            boundsB = spriteToOverlap.getBounds();
-        if (Phaser.Rectangle.intersects(boundsA, boundsB)) {
-            currentSprite.input.draggable = false;
-            currentSprite.position.copyFrom(spriteToOverlap.position);
-            currentSprite.anchor.setTo(spriteToOverlap.anchor.x, spriteToOverlap.anchor.y);
-        }
-        else
-            currentSprite.position.copyFrom(currentSprite.originalPosition);
-    }
+    // checkOverlap(currentSprite, spriteToOverlap) {
+    //     let boundsA = currentSprite.getBounds(),
+    //         boundsB = spriteToOverlap.getBounds();
+    //     if (Phaser.Rectangle.intersects(boundsA, boundsB)) {
+    //         currentSprite.input.draggable = false;
+    //         currentSprite.position.copyFrom(spriteToOverlap.position);
+    //         currentSprite.anchor.setTo(spriteToOverlap.anchor.x, spriteToOverlap.anchor.y);
+    //     }
+    //     else
+    //         currentSprite.position.copyFrom(currentSprite.originalPosition);
+    // }
 }

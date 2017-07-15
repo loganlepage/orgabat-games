@@ -1,10 +1,10 @@
 import {Quest} from 'system/phaser/utils/Quest';
 import Config from '../config/data';
 
-export default class ChargeTruck extends Quest {
+export default class TruckQuest extends Quest {
 
     _name = 'Charger le camion';
-    _key = 'charge_truck';
+    _key = 'truck_quest';
     _help = "Repérer les conduites qui permettent de charger le véhicule tout en préservant son intégrité physique.";
 
     constructor(game) {

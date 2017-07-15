@@ -6,20 +6,21 @@ import Canvas from "system/phaser/utils/PhaserManager";
 
 import StartInfoModal from '../modals/StartInfoModal';
 import EndInfoModal from '../modals/EndInfoModal';
-import {DefaultManager} from 'system/phaser/Modal';
+import {DefaultManager, Stack} from 'system/phaser/Modal';
 
 import QuestManager, {DomQuestList} from 'system/phaser/utils/Quest';
 import Truck from "../objects/Truck/Truck";
 import Shelf from "../objects/Shelf/Shelf";
 import Button from "../objects/Button/Button";
-import ChargeTruck from "../quests/ChargeTruck";
 import ItemFactory from "../objects/Item/ItemFactory";
+import StepFactory from "../objects/Step/StepFactory";
+import MapStepFactory from "../objects/MapStep/MapStepFactory";
 import Config from "../config/data";
 
+import TruckQuest from "../quests/TruckQuest";
+import StepsQuest from "../quests/StepsQuest";
+
 export default class Play extends State {
-    paintCapacity = 0;
-    materialCapacity = 0;
-    mapCapacity = 0;
 
     /** Constructor for a new play state */
     constructor() {
@@ -33,14 +34,8 @@ export default class Play extends State {
     create() {
         this.game.controlsEnabled = false;
         this.game.stage.backgroundColor = '#DADAD5';
-        this.paintText = this.game.add.text(10, 10, `Quantité de peinture : ${this.paintCapacity}/30`, {fill: '#ffffff'});
-        this.suppliesText = this.game.add.text(10, 40, `Matériels : ${this.materialCapacity}/3`, {fill: '#ffffff'});
-        this.coatText = this.game.add.text(10, 70, `Enduits : ${this.mapCapacity}/6`, {fill: '#ffffff'});
 
         this.initUI();
-        this.addShelf();
-        this.addTruck();
-        this.addItems();
         PhaserManager.ready('game', 'play');
 
         this.start();
@@ -57,10 +52,142 @@ export default class Play extends State {
         };
     }
 
+    /** Called by Phaser to render */
+    render() {
+        if(Config.developer.debug) {
+            this.game.time.advancedTiming = true; //SEE FPS
+            this.game.debug.text(this.game.time.fps, 2, 14, "#00ff00");
+        }
+    }
+
+    /**
+     * Called after create, to start the state
+     * this.game Rules
+     */
+    start() {
+        this.game.gameProcess = new GameProcess(this);
+        this.game.gameProcess.init();
+    }
+
+};
+
+class PartOne {
+
+    finish = new Phaser.Signal();
+
+    clickedSteps = 0;
+
+    constructor(gameProcess) {
+        this.game = gameProcess.game;
+        this.gameProcess = gameProcess;
+    }
+
+    start() {
+        this.gameProcess.quests.add(new StepsQuest(this.gameProcess.game));
+        this.gameProcess.questsCleaned.addOnce(this.onQuestsCleaned, this);
+        this.stepText = this.game.add.text(10, 10, `Étapes séléctionnées: ${this.clickedSteps}/8`, {fill: '#ffffff'});
+        this.addSteps();
+        // this.addButton();
+        // this.onQuestsCleaned(); // To go to the end
+    }
+
+    addSteps() {
+        let healthMax = 4;
+        this.stepGroup = new StepFactory(this.game, Config.steps);
+        this.stepGroup.forEach((step) => {
+            step.text1.inputEnabled = true;
+            step.text1.input.useHandCursor = true;
+            step.text1.events.onInputDown.add(function(){
+                if (!step.clicked) {
+                    if (step.check()){
+                        this.clickedSteps++;
+                        if (this.clickedSteps >= 8) {
+                            this.addButton();
+                        }
+                    } else if (healthMax > 0){
+                        PhaserManager.get('gabator').stats.changeValues({
+                            health: PhaserManager.get('gabator').stats.state.health - 1,
+                        });
+                        healthMax--;
+                    }
+                    this.stepText.text = `Étapes séléctionnées: ${this.clickedSteps}/8`;
+                }
+            }, this);
+        });
+    }
+
+    addButton() {
+        this.partOneButton = new Button(this.game, this.game.world.centerX*2 - 100, this.game.world.centerY*2 - 50, null, this);
+        this.partOneButton.sprite.events.onInputDown.add(this.onClickAction, this);
+        this.gameProcess.quests._quests.steps_quest.done();
+    }
+
+    onClickAction() {
+        this.onQuestsCleaned();
+    }
+
+    onQuestsCleaned() {
+        this.removeElements();
+        this.finish.dispatch();
+    }
+
+    removeElements() {
+        this.removeText();
+        this.removeButton();
+    }
+
+    removeText() {
+        this.stepGroup.forEach((step) => {step.removeText()}, this);
+        this.stepText.destroy();
+        this.stepGroup = null;
+    }
+
+    removeButton() {
+        this.partOneButton.destroy();
+    }
+
+}
+
+class PartTwo {
+
+    paintCapacity = 0;
+    materialCapacity = 0;
+    mapCapacity = 0;
+
+    firstMap = true;
+
+    finish = new Phaser.Signal();
+
+    constructor(gameProcess) {
+        this.gameProcess = gameProcess;
+        this.game = gameProcess.game;
+    }
+
+    start() {
+        this.paintText = this.game.add.text(10, 10, `Quantité de peinture : ${this.paintCapacity}/30`, {fill: '#ffffff'});
+        this.suppliesText = this.game.add.text(10, 40, `Matériels : ${this.materialCapacity}/3`, {fill: '#ffffff'});
+        this.coatText = this.game.add.text(10, 70, `Enduits : ${this.mapCapacity}/6`, {fill: '#ffffff'});
+        this.game.layer.zDepth0.addChild(this.paintText);
+        this.game.layer.zDepth0.addChild(this.suppliesText);
+        this.game.layer.zDepth0.addChild(this.coatText);
+        this.addShelf();
+        this.addTruck();
+        this.addItems();
+        this.gameProcess.quests.add(new TruckQuest(this.gameProcess.game));
+        this.gameProcess.questsCleaned.addOnce(this.onQuestsCleaned, this);
+        // this.mapSteps(); // To go to the end
+        // this.addButton(); // To go to the end
+    }
+
+    onQuestsCleaned() {
+        this.finish.dispatch();
+    }
+
     addShelf() {
         this.shelf = new Shelf({
             game: this.game
         });
+        // this.shelf.sprite.anchor.setTo(0.5, 0.5);
         this.shelf.sprite.anchor.setTo(-0.2, 0);
         this.game.layer.zDepth0.addChild(this.shelf.sprite);
     }
@@ -70,7 +197,8 @@ export default class Play extends State {
             game: this.game,
             y: this.game.world.height
         });
-        this.truck.sprite.anchor.set(1, 0.95);
+        // this.truck.sprite.anchor.set(1, 0.95);
+        this.game.layer.zDepth1.addChild(this.shelf.sprite);
     }
 
     addItems() {
@@ -97,86 +225,124 @@ export default class Play extends State {
         this.shelf.sprite.addChild(this.game.itemGroup);
     }
 
-    /** Called by Phaser to update */
-    update() {
-    }
+    updateQuantity(currentSprite) {
+        // TODO: ajouter les messages à Gabator
+        // TODO: Attention aux échelles, pb de déplacement
+        let name = currentSprite.frameName;
 
-    /** Called by Phaser to render */
-    render() {
-        if(Config.developer.debug) {
-            this.game.time.advancedTiming = true; //SEE FPS
-            this.game.debug.text(this.game.time.fps, 2, 14, "#00ff00");
+        if (currentSprite.obj.check()) {
+            if (name === "jeu6/peinture15l") {
+                if (this.paintCapacity <= 15) {
+                    this.paintCapacity += 15;
+                    PhaserManager.get('gabator').stats.changeValues({
+                        health: PhaserManager.get('gabator').stats.state.health - 1,
+                    });
+                } else {
+                    //
+                }
+            }
+            if (name === "jeu6/peinture5l") {
+                if (this.paintCapacity <= 25) {
+                    this.paintCapacity += 5;
+                } else {
+                    //
+                }
+            }
+            if (name === "jeu6/aspirateur" || name === "jeu6/ponceuse" || name === "jeu6/caisse") {
+                if (this.materialCapacity < 3) {
+                    this.materialCapacity++;
+                } else {
+                    //
+                }
+            }
+            if (name === "jeu6/map") {
+                if (this.firstMap) {
+                    this.firstMap = false;
+                    this.mapSteps();
+                }
+                if (this.mapCapacity <= 5) {
+                    this.mapCapacity++;
+                } else {
+                    //
+                }
+            }
+            this.paintText.text = `Quantité de peinture : ${this.paintCapacity}/30`;
+            this.suppliesText.text = `Matériels : ${this.materialCapacity}/3`;
+            this.coatText.text = `Enduits : ${this.mapCapacity}/6`;
+            if (this.paintCapacity === 30 && this.materialCapacity === 3 && this.mapCapacity === 6) {
+                this.addButton();
+            }
         }
     }
 
-    /**
-     * Called after create, to start the state
-     * this.game Rules
-     */
-    start() {
-        this.game.gameProcess = new GameProcess(this);
-        this.game.gameProcess.init();
-    }
-
     addButton() {
+        this.gameProcess.quests._quests.truck_quest.done();
         this.button = new Button(this.game, this.game.world.centerX*2 - 100, this.game.world.centerY*2 - 50, null, this);
         this.button.sprite.events.onInputDown.add(this.onClickAction, this);
     }
 
     onClickAction() {
-        console.log("OK");
+        this.onQuestsCleaned();
     }
 
-    updateQuantity(currentSprite) {
-        // TODO: ajouter les messages à Gabator
-        // TODO: Attention aux échelles, pb de déplacement
-        let name = currentSprite.frameName;
-        if (name === "jeu6/peinture15l") {
-            if (this.paintCapacity <= 15) {
-                this.paintCapacity += 15;
-            } else {
-                if(Config.developer.debug) {
-                    console.log('Trop de peinture');
-                }
-            }
-        }
-        if (name === "jeu6/peinture5l") {
-            if (this.paintCapacity <= 25) {
-                this.paintCapacity += 5;
-            } else {
-                if(Config.developer.debug) {
-                    console.log('Trop de peinture');
-                }
-            }
-        }
-        if (name === "jeu6/aspirateur" || name === "jeu6/ponceuse" || name === "jeu6/caisse") {
-            if (this.materialCapacity < 3) {
-                this.materialCapacity++;
-            } else {
-                if(Config.developer.debug) {
-                    console.log('Trop de matériel');
-                }
-            }
-        }
-        if (name === "jeu6/map") {
-            if (this.mapCapacity <= 5) {
-                this.mapCapacity++;
-            } else {
-                if(Config.developer.debug) {
-                    console.log('Trop de map');
-                }
-            }
-        }
-        this.paintText.text = `Quantité de peinture : ${this.paintCapacity}/30`;
-        this.suppliesText.text = `Matériels : ${this.materialCapacity}/3`;
-        this.coatText.text = `Enduits : ${this.mapCapacity}/6`;
-        if (this.paintCapacity === 30 && this.materialCapacity === 3 && this.mapCapacity === 6) {
-            this.addButton();
-        }
+    mapSteps() {
+        // Draw a rectangle
+        this.graphics = this.game.add.graphics(0, 0);
+        this.game.layer.zDepthOverAll.addChild(this.graphics);
+        this.graphics.lineStyle(0, "balck", 0);
+        this.graphics.beginFill("black", 0.5);
+        this.graphics.drawRect(0, 0, this.game.world.width, this.game.world.height);
+        this.graphics.lineStyle(1, "balck", 0);
+        this.graphics.drawRect(200, 150, 600, 100);
+        this.addMapSteps();
     }
-};
+
+    addMapSteps() {
+        let currentPosition = 1;
+        let finished = false;
+        this.mapStepText = this.game.add.text(200, 100, `Schéma pour l'étape numéro : ${currentPosition}/3`, {fill: '#ffffff'});
+        this.mapStepGroup = new MapStepFactory(this.game, Config.mapSteps);
+        this.mapStepGroup.forEach((mapStep) => {
+            mapStep.sprite.input.useHandCursor = true;
+            mapStep.sprite.events.onInputDown.add(function(){
+                if (mapStep.check(currentPosition) && !finished){
+                    currentPosition++;
+                    this.mapStepText.text = `Schéma pour l'étape numéro : ${currentPosition}/3`;
+                    mapStep.validate();
+                } else if (!mapStep.check(currentPosition) && !finished){
+                    PhaserManager.get('gabator').stats.changeValues({
+                        health: PhaserManager.get('gabator').stats.state.health - 1,
+                    });
+                }
+                if (currentPosition >= 4 && !finished) {
+                    this.mapStepText.text = `Toutes les étapes ont été validées`;
+                    finished = true;
+                    this.addMapStepsButton();
+                }
+            }, this);
+            this.game.layer.zDepthOverAll.addChild(mapStep.sprite);
+        });
+    }
+
+    addMapStepsButton() {
+        this.mapButton = new Button(this.game, this.game.world.centerX*2 - 100, this.game.world.centerY*2 - 50, null, this);
+        this.mapButton.sprite.events.onInputDown.add(this.removeMapSteps, this);
+        this.game.layer.zDepthOverAll.addChild(this.mapButton.sprite);
+    }
+
+    removeMapSteps() {
+        this.mapButton.destroy();
+        this.mapStepText.destroy();
+        this.graphics.destroy();
+        this.mapStepGroup.forEach((mapStep) => {mapStep.destroy()}, this);
+        this.mapStepGroup = null;
+    }
+
+}
 
 class GameProcess {
+
+    questsCleaned = new Phaser.Signal();
 
     constructor(playState) {
         this.play = playState;
@@ -186,15 +352,12 @@ class GameProcess {
         //On prépare les quêtes
         this.quests = new QuestManager(this.game);
         new DomQuestList(this.quests);
-        this.quests.add(new ChargeTruck(this.game));
+
+        this.partOne = new PartOne(this);
+        this.partTwo = new PartTwo(this);
     }
 
     init() {
-        if (this.bootTweenTime > 0) this.bootTween.start().onComplete.add(() => this._onAnimationEnd());
-        else this._onAnimationEnd();
-    }
-
-    _onAnimationEnd() {
         //On affiche la modale d'information du début
         this.startInfoModal = new StartInfoModal({}, DefaultManager, this.game);
         this.game.keys.addKey(Phaser.Keyboard.ENTER).onDown.addOnce(this._onStartInfoClose, this);
@@ -219,6 +382,7 @@ class GameProcess {
         this.game.keys.addKey(Phaser.Keyboard.ENTER).onDown.remove(this._onStartInfoClose, this);
         this.game.keys.addKey(Phaser.Keyboard.A).onDown.remove(this._onStartInfoClose, this);
 
+        this._initParts();
 
         //Evenements de progression du jeu ici (voir jeu 1 ou jeu 2)
 
@@ -227,6 +391,13 @@ class GameProcess {
         this.game.controlsEnabled = true;
 
         this._timeStart = this.game.time.now;
+    }
+
+    _initParts() {
+        //When ready, lets init parts.
+        this.partOne.finish.addOnce(this.partTwo.start, this.partTwo);
+        this.partTwo.finish.addOnce(this._onFinish, this);
+        this.partOne.start();
     }
 
     _onFinish() {
@@ -241,10 +412,12 @@ class GameProcess {
         });
         endInfoModal.onExit.addOnce(() => window.closeGameModal(), this);
         endInfoModal.onReplay.addOnce(() => window.location.reload(), this);
+        let healthLevel = PhaserManager.get('gabator').stats.state.health;
+        let healthLevelMax = PhaserManager.get('gabator').stats.healthMax;
         endInfoModal.toggle(true, {}, {
-            star1: false,
-            star2: false,
-            star3: false
+            star1: this.quests.get('steps_quest').isDone,
+            star2: this.quests.get('truck_quest').isDone,
+            star3: healthLevel == healthLevelMax ? true : false
         }, {
             health: PhaserManager.get('gabator').stats.state.health,
             organization: PhaserManager.get('gabator').stats.state.organization,

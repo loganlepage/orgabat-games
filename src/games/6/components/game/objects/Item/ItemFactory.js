@@ -18,7 +18,8 @@ export default class ItemFactory extends GameFactory {
                     (new Item(this.game, items[type][name].title, type,
                         items[type][name].x + ItemFactory.X_BEGIN_AT,
                         items[type][name].y,
-                        items[type][name].needed
+                        items[type][name].needed,
+                        items[type][name].clicked
                     )).sprite
                 );
             }
