@@ -237,25 +237,31 @@ class PartTwo {
                     PhaserManager.get('gabator').stats.changeValues({
                         health: PhaserManager.get('gabator').stats.state.health - 1,
                     });
+                    Canvas.get('gabator').modal.showHelp(
+                        "Attention, ces pots de peinture sont trop lourds"
+                    );
                 } else {
-                    //
+                    Canvas.get('gabator').modal.showHelp(
+                        "La totalité de la peinture a déjà été chargée"
+                    );
                 }
-            }
-            if (name === "jeu6/peinture5l") {
+            } else if (name === "jeu6/peinture5l") {
                 if (this.paintCapacity <= 25) {
                     this.paintCapacity += 5;
                 } else {
-                    //
+                    Canvas.get('gabator').modal.showHelp(
+                        "La totalité de la peinture a déjà été chargée"
+                    );
                 }
-            }
-            if (name === "jeu6/aspirateur" || name === "jeu6/ponceuse" || name === "jeu6/caisse") {
+            } else if (name === "jeu6/aspirateur" || name === "jeu6/ponceuse" || name === "jeu6/caisse") {
                 if (this.materialCapacity < 3) {
                     this.materialCapacity++;
                 } else {
-                    //
+                    Canvas.get('gabator').modal.showHelp(
+                        "La totalité des outils a déjà été chargée"
+                    );
                 }
-            }
-            if (name === "jeu6/map") {
+            } else if (name === "jeu6/map") {
                 if (this.firstMap) {
                     this.firstMap = false;
                     this.mapSteps();
@@ -263,8 +269,14 @@ class PartTwo {
                 if (this.mapCapacity <= 5) {
                     this.mapCapacity++;
                 } else {
-                    //
+                    Canvas.get('gabator').modal.showHelp(
+                        "La totalité des enduits a déjà été chargée"
+                    );
                 }
+            } else {
+                Canvas.get('gabator').modal.showHelp(
+                    "L'élément n'est pas correct"
+                );
             }
             this.paintText.text = `Quantité de peinture : ${this.paintCapacity}/30`;
             this.suppliesText.text = `Matériels : ${this.materialCapacity}/3`;
@@ -313,6 +325,9 @@ class PartTwo {
                     PhaserManager.get('gabator').stats.changeValues({
                         health: PhaserManager.get('gabator').stats.state.health - 1,
                     });
+                    Canvas.get('gabator').modal.showHelp(
+                        "Mauvaise étape sélectionnée"
+                    );
                 }
                 if (currentPosition >= 4 && !finished) {
                     this.mapStepText.text = `Toutes les étapes ont été validées`;
