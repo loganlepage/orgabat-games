@@ -84,7 +84,7 @@ class MemoryPart {
         // this.stepText = this.game.add.text(10, 10, `Cartes trouvées: ${this.validatedCards}/10`, {fill: '#ffffff'});
         this.addCards();
         this.totalValidatedCards = 0;
-        this.addButton(); // To go to the end
+        // this.addButton(); // To go to the end
     }
 
     addCards() {
