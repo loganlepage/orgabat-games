@@ -54,10 +54,10 @@ export default class Play extends State {
 
     /** Called by Phaser to render */
     render() {
-        if(Config.developer.debug) {
+        /*if(Config.developer.debug) {
             this.game.time.advancedTiming = true; //SEE FPS
             this.game.debug.text(this.game.time.fps, 2, 14, "#00ff00");
-        }
+        }*/
     }
 
     /**
@@ -87,8 +87,8 @@ class PartOne {
         this.gameProcess.questsCleaned.addOnce(this.onQuestsCleaned, this);
         this.stepText = this.game.add.text(10, 10, `Étapes séléctionnées: ${this.clickedSteps}/8`, {fill: '#ffffff'});
         this.addSteps();
-        // this.addButton();
-        // this.onQuestsCleaned(); // To go to the end
+        this.addButton();
+        this.onQuestsCleaned(); // To go to the end
     }
 
     addSteps() {
@@ -170,12 +170,12 @@ class PartTwo {
         this.game.layer.zDepth0.addChild(this.paintText);
         this.game.layer.zDepth0.addChild(this.suppliesText);
         this.game.layer.zDepth0.addChild(this.coatText);
-        this.addShelf();
         this.addTruck();
+        this.addShelf();
         this.addItems();
         this.gameProcess.quests.add(new TruckQuest(this.gameProcess.game));
         this.gameProcess.questsCleaned.addOnce(this.onQuestsCleaned, this);
-        // this.mapSteps(); // To go to the end
+        this.mapSteps(); // To go to the end
         // this.addButton(); // To go to the end
     }
 
@@ -183,26 +183,38 @@ class PartTwo {
         this.finish.dispatch();
     }
 
-    addShelf() {
-        this.shelf = new Shelf({
-            game: this.game
-        });
-        // this.shelf.sprite.anchor.setTo(0.5, 0.5);
-        this.shelf.sprite.anchor.setTo(-0.2, 0);
-        this.game.layer.zDepth0.addChild(this.shelf.sprite);
-    }
-
     addTruck() {
         this.truck = new Truck({
             game: this.game,
-            y: this.game.world.height
+            x: 20,
+            y: 400
         });
         // this.truck.sprite.anchor.set(1, 0.95);
-        this.game.layer.zDepth1.addChild(this.shelf.sprite);
+        this.game.layer.zDepth0.addChild(this.truck.sprite);
+    }
+
+    addShelf() {
+        this.shelf = new Shelf({
+            game: this.game,
+            x: this.game.world.width - 400,
+            y: 0
+        });
+        this.shelf.sprite.anchor.setTo(0, 0);
+        // this.shelf.sprite.anchor.setTo(-0.2, 0);
+        this.game.layer.zDepth0.addChild(this.shelf.sprite);
     }
 
     addItems() {
+        Canvas.get('gabator').modal.showHelp(
+            "Il faut: un aspirateur, une ponceuse, une caisse à outils, 30L de peinture et 6 sacs d'enduit"
+        );
         this.game.itemGroup = new ItemFactory(this.game, Config.items);
+        // this.shelf.sprite.addChild(this.game.itemGroup);
+        this.game.layer.zDepth1.addChild(this.game.itemGroup);
+        this.addItemsAction();
+    }
+
+    addItemsAction() {
         this.game.itemGroup.forEach((item) => {
             item.inputEnabled = true;
             item.input.useHandCursor = true;
@@ -212,17 +224,29 @@ class PartTwo {
                     item.obj.checkOverlap(currentSprite, this.truck.sprite);
                 } else if (name === "jeu6/peinture5l" && this.paintCapacity < 30) {
                     item.obj.checkOverlap(currentSprite, this.truck.sprite);
+                } else if ((name === "jeu6/peinture15l" || name === "jeu6/peinture5l") && this.paintCapacity >= 30) {
+                    Canvas.get('gabator').modal.showHelp(
+                        "La totalité de la peinture a déjà été chargée"
+                    );
+                    currentSprite.position.copyFrom(currentSprite.originalPosition);
                 } else if (name === "jeu6/map" && this.mapCapacity < 6) {
                     item.obj.checkOverlap(currentSprite, this.truck.sprite);
+                } else if (name === "jeu6/map" && this.mapCapacity >= 6) {
+                    Canvas.get('gabator').modal.showHelp(
+                        "La totalité des enduits a déjà été chargée"
+                    );
+                    currentSprite.position.copyFrom(currentSprite.originalPosition);
                 } else if ((name === "jeu6/aspirateur" || name === "jeu6/ponceuse" || name === "jeu6/caisse") && this.materialCapacity < 3) {
                     item.obj.checkOverlap(currentSprite, this.truck.sprite);
                 } else {
+                    Canvas.get('gabator').modal.showHelp(
+                        "L'élément n'est pas correct"
+                    );
                     currentSprite.position.copyFrom(currentSprite.originalPosition);
                 }
             }, this);
             item.obj.onDropped.add(this.updateQuantity, this);
         });
-        this.shelf.sprite.addChild(this.game.itemGroup);
     }
 
     updateQuantity(currentSprite) {
@@ -232,6 +256,8 @@ class PartTwo {
 
         if (currentSprite.obj.check()) {
             if (name === "jeu6/peinture15l") {
+                console.log("15L");
+                console.log(this.paintCapacity);
                 if (this.paintCapacity <= 15) {
                     this.paintCapacity += 15;
                     PhaserManager.get('gabator').stats.changeValues({
@@ -240,26 +266,14 @@ class PartTwo {
                     Canvas.get('gabator').modal.showHelp(
                         "Attention, ces pots de peinture sont trop lourds"
                     );
-                } else {
-                    Canvas.get('gabator').modal.showHelp(
-                        "La totalité de la peinture a déjà été chargée"
-                    );
                 }
             } else if (name === "jeu6/peinture5l") {
                 if (this.paintCapacity <= 25) {
                     this.paintCapacity += 5;
-                } else {
-                    Canvas.get('gabator').modal.showHelp(
-                        "La totalité de la peinture a déjà été chargée"
-                    );
                 }
             } else if (name === "jeu6/aspirateur" || name === "jeu6/ponceuse" || name === "jeu6/caisse") {
                 if (this.materialCapacity < 3) {
                     this.materialCapacity++;
-                } else {
-                    Canvas.get('gabator').modal.showHelp(
-                        "La totalité des outils a déjà été chargée"
-                    );
                 }
             } else if (name === "jeu6/map") {
                 if (this.firstMap) {
@@ -268,15 +282,7 @@ class PartTwo {
                 }
                 if (this.mapCapacity <= 5) {
                     this.mapCapacity++;
-                } else {
-                    Canvas.get('gabator').modal.showHelp(
-                        "La totalité des enduits a déjà été chargée"
-                    );
                 }
-            } else {
-                Canvas.get('gabator').modal.showHelp(
-                    "L'élément n'est pas correct"
-                );
             }
             this.paintText.text = `Quantité de peinture : ${this.paintCapacity}/30`;
             this.suppliesText.text = `Matériels : ${this.materialCapacity}/3`;
@@ -300,39 +306,48 @@ class PartTwo {
     mapSteps() {
         // Draw a rectangle
         this.graphics = this.game.add.graphics(0, 0);
-        this.game.layer.zDepthOverAll.addChild(this.graphics);
+        this.game.layer.zDepth1.addChild(this.graphics);
         this.graphics.lineStyle(0, "balck", 0);
         this.graphics.beginFill("black", 0.5);
         this.graphics.drawRect(0, 0, this.game.world.width, this.game.world.height);
         this.graphics.lineStyle(1, "balck", 0);
-        this.graphics.drawRect(200, 150, 600, 100);
         this.addMapSteps();
     }
 
     addMapSteps() {
+        this.mapStepGroup = new MapStepFactory(this.game, Config.mapSteps);
+        this.addMapStepActions();
+    }
+
+    addMapStepActions() {
+        this.disableControls();
+
         let currentPosition = 1;
         let finished = false;
+
         this.mapStepText = this.game.add.text(200, 100, `Schéma pour l'étape numéro : ${currentPosition}/3`, {fill: '#ffffff'});
-        this.mapStepGroup = new MapStepFactory(this.game, Config.mapSteps);
+
         this.mapStepGroup.forEach((mapStep) => {
             mapStep.sprite.input.useHandCursor = true;
             mapStep.sprite.events.onInputDown.add(function(){
-                if (mapStep.check(currentPosition) && !finished){
-                    currentPosition++;
-                    this.mapStepText.text = `Schéma pour l'étape numéro : ${currentPosition}/3`;
-                    mapStep.validate();
-                } else if (!mapStep.check(currentPosition) && !finished){
-                    PhaserManager.get('gabator').stats.changeValues({
-                        health: PhaserManager.get('gabator').stats.state.health - 1,
-                    });
-                    Canvas.get('gabator').modal.showHelp(
-                        "Mauvaise étape sélectionnée"
-                    );
-                }
-                if (currentPosition >= 4 && !finished) {
-                    this.mapStepText.text = `Toutes les étapes ont été validées`;
-                    finished = true;
-                    this.addMapStepsButton();
+                if (!mapStep.validated) {
+                    if (mapStep.check(currentPosition) && !finished){
+                        currentPosition++;
+                        this.mapStepText.text = `Schéma pour l'étape numéro : ${currentPosition}/3`;
+                        mapStep.validate();
+                    } else if (!mapStep.check(currentPosition) || !finished){
+                        PhaserManager.get('gabator').stats.changeValues({
+                            health: PhaserManager.get('gabator').stats.state.health - 1,
+                        });
+                        Canvas.get('gabator').modal.showHelp(
+                            "Mauvaise étape sélectionnée"
+                        );
+                    }
+                    if (currentPosition >= 4 && !finished) {
+                        this.mapStepText.text = `Toutes les étapes ont été validées`;
+                        finished = true;
+                        this.addMapStepsButton();
+                    }
                 }
             }, this);
             this.game.layer.zDepthOverAll.addChild(mapStep.sprite);
@@ -342,15 +357,24 @@ class PartTwo {
     addMapStepsButton() {
         this.mapButton = new Button(this.game, this.game.world.centerX*2 - 100, this.game.world.centerY*2 - 50, null, this);
         this.mapButton.sprite.events.onInputDown.add(this.removeMapSteps, this);
-        this.game.layer.zDepthOverAll.addChild(this.mapButton.sprite);
+        this.game.layer.zDepth1.addChild(this.mapButton.sprite);
     }
 
     removeMapSteps() {
+        this.addItemsAction();
         this.mapButton.destroy();
         this.mapStepText.destroy();
         this.graphics.destroy();
         this.mapStepGroup.forEach((mapStep) => {mapStep.destroy()}, this);
+        this.mapStepGroup.destroy();
         this.mapStepGroup = null;
+    }
+
+    disableControls() {
+        this.game.itemGroup.forEach((item) => {
+            item.inputEnabled = false;
+            item.input.useHandCursor = false;
+        });
     }
 
 }

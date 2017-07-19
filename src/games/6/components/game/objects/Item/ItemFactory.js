@@ -16,7 +16,8 @@ export default class ItemFactory extends GameFactory {
             for (let name in items[type]) {
                 this.add(
                     (new Item(this.game, items[type][name].title, type,
-                        items[type][name].x + ItemFactory.X_BEGIN_AT,
+                        // items[type][name].x + ItemFactory.X_BEGIN_AT,
+                        items[type][name].x,
                         items[type][name].y,
                         items[type][name].needed,
                         items[type][name].clicked

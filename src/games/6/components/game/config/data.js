@@ -7,32 +7,32 @@ export default {
     atlas: "jeu6",
     items: {
         materiaux: {
-            peinture15l1: {needed: true, title: "peinture15l", x: 1000, y: 140, clicked: false},
-            peinture15l2: {needed: true, title: "peinture15l", x: 1100, y: 140, clicked: false},
-            peinture15l3: {needed: true, title: "peinture15l", x: 1200, y: 140, clicked: false},
-            peinture15l4: {needed: true, title: "peinture15l", x: 1300, y: 140, clicked: false},
-            peinture5l1: {needed: false, title: "peinture5l", x: 940, y: 280, clicked: false},
-            peinture5l2: {needed: false, title: "peinture5l", x: 1000, y: 280, clicked: false},
-            peinture5l3: {needed: false, title: "peinture5l", x: 1060, y: 280, clicked: false},
-            peinture5l4: {needed: false, title: "peinture5l", x: 1120, y: 280, clicked: false},
-            peinture5l5: {needed: false, title: "peinture5l", x: 1180, y: 280, clicked: false},
-            peinture5l6: {needed: false, title: "peinture5l", x: 1240, y: 280, clicked: false},
-            peinture5l7: {needed: false, title: "peinture5l", x: 1300, y: 280, clicked: false},
-            map1: {needed: true, title: "map", x: 950, y: 520, clicked: false},
-            map2: {needed: true, title: "map", x: 1020, y: 520, clicked: false},
-            map3: {needed: true, title: "map", x: 1090, y: 520, clicked: false},
-            map4: {needed: true, title: "map", x: 1160, y: 520, clicked: false},
-            map5: {needed: true, title: "map", x: 1230, y: 520, clicked: false},
-            map6: {needed: true, title: "map", x: 1300, y: 520, clicked: false},
-            map7: {needed: true, title: "map", x: 880, y: 520, clicked: false},
+            peinture15l1: {needed: true, title: "peinture15l", x: 750, y: 100, clicked: false},
+            peinture15l2: {needed: true, title: "peinture15l", x: 800, y: 100, clicked: false},
+            peinture15l3: {needed: true, title: "peinture15l", x: 850, y: 100, clicked: false},
+            peinture15l4: {needed: true, title: "peinture15l", x: 900, y: 100, clicked: false},
+            peinture5l1: {needed: false, title: "peinture5l", x: 600, y: 190, clicked: false},
+            peinture5l2: {needed: false, title: "peinture5l", x: 650, y: 190, clicked: false},
+            peinture5l3: {needed: false, title: "peinture5l", x: 700, y: 190, clicked: false},
+            peinture5l4: {needed: false, title: "peinture5l", x: 750, y: 190, clicked: false},
+            peinture5l5: {needed: false, title: "peinture5l", x: 800, y: 190, clicked: false},
+            peinture5l6: {needed: false, title: "peinture5l", x: 850, y: 190, clicked: false},
+            peinture5l7: {needed: false, title: "peinture5l", x: 900, y: 190, clicked: false},
+            map1: {needed: true, title: "map", x: 600, y: 280, clicked: false},
+            map2: {needed: true, title: "map", x: 650, y: 280, clicked: false},
+            map3: {needed: true, title: "map", x: 700, y: 280, clicked: false},
+            map4: {needed: true, title: "map", x: 750, y: 280, clicked: false},
+            map5: {needed: true, title: "map", x: 800, y: 280, clicked: false},
+            map6: {needed: true, title: "map", x: 850, y: 280, clicked: false},
+            map7: {needed: true, title: "map", x: 900, y: 280, clicked: false},
         }, materiels: {
-            bache: {needed: false, title: "bache", x: 1000, y: 400, clicked: false},
-            aspirateur: {needed: true, title: "aspirateur", x: 1100, y: 400, clicked: false},
-            ponceuse: {needed: true, title: "ponceuse", x: 1200, y: 400, clicked: false},
-            caisse: {needed: true, title: "caisse", x: 1300, y: 400, clicked: false},
-            echaffaudage: {needed: false, title: "echaffaudage", x: 700, y:500, clicked: false},
-            escabeau: {needed: false, title: "escabeau", x: 700, y: 350, clicked: false},
-            chariot: {needed: false, title: "chariot", x: 700, y: 220, clicked: false}
+            bache: {needed: false, title: "bache", x: 680, y: 360, clicked: false},
+            aspirateur: {needed: true, title: "aspirateur", x: 750, y: 360, clicked: false},
+            ponceuse: {needed: true, title: "ponceuse", x: 820, y: 360, clicked: false},
+            caisse: {needed: true, title: "caisse", x: 900, y: 360, clicked: false},
+            chariot: {needed: false, title: "chariot", x: 650, y: 450, clicked: false},
+            escabeau: {needed: false, title: "escabeau", x: 780, y: 450, clicked: false},
+            echaffaudage: {needed: false, title: "echaffaudage", x: 900, y:450, clicked: false}
         }
     },
     steps: {
@@ -51,11 +51,11 @@ export default {
         step13: {good: true, title: "Je dégage la zone de passage", x:50, y:530, clicked: false}
     },
     mapSteps: {
-        mapStep1: {good: false, key: "mapStep1", validated: false, position: null, x: 250, y: 200},
-        mapStep2: {good: true, key: "mapStep4", validated: false, position: 1, x: 350, y: 200},
-        mapStep3: {good: false, key: "mapStep2", validated: false, position: null, x: 450, y: 200},
-        mapStep4: {good: true, key: "mapStep5", validated: false, position: 2, x: 550, y: 200},
-        mapStep5: {good: false, key: "mapStep3", validated: false, position: null, x: 650, y: 200},
-        mapStep6: {good: true, key: "mapStep6", validated: false, position: 3, x: 750, y: 200}
+        mapStep1: {good: false, key: "mapStep1", validated: false, position: null},
+        mapStep2: {good: true, key: "mapStep4", validated: false, position: 1},
+        mapStep3: {good: false, key: "mapStep2", validated: false, position: null},
+        mapStep4: {good: true, key: "mapStep5", validated: false, position: 2},
+        mapStep5: {good: false, key: "mapStep3", validated: false, position: null},
+        mapStep6: {good: true, key: "mapStep6", validated: false, position: 3}
     }
 }

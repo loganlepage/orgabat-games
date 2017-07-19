@@ -4,21 +4,88 @@ import Phaser from "phaser";
 
 export default class MapStepFactory extends GameFactory {
 
+    coordonates = [];
+
     constructor(game, mapSteps) {
         super(game);
-        for (let name in mapSteps) {
+
+        this.mapSteps = mapSteps;
+
+        // this.cardsWidth = 150;
+        // this.cardsHeight = 150;  // scale(1)
+
+        this.cardsWidth = 146;
+        this.cardsHeight = 146;  // scale(0.95) and achor(1)
+
+        this.cardNumberX = 6;
+        this.cardNumberY = 1;
+
+        this.marginX = 20;
+        this.marginY = 20;
+
+        this.bigWidthMargin = (this.game.width - (this.cardNumberX*this.cardsWidth) - ((this.cardNumberX-1)*this.marginX)) / 2;
+        this.bigHeightMargin = 150;
+
+        this.createCoordonates();
+        this.draw();
+        this.createSteps();
+
+    }
+
+    createCoordonates() {
+
+        let countX = 0;
+        // for (let x = (bigWidthMargin + (cardsWidth / 2)); countX < cardNumberX; x += (cardsWidth + marginX)) { // anchor(0.5)
+        for (let x = (this.bigWidthMargin); countX < this.cardNumberX; x += (this.cardsWidth + this.marginX)) { // anchor(0)
+            countX++;
+            let countY = 0;
+            // for (let y = (bigHeightMargin + (cardsHeight / 2)); countY < cardNumberY; y += (cardsHeight + marginY)) { // anchor(0.5)
+            for (let y = (this.bigHeightMargin); countY < this.cardNumberY; y += (this.cardsHeight + this.marginY)) { // anchor(0)
+                countY++;
+                this.coordonates.push({x,y});
+            }
+        }
+
+    }
+
+    draw() {
+        let length = this.coordonates.length;
+
+        let littleMargin = 10;
+
+        let x = this.coordonates[0].x - littleMargin;
+        let y = this.coordonates[0].y - littleMargin;
+
+        let width = this.game.width - (2*this.bigWidthMargin) + littleMargin;
+        let height = this.cardsHeight + littleMargin;
+
+        this.graphics = this.game.add.graphics(0, 0);
+        this.game.layer.zDepth1.addChild(this.graphics);
+        this.graphics.beginFill("black", 0.5);
+        this.graphics.drawRect(x, y, width, height);
+    }
+
+    createSteps() {
+        let count = 0;
+
+        for (let name in this.mapSteps) {
             this.add(
                 (new MapStep(
                     this.game,
-                    mapSteps[name].good,
-                    mapSteps[name].key,
-                    mapSteps[name].validated,
-                    mapSteps[name].position,
-                    mapSteps[name].x,
-                    mapSteps[name].y
+                    this.mapSteps[name].good,
+                    this.mapSteps[name].key,
+                    this.mapSteps[name].validated,
+                    this.mapSteps[name].position,
+                    this.coordonates[count].x,
+                    this.coordonates[count].y,
                 ))
             );
+            count++;
         }
+    }
+
+    destroy() {
+        this.graphics.destroy();
     }
 
 }

@@ -6,7 +6,7 @@ export default class ItemSprite extends BasicGameSprite {
     constructor(game, x, y, key, itemObj) {
         super(game, x, y, `jeu6/${key}`, itemObj);
         this.anchor.setTo(0.5);
-        this.scale.set(0.7);
+        this.scale.set(0.5);
         this.input.enableDrag();
         this.originalPosition = this.position.clone();
     }

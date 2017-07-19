@@ -6,7 +6,7 @@ import Phaser from 'phaser';
 export default class Truck extends BasicGameObject {
     ready = false;
 
-    constructor({game, x = game.world.centerX, y = 0}) {
+    constructor({game, x, y}) {
         super(game);
         this.addSprite(new TruckSprite({
             game: this.game,
