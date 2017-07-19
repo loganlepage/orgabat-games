@@ -87,8 +87,8 @@ class PartOne {
         this.gameProcess.questsCleaned.addOnce(this.onQuestsCleaned, this);
         this.stepText = this.game.add.text(10, 10, `Étapes séléctionnées: ${this.clickedSteps}/8`, {fill: '#ffffff'});
         this.addSteps();
-        this.addButton();
-        this.onQuestsCleaned(); // To go to the end
+        // this.addButton();
+        // this.onQuestsCleaned(); // To go to the end
     }
 
     addSteps() {
