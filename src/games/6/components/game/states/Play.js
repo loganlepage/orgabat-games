@@ -175,7 +175,7 @@ class PartTwo {
         this.addItems();
         this.gameProcess.quests.add(new TruckQuest(this.gameProcess.game));
         this.gameProcess.questsCleaned.addOnce(this.onQuestsCleaned, this);
-        this.mapSteps(); // To go to the end
+        // this.mapSteps(); // To go to the end
         // this.addButton(); // To go to the end
     }
 
