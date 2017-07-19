@@ -81,7 +81,6 @@ class MemoryPart {
     start() {
         this.gameProcess.quests.add(new MemoryQuest(this.gameProcess.game));
         this.gameProcess.questsCleaned.addOnce(this.onQuestCleaned, this);
-        // this.stepText = this.game.add.text(10, 10, `Cartes trouvées: ${this.validatedCards}/10`, {fill: '#ffffff'});
         this.addCards();
         this.totalValidatedCards = 0;
         // this.addButton(); // To go to the end
@@ -102,55 +101,55 @@ class MemoryPart {
 
     hideCards() {
         let count = 0;
-        let matching = [];
+        this.matching = [];
         this.cardsGroup.forEach((card) => {
             card.turnBack();
+            card.dezoom();
             if (!card.validated) {
                 card.sprite.inputEnabled = true;
                 card.sprite.input.useHandCursor = true;
                 card.sprite.events.onInputDown.add(function(){
                     card.click();
-                    matching.push(card);
+                    this.matching.push(card);
                     count++;
                     if (count>=2) {
                         count=0;
-                        this.matchCards(matching);
-                        matching = [];
+                        this.game.time.events.add(Phaser.Timer.SECOND * 2, this.matchCards, this);
                     }
                 }, this);
             }
         });
-        /*this.cardsGroup.forEach((card) => {
-            card.turnBack();
-        });*/
     }
 
-    matchCards(matching) {
-        // console.log(matching);
+    matchCards() {
         this.disableControls();
-        if (matching[0].key == matching[1].key){
-            // this.displayCard(matching);
-            this.game.time.events.add(Phaser.Timer.SECOND * 0.5, function(){
-                this.displayCard(matching);
-            }, this);
+        if (this.matching[0].key == this.matching[1].key){
+            this.displayCard(this.matching);
+            // this.game.time.events.add(Phaser.Timer.SECOND * 0.5, function(){
+            //     this.displayCard(matching);
+            // }, this); // display with a delay
         } else {
+            this.hideCards();
             PhaserManager.get('gabator').stats.changeValues({
                 health: PhaserManager.get('gabator').stats.state.health - 1,
             });
-            this.game.time.events.add(Phaser.Timer.SECOND * 2, this.hideCards, this);
+            // this.game.time.events.add(Phaser.Timer.SECOND * 2, this.hideCards, this); // hide cards with a delay
         }
+        this.matching = [];
+        this.hideCards();
     }
 
-    displayCard(cards) {
+    displayCard() {
         this.totalValidatedCards++;
         if (this.totalValidatedCards >= 10) {
             this.addButton();
         }
-        let key = "";
-        cards.forEach((card) => {
+
+        this.matching.forEach((card) => {
             card.validate();
-            key = card.key;
         });
+
+        /* let key = this.matching[0].key; // display big card and click to hide
 
         let width = this.game.width;
         let height = this.game.height;
@@ -168,14 +167,14 @@ class MemoryPart {
         this.bigCard.addImage();
         this.bigCard.sprite.inputEnabled = true;
         this.bigCard.sprite.input.useHandCursor = true;
-        this.bigCard.sprite.events.onInputDown.add(this.destroyBigCard, this);
-        // this.game.time.events.add(Phaser.Timer.SECOND * 2, this.destroyBigCard, this);
+        this.bigCard.sprite.events.onInputDown.add(this.destroyBigCard, this);*/
+        // this.game.time.events.add(Phaser.Timer.SECOND * 2, this.destroyBigCard, this); // hide with a delay
     }
 
-    destroyBigCard() {
+    /*destroyBigCard() { // hide big card, called by displayCard
         this.bigCard.destroy();
         this.hideCards();
-    }
+    }*/
 
     addButton() {
         this.button = new Button(this.game, this.game.world.centerX*2 - 100, this.game.world.centerY*2 - 50, null, this);
@@ -226,9 +225,9 @@ class GameProcess {
         //On active Gabator
         if (PhaserManager.get('gabator').state.current == "play") {
             PhaserManager.get('gabator').state.getCurrentState().start();
-            /*Canvas.get('gabator').modal.showHelp(
-                "Attention à l'intégrité physique"
-            );*/
+            Canvas.get('gabator').modal.showHelp(
+                "Cliquer une fois sur la carte pour la retourner, une deuxième fois pour l'afficher en grand, et cliquer sur la grande carte pour la faire disparaitre"
+            );
         }
 
         this.game.keys.addKey(Phaser.Keyboard.ENTER).onDown.remove(this._onStartInfoClose, this);

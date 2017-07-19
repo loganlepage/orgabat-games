@@ -15,17 +15,18 @@ export default class CardFactory extends GameFactory {
         let width = this.game.width;
         let height = this.game.height;
 
-        // let cardsWidth = 95;
-        // let cardsHeight = 145;
+        let cardsWidth = 98;
+        let cardsHeight = 154;  // big carsd and scale(0.5)
 
-        let cardsWidth = 95;
-        let cardsHeight = 149;
+        // let cardsWidth = 95;
+        // let cardsHeight = 149;  // small cards and scale(0.95)
 
         let cardNumberX = 5;
         let cardNumberY = 4;
 
         let marginX = 50;
         let marginY = 5;
+
         let bigWidthMargin = (width - 5*cardsWidth - 4*marginX) / 2;
         let bigHeightMargin = (height - 4*cardsHeight - 3*marginY) / 2;
 
@@ -34,10 +35,10 @@ export default class CardFactory extends GameFactory {
         let countX = 0;
         let count = 0;
 
-        for (let x = bigWidthMargin; countX < cardNumberX; x += (cardsWidth + marginX)) {
+        for (let x = (bigWidthMargin + (cardsWidth / 2)); countX < cardNumberX; x += (cardsWidth + marginX)) {
             countX++;
             let countY = 0;
-            for (let y = bigHeightMargin; countY < cardNumberY; y += (cardsHeight + marginY)) {
+            for (let y = (bigHeightMargin + (cardsHeight / 2)); countY < cardNumberY; y += (cardsHeight + marginY)) {
                 countY++;
                 count++;
                 this.coordonates.push({x,y});
