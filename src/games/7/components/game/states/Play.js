@@ -94,8 +94,10 @@ class MemoryPart {
 
     disableControls() {
         this.cardsGroup.forEach((card) => {
-            card.sprite.inputEnabled = false;
-            card.sprite.input.useHandCursor = false;
+            if (!card.clicked) {
+                card.sprite.inputEnabled = false;
+                card.sprite.input.useHandCursor = false;
+            }
         });
     }
 
@@ -110,11 +112,13 @@ class MemoryPart {
                 card.sprite.input.useHandCursor = true;
                 card.sprite.events.onInputDown.add(function(){
                     card.click();
+                    card.clicked = true;
                     this.matching.push(card);
                     count++;
                     if (count>=2) {
                         count=0;
                         this.game.time.events.add(Phaser.Timer.SECOND * 2, this.matchCards, this);
+                        this.game.time.events.add(Phaser.Timer.SECOND * 0, this.disableControls, this);
                     }
                 }, this);
             }
@@ -122,13 +126,16 @@ class MemoryPart {
     }
 
     matchCards() {
-        this.disableControls();
+        // this.disableControls();
         if (this.matching[0].key == this.matching[1].key){
             this.displayCard(this.matching);
             // this.game.time.events.add(Phaser.Timer.SECOND * 0.5, function(){
             //     this.displayCard(matching);
             // }, this); // display with a delay
         } else {
+            this.matching.forEach((card) => {
+                card.clicked = false;
+            });
             this.hideCards();
             PhaserManager.get('gabator').stats.changeValues({
                 health: PhaserManager.get('gabator').stats.state.health - 1,
@@ -226,7 +233,7 @@ class GameProcess {
         if (PhaserManager.get('gabator').state.current == "play") {
             PhaserManager.get('gabator').state.getCurrentState().start();
             Canvas.get('gabator').modal.showHelp(
-                "Cliquer une fois sur la carte pour la retourner, une deuxième fois pour l'afficher en grand, et cliquer sur la grande carte pour la faire disparaitre"
+                "Cliquer 1 fois sur la carte pour la retourner, une 2ème fois pour zoomer, et cliquer sur le zoom pour le faire disparaitre"
             );
         }
 

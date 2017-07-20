@@ -9,12 +9,13 @@ import BigCard from "./BigCard";
 
 export default class Card extends BasicGameObject {
 
-    constructor(game, x, y, key, validated) {
+    constructor(game, x, y, key, validated, clicked) {
         super(game);
         this.x = x;
         this.y = y;
         this.key = key;
         this.validated = validated;
+        this.clicked = clicked;
         this.isZoomed = false;
     }
 
