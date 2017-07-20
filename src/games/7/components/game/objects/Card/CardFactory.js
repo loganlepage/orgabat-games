@@ -54,7 +54,8 @@ export default class CardFactory extends GameFactory {
                     this.coordonates[count2].x,
                     this.coordonates[count2].y,
                     cards[name].key,
-                    cards[name].validated
+                    cards[name].validated,
+                    cards[name].clicked
                 ))
             );
             count2++;
