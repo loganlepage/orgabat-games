@@ -57,6 +57,19 @@ export default class Card extends BasicGameObject {
 
             this.bigCard.sprite.events.onInputDown.add(this.dezoom, this);
             // this.game.time.events.add(Phaser.Timer.SECOND * 2, this.dezoom, this);
+
+            // Draw a cross
+            let crossWidth = 40;
+            let x = bigWidthMargin + this.bigCard.sprite.width - crossWidth;
+            let y = bigHeightMargin;
+            this.graphics = this.game.add.graphics(0, 0);
+            this.game.layer.zDepthOverAll.addChild(this.graphics);
+            this.graphics.lineStyle(3, "balck", 1);
+            // this.graphics.drawRect(x, y, crossWidth, crossWidth);
+            this.graphics.moveTo(x,y);
+            this.graphics.lineTo(x + crossWidth, y + crossWidth);
+            this.graphics.moveTo(x + crossWidth,y);
+            this.graphics.lineTo(x, y + crossWidth);
         }
     }
 
@@ -67,7 +80,12 @@ export default class Card extends BasicGameObject {
         try {
             this.bigCard.destroy();
         } catch (e) {
-
+            //
+        }
+        try {
+            this.graphics.destroy();
+        } catch (e) {
+            //
         }
     }
 
