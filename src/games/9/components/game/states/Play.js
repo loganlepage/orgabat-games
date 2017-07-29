@@ -11,8 +11,6 @@ import {DefaultManager, Stack} from 'system/phaser/Modal';
 import QuestManager, {DomQuestList} from 'system/phaser/utils/Quest';
 import Config from "../config/data";
 
-import ResponseFactory from "../objects/Response/ResponseFactory";
-import Player from "../objects/Player/Player";
 import Step from "../objects/Step/Step";
 
 import CommunicationQuest from "../quests/CommunicationQuest";
@@ -70,15 +68,22 @@ export default class Play extends State {
 
 class Engine {
 
+    step;
     stepNumber = 0;
+    stepNames = [];
 
     constructor(gameProcess) {
         this.gameProcess = gameProcess;
         this.game = gameProcess.game;
+        this.stepNames = ["stepOne","stepTwo","stepThree","stepFour","stepFive","stepSix"];
     }
 
     start() {
-        //
+        console.log("Start");
+        let stepName = this.stepNames[this.stepNumber];
+        this.step = new Step(this, Config."${stepName}");
+        this.stepNumber++;
+        this.step.finish.addOnce(this.start);
     }
 
 }

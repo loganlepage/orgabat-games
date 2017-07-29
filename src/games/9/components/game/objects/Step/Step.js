@@ -3,23 +3,26 @@ import BasicGameObject from "system/phaser/BasicGameObject";
 import Phaser from 'phaser';
 import {Signal} from 'phaser';
 
+// import ResponseFactory from "../Response/ResponseFactory";
+// import Player from "../Player/Player";
+
 export default class Step extends BasicGameObject {
 
-    stepFinished = new Signal();
+    finish = new Signal();
+    player;
+    responseGroup;
 
-    constructor(game, answer, text) {
+    constructor(game, stepData) {
         super(game);
-        this.answer = answer;
-        this.text = text;
+        console.log(stepData);
     }
 
     finishStep() {
-        this.stepFinished.dispatch();
+        this.finish.dispatch();
     }
 
     displayText() {
-        // graphics
-        // text
+        //
     }
 
     destroy(){

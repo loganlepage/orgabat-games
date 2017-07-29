@@ -34,28 +34,4 @@ export default class Response extends BasicGameObject {
             currentSprite.position.copyFrom(currentSprite.originalPosition);
             return false;
     }
-
-    /*destroy() {
-        this.destroy(true);
-    }*/
-
-    /*preUpdate() {
-        //
-    }
-
-    update() {
-        //
-    }
-
-    postUpdate() {
-        //
-    }
-
-    updateTransform() {
-        //
-    }
-
-    _renderCanvas() {
-        //
-    }*/
 }
