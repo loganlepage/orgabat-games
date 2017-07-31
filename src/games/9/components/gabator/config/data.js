@@ -4,7 +4,7 @@ export default {
     stats: {
         health: {
             max: 20,
-            default: 0
+            default: 20
         },
         organization: {
             max: 0,

@@ -11,7 +11,9 @@ import {DefaultManager, Stack} from 'system/phaser/Modal';
 import QuestManager, {DomQuestList} from 'system/phaser/utils/Quest';
 import Config from "../config/data";
 
+import ResponseFactory from "../objects/Response/ResponseFactory";
 import Step from "../objects/Step/Step";
+import Player from "../objects/Player/Player";
 
 import CommunicationQuest from "../quests/CommunicationQuest";
 
@@ -68,22 +70,34 @@ export default class Play extends State {
 
 class Engine {
 
+    finish = new Phaser.Signal();
+
     step;
     stepNumber = 0;
-    stepNames = [];
+
+    player;
+    responseGroup;
 
     constructor(gameProcess) {
         this.gameProcess = gameProcess;
-        this.game = gameProcess.game;
-        this.stepNames = ["stepOne","stepTwo","stepThree","stepFour","stepFive","stepSix"];
+
+        this.gameProcess.quests.add(new CommunicationQuest(this.gameProcess.game));
+        this.gameProcess.questsCleaned.addOnce(function(){
+            this.finish.dispatch();
+        }, this);
+
+        this.responseGroup = new ResponseFactory(gameProcess.game, Config.responses);
+        this.player = new Player(gameProcess.game, gameProcess.game.world.centerX, gameProcess.game.world.centerY);
     }
 
     start() {
-        console.log("Start");
-        let stepName = this.stepNames[this.stepNumber];
-        this.step = new Step(this, Config."${stepName}");
+        this.step = new Step(this.gameProcess.game, Config.steps[this.stepNumber], this.responseGroup, this.player);
         this.stepNumber++;
-        this.step.finish.addOnce(this.start);
+        if (this.stepNumber <= 5) {
+            this.step.finish.addOnce(this.start, this);
+        } else {
+            this.gameProcess.quests._quests.communication_quest.done();
+        }
     }
 
 }

@@ -1,13 +1,17 @@
 import GameFactory from "system/phaser/GameFactory";
-import Response from "./Response";
 import Phaser from "phaser";
+
+import Response from "./Response";
 
 export default class ResponseFactory extends GameFactory {
 
+    game;
+    number = 0;
     coordonates = [];
 
     constructor(game, items) {
         super(game);
+        // this.game = game;
 
         let width = this.game.width;
         let height = this.game.height;
@@ -21,7 +25,7 @@ export default class ResponseFactory extends GameFactory {
         this.number = itemsNumber;
 
         let xValue = (width / itemsNumber)/2;
-        let y = 400;
+        let y = 200;
 
         for (let i = 0; i < itemsNumber; i++) {
             let x = i * (2 * xValue) + xValue;
@@ -37,8 +41,7 @@ export default class ResponseFactory extends GameFactory {
                     this.coordonates[count].x,
                     this.coordonates[count].y,
                     items[item].key,
-                    items[item].file,
-                    items[item].position
+                    items[item].file
                 )).sprite
             );
             count++;

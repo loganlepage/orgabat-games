@@ -1,11 +1,11 @@
 import {Quest} from 'system/phaser/utils/Quest';
 import Config from '../config/data';
 
-export default class NumberQuest extends Quest {
+export default class CommunicationQuest extends Quest {
 
-    _name = 'Trouve rles bons numéros';
-    _key = 'numbers_quest';
-    _help = "Choisir les bons numéro de téléphone pour chaque type de secours";
+    _name = "Trouver les bonnes personnes vers qui s'adresser";
+    _key = 'communication_quest';
+    _help = "Glisser le personnage vers la personne appropriée en fonction de la situation";
 
     constructor(game) {
         super(game);

@@ -199,6 +199,19 @@
         </struct>
         <key>individualSpriteSettings</key>
         <map type="IndividualSpriteSettingsMap">
+            <key type="filename">files/jeu9/button/suivant.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>50,25,100,50</rect>
+                <key>scale9Paddings</key>
+                <rect>50,25,100,50</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
             <key type="filename">files/jeu9/people/carsat.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
@@ -275,6 +288,19 @@
                 <rect>31,15,63,31</rect>
                 <key>scale9Paddings</key>
                 <rect>31,15,63,31</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">files/jeu9/player/player.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>31,16,62,31</rect>
+                <key>scale9Paddings</key>
+                <rect>31,16,62,31</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
