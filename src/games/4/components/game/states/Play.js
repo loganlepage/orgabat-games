@@ -12,7 +12,7 @@ import QuestManager, {DomQuestList} from 'system/phaser/utils/Quest';
 import Truck from "../objects/Truck/Truck";
 import Shelf from "../objects/Shelf/Shelf";
 import Button from "../objects/Button/Button";
-import ChargeTruck from "../quests/ChargeTruck";
+import LoadTruck from "../quests/LoadTruck";
 import ItemFactory from "../objects/Item/ItemFactory";
 import Config from "../config/data";
 
@@ -30,13 +30,16 @@ export default class Play extends State {
      */
     create() {
         this.game.controlsEnabled = false;
-        this.game.stage.backgroundColor = '#DADAD5';
+        this.game.stage.backgroundColor = '#c3dbb6'; //green background
+
         this.text = this.game.add.text(16, 16, `Eléments insérés : ${this.capacity}`, {fill: '#ffffff'});
 
         this.initUI();
+        // this.addGrid();
         this.addShelf();
         this.addTruck();
         this.addItems();
+
         PhaserManager.ready('game', 'play');
 
         this.start();
@@ -53,20 +56,42 @@ export default class Play extends State {
         };
     }
 
+    // Grille de 10x10 pour placer les éléments
+    // addGrid() {
+    //     this.grid = this.game.add.graphics(0,0);
+    //     this.grid.lineStyle(1, 0xffffff, 1);
+    //     console.log(this.game.world.width);
+    //     console.log(this.game.world.height);
+    //     for (let i = 0; i < this.game.world.width; i+=10) {
+    //         // draw a line
+    //         this.grid.moveTo(i,0);
+    //         this.grid.lineTo(i,this.game.world.height);
+    //     }
+    //     for (let j = 0; j < this.game.world.height; j+=10) {
+    //         // draw a line
+    //         this.grid.moveTo(0,j);
+    //         this.grid.lineTo(this.game.world.width,j);
+    //     }
+    // }
+
     addShelf() {
         this.shelf = new Shelf({
-            game: this.game
+            game: this.game,
+            x: this.game.world.width,
+            y: 0,
+            key: "other/background"
         });
-        this.shelf.sprite.anchor.setTo(0.5, 0);
         this.game.layer.zDepth0.addChild(this.shelf.sprite);
     }
 
     addTruck() {
         this.truck = new Truck({
             game: this.game,
-            y: this.game.world.height
+            x: this.game.world.centerX + 250,
+            y: this.game.world.centerY + 250,
+            key: "other/truck"
         });
-        this.truck.sprite.anchor.set(0.5, 1);
+        this.game.layer.zDepth0.addChild(this.truck.sprite);
     }
 
     addItems() {
@@ -77,7 +102,6 @@ export default class Play extends State {
             }, this);
             item.obj.onDropped.add(this.updateQuantity, this);
         });
-        this.shelf.sprite.addChild(this.game.itemGroup);
     }
 
     /** Called by Phaser to update */
@@ -86,10 +110,7 @@ export default class Play extends State {
 
     /** Called by Phaser to render */
     render() {
-        //if(Config.developer.debug) {
-        this.game.time.advancedTiming = true; //SEE FPS
-        this.game.debug.text(this.game.time.fps, 2, 14, "#00ff00");
-        // }
+        //
     }
 
     /**
@@ -102,7 +123,12 @@ export default class Play extends State {
     }
 
     addButton() {
-        this.button = new Button(this.game, this.game.world.centerX + 300, this.game.world.centerY + 300, null, this);
+        this.button = new Button({
+            game: this.game,
+            x: this.game.world.width - 100, 
+            y: this.game.world.height - 50, 
+            key: "other/validate_button"
+        });
     }
 
     updateQuantity(currentSprite) {
@@ -110,12 +136,18 @@ export default class Play extends State {
         this.text.text = `Eléments insérés : ${this.capacity}`;
         if (this.capacity === 30) {
             this.addButton();
-            console.log('buttonShow');
         }
+    }
+
+    removeAll() {
+        this.shelf.destroy();
+        this.truck.destroy();
+        this.game.itemGroup.destroy();
     }
 };
 
 class GameProcess {
+
     constructor(playState) {
         this.play = playState;
         this.game = playState.game;
@@ -131,7 +163,7 @@ class GameProcess {
         //On prépare les quêtes
         this.quests = new QuestManager(this.game);
         new DomQuestList(this.quests);
-        this.quests.add(new ChargeTruck(this.game));
+        this.quests.add(new LoadTruck(this.game));
     }
 
     init() {

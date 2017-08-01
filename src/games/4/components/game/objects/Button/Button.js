@@ -6,15 +6,15 @@ import Phaser from 'phaser';
 export default class Button extends BasicGameObject {
     ready = false;
 
-constructor(game, x, y) {
-    super(game);
-    this.addSprite(new ButtonSprite(
-        this.game,
-        x,
-        y,
-        null,
-        this
-    ));
-    this.ready = true;
-}
+	constructor({game, x, y, key}) {
+	    super(game);
+	    this.addSprite(new ButtonSprite({
+	        game: this.game,
+	        x: x,
+	        y: y,
+	        key: key,
+	        buttonObj: this
+	    }));
+	    this.ready = true;
+	}
 }

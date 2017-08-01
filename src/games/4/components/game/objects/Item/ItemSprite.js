@@ -6,9 +6,16 @@ export default class ItemSprite extends BasicGameSprite {
     constructor(game, x, y, key, itemObj) {
         super(game, x, y, `jeu4/${key}`, itemObj);
         this.anchor.setTo(0.5);
-        this.scale.set(0.7);
-        this.input.enableDrag();
+        this.scale.set(0.6);
+        this.inputEnabled = true;
+        this.input.useHandCursor = true;
+        this.input.enableDrag(false, true);
         this.originalPosition = this.position.clone();
+        // Afficher la position pour aider le placement:
+        // this.events.onDragStop.add(function(sprite){
+        // 	console.log("X: " + sprite.position.x);
+        // 	console.log("Y: " + sprite.position.y);
+        // });
     }
 
 };

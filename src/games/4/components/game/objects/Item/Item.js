@@ -8,11 +8,12 @@ export default class Item extends BasicGameObject {
     ready = false;
     onDropped = new Signal();
 
-    constructor(game, key, category, x, y, isNeeded) {
+    constructor(game, file, key, x, y, isNeeded) {
         super(game);
-        this.category = key;
-        this.isNeeded = isNeeded;
-        this.addSprite(new ItemSprite(this.game, x, y, key, this));
+        this.file = file;
+        this.key = key;
+        let link = this.file + "/" + this.key;
+        this.addSprite(new ItemSprite(this.game, x, y, link, this));
         this.ready = true;
     }
 
