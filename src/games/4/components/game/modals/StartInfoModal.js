@@ -40,10 +40,7 @@ export default class StartInfoModal extends Modal {
                     type: "text",
                     x: 20,
                     y: 85,
-                    text: `Bienvenue dans l'entrepôt.\n\n 
-                    Tu dois réaliser un mur en agglo de 20 avec retour d’angle\n
-                    Choisis les différents matériaux, matériels et EPI nécessaires pour la réalisation de cet ouvrage\n
-                    Attention: Le chargement du camion est limité à 30 éléments`,
+                    text: `Bienvenue dans l'entrepôt.\n\nChoisis les différents matériaux, matériels et EPI nécessaires pour la réalisation de cet ouvrage.\nAttention: Le chargement du camion est limité à 30 éléments !`,
                     style: {
                         fill: "#5F4D21",
                         fontFamily: "Arial",

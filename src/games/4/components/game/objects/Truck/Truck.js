@@ -17,4 +17,8 @@ export default class Truck extends BasicGameObject {
         }));
         this.ready = true;
     }
+
+    destroy() {
+        this.sprite.destroy();
+    }
 }

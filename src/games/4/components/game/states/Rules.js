@@ -12,7 +12,8 @@ export default class Rules extends State {
 
         this.game.add.text(this.game.uiScale(80), this.game.uiScale(160),
             "Tu viens d'arriver sur l'entrepot et tu dois charger le camion avant de te rendre sur le chantier.\n" +
-            "Sélectionne les différents éléments répartis sur les trois étagères pour charger le camion.",
+            "Le but du chantier est de réaliser un mur en agglo de 20 en retour d'angle." + 
+            "Sélectionne les différents éléments répartis sur les trois étagères pour charger le camion.\n",
             {
                 font: 'Arial', fill: '#272727', fontSize: this.game.uiScale(16),
                 wordWrap: true, wordWrapWidth: this.game.world.width - this.game.uiScale(160)

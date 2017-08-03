@@ -5,7 +5,7 @@ export default class LoadTruck extends Quest {
 
     _name = 'Charger le camion';
     _key = 'load_truck';
-    _help = "Fais glisser les éléments dans le camion. 30 éléments maximum.";
+    _help = "Fais glisser les éléments dans le camion. 30 éléments maximum, en regroupant les matériaux, les matériels et les équipements.";
 
     constructor(game) {
         super(game);

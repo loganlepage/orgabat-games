@@ -2,7 +2,7 @@
 
 "jeu4/epi/bottes_de_securite":
 {
-	"frame": {"x":895,"y":172,"w":94,"h":111},
+	"frame": {"x":1228,"y":165,"w":94,"h":111},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":94,"h":111},
@@ -11,7 +11,7 @@
 },
 "jeu4/epi/casque_anti_bruit":
 {
-	"frame": {"x":1165,"y":0,"w":70,"h":62},
+	"frame": {"x":1032,"y":0,"w":70,"h":62},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":70,"h":62},
@@ -20,7 +20,7 @@
 },
 "jeu4/epi/casque_de_chantier":
 {
-	"frame": {"x":1642,"y":0,"w":94,"h":71},
+	"frame": {"x":1534,"y":0,"w":94,"h":71},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":94,"h":71},
@@ -65,7 +65,7 @@
 },
 "jeu4/epi/masque_anti_poussieres":
 {
-	"frame": {"x":1736,"y":0,"w":88,"h":73},
+	"frame": {"x":0,"y":71,"w":88,"h":73},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":88,"h":73},
@@ -74,7 +74,7 @@
 },
 "jeu4/epi/trousse_de_secours":
 {
-	"frame": {"x":989,"y":172,"w":93,"h":114},
+	"frame": {"x":1322,"y":165,"w":93,"h":114},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":93,"h":114},
@@ -83,7 +83,7 @@
 },
 "jeu4/epi/vetements_de_travail":
 {
-	"frame": {"x":350,"y":452,"w":171,"h":155},
+	"frame": {"x":1050,"y":435,"w":171,"h":155},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":171,"h":155},
@@ -92,7 +92,7 @@
 },
 "jeu4/materiaux/agglos":
 {
-	"frame": {"x":1388,"y":76,"w":195,"h":94},
+	"frame": {"x":1554,"y":71,"w":195,"h":94},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":195,"h":94},
@@ -101,7 +101,7 @@
 },
 "jeu4/materiaux/beton_cellulaire":
 {
-	"frame": {"x":1074,"y":452,"w":185,"h":162},
+	"frame": {"x":0,"y":596,"w":185,"h":162},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":185,"h":162},
@@ -110,7 +110,7 @@
 },
 "jeu4/materiaux/bidon":
 {
-	"frame": {"x":465,"y":172,"w":75,"h":102},
+	"frame": {"x":953,"y":165,"w":75,"h":102},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":75,"h":102},
@@ -119,7 +119,7 @@
 },
 "jeu4/materiaux/bois":
 {
-	"frame": {"x":0,"y":641,"w":408,"h":220},
+	"frame": {"x":665,"y":596,"w":408,"h":220},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":408,"h":220},
@@ -128,7 +128,7 @@
 },
 "jeu4/materiaux/boisseau_de_cheminee":
 {
-	"frame": {"x":1562,"y":172,"w":111,"h":122},
+	"frame": {"x":120,"y":285,"w":111,"h":122},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":111,"h":122},
@@ -137,7 +137,7 @@
 },
 "jeu4/materiaux/briques":
 {
-	"frame": {"x":1147,"y":76,"w":98,"h":85},
+	"frame": {"x":1313,"y":71,"w":98,"h":85},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":98,"h":85},
@@ -146,7 +146,7 @@
 },
 "jeu4/materiaux/eau":
 {
-	"frame": {"x":408,"y":641,"w":208,"h":273},
+	"frame": {"x":1073,"y":596,"w":208,"h":273},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":208,"h":273},
@@ -155,7 +155,7 @@
 },
 "jeu4/materiaux/ferraille":
 {
-	"frame": {"x":806,"y":452,"w":268,"h":161},
+	"frame": {"x":1506,"y":435,"w":268,"h":161},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":268,"h":161},
@@ -164,7 +164,7 @@
 },
 "jeu4/materiaux/graviers":
 {
-	"frame": {"x":521,"y":452,"w":285,"h":159},
+	"frame": {"x":1221,"y":435,"w":285,"h":159},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":285,"h":159},
@@ -173,7 +173,7 @@
 },
 "jeu4/materiaux/hourdis":
 {
-	"frame": {"x":1044,"y":76,"w":103,"h":83},
+	"frame": {"x":1210,"y":71,"w":103,"h":83},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":103,"h":83},
@@ -182,16 +182,16 @@
 },
 "jeu4/materiaux/sable":
 {
-	"frame": {"x":1259,"y":452,"w":306,"h":169},
+	"frame": {"x":339,"y":596,"w":326,"h":189},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":306,"h":169},
-	"sourceSize": {"w":306,"h":169},
+	"spriteSourceSize": {"x":0,"y":0,"w":326,"h":189},
+	"sourceSize": {"w":326,"h":189},
 	"pivot": {"x":0.5,"y":0.5}
 },
 "jeu4/materiaux/sacs_de_ciment":
 {
-	"frame": {"x":288,"y":302,"w":137,"h":144},
+	"frame": {"x":583,"y":285,"w":137,"h":144},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":137,"h":144},
@@ -200,16 +200,16 @@
 },
 "jeu4/materiels/auge":
 {
-	"frame": {"x":740,"y":172,"w":155,"h":107},
+	"frame": {"x":231,"y":285,"w":175,"h":127},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":155,"h":107},
-	"sourceSize": {"w":155,"h":107},
+	"spriteSourceSize": {"x":0,"y":0,"w":175,"h":127},
+	"sourceSize": {"w":175,"h":127},
 	"pivot": {"x":0.5,"y":0.5}
 },
 "jeu4/materiels/betonniere":
 {
-	"frame": {"x":1565,"y":452,"w":154,"h":189},
+	"frame": {"x":185,"y":596,"w":154,"h":189},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":154,"h":189},
@@ -218,7 +218,7 @@
 },
 "jeu4/materiels/brouette":
 {
-	"frame": {"x":1673,"y":172,"w":177,"h":130},
+	"frame": {"x":406,"y":285,"w":177,"h":130},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":177,"h":130},
@@ -227,7 +227,7 @@
 },
 "jeu4/materiels/ciseau_a_brique":
 {
-	"frame": {"x":0,"y":76,"w":97,"h":76},
+	"frame": {"x":88,"y":71,"w":97,"h":76},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":97,"h":76},
@@ -236,7 +236,7 @@
 },
 "jeu4/materiels/crayon":
 {
-	"frame": {"x":297,"y":0,"w":76,"h":48},
+	"frame": {"x":249,"y":0,"w":76,"h":48},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":76,"h":48},
@@ -245,7 +245,7 @@
 },
 "jeu4/materiels/equerre":
 {
-	"frame": {"x":1032,"y":0,"w":133,"h":62},
+	"frame": {"x":1102,"y":0,"w":133,"h":62},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":133,"h":62},
@@ -254,7 +254,7 @@
 },
 "jeu4/materiels/fil_a_plomb":
 {
-	"frame": {"x":937,"y":76,"w":107,"h":81},
+	"frame": {"x":1103,"y":71,"w":107,"h":81},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":107,"h":81},
@@ -272,7 +272,7 @@
 },
 "jeu4/materiels/metre":
 {
-	"frame": {"x":1824,"y":0,"w":78,"h":76},
+	"frame": {"x":185,"y":71,"w":78,"h":76},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":78,"h":76},
@@ -281,7 +281,7 @@
 },
 "jeu4/materiels/niveau":
 {
-	"frame": {"x":1534,"y":0,"w":108,"h":71},
+	"frame": {"x":1628,"y":0,"w":108,"h":71},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":71},
@@ -290,7 +290,7 @@
 },
 "jeu4/materiels/pelle":
 {
-	"frame": {"x":631,"y":302,"w":238,"h":148},
+	"frame": {"x":1214,"y":285,"w":238,"h":148},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":238,"h":148},
@@ -299,7 +299,7 @@
 },
 "jeu4/materiels/pioche":
 {
-	"frame": {"x":1245,"y":76,"w":143,"h":93},
+	"frame": {"x":1411,"y":71,"w":143,"h":93},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":143,"h":93},
@@ -308,7 +308,7 @@
 },
 "jeu4/materiels/regle_en_alu":
 {
-	"frame": {"x":425,"y":302,"w":206,"h":144},
+	"frame": {"x":720,"y":285,"w":206,"h":144},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":206,"h":144},
@@ -317,7 +317,7 @@
 },
 "jeu4/materiels/seau":
 {
-	"frame": {"x":393,"y":172,"w":72,"h":99},
+	"frame": {"x":681,"y":165,"w":72,"h":99},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":72,"h":99},
@@ -326,7 +326,7 @@
 },
 "jeu4/materiels/truelle":
 {
-	"frame": {"x":288,"y":172,"w":105,"h":97},
+	"frame": {"x":576,"y":165,"w":105,"h":97},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":105,"h":97},
@@ -335,25 +335,43 @@
 },
 "jeu4/other/background":
 {
-	"frame": {"x":0,"y":1281,"w":1760,"h":1601},
+	"frame": {"x":0,"y":1586,"w":1760,"h":1601},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":1760,"h":1601},
 	"sourceSize": {"w":1760,"h":1601},
 	"pivot": {"x":0.5,"y":0.5}
 },
+"jeu4/other/full_modal":
+{
+	"frame": {"x":0,"y":946,"w":750,"h":583},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":750,"h":583},
+	"sourceSize": {"w":750,"h":583},
+	"pivot": {"x":0.5,"y":0.5}
+},
 "jeu4/other/truck":
 {
-	"frame": {"x":1066,"y":641,"w":804,"h":640},
+	"frame": {"x":750,"y":946,"w":804,"h":640},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":804,"h":640},
 	"sourceSize": {"w":804,"h":640},
 	"pivot": {"x":0.5,"y":0.5}
 },
+"jeu4/other/validate_button":
+{
+	"frame": {"x":753,"y":165,"w":200,"h":100},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":200,"h":100},
+	"sourceSize": {"w":200,"h":100},
+	"pivot": {"x":0.5,"y":0.5}
+},
 "joystick/button_a.0":
 {
-	"frame": {"x":192,"y":172,"w":96,"h":96},
+	"frame": {"x":96,"y":165,"w":96,"h":96},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":96,"h":96},
@@ -362,7 +380,7 @@
 },
 "joystick/button_a.1":
 {
-	"frame": {"x":96,"y":172,"w":96,"h":96},
+	"frame": {"x":192,"y":165,"w":96,"h":96},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":96,"h":96},
@@ -371,7 +389,7 @@
 },
 "joystick/button_e.0":
 {
-	"frame": {"x":1775,"y":76,"w":96,"h":96},
+	"frame": {"x":0,"y":165,"w":96,"h":96},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":96,"h":96},
@@ -380,7 +398,7 @@
 },
 "joystick/button_e.1":
 {
-	"frame": {"x":1583,"y":76,"w":96,"h":96},
+	"frame": {"x":480,"y":165,"w":96,"h":96},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":96,"h":96},
@@ -389,7 +407,7 @@
 },
 "joystick/button_z.0":
 {
-	"frame": {"x":0,"y":172,"w":96,"h":96},
+	"frame": {"x":384,"y":165,"w":96,"h":96},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":96,"h":96},
@@ -398,7 +416,7 @@
 },
 "joystick/button_z.1":
 {
-	"frame": {"x":1679,"y":76,"w":96,"h":96},
+	"frame": {"x":288,"y":165,"w":96,"h":96},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":96,"h":96},
@@ -407,7 +425,7 @@
 },
 "joystick/cross.0":
 {
-	"frame": {"x":0,"y":302,"w":144,"h":144},
+	"frame": {"x":1070,"y":285,"w":144,"h":144},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":144,"h":144},
@@ -416,7 +434,7 @@
 },
 "joystick/cross.1":
 {
-	"frame": {"x":144,"y":302,"w":144,"h":144},
+	"frame": {"x":926,"y":285,"w":144,"h":144},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":144,"h":144},
@@ -425,7 +443,7 @@
 },
 "joystick/pad_arrow.0":
 {
-	"frame": {"x":1082,"y":172,"w":120,"h":120},
+	"frame": {"x":0,"y":285,"w":120,"h":120},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":120,"h":120},
@@ -434,7 +452,7 @@
 },
 "joystick/pad_arrow.1":
 {
-	"frame": {"x":1202,"y":172,"w":120,"h":120},
+	"frame": {"x":1655,"y":165,"w":120,"h":120},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":120,"h":120},
@@ -443,7 +461,7 @@
 },
 "joystick/pad_r.0":
 {
-	"frame": {"x":1442,"y":172,"w":120,"h":120},
+	"frame": {"x":1535,"y":165,"w":120,"h":120},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":120,"h":120},
@@ -452,7 +470,7 @@
 },
 "joystick/pad_r.1":
 {
-	"frame": {"x":1322,"y":172,"w":120,"h":120},
+	"frame": {"x":1415,"y":165,"w":120,"h":120},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":120,"h":120},
@@ -461,7 +479,7 @@
 },
 "modal/bg/alert_feedback":
 {
-	"frame": {"x":217,"y":76,"w":300,"h":80},
+	"frame": {"x":803,"y":71,"w":300,"h":80},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":300,"h":80},
@@ -470,7 +488,7 @@
 },
 "modal/bg/big_modal":
 {
-	"frame": {"x":616,"y":641,"w":450,"h":350},
+	"frame": {"x":1281,"y":596,"w":450,"h":350},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":450,"h":350},
@@ -479,7 +497,7 @@
 },
 "modal/bg/big_tooltip_left":
 {
-	"frame": {"x":0,"y":452,"w":350,"h":150},
+	"frame": {"x":1452,"y":285,"w":350,"h":150},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":350,"h":150},
@@ -488,7 +506,7 @@
 },
 "modal/bg/big_tooltip_right":
 {
-	"frame": {"x":1569,"y":302,"w":350,"h":150},
+	"frame": {"x":350,"y":435,"w":350,"h":150},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":350,"h":150},
@@ -506,7 +524,7 @@
 },
 "modal/bg/gabator_confirm_tooltip":
 {
-	"frame": {"x":1219,"y":302,"w":350,"h":150},
+	"frame": {"x":700,"y":435,"w":350,"h":150},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":350,"h":150},
@@ -515,7 +533,7 @@
 },
 "modal/bg/gabator_help_tooltip":
 {
-	"frame": {"x":869,"y":302,"w":350,"h":150},
+	"frame": {"x":0,"y":435,"w":350,"h":150},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":350,"h":150},
@@ -524,7 +542,7 @@
 },
 "modal/bg/info_feedback":
 {
-	"frame": {"x":517,"y":76,"w":300,"h":80},
+	"frame": {"x":263,"y":71,"w":300,"h":80},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":300,"h":80},
@@ -542,7 +560,7 @@
 },
 "modal/bg/small_tooltip_bottom":
 {
-	"frame": {"x":817,"y":76,"w":120,"h":80},
+	"frame": {"x":683,"y":71,"w":120,"h":80},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":120,"h":80},
@@ -551,7 +569,7 @@
 },
 "modal/bg/small_tooltip_top":
 {
-	"frame": {"x":97,"y":76,"w":120,"h":80},
+	"frame": {"x":563,"y":71,"w":120,"h":80},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":120,"h":80},
@@ -560,7 +578,7 @@
 },
 "modal/bg/tooltip_top":
 {
-	"frame": {"x":540,"y":172,"w":200,"h":106},
+	"frame": {"x":1028,"y":165,"w":200,"h":106},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":200,"h":106},
@@ -569,7 +587,7 @@
 },
 "modal/item/arrow_up":
 {
-	"frame": {"x":469,"y":0,"w":48,"h":48},
+	"frame": {"x":325,"y":0,"w":48,"h":48},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":48,"h":48},
@@ -578,7 +596,7 @@
 },
 "modal/item/button_a":
 {
-	"frame": {"x":421,"y":0,"w":48,"h":48},
+	"frame": {"x":373,"y":0,"w":48,"h":48},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":48,"h":48},
@@ -614,7 +632,7 @@
 },
 "modal/item/button_e":
 {
-	"frame": {"x":373,"y":0,"w":48,"h":48},
+	"frame": {"x":421,"y":0,"w":48,"h":48},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":48,"h":48},
@@ -632,7 +650,7 @@
 },
 "modal/item/mouse_cross":
 {
-	"frame": {"x":249,"y":0,"w":48,"h":48},
+	"frame": {"x":469,"y":0,"w":48,"h":48},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":48,"h":48},
@@ -641,7 +659,7 @@
 },
 "modal/item/star":
 {
-	"frame": {"x":1383,"y":0,"w":64,"h":64},
+	"frame": {"x":1319,"y":0,"w":64,"h":64},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
@@ -650,7 +668,7 @@
 },
 "modal/item/star_disabled":
 {
-	"frame": {"x":1319,"y":0,"w":64,"h":64},
+	"frame": {"x":1383,"y":0,"w":64,"h":64},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
@@ -689,8 +707,8 @@
 	"version": "1.0",
 	"image": "jeu4.png",
 	"format": "RGBA8888",
-	"size": {"w":1919,"h":2882},
+	"size": {"w":1802,"h":3187},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:3a35672404434c88f4de64f0f798ac47:b6ffdc533d26fa0fd75504c4e79d402d:e844659e47b45d565f6cc36f24aeb4d3$"
+	"smartupdate": "$TexturePacker:SmartUpdate:ff032b403a8d7ec0d309f9d082897de7:41c5f5bd35bbc8347ec8bdf73c8d236b:e844659e47b45d565f6cc36f24aeb4d3$"
 }
 }

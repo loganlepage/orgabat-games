@@ -4,20 +4,31 @@ import Phaser, {State, Easing} from 'phaser';
 import PhaserManager from 'system/phaser/utils/PhaserManager';
 import Canvas from "system/phaser/utils/PhaserManager";
 
+import {DefaultManager} from 'system/phaser/Modal';
 import StartInfoModal from '../modals/StartInfoModal';
 import EndInfoModal from '../modals/EndInfoModal';
-import {DefaultManager} from 'system/phaser/Modal';
 
 import QuestManager, {DomQuestList} from 'system/phaser/utils/Quest';
+import Config from "../config/data";
+
 import Truck from "../objects/Truck/Truck";
 import Shelf from "../objects/Shelf/Shelf";
 import Button from "../objects/Button/Button";
 import LoadTruck from "../quests/LoadTruck";
 import ItemFactory from "../objects/Item/ItemFactory";
-import Config from "../config/data";
+import Modal from "../objects/Modal/Modal";
 
 export default class Play extends State {
-    capacity = 29;
+
+    capacity = 0;
+    capacityMax = 0;
+    // attempt = 0;
+    attempt = 3; // Shortcut
+    selectedItems = [];
+
+    shelf;
+    truck;
+    itemGroup;
 
     /** Constructor for a new play state */
     constructor() {
@@ -32,13 +43,9 @@ export default class Play extends State {
         this.game.controlsEnabled = false;
         this.game.stage.backgroundColor = '#c3dbb6'; //green background
 
-        this.text = this.game.add.text(16, 16, `Eléments insérés : ${this.capacity}`, {fill: '#ffffff'});
-
         this.initUI();
         // this.addGrid();
-        this.addShelf();
-        this.addTruck();
-        this.addItems();
+        this.addObjects();
 
         PhaserManager.ready('game', 'play');
 
@@ -56,56 +63,9 @@ export default class Play extends State {
         };
     }
 
-    // Grille de 10x10 pour placer les éléments
-    // addGrid() {
-    //     this.grid = this.game.add.graphics(0,0);
-    //     this.grid.lineStyle(1, 0xffffff, 1);
-    //     console.log(this.game.world.width);
-    //     console.log(this.game.world.height);
-    //     for (let i = 0; i < this.game.world.width; i+=10) {
-    //         // draw a line
-    //         this.grid.moveTo(i,0);
-    //         this.grid.lineTo(i,this.game.world.height);
-    //     }
-    //     for (let j = 0; j < this.game.world.height; j+=10) {
-    //         // draw a line
-    //         this.grid.moveTo(0,j);
-    //         this.grid.lineTo(this.game.world.width,j);
-    //     }
-    // }
-
-    addShelf() {
-        this.shelf = new Shelf({
-            game: this.game,
-            x: this.game.world.width,
-            y: 0,
-            key: "other/background"
-        });
-        this.game.layer.zDepth0.addChild(this.shelf.sprite);
-    }
-
-    addTruck() {
-        this.truck = new Truck({
-            game: this.game,
-            x: this.game.world.centerX + 250,
-            y: this.game.world.centerY + 250,
-            key: "other/truck"
-        });
-        this.game.layer.zDepth0.addChild(this.truck.sprite);
-    }
-
-    addItems() {
-        this.game.itemGroup = new ItemFactory(this.game, Config.items);
-        this.game.itemGroup.forEach((item) => {
-            item.events.onDragStop.add(function (currentSprite) {
-                item.obj.checkOverlap(currentSprite, this.truck.sprite)
-            }, this);
-            item.obj.onDropped.add(this.updateQuantity, this);
-        });
-    }
-
     /** Called by Phaser to update */
     update() {
+        //
     }
 
     /** Called by Phaser to render */
@@ -122,27 +82,120 @@ export default class Play extends State {
         this.game.gameProcess.init();
     }
 
-    addButton() {
-        this.button = new Button({
+    addObjects() {
+        // Items parameters:
+        this.capacity = 0; // Shortcut
+        this.capacityMax = 23;
+
+        // Texts:
+        this.questText = this.game.add.text(15, 15, `Réaliser un mur dagglo de 20 de retour`, {fill: '#ffffff', fontSize: 20});
+        this.titleText = this.game.add.text(15, 40, `Éléments insérés : ${this.capacity} / ${this.capacityMax}`, {fill: '#ffffff', fontSize: 20});
+        this.game.layer.zDepth0.addChild(this.questText);
+        this.game.layer.zDepth0.addChild(this.titleText);
+
+        // Shelf:
+        this.shelf = new Shelf({
             game: this.game,
-            x: this.game.world.width - 100, 
-            y: this.game.world.height - 50, 
-            key: "other/validate_button"
+            x: this.game.world.width,
+            y: 0,
+            key: "other/background"
         });
+        this.game.layer.zDepth0.addChild(this.shelf.sprite);
+
+        // Truck:
+        this.truck = new Truck({
+            game: this.game,
+            x: this.game.world.centerX + 300,
+            y: this.game.world.centerY + 200,
+            key: "other/truck"
+        });
+        this.game.layer.zDepth0.addChild(this.truck.sprite);
+
+        // Items:
+        this.itemGroup = new ItemFactory(this.game, Config.items);
+        this.itemGroup.forEach((item) => {
+            item.events.onDragStop.add(function (currentSprite) {
+                item.obj.checkOverlap(currentSprite, this.truck.sprite)
+            }, this);
+            item.obj.onDropped.add(this.updateQuantity, this);
+        });
+    }
+
+    removeControls(){
+        this.itemGroup.forEach((item) => {
+            item.removeControls();
+        });
+    }
+
+    addControls(){
+        this.itemGroup.forEach((item) => {
+            item.addControls();
+        });
+    }
+
+    addBlackBackground() {
+        this.blackBackground = this.game.add.graphics(0,0);
+        this.game.layer.zDepth1.addChild(this.blackBackground);
+        this.blackBackground.lineStyle(0, "balck", 0);
+        this.blackBackground.beginFill("black", 0.4);
+        this.blackBackground.drawRect(0, 0, this.game.world.width, this.game.world.height);
     }
 
     updateQuantity(currentSprite) {
         this.capacity++;
-        this.text.text = `Eléments insérés : ${this.capacity}`;
-        if (this.capacity === 30) {
-            this.addButton();
+        this.selectedItems.push(currentSprite.obj);
+        this.titleText.text = `Eléments insérés : ${this.capacity} / ${this.capacityMax}`;
+        if (this.capacity >= this.capacityMax) {
+            this.removeControls();
+            this.button = new Button({
+                game: this.game,
+                x: this.game.world.width - 100, 
+                y: this.game.world.height - 50, 
+                key: "other/validate_button"
+            });
+            this.button.sprite.events.onInputDown.add(function() {
+                this.attempt++;
+                this.addBlackBackground();
+                this.proceedAttempt();
+            }, this);
         }
     }
 
+    proceedAttempt() {
+        this.itemListModal = new Modal({
+            game: this.game, 
+            x: this.game.world.centerX, 
+            y: this.game.world.centerY, 
+            key: "other/full_modal",
+            title: "Validation du chargement",
+            itemGroup: this.itemGroup,
+            selectedItems: this.selectedItems,
+            attempt: this.attempt
+        });
+        this.itemListModal.finish.add(function(){
+            if(this.itemListModal.isCorrect){
+                console.log("Fini");
+
+            } else {
+                this.removeAll();
+                this.addObjects();
+                PhaserManager.get('gabator').stats.changeValues({
+                    health: PhaserManager.get('gabator').stats.state.health - 1,
+                });
+            }
+        }, this);
+    }
+
     removeAll() {
+        this.titleText.destroy();
+        this.questText.destroy();
         this.shelf.destroy();
         this.truck.destroy();
-        this.game.itemGroup.destroy();
+        this.itemGroup.destroy();
+        this.blackBackground.destroy();
+        this.itemListModal.destroy();
+        this.button.destroy();
+        this.selectedItems = [];
     }
 };
 
@@ -188,11 +241,7 @@ class GameProcess {
         //On active Gabator
         if (PhaserManager.get('gabator').state.current == "play") {
             PhaserManager.get('gabator').state.getCurrentState().start();
-            Canvas.get('gabator').modal.showHelp(
-                `
-            Rappel: Capacité maximale du camion: 30 éléments.
-            `
-            );
+            Canvas.get('gabator').modal.showHelp(`Rappel: Capacité maximale du camion: 30 éléments.`);
         }
 
         this.game.keys.addKey(Phaser.Keyboard.ENTER).onDown.remove(this._onStartInfoClose, this);

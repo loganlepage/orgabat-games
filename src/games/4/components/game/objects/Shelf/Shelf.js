@@ -17,4 +17,8 @@ export default class Shelf extends BasicGameObject {
         }));
         this.ready = true;
     }
+
+    destroy() {
+        this.sprite.destroy();
+    }
 }

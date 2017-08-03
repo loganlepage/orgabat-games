@@ -18,4 +18,16 @@ export default class ItemSprite extends BasicGameSprite {
         // });
     }
 
+    removeControls() {
+        this.inputEnabled = false;
+        this.input.useHandCursor = false;
+        this.input.enableDrag(false, false);
+    }
+
+    addControls() {
+        this.inputEnabled = true;
+        this.input.useHandCursor = true;
+        this.input.enableDrag(false, true);
+    }
+
 };

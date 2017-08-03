@@ -17,4 +17,8 @@ export default class Button extends BasicGameObject {
 	    }));
 	    this.ready = true;
 	}
+
+	destroy() {
+		this.sprite.destroy();
+	}
 }

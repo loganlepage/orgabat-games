@@ -8,13 +8,23 @@ export default class Item extends BasicGameObject {
     ready = false;
     onDropped = new Signal();
 
-    constructor(game, file, key, x, y, isNeeded) {
+    constructor(game, type, name, x, y, isNeeded, title) {
         super(game);
-        this.file = file;
-        this.key = key;
-        let link = this.file + "/" + this.key;
+        this.type = type;
+        this.name = name;
+        this.isNeeded = isNeeded;
+        this.title = title;
+        let link = this.type + "/" + this.name;
         this.addSprite(new ItemSprite(this.game, x, y, link, this));
         this.ready = true;
+    }
+
+    removeControls() {
+        this.sprite.removeControls();
+    }
+
+    addControls() {
+        this.sprite.addControls();
     }
 
     checkOverlap(currentSprite, spriteToOverlap) {
@@ -23,7 +33,7 @@ export default class Item extends BasicGameObject {
         if (Phaser.Rectangle.intersects(boundsA, boundsB)) {
             currentSprite.input.draggable = false;
             currentSprite.position.copyFrom(spriteToOverlap.position);
-            currentSprite.anchor.setTo(spriteToOverlap.anchor.x, spriteToOverlap.anchor.y);
+            // currentSprite.anchor.setTo(spriteToOverlap.anchor.x, spriteToOverlap.anchor.y);
             this.onDropped.dispatch(currentSprite);
         }
         else
