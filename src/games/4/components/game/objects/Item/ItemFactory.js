@@ -18,9 +18,8 @@ export default class ItemFactory extends GameFactory {
                         this.game,
                         type,
                         name,
-                        // this.game.world.width - items[type][name].x,
-                        items[type][name].x,
-                        items[type][name].y,
+                        items[type][name].x * this.game.SCALE,
+                        items[type][name].y * this.game.SCALE,
                         items[type][name].needed,
                         items[type][name].title
                     )).sprite

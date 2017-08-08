@@ -13,9 +13,9 @@ export default class ItemSprite extends BasicGameSprite {
         this.originalPosition = this.position.clone();
         // Afficher la position pour aider le placement:
         // this.events.onDragStop.add(function(sprite){
-        // 	console.log("X: " + sprite.position.x);
-        // 	console.log("Y: " + sprite.position.y);
-        // });
+        // 	console.log("X: " + Math.round(sprite.position.x / this.game.SCALE));
+        // 	console.log("Y: " + Math.round(sprite.position.y / this.game.SCALE));
+        // },this);
     }
 
     removeControls() {

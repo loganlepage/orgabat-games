@@ -100,20 +100,23 @@ export default class Play extends State {
             y: 0,
             key: "other/background"
         });
+        this.shelf.sprite.scale.setTo(this.game.SCALE); // Propotionnal scale
         this.game.layer.zDepth0.addChild(this.shelf.sprite);
 
         // Truck:
         this.truck = new Truck({
             game: this.game,
-            x: this.game.world.centerX + 300,
-            y: this.game.world.centerY + 200,
+            x: (this.game.world.centerX + (500 * this.game.SCALE)),
+            y: (this.game.world.centerY + (250 * this.game.SCALE)),
             key: "other/truck"
         });
+        this.truck.sprite.scale.setTo(this.game.SCALE); // Propotionnal scale
         this.game.layer.zDepth0.addChild(this.truck.sprite);
 
         // Items:
         this.itemGroup = new ItemFactory(this.game, Config.items);
         this.itemGroup.forEach((item) => {
+            item.scale.setTo(0.7 * this.game.SCALE); // Propotionnal scale
             item.events.onDragStop.add(function (currentSprite) {
                 item.obj.checkOverlap(currentSprite, this.truck.sprite)
             }, this);
