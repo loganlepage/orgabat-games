@@ -8,6 +8,7 @@ export default {
     items: [
         {
             key: "adhesif",
+            name: "Adhésif orange",
             mistakes: ["Mauvaises dimensions"],
             quantity: 5,
             dimensions: "",
@@ -15,6 +16,7 @@ export default {
         },
         {
             key: "cartouche",
+            name: "Cartouche silicone",
             mistakes: [],
             quantity: 36,
             dimensions: "280ml",
@@ -22,6 +24,7 @@ export default {
         },
         {
             key: "ciment",
+            name: "Ciment gris",
             mistakes: ["Produit défectueux"],
             quantity: 3,
             dimensions: "35kg",
@@ -29,6 +32,7 @@ export default {
         },
         {
             key: "coffrage",
+            name: "Planche de coffrage",
             mistakes: [],
             quantity: 50,
             dimensions: "200x27 en 4m",
@@ -36,6 +40,7 @@ export default {
         },
         {
             key: "contreplaque_agglo",
+            name: "Contreplaqué aggloméré",
             mistakes: ["Mauvaises quantités"],
             quantity: 6,
             dimensions: "185x300 en 18mm",
@@ -43,6 +48,7 @@ export default {
         },
         {
             key: "contreplaque",
+            name: "Contreplaqué",
             mistakes: [],
             quantity: 8,
             dimensions: "250x122 en 12mm",
@@ -50,6 +56,7 @@ export default {
         },
         {
             key: "gaine_16",
+            name: "Gaine ICTA 16mm",
             mistakes: ["Mauvaises quantités"],
             quantity: 13,
             dimensions: "16mm",
@@ -57,6 +64,7 @@ export default {
         },
         {
             key: "gaine_20",
+            name: "Gaine ICTA 20mm",
             mistakes: ["Non livré"],
             quantity: 0,
             dimensions: "20mm",
@@ -64,6 +72,7 @@ export default {
         },
         {
             key: "peinture",
+            name: "Peinture monocouche",
             mistakes: [],
             quantity: 2,
             dimensions: "",
@@ -71,6 +80,7 @@ export default {
         },
         {
             key: "pointes",
+            name: "Pointes tête plates inox",
             mistakes: ["Mauvaises dimensions"],
             quantity: 10,
             dimensions: "2.7x70",
@@ -78,6 +88,7 @@ export default {
         },
         {
             key: "vis",
+            name: "Vis plaques de plâtre",
             mistakes: [],
             quantity: 9,
             dimensions: "1000u",
@@ -85,6 +96,7 @@ export default {
         },
         {
             key: "vmc",
+            name: "VMC Hygroréglable Type B",
             mistakes: ["Erreur de produit"],
             quantity: 1,
             dimensions: "",

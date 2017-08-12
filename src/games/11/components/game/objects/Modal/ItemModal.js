@@ -3,7 +3,7 @@ import BasicGameObject from "system/phaser/BasicGameObject";
 import ModalSprite from "./ModalSprite";
 import Phaser from 'phaser';
 
-export default class Modal extends BasicGameObject {
+export default class ItemModal extends BasicGameObject {
 
 	texts = [];
 	title;
@@ -25,27 +25,45 @@ export default class Modal extends BasicGameObject {
 	    // Tableau de texte, pour supprimer facilement
 	    this.texts = [];
 
+	    // Fonts size
+	    let bigFont = 24 * this.game.SCALE,
+	    	mediumFont = 20 * this.game.SCALE;
+
 	    // Title
 	    let textPositionX = x - (this.sprite.width/2) + 20,
 	    	textPositionY = y - (this.sprite.height/2) + 20,
-	    	titleText = this.game.add.text(textPositionX, textPositionY, title, {fill: '#000000', fontSize: 20});
+	    	titleText = this.game.add.text(
+	    		textPositionX, 
+	    		textPositionY, 
+	    		title, 
+	    		{fill: '#000000', fontSize: bigFont});
 	    this.texts.push(titleText);
 	    textPositionY += 20;
 
 	    // Item informations
 	    if (item.quantity > 0) {
 	    	textPositionY += 20;
-	    	let quantityText = this.game.add.text(textPositionX, textPositionY, "Quantité: " + item.quantity, {fill: '#000000', fontSize: 16});
+	    	let quantityText = this.game.add.text(
+	    		textPositionX, textPositionY, 
+	    		"Quantité: " + item.quantity, 
+	    		{fill: '#000000', fontSize: mediumFont});
 	    	this.texts.push(quantityText);
 	    }
 	    if (item.dimensions != "") {
 	    	textPositionY += 20;
-	    	let dimensionText = this.game.add.text(textPositionX, textPositionY, "Dimensions: " + item.dimensions, {fill: '#000000', fontSize: 16});
+	    	let dimensionText = this.game.add.text(
+	    		textPositionX, 
+	    		textPositionY, 
+	    		"Dimensions: " + item.dimensions, 
+	    		{fill: '#000000', fontSize: mediumFont});
 	    	this.texts.push(dimensionText);
 	    }
 	    if (item.note != "") {
 	    	textPositionY += 20;
-	    	let noteText = this.game.add.text(textPositionX, textPositionY, "Note: " + item.note, {fill: '#000000', fontSize: 16});
+	    	let noteText = this.game.add.text(
+	    		textPositionX, textPositionY, 
+	    		"Note: " + item.note, 
+	    		{fill: '#000000', fontSize: mediumFont});
 	    	this.texts.push(noteText);
 	    }
 

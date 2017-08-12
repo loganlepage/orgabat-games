@@ -4,7 +4,7 @@ import Phaser from 'phaser';
 import {Signal} from "phaser";
 
 import ItemSprite from "./ItemSprite";
-import Modal from "../Modal/Modal";
+import ItemModal from "../Modal/ItemModal";
 
 export default class Item extends BasicGameObject {
 
@@ -26,8 +26,12 @@ export default class Item extends BasicGameObject {
 
         this.addSprite(new ItemSprite(game, x, y, key, this));
 
+        if (this.quantity < 1) {
+            this.sprite.visible = false;
+        }
+
         this.sprite.events.onInputDown.add(function () {
-            this.modal = new Modal(game, game.world.centerX, game.world.centerY, "other/full_modal", "Information sur le produit", this);
+            this.modal = new ItemModal(game, game.world.centerX, game.world.centerY, "other/full_modal", "Information sur le produit", this);
             this.modal.sprite.events.onInputDown.add(function(){
                 this.modal.removeElements();
                 this.modal.sprite.destroy();

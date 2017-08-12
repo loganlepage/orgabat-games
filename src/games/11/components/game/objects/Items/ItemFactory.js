@@ -26,12 +26,12 @@ export default class ItemFactory extends GameFactory {
         // Item dimensions and number for the grid (12 items => 4x3, 16 items => 4x4, etc)
         let itemsWidth = 90,
             itemsHeight = 45,
-            itemsNumberX = 4,
-            itemsNumberY = itemsNumber/4;
+            itemsNumberX = 3,
+            itemsNumberY = itemsNumber/3;
 
         // Margin between items
-        let marginX = 50,
-            marginY = 50;
+        let marginX = 70 * this.game.SCALE,
+            marginY = 70 * this.game.SCALE;
 
         // Margin around the grid
         let bigWidthMargin = 50,
@@ -67,6 +67,19 @@ export default class ItemFactory extends GameFactory {
                     )).sprite
                 );
                 count++;
+            } else {
+                this.add(
+                    (new Item(
+                        this.game,
+                        0,
+                        0,
+                        items[name].key,
+                        items[name].mistakes,
+                        items[name].quantity,
+                        items[name].dimensions,
+                        items[name].note
+                    )).sprite
+                );
             }
         }
 
