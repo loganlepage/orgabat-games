@@ -9,7 +9,7 @@ export default class ElementFactory extends GameFactory {
 
     texts = [];
 
-    constructor(game, items) {
+    constructor(game, items, states) {
         super(game);
 
         this.game = game;
@@ -25,8 +25,8 @@ export default class ElementFactory extends GameFactory {
         };
 
         // Item dimensions and number for the grid
-        let itemsWidth = 15,
-            itemsHeight =15,
+        let itemsWidth = 15, // Useless here
+            itemsHeight = 20,
             itemsNumberX = 1,
             itemsNumberY = itemsNumber;
 
@@ -35,7 +35,7 @@ export default class ElementFactory extends GameFactory {
             marginY = 25 * this.game.SCALE;
 
         // Margin around the grid
-        let bigWidthMargin = width - 525,
+        let bigWidthMargin = width - 400,
             bigHeightMargin = (height - itemsNumberY*itemsHeight - (itemsNumberY-1)*marginY) / 2;
 
         // Creation of coordonates
@@ -55,40 +55,21 @@ export default class ElementFactory extends GameFactory {
         // Creation of titles
         let mediumFont = 20 * this.game.SCALE;
 
-        let name = this.game.add.text(
+        let itemName = this.game.add.text(
                 coordonates[count].x, 
                 coordonates[count].y - 30, 
-                "Nom   Problème:", 
+                "Nom:", 
                 {fill: '#000000', fontSize: mediumFont});
-        this.texts.push(name);
+        this.game.layer.zDepth0.addChild(itemName);
+        this.texts.push(itemName);
 
-        let dimensionIssue = this.game.add.text(
-                coordonates[count].x + 150, 
+        let itemState = this.game.add.text(
+                coordonates[count].x + 200, 
                 coordonates[count].y - 30, 
-                "Dimensions", 
+                "État:", 
                 {fill: '#000000', fontSize: mediumFont});
-        this.texts.push(dimensionIssue);
-
-        let defectivIssue = this.game.add.text(
-                coordonates[count].x + 250, 
-                coordonates[count].y - 30, 
-                "Défectueux", 
-                {fill: '#000000', fontSize: mediumFont});
-        this.texts.push(defectivIssue);
-
-        let quantityIssue = this.game.add.text(
-                coordonates[count].x + 350, 
-                coordonates[count].y - 30, 
-                "Quantité", 
-                {fill: '#000000', fontSize: mediumFont});
-        this.texts.push(quantityIssue);
-
-        let deliveryIssue = this.game.add.text(
-                coordonates[count].x + 450, 
-                coordonates[count].y - 30, 
-                "Non livré", 
-                {fill: '#000000', fontSize: mediumFont});
-        this.texts.push(deliveryIssue);
+        this.game.layer.zDepth0.addChild(itemState);
+        this.texts.push(itemState);
 
         // Creation of items list
         for (let name in items) {
@@ -100,9 +81,7 @@ export default class ElementFactory extends GameFactory {
                     items[name].key,
                     items[name].name,
                     items[name].mistakes,
-                    items[name].quantity,
-                    items[name].dimensions,
-                    items[name].note
+                    states
                 ))
             );
             count++;

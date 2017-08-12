@@ -5,6 +5,26 @@ export default {
     },
     canvasParent: "#gameDiv",
     atlas: "jeu11",
+    states: [
+        {
+            title: "Mauvaises dimensions"
+        },
+        {
+            title: "Produit défectueux"
+        },
+        {
+            title: "Mauvaises quantités"
+        },
+        {
+            title: "Erreur de produit"
+        },
+        {
+            title: "Produit non livré"
+        },
+        {
+            title: "Produit OK"
+        }
+    ],
     items: [
         {
             key: "adhesif",

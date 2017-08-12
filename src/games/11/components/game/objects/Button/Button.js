@@ -15,7 +15,5 @@ export default class Button extends BasicGameObject {
             key: key,
             buttonObj: this
         }));
-        this.sprite.inputEnabled = true;
-        this.sprite.input.useHandCursor = true;
     }
 }

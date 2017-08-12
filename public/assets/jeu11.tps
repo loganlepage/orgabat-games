@@ -284,18 +284,6 @@
                 <false/>
             </struct>
             <key type="filename">files/jeu11/list/list.png</key>
-            <struct type="IndividualSpriteSettings">
-                <key>pivotPoint</key>
-                <point_f>0.5,0.5</point_f>
-                <key>scale9Enabled</key>
-                <false/>
-                <key>scale9Borders</key>
-                <rect>25,25,50,50</rect>
-                <key>scale9Paddings</key>
-                <rect>25,25,50,50</rect>
-                <key>scale9FromFile</key>
-                <false/>
-            </struct>
             <key type="filename">files/jeu11/list/validate.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
@@ -303,9 +291,35 @@
                 <key>scale9Enabled</key>
                 <false/>
                 <key>scale9Borders</key>
-                <rect>50,39,100,78</rect>
+                <rect>6,6,13,13</rect>
                 <key>scale9Paddings</key>
-                <rect>50,39,100,78</rect>
+                <rect>6,6,13,13</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">files/jeu11/modal/full_modal.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>188,146,375,292</rect>
+                <key>scale9Paddings</key>
+                <rect>188,146,375,292</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">files/jeu11/modal/half_modal.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>75,125,150,250</rect>
+                <key>scale9Paddings</key>
+                <rect>75,125,150,250</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
@@ -336,16 +350,29 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">files/jeu11/other/full_modal.png</key>
+            <key type="filename">files/jeu11/other/continue.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
                 <key>scale9Enabled</key>
                 <false/>
                 <key>scale9Borders</key>
-                <rect>188,146,375,292</rect>
+                <rect>25,13,50,25</rect>
                 <key>scale9Paddings</key>
-                <rect>188,146,375,292</rect>
+                <rect>25,13,50,25</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">files/jeu11/other/select.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>63,15,125,30</rect>
+                <key>scale9Paddings</key>
+                <rect>63,15,125,30</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>

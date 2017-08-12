@@ -1,15 +1,19 @@
 "use strict";
 import BasicGameObject from "system/phaser/BasicGameObject";
-import ModalSprite from "./ModalSprite";
 import Phaser from 'phaser';
 
-export default class ItemModal extends BasicGameObject {
+import ModalSprite from "./ModalSprite";
+import CheckBox from "../List/CheckBox";
+import Button from "../Button/Button";
 
+export default class ListModal extends BasicGameObject {
+
+	blackBackground;
 	texts = [];
-	title;
+	checkbox = [];
 	cross;
-
-	constructor(game, x, y, key, title, item) {
+	button;
+	constructor(game, x, y, key, title, item, states) {
 	    super(game);
 
 	    // Create black background
@@ -21,8 +25,6 @@ export default class ItemModal extends BasicGameObject {
 
         // Modal image
 	    this.addSprite(new ModalSprite(this.game, x, y, key, this));
-	    this.sprite.inputEnabled = true;
-        this.sprite.input.useHandCursor = true;
 
 	    // Tableau de texte, pour supprimer facilement
 	    this.texts = [];
@@ -38,36 +40,43 @@ export default class ItemModal extends BasicGameObject {
 	    		textPositionX, 
 	    		textPositionY, 
 	    		title, 
-	    		{fill: '#000000', fontSize: bigFont});
+	    		{fill: '#000000', fontSize: bigFont}
+	    	);
 	    this.texts.push(titleText);
 	    textPositionY += 20;
 
-	    // Item informations
-	    if (item.quantity > 0) {
-	    	textPositionY += 20;
-	    	let quantityText = this.game.add.text(
-	    		textPositionX, textPositionY, 
-	    		"Quantité: " + item.quantity, 
-	    		{fill: '#000000', fontSize: mediumFont});
-	    	this.texts.push(quantityText);
-	    }
-	    if (item.dimensions != "") {
-	    	textPositionY += 20;
-	    	let dimensionText = this.game.add.text(
+	    // Elements in the list
+	    states.forEach((error) => {
+	    	textPositionY += 30;
+	    	// Text
+	    	this.texts.push(this.game.add.text(
+	    		textPositionX + 20, 
+	    		textPositionY, 
+	    		error.title, 
+	    		{fill: '#000000', fontSize: mediumFont}
+	    	));
+	    	// Checkbox
+	    	this.checkbox.push(new CheckBox(
+	    		this.game, 
 	    		textPositionX, 
 	    		textPositionY, 
-	    		"Dimensions: " + item.dimensions, 
-	    		{fill: '#000000', fontSize: mediumFont});
-	    	this.texts.push(dimensionText);
-	    }
-	    if (item.note != "") {
-	    	textPositionY += 20;
-	    	let noteText = this.game.add.text(
-	    		textPositionX, textPositionY, 
-	    		"Note: " + item.note, 
-	    		{fill: '#000000', fontSize: mediumFont});
-	    	this.texts.push(noteText);
-	    }
+	    		"list"
+	    	));
+	    });
+
+	    console.log(this.checkbox);
+
+	    // Validate button
+	    this.button = new Button(
+	    	this.game, 
+	    	x + (this.sprite.width/2) - 50,
+	    	y + (this.sprite.height/2) - 20,
+	    	"continue",
+	    	this
+	    	);
+	    this.button.sprite.events.onInputDown.add(function(){
+	    	this.removeElements();
+	    }, this);
 
 	    // Create cross to close modal
 	    let crossX = this.game.world.centerX + (this.sprite.width/2) - 40,
@@ -79,11 +88,21 @@ export default class ItemModal extends BasicGameObject {
         this.cross.lineTo(crossX + crossWidth, crossY + crossWidth);
         this.cross.moveTo(crossX + crossWidth,crossY);
         this.cross.lineTo(crossX, crossY + crossWidth);
+        this.cross.inputEnabled = true;
+        this.cross.input.useHandCursor = true;
+        this.cross.events.onInputDown.add(this.removeElements, this);
 	}
 
 	removeElements() {
 		this.blackBackground.destroy();
+		this.sprite.destroy();
 		this.cross.destroy();
+		this.checkbox.forEach((item) => {
+			item.sprite.destroy();
+		});
+		this.checkbox = [];
+		this.button.sprite.destroy();
+		this.button = null;
 		this.texts.forEach((text) => {
 			text.destroy();
 		});

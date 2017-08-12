@@ -92,39 +92,53 @@ class Engine {
             mediumFont = 20 * this.gameProcess.game.SCALE;
 
         // Title
-        this.title = this.gameProcess.game.add.text(20, 20, "Réceptionner la livraison", {font: 'Arial', fontSize: bigFont, fill: '#000000'});
+        this.title = this.gameProcess.game.add.text(
+            20, 
+            20, 
+            "Réceptionner la livraison", 
+            {font: 'Arial', fontSize: bigFont, fill: '#000000'});
+        this.gameProcess.game.layer.zDepth0.addChild(this.title);
 
         // Items
-        this.items = new ItemFactory(this.gameProcess.game, Config.items);
+        this.items = new ItemFactory(
+            this.gameProcess.game, 
+            Config.items);
         this.items.forEach((item) => {
             item.scale.setTo(this.gameProcess.game.SCALE); // Propotionnal scale
         });
 
         // List of items to check answers
-        this.list = new ElementFactory(this.gameProcess.game, Config.items);
+        this.list = new ElementFactory(
+            this.gameProcess.game, 
+            Config.items, 
+            Config.states);
 
-        // Validate button
-        this.validate = new Button(this.gameProcess.game, 
+        // // Validate button
+        this.validate = new Button(
+            this.gameProcess.game, 
             this.gameProcess.game.world.width - 120 * this.gameProcess.game.SCALE, 
             this.gameProcess.game.world.height - 60 * this.gameProcess.game.SCALE, 
             "valider");
+
         this.validate.sprite.scale.setTo(this.gameProcess.game.SCALE); // Propotionnal scale
         this.validate.sprite.events.onInputDown.add(function(){
-            this.checkAnswers(this.items);
+            //
         }, this);
 
         // Order image button
-        this.order = new Button(this.gameProcess.game, 
+        this.order = new Button(
+            this.gameProcess.game, 
             120 * this.gameProcess.game.SCALE, 
             this.gameProcess.game.world.height - 60 * this.gameProcess.game.SCALE, 
             "commande");
+
         this.order.sprite.scale.setTo(this.gameProcess.game.SCALE); // Propotionnal scale
         this.order.sprite.events.onInputDown.add(function(){
             //
         }, this);
     }
 
-    checkAnswers(elements) {
+    checkAnswers() {
         //
     }
 
