@@ -7,16 +7,72 @@ import CheckBoxSprite from "./CheckBoxSprite";
 
 export default class Element extends BasicGameObject {
 
-    key;
+	game;
+    sprite;
+    text;
+    isSelected = false;
 
-    constructor(game, x, y, key) {
+    constructor(game, x, y, error, element) {
         super(game);
 
-        this.key = key;
-        this.addSprite(new CheckBoxSprite(game, x, y, key, this));
-        this.sprite.events.onInputDown.add(function(){
-            this.addSprite(new CheckBoxSprite(game, x, y, "validate", this));
-        }, this);
+        this.x = x;
+        this.y = y;
+        this.error = error;
+        // If already selected
+        if (element.answers.includes(error)) {
+            this.isSelected = true;
+        }
+
+        // Add checbox image
+        this.addSprite(new CheckBoxSprite(
+        	game, 
+        	x, 
+        	y, 
+        	this.isSelected ? "validate" : "list", 
+        	this));
+        // Click on checbox image or ...
+        this.sprite.events.onInputDown.add(this.isSelected ? this.uncheckElement : this.checkElement, this);
+
+        // Add mistake text
+        this.text = this.game.add.text(
+    		x + 20, 
+    		y, 
+    		error, 
+    		{fill: '#000000', fontSize: 20 * this.game.SCALE}
+    	);
+        // ... on checbox text
+    	this.text.inputEnabled = true;
+        this.text.input.useHandCursor = true;
+        this.text.events.onInputDown.addOnce(this.isSelected ? this.uncheckElement : this.checkElement, this);
+    }
+
+    checkElement(element) {
+    	this.sprite.destroy();
+            this.addSprite(new CheckBoxSprite(
+                this.game, 
+                this.x, 
+                this.y, 
+                "validate", 
+                this));
+        this.isSelected = true;
+        element.events.onInputDown.addOnce(this.uncheckElement, this);
+    }
+
+    uncheckElement(element){
+    	this.sprite.destroy();
+        this.addSprite(new CheckBoxSprite(
+        	this.game, 
+        	this.x, 
+        	this.y, 
+        	"list", 
+        	this));
+        this.isSelected = false;
+        element.events.onInputDown.addOnce(this.checkElement, this);
+    }
+
+    destroy(){
+    	this.sprite.destroy();
+    	this.text.destroy();
     }
 
 }

@@ -78,6 +78,7 @@ class Engine {
     items;
     validate;
     order;
+    answersCorrection = [];
 
     constructor(gameProcess) {
         this.gameProcess = gameProcess;
@@ -96,7 +97,8 @@ class Engine {
             20, 
             20, 
             "Réceptionner la livraison", 
-            {font: 'Arial', fontSize: bigFont, fill: '#000000'});
+            {font: 'Arial', fontSize: bigFont, fill: '#000000'}
+        );
         this.gameProcess.game.layer.zDepth0.addChild(this.title);
 
         // Items
@@ -111,18 +113,34 @@ class Engine {
         this.list = new ElementFactory(
             this.gameProcess.game, 
             Config.items, 
-            Config.states);
+            Config.states
+        );
 
         // // Validate button
         this.validate = new Button(
             this.gameProcess.game, 
             this.gameProcess.game.world.width - 120 * this.gameProcess.game.SCALE, 
             this.gameProcess.game.world.height - 60 * this.gameProcess.game.SCALE, 
-            "valider");
+            "valider"
+        );
 
         this.validate.sprite.scale.setTo(this.gameProcess.game.SCALE); // Propotionnal scale
         this.validate.sprite.events.onInputDown.add(function(){
-            //
+            // Check answers
+            this.answersCorrection = [];
+            this.list.forEach((element) => {
+                // Add each element correction (true or false)
+                this.answersCorrection.push(element.validateAnswer());
+            });
+            // If no incorrect responses, then it's done
+            if (this.answersCorrection.includes(false) || this.answersCorrection == []) {
+                PhaserManager.get('gabator').stats.changeValues({
+                    health: PhaserManager.get('gabator').stats.state.health - 1,
+                });
+            } else {
+                this.gameProcess.quests._quests.communication_quest.done();
+                this.finish.dispatch();
+            }
         }, this);
 
         // Order image button
@@ -130,16 +148,24 @@ class Engine {
             this.gameProcess.game, 
             120 * this.gameProcess.game.SCALE, 
             this.gameProcess.game.world.height - 60 * this.gameProcess.game.SCALE, 
-            "commande");
+            "order"
+        );
 
         this.order.sprite.scale.setTo(this.gameProcess.game.SCALE); // Propotionnal scale
         this.order.sprite.events.onInputDown.add(function(){
-            //
+            // Display order image, not a button
+            this.order = new Button(
+                this.gameProcess.game, 
+                this.gameProcess.game.world.centerX, 
+                this.gameProcess.game.world.centerY, 
+                "order_image"
+            );
+            this.order.sprite.events.onInputDown.add(function(){
+                this.order.sprite.destroy();
+                this.order = null;
+            }, this);
         }, this);
-    }
 
-    checkAnswers() {
-        //
     }
 
 }
@@ -200,6 +226,7 @@ class GameProcess {
     _initParts() {
         //When ready, lets init parts.
         // this.engine.start();
+        this.engine.finish.addOnce(this._onFinish, this);
     }
 
     _onFinish() {

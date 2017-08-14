@@ -29,7 +29,7 @@ export default {
         {
             key: "adhesif",
             name: "Adhésif orange",
-            mistakes: ["Mauvaises dimensions"],
+            correctAnswers: ["Produit OK"],
             quantity: 5,
             dimensions: "",
             note: ""
@@ -37,7 +37,7 @@ export default {
         {
             key: "cartouche",
             name: "Cartouche silicone",
-            mistakes: [],
+            correctAnswers: ["Produit OK"],
             quantity: 36,
             dimensions: "280ml",
             note: ""
@@ -45,7 +45,7 @@ export default {
         {
             key: "ciment",
             name: "Ciment gris",
-            mistakes: ["Produit défectueux"],
+            correctAnswers: ["Produit défectueux"],
             quantity: 3,
             dimensions: "35kg",
             note: "Un sac est éventré"
@@ -53,15 +53,15 @@ export default {
         {
             key: "coffrage",
             name: "Planche de coffrage",
-            mistakes: [],
+            correctAnswers: ["Mauvaises dimensions"],
             quantity: 50,
-            dimensions: "200x27 en 4m",
+            dimensions: "200x27 en 2m",
             note: ""
         },
         {
             key: "contreplaque_agglo",
             name: "Contreplaqué aggloméré",
-            mistakes: ["Mauvaises quantités"],
+            correctAnswers: ["Mauvaises quantités"],
             quantity: 6,
             dimensions: "185x300 en 18mm",
             note: ""
@@ -69,7 +69,7 @@ export default {
         {
             key: "contreplaque",
             name: "Contreplaqué",
-            mistakes: [],
+            correctAnswers: ["Produit OK"],
             quantity: 8,
             dimensions: "250x122 en 12mm",
             note: ""
@@ -77,7 +77,7 @@ export default {
         {
             key: "gaine_16",
             name: "Gaine ICTA 16mm",
-            mistakes: ["Mauvaises quantités"],
+            correctAnswers: ["Mauvaises quantités"],
             quantity: 13,
             dimensions: "16mm",
             note: ""
@@ -85,7 +85,7 @@ export default {
         {
             key: "gaine_20",
             name: "Gaine ICTA 20mm",
-            mistakes: ["Non livré"],
+            correctAnswers: ["Produit non livré"],
             quantity: 0,
             dimensions: "20mm",
             note: ""
@@ -93,7 +93,7 @@ export default {
         {
             key: "peinture",
             name: "Peinture monocouche",
-            mistakes: [],
+            correctAnswers: ["Produit OK"],
             quantity: 2,
             dimensions: "",
             note: ""
@@ -101,15 +101,15 @@ export default {
         {
             key: "pointes",
             name: "Pointes tête plates inox",
-            mistakes: ["Mauvaises dimensions"],
+            correctAnswers: ["Mauvaises dimensions"],
             quantity: 10,
-            dimensions: "2.7x70",
+            dimensions: "2.7x60",
             note: ""
         },
         {
             key: "vis",
             name: "Vis plaques de plâtre",
-            mistakes: [],
+            correctAnswers: ["Produit OK"],
             quantity: 9,
             dimensions: "1000u",
             note: ""
@@ -117,7 +117,7 @@ export default {
         {
             key: "vmc",
             name: "VMC Hygroréglable Type B",
-            mistakes: ["Erreur de produit"],
+            correctAnswers: ["Erreur de produit"],
             quantity: 1,
             dimensions: "",
             note: "Hygroréglable Type B"

@@ -35,7 +35,7 @@ export default class ElementFactory extends GameFactory {
             marginY = 25 * this.game.SCALE;
 
         // Margin around the grid
-        let bigWidthMargin = width - 400,
+        let bigWidthMargin = this.game.world.centerX, // X position
             bigHeightMargin = (height - itemsNumberY*itemsHeight - (itemsNumberY-1)*marginY) / 2;
 
         // Creation of coordonates
@@ -80,7 +80,7 @@ export default class ElementFactory extends GameFactory {
                     coordonates[count].y,
                     items[name].key,
                     items[name].name,
-                    items[name].mistakes,
+                    items[name].correctAnswers,
                     states
                 ))
             );

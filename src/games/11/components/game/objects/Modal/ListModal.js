@@ -13,7 +13,10 @@ export default class ListModal extends BasicGameObject {
 	checkbox = [];
 	cross;
 	button;
-	constructor(game, x, y, key, title, item, states) {
+
+	finish = new Phaser.Signal();
+
+	constructor(game, x, y, key, title, states, element) {
 	    super(game);
 
 	    // Create black background
@@ -26,7 +29,7 @@ export default class ListModal extends BasicGameObject {
         // Modal image
 	    this.addSprite(new ModalSprite(this.game, x, y, key, this));
 
-	    // Tableau de texte, pour supprimer facilement
+	    // Texts array
 	    this.texts = [];
 
 	    // Fonts size
@@ -48,57 +51,35 @@ export default class ListModal extends BasicGameObject {
 	    // Elements in the list
 	    states.forEach((error) => {
 	    	textPositionY += 30;
-	    	// Text
-	    	this.texts.push(this.game.add.text(
-	    		textPositionX + 20, 
-	    		textPositionY, 
-	    		error.title, 
-	    		{fill: '#000000', fontSize: mediumFont}
-	    	));
 	    	// Checkbox
 	    	this.checkbox.push(new CheckBox(
 	    		this.game, 
 	    		textPositionX, 
-	    		textPositionY, 
-	    		"list"
+	    		textPositionY,
+	    		error.title,
+	    		element
 	    	));
 	    });
-
-	    console.log(this.checkbox);
 
 	    // Validate button
 	    this.button = new Button(
 	    	this.game, 
 	    	x + (this.sprite.width/2) - 50,
-	    	y + (this.sprite.height/2) - 20,
+	    	y + (this.sprite.height/2) - 30,
 	    	"continue",
 	    	this
 	    	);
 	    this.button.sprite.events.onInputDown.add(function(){
+	    	this.finish.dispatch();
 	    	this.removeElements();
 	    }, this);
-
-	    // Create cross to close modal
-	    let crossX = this.game.world.centerX + (this.sprite.width/2) - 40,
-	    	crossY = this.game.world.centerY - (this.sprite.height/2) + 20,
-	    	crossWidth = 20;
-	    this.cross = this.game.add.graphics(0,0);
-	    this.cross.lineStyle(2, "black", 1);
-        this.cross.moveTo(crossX,crossY);
-        this.cross.lineTo(crossX + crossWidth, crossY + crossWidth);
-        this.cross.moveTo(crossX + crossWidth,crossY);
-        this.cross.lineTo(crossX, crossY + crossWidth);
-        this.cross.inputEnabled = true;
-        this.cross.input.useHandCursor = true;
-        this.cross.events.onInputDown.add(this.removeElements, this);
 	}
 
 	removeElements() {
 		this.blackBackground.destroy();
 		this.sprite.destroy();
-		this.cross.destroy();
 		this.checkbox.forEach((item) => {
-			item.sprite.destroy();
+			item.destroy();
 		});
 		this.checkbox = [];
 		this.button.sprite.destroy();
