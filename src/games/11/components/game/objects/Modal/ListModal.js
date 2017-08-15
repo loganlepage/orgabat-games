@@ -50,7 +50,7 @@ export default class ListModal extends BasicGameObject {
 
 	    // Elements in the list
 	    states.forEach((error) => {
-	    	textPositionY += 30;
+	    	textPositionY += (50 * this.game.SCALE);
 	    	// Checkbox
 	    	this.checkbox.push(new CheckBox(
 	    		this.game, 
@@ -64,8 +64,8 @@ export default class ListModal extends BasicGameObject {
 	    // Validate button
 	    this.button = new Button(
 	    	this.game, 
-	    	x + (this.sprite.width/2) - 50,
-	    	y + (this.sprite.height/2) - 30,
+	    	x + (this.sprite.width/2) - (60 * this.game.SCALE),
+	    	y + (this.sprite.height/2) - (40 * this.game.SCALE),
 	    	"continue",
 	    	this
 	    	);

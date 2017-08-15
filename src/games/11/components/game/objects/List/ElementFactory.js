@@ -64,7 +64,7 @@ export default class ElementFactory extends GameFactory {
         this.texts.push(itemName);
 
         let itemState = this.game.add.text(
-                coordonates[count].x + 200, 
+                coordonates[count].x + (300 * this.game.SCALE), 
                 coordonates[count].y - 30, 
                 "État:", 
                 {fill: '#000000', fontSize: mediumFont});

@@ -34,7 +34,7 @@ export default class ItemFactory extends GameFactory {
             marginY = 70 * this.game.SCALE;
 
         // Margin around the grid
-        let bigWidthMargin = 50,
+        let bigWidthMargin = (this.game.world.centerX / 2) - itemsWidth - marginX,
             bigHeightMargin = (height - itemsNumberY*itemsHeight - (itemsNumberY-1)*marginY) / 2;
 
         let countX = 0;

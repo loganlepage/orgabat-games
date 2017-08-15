@@ -107,6 +107,16 @@ class Engine {
             Config.items);
         this.items.forEach((item) => {
             item.scale.setTo(this.gameProcess.game.SCALE); // Propotionnal scale
+            item.obj.onClicked.add(function(){
+                this.items.forEach((item2) => {
+                    item2.obj.disableControls();
+                });
+            }, this);
+            item.obj.onClosed.add(function(){
+                this.items.forEach((item2) => {
+                    item2.obj.enableControls();
+                });
+            }, this);
         });
 
         // List of items to check answers

@@ -8,6 +8,8 @@ import ItemModal from "../Modal/ItemModal";
 
 export default class Item extends BasicGameObject {
 
+    onClicked = new Phaser.Signal();
+    onClosed = new Phaser.Signal();
     key;
     mistakes;
     quantity;
@@ -35,14 +37,26 @@ export default class Item extends BasicGameObject {
                 game, 
                 game.world.centerX, 
                 game.world.centerY, 
-                "full_modal", 
+                "half_modal", 
                 "Information sur le produit", 
                 this);
+            this.onClicked.dispatch();
             this.modal.sprite.events.onInputDown.add(function(){
                 this.modal.removeElements();
                 this.modal.sprite.destroy();
+                this.onClosed.dispatch();
             }, this);
         }, this);
+    }
+
+    disableControls() {
+        this.sprite.inputEnabled = false;
+        this.sprite.input.useHandCursor = false;
+    }
+
+    enableControls() {
+        this.sprite.inputEnabled = true;
+        this.sprite.input.useHandCursor = true;
     }
 
 }

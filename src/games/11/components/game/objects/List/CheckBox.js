@@ -30,17 +30,17 @@ export default class Element extends BasicGameObject {
         	y, 
         	this.isSelected ? "validate" : "list", 
         	this));
-        // Click on checbox image or ...
+        // Click on checbox image or [...]
         this.sprite.events.onInputDown.add(this.isSelected ? this.uncheckElement : this.checkElement, this);
 
         // Add mistake text
         this.text = this.game.add.text(
-    		x + 20, 
+    		x + 40, 
     		y, 
     		error, 
     		{fill: '#000000', fontSize: 20 * this.game.SCALE}
     	);
-        // ... on checbox text
+        // [...] on checkbox text
     	this.text.inputEnabled = true;
         this.text.input.useHandCursor = true;
         this.text.events.onInputDown.addOnce(this.isSelected ? this.uncheckElement : this.checkElement, this);

@@ -32,13 +32,13 @@ export default class Element extends BasicGameObject {
         this.game.layer.zDepth0.addChild(this.title);
 
         // Answers
-        this.answersText = this.game.add.text(x + 220, y, "", {font: 'Arial', fontSize: mediumFont, fill: '#000000'})
+        this.answersText = this.game.add.text(x + (340 * this.game.SCALE), y, "", {font: 'Arial', fontSize: mediumFont, fill: '#000000'})
         this.game.layer.zDepth0.addChild(this.answersText);
 
         // Add modal element for answers
-        this.button = new Button(game, x + 190, y, "cross", this);
+        this.button = new Button(game, x + (300 * this.game.SCALE), y, "cross", this);
         this.button.sprite.anchor.setTo(0);
-        this.button.sprite.scale.set(0.7);
+        this.button.sprite.scale.set(0.7 + 0.1 * this.game.SCALE);
         this.button.sprite.events.onInputDown.add(function(){
             // Answer list creation
             this.modal = new ListModal(
@@ -80,7 +80,6 @@ export default class Element extends BasicGameObject {
 
     checkAnswers(array1, array2) {
         if (array1 === array2) {
-            console.log("OK");
             return true;
         }
         if (array1 == null || array2 == null){
