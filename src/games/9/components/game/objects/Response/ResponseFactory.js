@@ -33,7 +33,7 @@ export default class ResponseFactory extends GameFactory {
         }
 
         let count = 0;
-
+        // console.log("Factory:");
         for (let item in items) {
             this.add(
                 (new Response(
@@ -46,7 +46,17 @@ export default class ResponseFactory extends GameFactory {
             );
             count++;
         }
+        // console.log(this.children);
 
     }
+
+    // destroy() {
+    //     console.log("Destroy");
+    //     this.children.forEach((item) => {
+    //         console.log(item.obj.key);
+    //         item.destroy();
+    //         // console.log(item);
+    //     });
+    // }
 
 }

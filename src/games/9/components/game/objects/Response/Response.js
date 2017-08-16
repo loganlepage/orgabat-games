@@ -16,7 +16,5 @@ export default class Response extends BasicGameObject {
         this.file = file;
         this.link = this.file + "/" + this.key;
         this.addSprite(new ResponseSprite(this.game, this.x, this.y, this.link, this));
-        // this.sprite.inputEnabled = true;
-        // this.sprite.input.useHandCursor = true;
     }
 }

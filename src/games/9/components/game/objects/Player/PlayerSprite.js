@@ -12,6 +12,8 @@ export default class PlayerSprite extends BasicGameSprite {
     }
 
     initialize() {
+        this.inputEnabled = true;
+        this.input.useHandCursor = true;
     	this.position.x = this.originalPosition.x;
     	this.position.y = this.originalPosition.y;
     }

@@ -14,11 +14,6 @@ export default class Player extends BasicGameObject {
         this.addSprite(new PlayerSprite(this.game, x, y, this));
     }
 
-    initialize() {
-        this.sprite.addInputs();
-        this.sprite.initialize();
-    }
-
     checkOverlap(currentSprite, spriteToOverlap) {
         let boundsA = currentSprite.getBounds(),
             boundsB = spriteToOverlap.getBounds(),
@@ -34,4 +29,5 @@ export default class Player extends BasicGameObject {
             currentSprite.position.copyFrom(currentSprite.originalPosition);
             return false;
     }
+
 }

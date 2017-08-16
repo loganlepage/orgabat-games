@@ -74,6 +74,7 @@ class Engine {
 
     step;
     stepNumber = 0;
+    // stepNumber = 4; // Shortcut
 
     player;
     responseGroup;
@@ -86,17 +87,22 @@ class Engine {
             this.finish.dispatch();
         }, this);
 
+        // Player
+        // this.player = new Player(gameProcess.game, gameProcess.game.world.centerX, gameProcess.game.world.centerY);
+
+        // Response group
         this.responseGroup = new ResponseFactory(gameProcess.game, Config.responses);
-        this.player = new Player(gameProcess.game, gameProcess.game.world.centerX, gameProcess.game.world.centerY);
     }
 
     start() {
-        this.step = new Step(this.gameProcess.game, Config.steps[this.stepNumber], this.responseGroup, this.player);
-        this.stepNumber++;
-        if (this.stepNumber <= 5) {
+        if (this.stepNumber < Config.steps.length) {
+            // this.step = new Step(this.gameProcess.game, Config.steps[this.stepNumber], this.player, this.responseGroup);
+            this.step = new Step(this.gameProcess.game, Config.steps[this.stepNumber], this.responseGroup);
             this.step.finish.addOnce(this.start, this);
+            this.stepNumber++;
         } else {
             this.gameProcess.quests._quests.communication_quest.done();
+            this.finish.dispatch();
         }
     }
 
@@ -157,6 +163,7 @@ class GameProcess {
 
     _initParts() {
         //When ready, lets init parts.
+        this.engine.finish.addOnce(this._onFinish, this);
         this.engine.start();
     }
 
