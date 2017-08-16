@@ -11,7 +11,7 @@ export default class Rules extends State {
             {font: 'Arial', fill: '#272727', fontSize: this.game.uiScale(21)});
 
         this.game.add.text(this.game.uiScale(80), this.game.uiScale(160),
-            "Quand les cartes ne correspondent pas, elles se cachent à nouveau. Une fois une paire de cartes retrouvée, la carte concerné s’a che pendant 15 secondes en plein écran.",
+            "Cliquer sur les cartes pour les découvrir et former une paire. Quand les cartes ne correspondent pas, elles se cachent à nouveau. Il est possible de cliquer une deuxième fois sur une carte découverte pour l'agrandir et la réduire.",
             {
                 font: 'Arial', fill: '#272727', fontSize: this.game.uiScale(16),
                 wordWrap: true, wordWrapWidth: this.game.world.width - this.game.uiScale(160)
