@@ -43,11 +43,10 @@ export default class Play extends State {
         this.game.controlsEnabled = false;
         this.game.stage.backgroundColor = '#c3dbb6'; //green background
 
-        this.initUI();
-        // this.addGrid();
-        this.addObjects();
-
         PhaserManager.ready('game', 'play');
+
+        this.initUI();
+        this.addObjects();
 
         this.start();
     }
@@ -83,15 +82,11 @@ export default class Play extends State {
     }
 
     addObjects() {
-        // Items parameters:
-        this.capacity = 0; // Shortcut
-        this.capacityMax = 23;
 
-        // Texts:
-        this.questText = this.game.add.text(15, 15, `Réaliser un mur dagglo de 20 de retour`, {fill: '#ffffff', fontSize: 20});
-        this.titleText = this.game.add.text(15, 40, `Éléments insérés : ${this.capacity} / ${this.capacityMax}`, {fill: '#ffffff', fontSize: 20});
-        this.game.layer.zDepth0.addChild(this.questText);
-        this.game.layer.zDepth0.addChild(this.titleText);
+        // Items parameters:
+        this.capacity = 0;
+        // this.capacityMax = 23;
+        this.capacityMax =0;
 
         // Shelf:
         this.shelf = new Shelf({
@@ -121,7 +116,20 @@ export default class Play extends State {
                 item.obj.checkOverlap(currentSprite, this.truck.sprite)
             }, this);
             item.obj.onDropped.add(this.updateQuantity, this);
+            if (item.obj.isNeeded) {
+                this.capacityMax++;
+            }
         });
+
+        // Texts:
+        this.questText = this.game.add.text(15, 15, `Réaliser un mur dagglo de 20 de retour`, {fill: '#ffffff', fontSize: 20});
+        this.titleText = this.game.add.text(15, 40, `Éléments ajoutés : ${this.capacity} / ${this.capacityMax}`, {fill: '#ffffff', fontSize: 20});
+        this.game.layer.zDepth0.addChild(this.questText);
+        this.game.layer.zDepth0.addChild(this.titleText);
+
+        Canvas.get('gabator').modal.showHelp(
+            `Attention: la capacité du camion est de ${this.capacityMax} objets`
+        );
     }
 
     removeControls(){
@@ -147,7 +155,7 @@ export default class Play extends State {
     updateQuantity(currentSprite) {
         this.capacity++;
         this.selectedItems.push(currentSprite.obj);
-        this.titleText.text = `Eléments insérés : ${this.capacity} / ${this.capacityMax}`;
+        this.titleText.text = `Eléments ajoutés : ${this.capacity} / ${this.capacityMax}`;
         if (this.capacity >= this.capacityMax) {
             this.removeControls();
             this.button = new Button({
@@ -177,8 +185,8 @@ export default class Play extends State {
         });
         this.itemListModal.finish.add(function(){
             if(this.itemListModal.isCorrect){
-                console.log("Fini");
-
+                this.gameProcess.quests._quests.load_truck.done();
+                this.game.gameProcess._onFinish();
             } else {
                 this.removeAll();
                 this.addObjects();
@@ -244,7 +252,6 @@ class GameProcess {
         //On active Gabator
         if (PhaserManager.get('gabator').state.current == "play") {
             PhaserManager.get('gabator').state.getCurrentState().start();
-            Canvas.get('gabator').modal.showHelp(`Rappel: Capacité maximale du camion: 30 éléments.`);
         }
 
         this.game.keys.addKey(Phaser.Keyboard.ENTER).onDown.remove(this._onStartInfoClose, this);

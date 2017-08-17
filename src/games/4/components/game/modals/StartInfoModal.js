@@ -40,7 +40,7 @@ export default class StartInfoModal extends Modal {
                     type: "text",
                     x: 20,
                     y: 85,
-                    text: `Bienvenue dans l'entrepôt.\n\nChoisis les différents matériaux, matériels et EPI nécessaires pour la réalisation de cet ouvrage.\nAttention: Le chargement du camion est limité à 30 éléments !`,
+                    text: `Bienvenue dans l'entrepôt.\nChoisis les différents matériaux, matériels et EPI nécessaires pour la réalisation du chantier à venir.`,
                     style: {
                         fill: "#5F4D21",
                         fontFamily: "Arial",
