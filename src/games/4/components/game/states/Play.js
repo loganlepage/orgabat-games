@@ -22,8 +22,8 @@ export default class Play extends State {
 
     capacity = 0;
     capacityMax = 0;
-    // attempt = 0;
-    attempt = 3; // Shortcut
+    attempt = 0;
+    // attempt = 3; // Shortcut
     selectedItems = [];
 
     shelf;
@@ -86,7 +86,7 @@ export default class Play extends State {
         // Items parameters:
         this.capacity = 0;
         // this.capacityMax = 23;
-        this.capacityMax =0;
+        this.capacityMax = 0;
 
         // Shelf:
         this.shelf = new Shelf({
@@ -117,9 +117,14 @@ export default class Play extends State {
             }, this);
             item.obj.onDropped.add(this.updateQuantity, this);
             if (item.obj.isNeeded) {
+                // this.selectedItems.push(item.obj); // Shortcut
                 this.capacityMax++;
             }
         });
+
+        // console.log(this.selectedItems); // Shortcut
+        // this.attempt++; // Shortcut
+        // this.proceedAttempt(); // Shortcut
 
         // Texts:
         this.questText = this.game.add.text(15, 15, `Réaliser un mur dagglo de 20 de retour`, {fill: '#ffffff', fontSize: 20});
@@ -185,7 +190,7 @@ export default class Play extends State {
         });
         this.itemListModal.finish.add(function(){
             if(this.itemListModal.isCorrect){
-                this.gameProcess.quests._quests.load_truck.done();
+                this.game.gameProcess.quests._quests.load_truck.done();
                 this.game.gameProcess._onFinish();
             } else {
                 this.removeAll();
@@ -279,10 +284,24 @@ class GameProcess {
         });
         endInfoModal.onExit.addOnce(() => window.closeGameModal(), this);
         endInfoModal.onReplay.addOnce(() => window.location.reload(), this);
+        // endInfoModal.toggle(true, {}, {
+        //     star1: false,
+        //     star2: false,
+        //     star3: false
+        // }, {
+        //     health: PhaserManager.get('gabator').stats.state.health,
+        //     organization: PhaserManager.get('gabator').stats.state.organization,
+        //     enterprise: PhaserManager.get('gabator').stats.state.enterprise,
+        // });
+
+        // Étoiles:
+        let healthLevel = PhaserManager.get('gabator').stats.state.health;
+        let healthLevelMax = PhaserManager.get('gabator').stats.healthMax;
+
         endInfoModal.toggle(true, {}, {
-            star1: false,
-            star2: false,
-            star3: false
+            star1: healthLevel >= healthLevelMax / 2 ? true : false,
+            star2: healthLevel >= (2 * healthLevelMax) / 3 ? true : false,
+            star3: healthLevel == healthLevelMax ? true : false
         }, {
             health: PhaserManager.get('gabator').stats.state.health,
             organization: PhaserManager.get('gabator').stats.state.organization,

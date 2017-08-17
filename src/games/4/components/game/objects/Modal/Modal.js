@@ -248,8 +248,10 @@ export default class Modal extends BasicGameObject {
 	    		let randomIndex = Math.floor((Math.random() * this.missingItems.length));
 	    		elementsText.text = textValue;
 	    		// Ajout du message d'aide en plus:
-	    		this.elementsText2 = this.game.add.text(elementsX, elementsY + 20, `dont par exemple: 1 ${this.missingItems[randomIndex].title}`, {fill: '#000000', fontSize: 16});
-	    		this.texts.push(this.elementsText2);
+	    		if (this.missingItems.length > 0) {
+	    			this.elementsText2 = this.game.add.text(elementsX, elementsY + 20, `dont par exemple: 1 ${this.missingItems[randomIndex].title}`, {fill: '#000000', fontSize: 16});
+	    			this.texts.push(this.elementsText2);
+	    		}
 	    		break;
 	    }
 
