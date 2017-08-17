@@ -25,7 +25,6 @@ export default class Response extends BasicGameObject {
     }
 
     checkOverlap(currentSprite, spriteToOverlap) {
-        console.log("Overlap");
         let boundsA = currentSprite.getBounds(),
             boundsB = spriteToOverlap.getBounds();
         if (Phaser.Rectangle.intersects(boundsA, boundsB)) {
@@ -43,6 +42,8 @@ export default class Response extends BasicGameObject {
     initialize() {
         this.sprite.position.copyFrom(this.sprite.originalPosition);
         this.sprite.addInputs();
+        this.sprite.events.onInputDown.removeAll();
+        this.sprite.events.onDragStop.removeAll();
     }
 
 }

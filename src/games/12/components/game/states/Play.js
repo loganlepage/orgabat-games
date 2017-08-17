@@ -13,7 +13,7 @@ import Config from "../config/data";
 
 import SecurityQuest from "../quests/SecurityQuest";
 
-// import ResponseFactory from "../objects/Response/ResponseFactory";
+import ResponseFactory from "../objects/Response/ResponseFactory";
 import Button from '../objects/Button/Button';
 import Step from "../objects/Step/Step";
 
@@ -77,6 +77,7 @@ class Engine {
     // title;
     // responseGroup;
     step;
+    // step = [];
     stepNumber = 0;
 
     constructor(gameProcess) {
@@ -87,8 +88,8 @@ class Engine {
         this.gameProcess.quests.add(new SecurityQuest(this.gameProcess.game));
 
         // Fonts size
-        let bigFont = 24 * this.gameProcess.game.SCALE,
-            mediumFont = 20 * this.gameProcess.game.SCALE;
+        // let bigFont = 24 * this.gameProcess.game.SCALE,
+        //     mediumFont = 20 * this.gameProcess.game.SCALE;
 
         // Title
         // this.title = this.gameProcess.game.add.text(
@@ -100,8 +101,8 @@ class Engine {
         // this.gameProcess.game.layer.zDepth0.addChild(this.title);
 
         // // Responses
-        // this.responseGroup = new ResponseFactory(this.gameProcess.game, Config.responses);
-        // this.gameProcess.game.layer.zDepth1.addChild(this.responseGroup);
+        this.responseGroup = new ResponseFactory(this.gameProcess.game, Config.responses);
+        this.gameProcess.game.layer.zDepth1.addChild(this.responseGroup);
 
         // Button
         this.button = new Button(
@@ -115,11 +116,13 @@ class Engine {
 
     start() {
         if (this.stepNumber < Config.images.length) {
-            this.step = new Step(this.gameProcess.game, Config.images[this.stepNumber]);
-            this.step.start();
-            this.button.sprite.events.onInputDown.add(function(){
-                this.step.validate();
-            }, this); // TODO
+            this.step = new Step(this.gameProcess.game, Config.images[this.stepNumber], this.responseGroup, this.button);
+            // this.step.start();
+            // this.button.sprite.events.onInputDown.removeAll();
+            // this.button.sprite.events.onInputDown.add(function(){
+            //     console.log(this.step[this.stepNumber]);
+            //     this.step[this.stepNumber].validate();
+            // }, this); // TODO
             this.step.finish.addOnce(this.start, this);
             this.stepNumber++;
         } else {

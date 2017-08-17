@@ -7,9 +7,9 @@ import Phaser from 'phaser';
 import {Signal} from 'phaser';
 import Config from "../../config/data";
 
-import Button from '../Button/Button';
+// import Button from '../Button/Button';
 import Image from "../Image/Image";
-import ResponseFactory from "../Response/ResponseFactory";
+// import ResponseFactory from "../Response/ResponseFactory";
 
 export default class Step extends BasicGameObject {
 
@@ -21,12 +21,13 @@ export default class Step extends BasicGameObject {
     image;
     responseGroup;
 
-    constructor(game, itemsData) {
+    constructor(game, itemsData, responseGroup, button) {
 
         super(game);
 
         this.itemsData = itemsData;
-        // this.responseGroup = responseGroup;
+        this.responseGroup = responseGroup;
+        this.button = button;
 
         // Title:
         this.title = this.game.add.text(
@@ -44,17 +45,24 @@ export default class Step extends BasicGameObject {
         this.game.layer.zDepth0.addChild(this.image.sprite);
 
         // Responses
-        this.responseGroup = new ResponseFactory(this.game, Config.responses);
-        this.game.layer.zDepth1.addChild(this.responseGroup);
-    }
+        // this.responseGroup = new ResponseFactory(this.game, Config.responses);
+        // this.game.layer.zDepth1.addChild(this.responseGroup);
 
-    start() {
+        // Responses
         this.responseGroup.forEach((item) => {
-            // item.obj.initialize();
-            item.events.onDragStop.addOnce(function(currentSprite){
+            item.obj.initialize();
+            item.events.onDragStop.add(function(currentSprite){
                 item.obj.checkOverlap(currentSprite, this.image.sprite);
             }, this);
         });
+
+        // Button
+        this.button.sprite.events.onInputDown.removeAll();
+        this.button.sprite.events.onInputDown.add(this.validate, this);
+    }
+
+    start() {
+        //
     }
 
     validate() {
@@ -65,11 +73,11 @@ export default class Step extends BasicGameObject {
         this.title.destroy();
         this.image.sprite.destroy();
         this.image = null;
-        this.responseGroup.forEach((item) => {
-            item.destroy();
-            item.obj.title.destroy();
-        });
-        this.responseGroup = null;
+        // this.responseGroup.forEach((item) => {
+        //     // item.destroy();
+        //     // item.obj.title.destroy();
+        // });
+        // this.responseGroup = null;
         this.finish.dispatch();
     }
 }
