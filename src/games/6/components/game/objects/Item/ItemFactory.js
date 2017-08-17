@@ -17,8 +17,8 @@ export default class ItemFactory extends GameFactory {
                 this.add(
                     (new Item(this.game, items[type][name].title, type,
                         // items[type][name].x + ItemFactory.X_BEGIN_AT,
-                        items[type][name].x,
-                        items[type][name].y,
+                        items[type][name].x * this.game.SCALE,
+                        items[type][name].y * this.game.SCALE,
                         items[type][name].needed,
                         items[type][name].clicked
                     )).sprite
