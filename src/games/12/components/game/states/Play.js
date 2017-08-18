@@ -87,20 +87,7 @@ class Engine {
         // Quest
         this.gameProcess.quests.add(new SecurityQuest(this.gameProcess.game));
 
-        // Fonts size
-        // let bigFont = 24 * this.gameProcess.game.SCALE,
-        //     mediumFont = 20 * this.gameProcess.game.SCALE;
-
-        // Title
-        // this.title = this.gameProcess.game.add.text(
-        //     this.gameProcess.game.world.centerX, 
-        //     20,
-        //     "Les risques routiers", 
-        //     {font: 'Arial', fontSize: bigFont, fill: '#000000'}
-        // );
-        // this.gameProcess.game.layer.zDepth0.addChild(this.title);
-
-        // // Responses
+        // Responses
         this.responseGroup = new ResponseFactory(this.gameProcess.game, Config.responses);
         this.gameProcess.game.layer.zDepth1.addChild(this.responseGroup);
 
@@ -117,16 +104,10 @@ class Engine {
     start() {
         if (this.stepNumber < Config.images.length) {
             this.step = new Step(this.gameProcess.game, Config.images[this.stepNumber], this.responseGroup, this.button);
-            // this.step.start();
-            // this.button.sprite.events.onInputDown.removeAll();
-            // this.button.sprite.events.onInputDown.add(function(){
-            //     console.log(this.step[this.stepNumber]);
-            //     this.step[this.stepNumber].validate();
-            // }, this); // TODO
             this.step.finish.addOnce(this.start, this);
             this.stepNumber++;
         } else {
-            this.gameProcess.quests._quests.secutiry_quest.done();
+            this.gameProcess.quests._quests.security_quest.done();
             this.finish.dispatch();
         }
     }

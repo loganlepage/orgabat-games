@@ -8,29 +8,229 @@ export default {
     images: [
         {
             title: "Image n°1",
-            key: "1"
+            key: "1",
+            shapes: [
+                {
+                    x: -60,
+                    y: -25,
+                    correctAnswer: "shapeY4"
+                }
+            ]
         },
         {
             title: "Image n°2",
-            key: "2"
+            key: "2",
+            shapes: [
+                {
+                    x: -35,
+                    y: 150,
+                    correctAnswer: "shapeY3"
+                },
+                {
+                    x: 230,
+                    y: 0,
+                    correctAnswer: "shapeY4"
+                }
+            ]
         },
         {
             title: "Image n°3",
-            key: "3"
+            key: "3",
+            shapes: [
+                {
+                    x: -140,
+                    y: -110,
+                    correctAnswer: "shapeG2"
+                }
+            ]
         },
         {
             title: "Image n°4",
-            key: "4"
+            key: "4",
+            shapes: [
+                {
+                    x: -5,
+                    y: -135,
+                    correctAnswer: "shapeY1"
+                },
+                {
+                    x: -155,
+                    y: -40,
+                    correctAnswer: "shapeY1"
+                },
+                {
+                    x: -60,
+                    y: -30,
+                    correctAnswer: "shapeY2"
+                },
+                {
+                    x: 10,
+                    y: 65,
+                    correctAnswer: "shapeY1"
+                },
+                {
+                    x: -80,
+                    y: 120,
+                    correctAnswer: "shapeY3"
+                }
+            ]
         },
         {
             title: "Image n°5",
-            key: "5"
+            key: "5",
+            shapes: [
+                {
+                    x: -180,
+                    y: -25,
+                    correctAnswer: "shapeY1"
+                },
+                {
+                    x: -60,
+                    y: -70,
+                    correctAnswer: "shapeY2"
+                },
+                {
+                    x: 105,
+                    y: -15,
+                    correctAnswer: "shapeY1"
+                },
+                {
+                    x: 40,
+                    y: 30,
+                    correctAnswer: "shapeY2"
+                }
+            ]
         },
         {
             title: "Image n°6",
-            key: "6"
+            key: "6",
+            shapes: [
+                {
+                    x: -100,
+                    y: -55,
+                    correctAnswer: "shapeG1"
+                },
+                {
+                    x: 110,
+                    y: -120,
+                    correctAnswer: "shapeG2"
+                }
+            ]
         }
     ],
+    // images: [
+    //     {
+    //         title: "Image n°1",
+    //         key: "1",
+    //         shapes: [
+    //             {
+    //                 x: -45,
+    //                 y: -15,
+    //                 correctAnswer: "shapeY4"
+    //             }
+    //         ]
+    //     },
+    //     {
+    //         title: "Image n°2",
+    //         key: "2",
+    //         shapes: [
+    //             {
+    //                 x: -20,
+    //                 y: 85,
+    //                 correctAnswer: "shapeY3"
+    //             },
+    //             {
+    //                 x: 130,
+    //                 y: 0,
+    //                 correctAnswer: "shapeY4"
+    //             }
+    //         ]
+    //     },
+    //     {
+    //         title: "Image n°3",
+    //         key: "3",
+    //         shapes: [
+    //             {
+    //                 x: -80,
+    //                 y: -65,
+    //                 correctAnswer: "shapeG2"
+    //             }
+    //         ]
+    //     },
+    //     {
+    //         title: "Image n°4",
+    //         key: "4",
+    //         shapes: [
+    //             {
+    //                 x: 0,
+    //                 y: -80,
+    //                 correctAnswer: "shapeY1"
+    //             },
+    //             {
+    //                 x: -90,
+    //                 y: -25,
+    //                 correctAnswer: "shapeY1"
+    //             },
+    //             {
+    //                 x: -35,
+    //                 y: -20,
+    //                 correctAnswer: "shapeY2"
+    //             },
+    //             {
+    //                 x: 5,
+    //                 y: 35,
+    //                 correctAnswer: "shapeY1"
+    //             },
+    //             {
+    //                 x: -50,
+    //                 y: 75,
+    //                 correctAnswer: "shapeY3"
+    //             }
+    //         ]
+    //     },
+    //     {
+    //         title: "Image n°5",
+    //         key: "5",
+    //         shapes: [
+    //             {
+    //                 x: -110,
+    //                 y: -15,
+    //                 correctAnswer: "shapeY1"
+    //             },
+    //             {
+    //                 x: -35,
+    //                 y: -45,
+    //                 correctAnswer: "shapeY2"
+    //             },
+    //             {
+    //                 x: 45,
+    //                 y: -65,
+    //                 correctAnswer: "shapeY1"
+    //             },
+    //             {
+    //                 x: 25,
+    //                 y: 15,
+    //                 correctAnswer: "shapeY2"
+    //             }
+    //         ]
+    //     },
+    //     {
+    //         title: "Image n°6",
+    //         key: "6",
+    //         shapes: [
+    //             {
+    //                 x: -60,
+    //                 y: -35,
+    //                 correctAnswer: "shapeG1"
+    //             },
+    //             {
+    //                 x: 65,
+    //                 y: -75,
+    //                 correctAnswer: "shapeG2"
+    //             }
+    //         ]
+    //     }
+    // ],
     responses: {
         shape1: {
             key: "shapeY1",
