@@ -33,7 +33,7 @@ export default class Play extends State {
      */
     create() {
         this.game.controlsEnabled = false;
-        this.game.stage.backgroundColor = '#DADAD5';
+        this.game.stage.backgroundColor = '#f5f0d6';
 
         this.initUI();
         PhaserManager.ready('game', 'play');
@@ -87,8 +87,9 @@ class PartOne {
         this.gameProcess.questsCleaned.addOnce(this.onQuestsCleaned, this);
         this.stepText = this.game.add.text(10, 10, `Étapes séléctionnées: ${this.clickedSteps}/8`, {fill: '#ffffff'});
         this.addSteps();
-        // this.addButton();
-        // this.onQuestsCleaned(); // To go to the end
+        // next step ->
+        //this.addButton();
+        //this.onQuestsCleaned(); // To go to the end
     }
 
     addSteps() {
@@ -186,21 +187,19 @@ class PartTwo {
     addTruck() {
         this.truck = new Truck({
             game: this.game,
-            x: 20,
-            y: 400
+            x: 240 * this.game.SCALE,
+            y: 500 * this.game.SCALE
         });
-        // this.truck.sprite.anchor.set(1, 0.95);
         this.game.layer.zDepth0.addChild(this.truck.sprite);
     }
 
     addShelf() {
         this.shelf = new Shelf({
             game: this.game,
-            x: this.game.world.width - 400,
+            x: 500 * this.game.SCALE,
             y: 0
         });
-        this.shelf.sprite.anchor.setTo(0, 0);
-        // this.shelf.sprite.anchor.setTo(-0.2, 0);
+        this.shelf.sprite.anchor.setTo(-0.265, 0);
         this.game.layer.zDepth0.addChild(this.shelf.sprite);
     }
 
