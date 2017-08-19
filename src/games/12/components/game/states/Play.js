@@ -182,7 +182,7 @@ class GameProcess {
         let healthLevelMax = PhaserManager.get('gabator').stats.healthMax;
 
         endInfoModal.toggle(true, {}, {
-            star1: healthLevel >= healthLevelMax / 2 ? true : false,
+            star1: healthLevel >= true,
             star2: healthLevel >= (2 * healthLevelMax) / 3 ? true : false,
             star3: healthLevel == healthLevelMax ? true : false
         }, {
