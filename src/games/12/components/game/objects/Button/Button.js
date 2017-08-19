@@ -10,4 +10,8 @@ export default class Button extends BasicGameObject {
         super(game);
         this.addSprite(new ButtonSprite(this.game,x,y,key,this));
     }
+
+    destroy() {
+    	this.sprite.destroy();
+    }
 }
