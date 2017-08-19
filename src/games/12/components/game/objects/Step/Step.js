@@ -7,9 +7,8 @@ import Phaser from 'phaser';
 import {Signal} from 'phaser';
 import Config from "../../config/data";
 
-// import Button from '../Button/Button';
 import Image from "../Image/Image";
-// import ResponseFactory from "../Response/ResponseFactory";
+import Button from '../Button/Button';
 
 export default class Step extends BasicGameObject {
 
@@ -21,51 +20,50 @@ export default class Step extends BasicGameObject {
     image;
     responseGroup;
 
-    constructor(game, itemsData, responseGroup, button) {
+    constructor(game, itemsData, responseGroup) {
 
         super(game);
 
         this.itemsData = itemsData;
         this.responseGroup = responseGroup;
-        this.button = button;
 
         // Title:
         this.title = this.game.add.text(
-            this.game.world.centerX + 200 * game.SCALE, 
-            this.game.world.centerY - 300 * game.SCALE, 
+            game.world.centerX + 200 * game.SCALE, 
+            game.world.centerY - 300 * game.SCALE, 
             this.itemsData.title, 
             {font: 'Arial', fontSize: 20 * game.SCALE, fill: '#000000'}
         );
         this.title.anchor.setTo(0.5);
 
         // Images:
-        this.image = new Image(this.game, this.game.world.centerX + 300 * game.SCALE, this.game.world.centerY, this.itemsData); // Verti.
-        // this.image.sprite.scale.set(1.2 * game.SCALE);
+        this.image = new Image(
+            game, 
+            game.world.centerX + 300 * game.SCALE, 
+            game.world.centerY, 
+            this.itemsData,
+            this.responseGroup
+        ); // Verti.
 
-        // Responses
-        this.responseGroup.forEach((item) => {
-            item.obj.initialize();
-            item.events.onDragStop.add(function(currentSprite){
-                item.obj.checkOverlap(currentSprite, this.image.sprite);
-            }, this);
-        });
+        this.image.finish.addOnce(function(){
+            // Button
+            this.button = new Button(
+                game, 
+                game.world.width - 120 * game.SCALE, 
+                game.world.height - 70 * game.SCALE, 
+                "continue"
+            );
+            this.button.sprite.events.onInputDown.removeAll();
+            this.button.sprite.events.onInputDown.add(this.finishStep, this);
+        }, this);
 
-        // Button
-        this.button.sprite.events.onInputDown.removeAll();
-        this.button.sprite.events.onInputDown.add(this.validate, this);
-    }
-
-    start() {
-        //
-    }
-
-    validate() {
-        this.finishStep();
+        
     }
 
     finishStep() {
         this.title.destroy();
         this.image.destroy();
+        this.button.destroy();
         this.finish.dispatch();
     }
 }

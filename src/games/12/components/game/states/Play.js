@@ -14,7 +14,6 @@ import Config from "../config/data";
 import SecurityQuest from "../quests/SecurityQuest";
 
 import ResponseFactory from "../objects/Response/ResponseFactory";
-import Button from '../objects/Button/Button';
 import Step from "../objects/Step/Step";
 
 export default class Play extends State {
@@ -91,19 +90,11 @@ class Engine {
         this.responseGroup = new ResponseFactory(this.gameProcess.game, Config.responses);
         this.gameProcess.game.layer.zDepth1.addChild(this.responseGroup);
 
-        // Button
-        this.button = new Button(
-            this.gameProcess.game, 
-            gameProcess.game.world.width - 120 * gameProcess.game.SCALE, 
-            gameProcess.game.world.height - 70 * gameProcess.game.SCALE, 
-            "continue"
-        );
-
     }
 
     start() {
         if (this.stepNumber < Config.images.length) {
-            this.step = new Step(this.gameProcess.game, Config.images[this.stepNumber], this.responseGroup, this.button);
+            this.step = new Step(this.gameProcess.game, Config.images[this.stepNumber], this.responseGroup);
             this.step.finish.addOnce(this.start, this);
             this.stepNumber++;
         } else {
@@ -191,7 +182,7 @@ class GameProcess {
         let healthLevelMax = PhaserManager.get('gabator').stats.healthMax;
 
         endInfoModal.toggle(true, {}, {
-            star1: healthLevel >= healthLevelMax / 2 ? true : false,
+            star1: healthLevel >= true,
             star2: healthLevel >= (2 * healthLevelMax) / 3 ? true : false,
             star3: healthLevel == healthLevelMax ? true : false
         }, {

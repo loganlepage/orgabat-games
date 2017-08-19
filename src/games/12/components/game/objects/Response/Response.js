@@ -1,4 +1,5 @@
 "use strict";
+import PhaserManager from 'system/phaser/utils/PhaserManager';
 import BasicGameObject from "system/phaser/BasicGameObject";
 import ResponseSprite from "./ResponseSprite";
 import Phaser from 'phaser';
@@ -36,14 +37,25 @@ export default class Response extends BasicGameObject {
         }
         else
             currentSprite.position.copyFrom(currentSprite.originalPosition);
+            PhaserManager.get('gabator').stats.changeValues({
+                health: PhaserManager.get('gabator').stats.state.health - 1,
+            });
             return false;
     }
 
     initialize() {
-        this.sprite.position.copyFrom(this.sprite.originalPosition);
-        this.sprite.addInputs();
+        // Remove all inputs
         this.sprite.events.onInputDown.removeAll();
         this.sprite.events.onDragStop.removeAll();
+        // Come back to original place in every cases
+        this.sprite.events.onDragStop.add(function(currentSprite){
+            currentSprite.position.copyFrom(currentSprite.originalPosition);
+            PhaserManager.get('gabator').stats.changeValues({
+                health: PhaserManager.get('gabator').stats.state.health - 1,
+            });
+        }, this);
+        this.sprite.position.copyFrom(this.sprite.originalPosition);
+        this.sprite.addInputs();
     }
 
 }

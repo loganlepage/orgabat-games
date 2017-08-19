@@ -9,8 +9,9 @@ export default class Image extends BasicGameObject {
 
 	game;
 	shapes = [];
+	finish = new Signal();
 
-    constructor(game, x, y, data) {
+    constructor(game, x, y, data, responseGroup) {
         super(game);
 
         // Image
@@ -20,30 +21,57 @@ export default class Image extends BasicGameObject {
 
         // Shapes
         let fill = true, // To fill or not shapes
-        	radius = 30;
+        	radius = 30,
+        	shapesCount = 0,
+        	answerCount = 0;
+
+        this.shapes = [];
 
         for (let shape in data.shapes){
-        	this.shapes[shape] = this.game.add.graphics(x, y);
-        	this.game.layer.zDepth1.addChild(this.shapes[shape]);
-        	if (fill) {
-	            this.shapes[shape].beginFill(0xFF0000, .5);
-	        }
-	        this.shapes[shape].drawCircle(data.shapes[shape].x * game.SCALE, data.shapes[shape].y * game.SCALE, radius);
+        	// To have only one shape for few answers (answer #1)
+        	if (this.shapes[data.shapes[shape].correctAnswer] == undefined) {
+        		// Create shapes
+	        	this.shapes[data.shapes[shape].correctAnswer] = this.game.add.graphics(x + data.shapes[shape].x * game.SCALE, y + data.shapes[shape].y * game.SCALE);
+	        	this.game.layer.zDepth1.addChild(this.shapes[data.shapes[shape].correctAnswer]);
+	        	if (fill) {
+		            this.shapes[data.shapes[shape].correctAnswer].beginFill(0xFF0000, .5);
+		        }
+		        this.shapes[data.shapes[shape].correctAnswer].drawCircle(0, 0, radius);
+		        shapesCount++;
+        	}
         }
 
-        this.sprite.events.onInputDown.add(function(){ // Click to have pointer position
-        	console.log("X:" + (this.game.input.mousePointer.x - this.sprite.position.x)/game.SCALE);
-        	console.log("Y:" + (this.game.input.mousePointer.y - this.sprite.position.y)/game.SCALE);
-        	console.log("---");
-        },this);
+        // Add actions
+        responseGroup.forEach((item) => {
+        	// Replace each responses
+            item.obj.initialize();
+            // Correct answer -> check if is droped on correct place
+            for (let shape in this.shapes) {
+            	if (item.obj.item.key == shape) {
+            		item.events.onDragStop.removeAll();
+	            	item.events.onDragStop.add(function(currentSprite){
+		                item.obj.checkOverlap(currentSprite, this.shapes[shape]);
+		            }, this);
+		            item.obj.onDropped.add(function(){
+		            	answerCount++;
+		            	if (answerCount >= shapesCount) {
+		            		this.finish.dispatch();
+		            	}
+		            }, this)
+		        // Wrong answer
+	            } else {
+	            	//
+	            }
+            }
+        });
 
     }
 
     destroy(){
     	this.sprite.destroy();
-    	this.shapes.map(function(shape) {
-            return shape.destroy();
-        });
+    	for (let shape in this.shapes){
+        	this.shapes[shape].destroy();
+        }
     }
 
 }
