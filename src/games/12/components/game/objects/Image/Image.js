@@ -10,7 +10,7 @@ export default class Image extends BasicGameObject {
 	game;
 	shapes = [];
 
-    constructor(game, x, y, data) {
+    constructor(game, x, y, data, responseGroup) {
         super(game);
 
         // Image
@@ -22,20 +22,36 @@ export default class Image extends BasicGameObject {
         let fill = true, // To fill or not shapes
         	radius = 30;
 
+        this.shapes = [];
+
         for (let shape in data.shapes){
-        	this.shapes[shape] = this.game.add.graphics(x, y);
-        	this.game.layer.zDepth1.addChild(this.shapes[shape]);
+        	// Create shapes
+        	this.shapes[data.shapes[shape].correctAnswer] = this.game.add.graphics(x + data.shapes[shape].x * game.SCALE, y + data.shapes[shape].y * game.SCALE);
+        	this.game.layer.zDepth1.addChild(this.shapes[data.shapes[shape].correctAnswer]);
         	if (fill) {
-	            this.shapes[shape].beginFill(0xFF0000, .5);
+	            this.shapes[data.shapes[shape].correctAnswer].beginFill(0xFF0000, .5);
 	        }
-	        this.shapes[shape].drawCircle(data.shapes[shape].x * game.SCALE, data.shapes[shape].y * game.SCALE, radius);
+	        this.shapes[data.shapes[shape].correctAnswer].drawCircle(0, 0, radius);
         }
 
-        this.sprite.events.onInputDown.add(function(){ // Click to have pointer position
-        	console.log("X:" + (this.game.input.mousePointer.x - this.sprite.position.x)/game.SCALE);
-        	console.log("Y:" + (this.game.input.mousePointer.y - this.sprite.position.y)/game.SCALE);
-        	console.log("---");
-        },this);
+        // Add actions
+        responseGroup.forEach((item) => {
+        	// Replace each responses
+            item.obj.initialize();
+            // Correct answer -> check if is droped on correct place
+            for (let shape in this.shapes) {
+            	if (item.obj.item.key == shape) {
+            		console.log("OK");
+	            	item.events.onDragStop.add(function(currentSprite){
+	            		console.log("Drop");
+		                item.obj.checkOverlap(currentSprite, this.shapes[shape]);
+		            }, this);
+		        // Wrong answer
+	            } else {
+	            	//
+	            }
+            }
+        });
 
     }
 

@@ -40,10 +40,15 @@ export default class Response extends BasicGameObject {
     }
 
     initialize() {
-        this.sprite.position.copyFrom(this.sprite.originalPosition);
-        this.sprite.addInputs();
+        // Remove all inputs
         this.sprite.events.onInputDown.removeAll();
         this.sprite.events.onDragStop.removeAll();
+        // Come back to original place in every cases
+        this.sprite.events.onDragStop.add(function(currentSprite){
+            currentSprite.position.copyFrom(currentSprite.originalPosition);
+        }, this);
+        this.sprite.position.copyFrom(this.sprite.originalPosition);
+        this.sprite.addInputs();
     }
 
 }

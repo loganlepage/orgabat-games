@@ -38,17 +38,23 @@ export default class Step extends BasicGameObject {
         );
         this.title.anchor.setTo(0.5);
 
-        // Images:
-        this.image = new Image(this.game, this.game.world.centerX + 300 * game.SCALE, this.game.world.centerY, this.itemsData); // Verti.
-        // this.image.sprite.scale.set(1.2 * game.SCALE);
-
         // Responses
-        this.responseGroup.forEach((item) => {
-            item.obj.initialize();
-            item.events.onDragStop.add(function(currentSprite){
-                item.obj.checkOverlap(currentSprite, this.image.sprite);
-            }, this);
-        });
+        // this.responseGroup.forEach((item) => {
+        //     item.obj.initialize();
+        //     item.events.onDragStop.add(function(currentSprite){
+        //         item.obj.checkOverlap(currentSprite, this.image.sprite);
+        //     }, this);
+        // });
+
+        // Images:
+        this.image = new Image(
+            this.game, 
+            this.game.world.centerX + 300 * game.SCALE, 
+            this.game.world.centerY, 
+            this.itemsData,
+            this.responseGroup
+        ); // Verti.
+        // this.image.sprite.scale.set(1.2 * game.SCALE);
 
         // Button
         this.button.sprite.events.onInputDown.removeAll();
