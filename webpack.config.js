@@ -25,6 +25,7 @@ module.exports = {
         '10': "./src/games/10/app.jsx", // Jeu 10
         '11': "./src/games/11/app.jsx", // Jeu 11
         '12': "./src/games/12/app.jsx", // Jeu 12
+        '13': "./src/games/13/app.jsx", // Jeu 13
         //'99': "./src/games/99/app.jsx" // Jeu 99
     },
     /** description de nos sorties */
