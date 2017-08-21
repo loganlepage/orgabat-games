@@ -83,24 +83,40 @@ class Engine {
         // Background
         this.background = new Background(this.gameProcess.game, Config.background);
 
+        // Response group
+        this.responseGroup = new ResponseFactory(this.gameProcess.game, Config.responses);
+        this.responseGroup.visible = false;
+        this.gameProcess.game.layer.zDepth1.addChild(this.responseGroup);
+
         // Actions
         let answerCount = 0,
             answerMax = this.background.shapes.length;
         this.background.shapes.forEach((shape) => {
             shape.events.onInputDown.add(function(){
-                // Response group here
-                // If valid, continue
-                this.background.validate(shape.shapeNumber);
-                answerCount++;
-                if (answerCount >= answerMax) {
-                    this.gameProcess.quests._quests.security_quest.done();
-                    this.finish.dispatch();
-                }
+                this.responseGroup.show();
+                // Check answer
+                this.responseGroup.forEach((response) => {
+                    response.events.onInputDown.add(function(){
+                        if (response.obj.key == shape.data.correctAnswer) {
+                            this.background.validate(parseInt(shape.shapeNumber));
+                            answerCount++;
+                            if (answerCount >= answerMax) {
+                                this.gameProcess.quests._quests.security_quest.done();
+                                this.finish.dispatch();
+                            }
+                            this.responseGroup.hide();
+                        } else {
+                            Canvas.get('gabator').modal.showHelp(
+                                "Mauvaise réponse"
+                            );
+                            PhaserManager.get('gabator').stats.changeValues({
+                                health: PhaserManager.get('gabator').stats.state.health - 1,
+                            });
+                        }
+                    },this);
+                })
             },this);
         });
-
-        // Response group
-        // this.responseGroup = new ResponseFactory(this.gameProcess.game, Config.responses);
 
     }
 

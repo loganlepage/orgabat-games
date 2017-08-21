@@ -12,42 +12,70 @@ export default class ResponseFactory extends GameFactory {
     constructor(game, items) {
         super(game);
 
+        // Black background
+        this.blackBackground = this.game.add.graphics(0,0);
+
+        this.blackBackground.lineStyle(0, "balck", 0);
+        this.blackBackground.beginFill("black", 0.5);
+        this.blackBackground.drawRect(0, 0, this.game.width, this.game.height);
+
+        this.add(this.blackBackground);
+
+        // Coordonates
         let width = this.game.width;
         let height = this.game.height;
 
-        let itemsNumber = 0;
+        let cardsWidth = 200;
+        let cardsHeight = 300; // scale 0.525
 
-        for (let item in items) {
-            itemsNumber++;
-        };
+        let cardNumberX = 4;
+        let cardNumberY = 2;
 
-        this.number = itemsNumber;
+        let marginX = 50;
+        let marginY = 25;
 
-        // let xValue = (width / itemsNumber)/2; // Horizontale
-        // let y = height - 200 * game.SCALE;
+        let bigWidthMargin = (width - cardNumberX*cardsWidth - (cardNumberX-1)*marginX) / 2;
+        let bigHeightMargin = (height - cardNumberY*cardsHeight - (cardNumberY-1)*marginY) / 2;
 
-        let yValue = (height / itemsNumber)/2; // Verticale
-        let x = game.world.centerX - 500 * game.SCALE;
-
-        for (let i = 0; i < itemsNumber; i++) {
-            let y = i * (2 * yValue) + yValue;
-            this.coordonates.push({x,y});
-        }
-
+        let countX = 0;
         let count = 0;
 
-        for (let item in items) {
+        for (let x = (bigWidthMargin + (cardsWidth / 2)); countX < cardNumberX; x += (cardsWidth + marginX)) {
+            countX++;
+            let countY = 0;
+            for (let y = (bigHeightMargin + (cardsHeight / 2)); countY < cardNumberY; y += (cardsHeight + marginY)) {
+                countY++;
+                count++;
+                this.coordonates.push({x,y});
+            }
+        }
+
+        // Images
+        count = 0;
+
+        for (let item in items.images) {
             this.add(
                 (new Response(
                     this.game,
                     this.coordonates[count].x,
                     this.coordonates[count].y,
-                    items[item]
+                    items.images[item].key
                 )).sprite
             );
             count++;
         }
 
+    }
+
+    show() {
+        this.visible = true;
+    }
+
+    hide() {
+        this.visible = false;
+        this.forEach((item) => {
+            item.events.onInputDown.removeAll();
+        });
     }
 
 }

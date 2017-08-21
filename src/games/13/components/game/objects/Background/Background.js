@@ -42,7 +42,7 @@ export default class Background extends BasicGameObject {
             radius = 100;
         this.shapes[shapeNumber] = this.game.add.graphics(this.data[shapeNumber].x * this.game.SCALE, this.data[shapeNumber].y * this.game.SCALE);
         this.shapes[shapeNumber].shapeNumber = shapeNumber;
-        this.game.layer.zDepth0.addChild(this.shapes[shapeNumber]);
+        this.shapes[shapeNumber].data = this.data[shapeNumber];
         if (fill) {
             this.shapes[shapeNumber].lineStyle(2, 0x000000, 1);
             if (color == "green") {
@@ -52,6 +52,7 @@ export default class Background extends BasicGameObject {
             }
         }
         this.shapes[shapeNumber].drawCircle(0, 0, radius);
+        this.game.layer.zDepth0.addChild(this.shapes[shapeNumber]);
     }
 
     validate(shapeNumber) {

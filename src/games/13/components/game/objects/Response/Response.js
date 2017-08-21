@@ -11,51 +11,19 @@ export default class Response extends BasicGameObject {
 
     x;
     y;
-    item;
-    title;
+    key;
 
-    constructor(game, x, y, item) {
+    constructor(game, x, y, key) {
         super(game);
         this.x = x;
         this.y = y;
-        this.item = item;
-        this.addSprite(new ResponseSprite(this.game, this.x, this.y, this.item.key, this));
-        // this.title = this.game.add.text(x, y + 50 * game.SCALE, item.title, {font: 'Arial', fontSize: 20 * game.SCALE, fill: '#000000'});  // Horiz.
-        this.title = this.game.add.text(x + this.sprite.width, y, item.title, {font: 'Arial', fontSize: 20 * game.SCALE, fill: '#000000'}); // Verti
-        this.title.anchor.setTo(0, 0.5);
-    }
+        this.key = key;
 
-    checkOverlap(currentSprite, spriteToOverlap) {
-        let boundsA = currentSprite.getBounds(),
-            boundsB = spriteToOverlap.getBounds();
-        if (Phaser.Rectangle.intersects(boundsA, boundsB)) {
-            currentSprite.position.x = spriteToOverlap.position.x;
-            currentSprite.position.y = spriteToOverlap.position.y;
-            this.sprite.removeInputs();
-            this.onDropped.dispatch(currentSprite);
-            return true;
-        }
-        else
-            currentSprite.position.copyFrom(currentSprite.originalPosition);
-            PhaserManager.get('gabator').stats.changeValues({
-                health: PhaserManager.get('gabator').stats.state.health - 1,
-            });
-            return false;
-    }
-
-    initialize() {
-        // Remove all inputs
-        this.sprite.events.onInputDown.removeAll();
-        this.sprite.events.onDragStop.removeAll();
-        // Come back to original place in every cases
-        this.sprite.events.onDragStop.add(function(currentSprite){
-            currentSprite.position.copyFrom(currentSprite.originalPosition);
-            PhaserManager.get('gabator').stats.changeValues({
-                health: PhaserManager.get('gabator').stats.state.health - 1,
-            });
-        }, this);
-        this.sprite.position.copyFrom(this.sprite.originalPosition);
-        this.sprite.addInputs();
+        this.addSprite(new ResponseSprite(this.game, this.x, this.y, this.key, this));
+        // this.game.layer.zDepth1.addChild(this.sprite);
+        this.sprite.scale.set(0.525 * this.game.SCALE);
+        // console.log(this.sprite.width);
+        // console.log(this.sprite.height);
     }
 
 }
