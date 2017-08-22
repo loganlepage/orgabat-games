@@ -46,7 +46,7 @@ export default class Step extends BasicGameObject {
         // Text without response:
         // this.title = this.game.add.text(20, 20, this.titleText, {font: 'Arial', fontSize: 20, fill: '#000000'});
         // Text with response:
-        this.title = game.add.text(20, 20, this.titleText + " (" + this.correctAnswer + ")", {font: 'Arial', fontSize: 20, fill: '#000000'});
+        this.title = game.add.text(20, 20, this.titleText, {font: 'Arial', fontSize: 20, fill: '#000000'});
     }
 
     check(){
@@ -56,7 +56,7 @@ export default class Step extends BasicGameObject {
             // Remove player inputs
             this.player.sprite.removeInputs();
             // Add informations text
-            this.info = this.game.add.text(20, this.game.world.height - 300, this.infoText, {font: 'Arial', fontSize: 20, fill: '#000000'});
+            this.info = this.game.add.text(20, this.game.world.height - 200, this.infoText, {font: 'Arial', fontSize: 20, fill: '#000000'});
             // Add button
             this.button = new Button(this.game, this.game.world.width - 100, this.game.world.height - 50);
             this.button.sprite.events.onInputDown.add(this.finishStep, this);
