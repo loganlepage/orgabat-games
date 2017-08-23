@@ -85,7 +85,7 @@ class PartOne {
     start() {
         this.gameProcess.quests.add(new StepsQuest(this.gameProcess.game));
         this.gameProcess.questsCleaned.addOnce(this.onQuestsCleaned, this);
-        this.stepText = this.game.add.text(10, 10, `Étapes séléctionnées: ${this.clickedSteps}/8`, {fill: '#ffffff'});
+        this.stepText = this.game.add.text(10, 10, `Étapes séléctionnées: ${this.clickedSteps}/8`, {fill: '#2a2a2a'});
         this.addSteps();
         // next step ->
         //this.addButton();
@@ -98,6 +98,7 @@ class PartOne {
         this.stepGroup.forEach((step) => {
             step.text1.inputEnabled = true;
             step.text1.input.useHandCursor = true;
+            step.text1.tint = 0x9A9A9A;
             step.text1.events.onInputDown.add(function(){
                 if (!step.clicked) {
                     if (step.check()){
@@ -165,9 +166,9 @@ class PartTwo {
     }
 
     start() {
-        this.paintText = this.game.add.text(10, 10, `Quantité de peinture : ${this.paintCapacity}/30`, {fill: '#ffffff'});
-        this.suppliesText = this.game.add.text(10, 40, `Matériels : ${this.materialCapacity}/3`, {fill: '#ffffff'});
-        this.coatText = this.game.add.text(10, 70, `Enduits : ${this.mapCapacity}/6`, {fill: '#ffffff'});
+        this.paintText = this.game.add.text(10, 10, `Quantité de peinture : ${this.paintCapacity}/30`, {fill: '#676565'});
+        this.suppliesText = this.game.add.text(10, 40, `Matériels : ${this.materialCapacity}/3`, {fill: '#676565'});
+        this.coatText = this.game.add.text(10, 70, `Enduits : ${this.mapCapacity}/6`, {fill: '#676565'});
         this.game.layer.zDepth0.addChild(this.paintText);
         this.game.layer.zDepth0.addChild(this.suppliesText);
         this.game.layer.zDepth0.addChild(this.coatText);
@@ -196,10 +197,9 @@ class PartTwo {
     addShelf() {
         this.shelf = new Shelf({
             game: this.game,
-            x: 500 * this.game.SCALE,
-            y: 0
+            x: this.game.world.width / 1.9,
+            y: 18
         });
-        this.shelf.sprite.anchor.setTo(-0.265, 0);
         this.game.layer.zDepth0.addChild(this.shelf.sprite);
     }
 
@@ -217,6 +217,7 @@ class PartTwo {
         this.game.itemGroup.forEach((item) => {
             item.inputEnabled = true;
             item.input.useHandCursor = true;
+            item.scale.setTo(0.6 * this.game.SCALE);
             item.events.onDragStop.add(function (currentSprite) {
                 let name = currentSprite.frameName;
                 if (name === "jeu6/peinture15l" && this.paintCapacity < 30) {
@@ -255,8 +256,6 @@ class PartTwo {
 
         if (currentSprite.obj.check()) {
             if (name === "jeu6/peinture15l") {
-                console.log("15L");
-                console.log(this.paintCapacity);
                 if (this.paintCapacity <= 15) {
                     this.paintCapacity += 15;
                     PhaserManager.get('gabator').stats.changeValues({

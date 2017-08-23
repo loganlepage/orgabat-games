@@ -18,7 +18,7 @@ export default {
         },
         {
             correctAnswer: "oppbtp",
-            titleText: "Votre patron souhaite apporter des changements au sein de son entreprise a n de faciliter le travail des \nses salariés. Il souhaite notamment investir dans du nouveau matériel. Il veut se faire conseiller. \nQui peut le conseiller ?",
+            titleText: "Votre patron souhaite apporter des changements au sein de son entreprise afin de faciliter le travail des \nses salariés. Il souhaite notamment investir dans du nouveau matériel. Il veut se faire conseiller. \nQui peut le conseiller ?",
             infoText: "L’OPPBTP accompagne les professionnels du bâtiment et des travaux publics à améliorer leur conditions de \ntravail pour prévenir des accidents du travail et des maladies à caractère professionnel."
         },
         {

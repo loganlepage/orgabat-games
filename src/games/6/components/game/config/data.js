@@ -37,7 +37,7 @@ export default {
     },
     steps: {
         step1: {good: false, title: "Je vais prendre un café avec mes collèques", x:50, y:50, clicked: false},
-        step2: {good: true, title: "Je prends quelques minutes pour me préparer à l’activité physique (mouvements d’échau ement)", x:50, y:90, clicked: false},
+        step2: {good: true, title: "Je prends quelques minutes pour me préparer à l’activité physique (mouvements d’échauffement)", x:50, y:90, clicked: false},
         step3: {good: false, title: "Je commence immédiatement à charger seul", x:50, y:130, clicked: false},
         step4: {good: true, title: "Je demande à un collègue de m’aider pour manutentionner", x:50, y:170, clicked: false},
         step5: {good: true, title: "Je demande à un collègue de rapprocher le véhicule de l’espace de stockage", x:50, y:210, clicked: false},
