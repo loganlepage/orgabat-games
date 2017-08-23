@@ -13,8 +13,8 @@ import Config from "../config/data";
 
 import SecurityQuest from "../quests/SecurityQuest";
 
-import ResponseFactory from "../objects/Response/ResponseFactory";
 import Background from "../objects/Background/Background";
+import Question from "../objects/Question/Question";
 
 export default class Play extends State {
 
@@ -84,40 +84,63 @@ class Engine {
         // Background
         this.background = new Background(this.gameProcess.game, Config.background);
 
-        // Response group
-        // this.responseGroup = new ResponseFactory(this.gameProcess.game, Config.responses);
-        // this.responseGroup.visible = false;
-        // this.gameProcess.game.layer.zDepth1.addChild(this.responseGroup);
+        // this.addQuestion(); // Shortcut
 
         // Actions
-        // let answerCount = 0,
-        //     answerMax = this.background.shapes.length;
-        // this.background.shapes.forEach((shape) => {
-        //     shape.events.onInputDown.add(function(){
-        //         this.responseGroup.show();
-        //         // Check answer
-        //         this.responseGroup.forEach((response) => {
-        //             response.events.onInputDown.add(function(){
-        //                 if (response.obj.key == shape.data.correctAnswer) {
-        //                     this.background.validate(parseInt(shape.shapeNumber));
-        //                     answerCount++;
-        //                     if (answerCount >= answerMax) {
-        //                         this.gameProcess.quests._quests.security_quest.done();
-        //                         this.finish.dispatch();
-        //                     }
-        //                     this.responseGroup.hide();
-        //                 } else {
-        //                     Canvas.get('gabator').modal.showHelp(
-        //                         "Mauvaise réponse"
-        //                     );
-        //                     PhaserManager.get('gabator').stats.changeValues({
-        //                         health: PhaserManager.get('gabator').stats.state.health - 1,
-        //                     });
-        //                 }
-        //             },this);
-        //         })
-        //     },this);
-        // });
+        let answerCount = 0,
+            answerMax = 0;
+        this.background.shapes.forEach((shape) => {
+            if (shape.data.correctAnswer) {
+                answerMax++;
+            }
+        });
+        this.background.shapes.forEach((shape) => {
+            shape.events.onInputDown.add(function(){
+                if (shape.data.correctAnswer) {
+                    this.background.validate(parseInt(shape.shapeNumber));
+                    answerCount++;
+                    if (answerCount >= answerMax) {
+                        this.addQuestion();
+                    }
+                } else {
+                    this.background.unvalidate(parseInt(shape.shapeNumber));
+                    Canvas.get('gabator').modal.showHelp(
+                        "Il ne faut pas passer par ici"
+                    );
+                    PhaserManager.get('gabator').stats.changeValues({
+                        health: PhaserManager.get('gabator').stats.state.health - 1,
+                    });
+                }
+            },this);
+        });
+
+    }
+
+    addQuestion() {
+        // Remove controls on background and shapes
+        this.background.destroy();
+
+        // Question and answers
+        this.question = new Question(this.gameProcess.game, Config.question);
+
+        // Actions
+        this.question.answer.forEach((answer) => {
+            answer.events.onInputDown.add(function(){
+                if (answer.correctAnswer) {
+                    answer.addColor("#008000", 0);
+                    this.gameProcess.quests._quests.security_quest.done();
+                    this.finish.dispatch();
+                } else {
+                    answer.addColor("#FF0000", 0);
+                    Canvas.get('gabator').modal.showHelp(
+                        "Mauvaise réponse"
+                    );
+                    PhaserManager.get('gabator').stats.changeValues({
+                        health: PhaserManager.get('gabator').stats.state.health - 1,
+                    });
+                }
+            },this);
+        });
 
     }
 

@@ -8,10 +8,15 @@ export default {
     background: {
         title: "Plan de la maison, il faut aller du portail au poste de travail",
         key: "bg",
+        start: {
+            x: 110,
+            y: 210,
+            title: "Point de départ"
+        },
         work: {
             x: 1150,
-            y: 345,
-            title: "poste de travail"
+            y: 375,
+            title: "Poste de travail"
         },
         area: [
             { // First step
@@ -33,26 +38,26 @@ export default {
                 correctAnswer: false
             },
             { // Second step
-                x: 760,
-                y: 330,
+                x: 800,
+                y: 335,
                 title: "Passer les éléments par la fenêtre",
                 correctAnswer: false
             },
             {
-                x: 760,
-                y: 525,
+                x: 800,
+                y: 530,
                 title: "Passer par la porte d’entrée",
                 correctAnswer: false
             },
             {
-                x: 760,
-                y: 140,
+                x: 800,
+                y: 145,
                 title: "Demander au client d’enlever sa voiture du garage",
                 correctAnswer: true
             },
             { // Third step
-                x: 1000,
-                y: 325,
+                x: 950,
+                y: 390,
                 title: "Encombrement au sol",
                 correctAnswer: false
             },
@@ -63,10 +68,27 @@ export default {
                 correctAnswer: false
             },
             {
-                x: 1110,
-                y: 230,
+                x: 1085,
+                y: 190,
                 title: "Emprunter le garage",
                 correctAnswer: true
+            },
+        ]
+    },
+    question: {
+        title: "Les ouvriers disposent de 8 heures pour réaliser la pose de parquet.\nAfin de réaliser ce travail dans les meilleurs conditions, sélectionner les principes de prévention les\nplus adaptés parmi les propositions suivantes:",
+        answers: [
+            {
+                title: "- Organiser son poste de travail, adapter le travail à l’homme, éviter les risques",
+                correctAnswer: true
+            },
+            {
+                title: "- Donner la priorité aux mesures de protection collective, donner les instructions appropriées aux salariés,\nadapter l’homme au travail",
+                correctAnswer: false
+            },
+            {
+                title: "- Donner la priorité aux mesures de protection individuelle, organiser son poste de travail, éviter les risques",
+                correctAnswer: false
             },
         ]
     }

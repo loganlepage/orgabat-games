@@ -13,19 +13,19 @@ var isProd = process.argv.indexOf("-p") > -1;
 module.exports = {
     /** nos points d'entrée, par clé */
     entry: {
-        // '1': "./src/games/1/app.jsx", // Jeu 1
-        // '2': "./src/games/2/app.jsx", // Jeu 2
-        // '3': "./src/games/3/app.jsx", // Jeu 3
-        // '4': "./src/games/4/app.jsx", // Jeu 4
-        // '5': "./src/games/5/app.jsx", // Jeu 5
-        // '6': "./src/games/6/app.jsx", // Jeu 6
-        // '7': "./src/games/7/app.jsx", // Jeu 7
-        // '8': "./src/games/8/app.jsx", // Jeu 8
-        // '9': "./src/games/9/app.jsx", // Jeu 9
-        // '10': "./src/games/10/app.jsx", // Jeu 10
-        // '11': "./src/games/11/app.jsx", // Jeu 11
-        // '12': "./src/games/12/app.jsx", // Jeu 12
-        // '13': "./src/games/13/app.jsx", // Jeu 13
+        '1': "./src/games/1/app.jsx", // Jeu 1
+        '2': "./src/games/2/app.jsx", // Jeu 2
+        '3': "./src/games/3/app.jsx", // Jeu 3
+        '4': "./src/games/4/app.jsx", // Jeu 4
+        '5': "./src/games/5/app.jsx", // Jeu 5
+        '6': "./src/games/6/app.jsx", // Jeu 6
+        '7': "./src/games/7/app.jsx", // Jeu 7
+        '8': "./src/games/8/app.jsx", // Jeu 8
+        '9': "./src/games/9/app.jsx", // Jeu 9
+        '10': "./src/games/10/app.jsx", // Jeu 10
+        '11': "./src/games/11/app.jsx", // Jeu 11
+        '12': "./src/games/12/app.jsx", // Jeu 12
+        '13': "./src/games/13/app.jsx", // Jeu 13
         '14': "./src/games/14/app.jsx", // Jeu 14
         //'99': "./src/games/99/app.jsx" // Jeu 99
     },
