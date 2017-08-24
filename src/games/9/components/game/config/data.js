@@ -13,7 +13,7 @@ export default {
         },
         {
             correctAnswer: "chsct",
-            titleText: "Votre poste de travail ne vous semble pas adapté. Vous souhaitez le faire analysé par un représentant du \npersonnel formé en matière de prévention a n que vos conditions de travail s’améliorent. \nVers qui pouvez-vous vous orienter ?",
+            titleText: "Votre poste de travail ne vous semble pas adapté. Vous souhaitez le faire analysé par un représentant du \npersonnel formé en matière de prévention afin que vos conditions de travail s’améliorent. \nVers qui pouvez-vous vous orienter ?",
             infoText: "Le comité d’hygiène, de sécurité et des conditions de travail est l’instance représentative spécialisée \nen matière de prévention des risques professionnels. Un CHSCT est présent dans les entreprises \nde plus de 50 salariés."
         },
         {
