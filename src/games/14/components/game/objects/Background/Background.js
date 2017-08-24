@@ -2,6 +2,8 @@
 import BasicGameObject from "system/phaser/BasicGameObject";
 import Phaser from 'phaser';
 import {Signal} from "phaser";
+import Canvas from "system/phaser/utils/PhaserManager";
+import PhaserManager from 'system/phaser/utils/PhaserManager';
 
 import BackgroundSprite from "./BackgroundSprite";
 
@@ -95,17 +97,37 @@ export default class Background extends BasicGameObject {
 
         // Shapes
         this.shapes = [];
+        this.currentPosition = 1;
+        this.createStep();
+        // Actions
+        this.answerCount = 0;
+        this.answerMax = 0;
+        this.positionMax = 0;
+        this.data.area.forEach((shape) => {
+            if (shape.correctAnswer) {
+                this.answerMax++;
+            }
+            if (shape.position > this.positionMax){
+                this.positionMax = shape.position;
+            }
+        });
+        this.addActions();
+    }
+
+    createStep(){
         for (let shapeNumber in this.data.area){
-    		// Create shapes
-            this.createShapes(shapeNumber, "white");
-            this.shapes[shapeNumber].inputEnabled = true;
-            this.shapes[shapeNumber].input.useHandCursor = true;
+            if (this.data.area[shapeNumber].position == this.currentPosition) {
+                // Create step shapes
+                this.createShapes(shapeNumber, "white");
+                this.shapes[shapeNumber].inputEnabled = true;
+                this.shapes[shapeNumber].input.useHandCursor = true;
+            }
         }
     }
 
     createShapes(shapeNumber, color) {
         let fill = true,
-            radius = 50 * this.game.SCALE;
+        radius = 50 * this.game.SCALE;
         // shape
         this.shapes[shapeNumber] = this.game.add.graphics(this.data.area[shapeNumber].x * this.game.SCALE, this.data.area[shapeNumber].y * this.game.SCALE);
         this.shapes[shapeNumber].shapeNumber = shapeNumber;
@@ -138,10 +160,52 @@ export default class Background extends BasicGameObject {
         this.game.layer.zDepth0.addChild(this.shapes[shapeNumber].titleText);
     }
 
+    addActions() {
+        this.shapes.forEach((shape) => {
+            // Remove events on other step shapes
+            if (shape.data.position != this.currentPosition) {
+                shape.events.onInputDown.removeAll();
+                shape.inputEnabled = false;
+            }
+            // Add envents only on current step shapes
+            if (shape.data.position == this.currentPosition) {
+                shape.events.onInputDown.add(function(){
+                    if (shape.data.correctAnswer && shape.data.position == this.currentPosition) {
+                        // Correct answer
+                        this.validate(parseInt(shape.shapeNumber));
+                    } else if (shape.data.position < this.currentPosition) {
+                        // Click on previous step shape, never catch
+                    } else {
+                        this.unvalidate(parseInt(shape.shapeNumber));
+                        Canvas.get('gabator').modal.showHelp(
+                            "Il ne faut pas passer par ici"
+                        );
+                        PhaserManager.get('gabator').stats.changeValues({
+                            health: PhaserManager.get('gabator').stats.state.health - 1,
+                        });
+                    }
+                },this);
+            }
+        });
+    }
+
     validate(shapeNumber) {
+        // Validate current shape
         this.shapes[shapeNumber].titleText.destroy();
         this.shapes[shapeNumber].destroy();
         this.createShapes(shapeNumber, "green");
+        // Update infos
+        this.answerCount++;
+        this.currentPosition++;
+        // Finish control
+        if (this.answerCount >= this.answerMax) {
+            // Finish event
+            this.finish.dispatch();
+        } else {
+            // Create next step
+            this.createStep();
+            this.addActions();  
+        } 
     }
 
     unvalidate(shapeNumber) {

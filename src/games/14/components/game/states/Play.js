@@ -83,45 +83,10 @@ class Engine {
 
         // Background
         this.background = new Background(this.gameProcess.game, Config.background);
-
+        this.background.finish.addOnce(this.addQuestion, this);
+        
         // this.addQuestion(); // Shortcut
-
-        // Actions
-        let answerCount = 0,
-            answerMax = 0,
-            currentPosition = 1;
-        this.background.shapes.forEach((shape) => {
-            if (shape.data.correctAnswer) {
-                answerMax++;
-            }
-        });
-        this.background.shapes.forEach((shape) => {
-            shape.events.onInputDown.add(function(){
-                if (shape.data.correctAnswer && shape.data.position == currentPosition) {
-                    this.background.validate(parseInt(shape.shapeNumber));
-                    currentPosition++;
-                    answerCount++;
-                    if (answerCount >= answerMax) {
-                        this.addQuestion();
-                    }
-                } else if (shape.data.position != currentPosition) {
-                    Canvas.get('gabator').modal.showHelp(
-                        "Il faut d'abord faire un choix pour la première étape"
-                    );
-                    PhaserManager.get('gabator').stats.changeValues({
-                        health: PhaserManager.get('gabator').stats.state.health - 1,
-                    });
-                } else {
-                    this.background.unvalidate(parseInt(shape.shapeNumber));
-                    Canvas.get('gabator').modal.showHelp(
-                        "Il ne faut pas passer par ici"
-                    );
-                    PhaserManager.get('gabator').stats.changeValues({
-                        health: PhaserManager.get('gabator').stats.state.health - 1,
-                    });
-                }
-            },this);
-        });
+        
 
     }
 
