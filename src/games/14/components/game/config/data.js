@@ -23,55 +23,64 @@ export default {
                 x: 300,
                 y: 400,
                 title: "Emprunter la cours de graviers",
-                correctAnswer: false
+                correctAnswer: false,
+                position: 1
             },
             {
                 x: 300,
                 y: 150,
                 title: "Emprunter la cours bitumée",
-                correctAnswer: true
+                correctAnswer: true,
+                position: 1
             },
             {
                 x: 300,
                 y: 650,
                 title: "Emprunter les escaliers",
-                correctAnswer: false
+                correctAnswer: false,
+                position: 1
             },
             { // Second step
                 x: 800,
                 y: 335,
                 title: "Passer les éléments par la fenêtre",
-                correctAnswer: false
+                correctAnswer: false,
+                position: 2
             },
             {
                 x: 800,
                 y: 530,
                 title: "Passer par la porte d’entrée",
-                correctAnswer: false
+                correctAnswer: false,
+                position: 2
             },
             {
                 x: 800,
                 y: 145,
                 title: "Demander au client d’enlever sa voiture du garage",
-                correctAnswer: true
+                correctAnswer: true,
+                position: 2
             },
             { // Third step
                 x: 950,
                 y: 390,
                 title: "Encombrement au sol",
-                correctAnswer: false
+                correctAnswer: false,
+                position: 3
             },
             {
                 x: 1000,
                 y: 515,
                 title: "Menuisier posant les portes du placard de l’entrée",
-                correctAnswer: false
+                correctAnswer: false,
+                position: 3
             },
             {
                 x: 1085,
                 y: 190,
                 title: "Emprunter le garage",
-                correctAnswer: true
+                correctAnswer: true,
+                position: 3
             },
         ]
     },

@@ -88,7 +88,8 @@ class Engine {
 
         // Actions
         let answerCount = 0,
-            answerMax = 0;
+            answerMax = 0,
+            currentPosition = 1;
         this.background.shapes.forEach((shape) => {
             if (shape.data.correctAnswer) {
                 answerMax++;
@@ -96,12 +97,20 @@ class Engine {
         });
         this.background.shapes.forEach((shape) => {
             shape.events.onInputDown.add(function(){
-                if (shape.data.correctAnswer) {
+                if (shape.data.correctAnswer && shape.data.position == currentPosition) {
                     this.background.validate(parseInt(shape.shapeNumber));
+                    currentPosition++;
                     answerCount++;
                     if (answerCount >= answerMax) {
                         this.addQuestion();
                     }
+                } else if (shape.data.position != currentPosition) {
+                    Canvas.get('gabator').modal.showHelp(
+                        "Il faut d'abord faire un choix pour la première étape"
+                    );
+                    PhaserManager.get('gabator').stats.changeValues({
+                        health: PhaserManager.get('gabator').stats.state.health - 1,
+                    });
                 } else {
                     this.background.unvalidate(parseInt(shape.shapeNumber));
                     Canvas.get('gabator').modal.showHelp(
