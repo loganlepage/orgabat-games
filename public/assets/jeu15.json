@@ -92,11 +92,11 @@
 },
 "jeu15/epi/harnais":
 {
-	"frame": {"x":266,"y":188,"w":38,"h":70},
+	"frame": {"x":280,"y":188,"w":50,"h":70},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":38,"h":70},
-	"sourceSize": {"w":38,"h":70},
+	"spriteSourceSize": {"x":0,"y":0,"w":50,"h":70},
+	"sourceSize": {"w":50,"h":70},
 	"pivot": {"x":0.5,"y":0.5}
 },
 "jeu15/epi/lunettes_de_protection":
@@ -110,7 +110,7 @@
 },
 "jeu15/epi/masque_anti_poussieres":
 {
-	"frame": {"x":304,"y":188,"w":84,"h":70},
+	"frame": {"x":330,"y":188,"w":84,"h":70},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":84,"h":70},
@@ -119,11 +119,11 @@
 },
 "jeu15/epi/pantalon":
 {
-	"frame": {"x":220,"y":188,"w":46,"h":70},
+	"frame": {"x":220,"y":188,"w":60,"h":70},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":46,"h":70},
-	"sourceSize": {"w":46,"h":70},
+	"spriteSourceSize": {"x":0,"y":0,"w":60,"h":70},
+	"sourceSize": {"w":60,"h":70},
 	"pivot": {"x":0.5,"y":0.5}
 },
 "jeu15/other/continue":
@@ -475,6 +475,6 @@
 	"format": "RGBA8888",
 	"size": {"w":504,"h":3128},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:3404526e4891f4994001478ad4b95119:a0f0ca9f286fdbdfe5a4b315049a4bc8:b22de9efd2c251bbfa84029f9322d0a7$"
+	"smartupdate": "$TexturePacker:SmartUpdate:42d79484c3a70caa2bfe291991eca27e:d593c9c412455b41748f8af9b006c477:b22de9efd2c251bbfa84029f9322d0a7$"
 }
 }
