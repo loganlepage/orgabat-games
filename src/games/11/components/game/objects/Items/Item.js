@@ -15,9 +15,10 @@ export default class Item extends BasicGameObject {
     quantity;
     dimensions;
     note;
+    name;
     modal;
 
-    constructor(game, x, y, key, mistakes, quantity, dimensions, note) {
+    constructor(game, x, y, key, mistakes, quantity, dimensions, note, name) {
         super(game);
 
         this.key = key;
@@ -25,6 +26,7 @@ export default class Item extends BasicGameObject {
         this.quantity = quantity;
         this.dimensions = dimensions;
         this.note = note;
+        this.name = name;
 
         this.addSprite(new ItemSprite(game, x, y, key, this));
 
@@ -47,6 +49,7 @@ export default class Item extends BasicGameObject {
                 this.onClosed.dispatch();
             }, this);
         }, this);
+
     }
 
     disableControls() {
@@ -59,4 +62,18 @@ export default class Item extends BasicGameObject {
         this.sprite.input.useHandCursor = true;
     }
 
+    addTooltips(item){
+        var text = this.game.add.text(
+            item.input.sprite.position.x,
+            item.input.sprite.position.y - (item.input.sprite.height / 2.5),
+            item.obj.name,
+            {
+                font: 'Arial',
+                fontSize: 50 * game.SCALE,
+                fill: '#000000',
+            }
+        );
+        text.anchor.setTo(0.5);
+        return text;
+    }
 }

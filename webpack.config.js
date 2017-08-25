@@ -23,11 +23,11 @@ module.exports = {
         // '8': "./src/games/8/app.jsx", // Jeu 8
         // '9': "./src/games/9/app.jsx", // Jeu 9
         // '10': "./src/games/10/app.jsx", // Jeu 10
-        // '11': "./src/games/11/app.jsx", // Jeu 11
+        '11': "./src/games/11/app.jsx", // Jeu 11
         // '12': "./src/games/12/app.jsx", // Jeu 12
         // '13': "./src/games/13/app.jsx", // Jeu 13
         // '14': "./src/games/14/app.jsx", // Jeu 14
-        '15': "./src/games/15/app.jsx", // Jeu 15
+        //'15': "./src/games/15/app.jsx", // Jeu 15
         //'99': "./src/games/99/app.jsx" // Jeu 99
     },
     /** description de nos sorties */

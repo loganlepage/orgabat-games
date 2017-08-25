@@ -63,7 +63,8 @@ export default class ItemFactory extends GameFactory {
                         items[name].mistakes,
                         items[name].quantity,
                         items[name].dimensions,
-                        items[name].note
+                        items[name].note,
+                        items[name].name,
                     )).sprite
                 );
                 count++;
@@ -77,7 +78,8 @@ export default class ItemFactory extends GameFactory {
                         items[name].mistakes,
                         items[name].quantity,
                         items[name].dimensions,
-                        items[name].note
+                        items[name].note,
+                        items[name].name
                     )).sprite
                 );
             }

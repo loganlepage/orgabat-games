@@ -32,7 +32,7 @@ export default class ItemModal extends BasicGameObject {
 	    	mediumFont = 20 * this.game.SCALE;
 
 	    // Title
-	    let textPositionX = x - (this.sprite.width/2) + 20,
+	    let textPositionX = x - (this.sprite.width/2) + 40,
 	    	textPositionY = y - (this.sprite.height/2) + 20,
 	    	titleText = this.game.add.text(
 	    		textPositionX, 

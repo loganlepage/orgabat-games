@@ -73,7 +73,7 @@ class Engine {
     finish = new Phaser.Signal();
 
     game;
-
+    itemName;
     title;
     items;
     validate;
@@ -107,6 +107,17 @@ class Engine {
             Config.items);
         this.items.forEach((item) => {
             item.scale.setTo(this.gameProcess.game.SCALE); // Propotionnal scale
+
+            item.events.onInputOver.add(() => {
+                this.itemName = item.obj.addTooltips(item);
+                this.itemName.fontSize = mediumFont;
+            }, this);
+            item.events.onInputOut.add(() => {
+                console.log('REMOVE');
+                console.log(this.itemName);
+                this.itemName.destroy();
+            }, this);
+
             item.obj.onClicked.add(function(){
                 this.items.forEach((item2) => {
                     item2.obj.disableControls();
