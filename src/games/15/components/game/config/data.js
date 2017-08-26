@@ -42,7 +42,8 @@ export default {
             "chaussures_de_securite",
             "pantalon",
             "lunettes_de_protection",
-            "masque_anti_poussieres"
+            "masque_anti_poussieres",
+            "casque_anti_bruit"
             ]
         },
     ],
