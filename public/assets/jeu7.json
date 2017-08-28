@@ -272,9 +272,9 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":200,"h":100},
 	"sourceSize": {"w":200,"h":100},
 	"pivot": {"x":0.5,"y":0.5},
-	"vertices": [ [200,100], [0,100], [0,0], [200,0] ],
-	"verticesUV": [ [1257,1734], [1057,1734], [1057,1634], [1257,1634] ],
-	"triangles": [ [1,2,3], [0,1,3] ]
+	"vertices": [ [200,100], [20,100], [0,80], [0,20], [20,0], [200,0] ],
+	"verticesUV": [ [1257,1734], [1077,1734], [1057,1714], [1057,1654], [1077,1634], [1257,1634] ],
+	"triangles": [ [1,4,5], [2,3,4], [1,2,4], [0,1,5] ]
 },
 "joystick/button_a.0":
 {
@@ -727,6 +727,6 @@
 	"format": "RGBA8888",
 	"size": {"w":1508,"h":2015},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:3e26c4ae077aefe44f8d12afd7700570:56f98a7bf2cbda76e0547591929a4219:64fca1685221a39e262e6c34eba0ca01$"
+	"smartupdate": "$TexturePacker:SmartUpdate:368d1e41a9d14f112b7d6968be6c226b:d67b99e92e9066db07720f9d58e0a1ea:64fca1685221a39e262e6c34eba0ca01$"
 }
 }

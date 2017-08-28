@@ -6,7 +6,7 @@
         <key>texturePackerVersion</key>
         <string>4.4.0</string>
         <key>fileName</key>
-        <string>/Users/Paul/Archive/JE/Projet M1/orgabat/web/modules/game/public/assets/jeu12.tps</string>
+        <string>C:/wamp/www/orgabat/web/modules/game/public/assets/jeu12.tps</string>
         <key>autoSDSettings</key>
         <array>
             <struct type="AutoSDSettings">
@@ -274,6 +274,19 @@
                 <rect>157,107,315,213</rect>
                 <key>scale9Paddings</key>
                 <rect>157,107,315,213</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">files/jeu12/other/continue.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>25,13,50,25</rect>
+                <key>scale9Paddings</key>
+                <rect>25,13,50,25</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
