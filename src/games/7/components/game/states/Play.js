@@ -27,7 +27,7 @@ export default class Play extends State {
      * Called when the state must be created
      * init all the game (scale, physics, gameobjects...)
      */
-    create() {
+     create() {
         this.game.controlsEnabled = false;
         this.game.stage.backgroundColor = '#DADAD5';
 
@@ -60,7 +60,7 @@ export default class Play extends State {
      * Called after create, to start the state
      * this.game Rules
      */
-    start() {
+     start() {
         this.game.gameProcess = new GameProcess(this);
         this.game.gameProcess.init();
     }
@@ -83,7 +83,7 @@ class MemoryPart {
         this.gameProcess.questsCleaned.addOnce(this.onQuestCleaned, this);
         this.addCards();
         this.totalValidatedCards = 0;
-        // this.addButton(); // To go to the end
+        // this.addButton(); // Shortcut
     }
 
     addCards() {
@@ -98,6 +98,13 @@ class MemoryPart {
                 card.sprite.inputEnabled = false;
                 card.sprite.input.useHandCursor = false;
             }
+        });
+    }
+
+    disableAllControls() {
+        this.cardsGroup.forEach((card) => {
+            card.sprite.inputEnabled = false;
+            card.sprite.input.useHandCursor = false;
         });
     }
 
@@ -117,8 +124,7 @@ class MemoryPart {
                     count++;
                     if (count>=2) {
                         count=0;
-                        this.game.time.events.add(Phaser.Timer.SECOND * 2, this.matchCards, this);
-                        this.game.time.events.add(Phaser.Timer.SECOND * 0, this.disableControls, this);
+                        this.matchCards();
                     }
                 }, this);
             }
@@ -126,74 +132,48 @@ class MemoryPart {
     }
 
     matchCards() {
-        // this.disableControls();
+        this.disableControls();
         if (this.matching[0].key == this.matching[1].key){
+            // Keep cards displayed
             this.displayCard(this.matching);
-            // this.game.time.events.add(Phaser.Timer.SECOND * 0.5, function(){
-            //     this.displayCard(matching);
-            // }, this); // display with a delay
-        } else {
-            this.matching.forEach((card) => {
-                card.clicked = false;
-            });
+            // Hide ohter cards
             this.hideCards();
-            PhaserManager.get('gabator').stats.changeValues({
-                health: PhaserManager.get('gabator').stats.state.health - 1,
-            });
-            // this.game.time.events.add(Phaser.Timer.SECOND * 2, this.hideCards, this); // hide cards with a delay
+        } else {
+            // Wait 2s before hide cards
+            this.game.time.events.add(Phaser.Timer.SECOND * 2, function(){
+                this.matching.forEach((card) => {
+                    card.clicked = false;
+                });
+                PhaserManager.get('gabator').stats.changeValues({
+                    health: PhaserManager.get('gabator').stats.state.health - 1,
+                });
+                this.hideCards();
+            }, this); // wait
         }
-        this.matching = [];
-        this.hideCards();
     }
 
     displayCard() {
         this.totalValidatedCards++;
         if (this.totalValidatedCards >= 10) {
+            // Finish
             this.addButton();
         }
-
+        // Add validated cards to global counter
         this.matching.forEach((card) => {
             card.validate();
         });
-
-        /* let key = this.matching[0].key; // display big card and click to hide
-
-        let width = this.game.width;
-        let height = this.game.height;
-
-        // let cardsWidth = 254;
-        // let cardsHeight = 377; // scale(1)
-
-        let cardsWidth = 386;
-        let cardsHeight = 572; // scale(1.1)
-
-        let bigWidthMargin = (width - cardsWidth) / 2;
-        let bigHeightMargin = (height - cardsHeight) / 2;
-
-        this.bigCard = new BigCard(this.game, bigWidthMargin, bigHeightMargin, key, this);
-        this.bigCard.addImage();
-        this.bigCard.sprite.inputEnabled = true;
-        this.bigCard.sprite.input.useHandCursor = true;
-        this.bigCard.sprite.events.onInputDown.add(this.destroyBigCard, this);*/
-        // this.game.time.events.add(Phaser.Timer.SECOND * 2, this.destroyBigCard, this); // hide with a delay
     }
 
-    /*destroyBigCard() { // hide big card, called by displayCard
-        this.bigCard.destroy();
-        this.hideCards();
-    }*/
-
     addButton() {
+        // Finish event
+        this.disableAllControls();
         this.button = new Button(this.game, this.game.world.centerX*2 - 100, this.game.world.centerY*2 - 50, null, this);
-        this.button.sprite.events.onInputDown.add(this.onClickAction, this);
+        this.button.sprite.events.onInputDown.add(this.onQuestCleaned, this);
         this.gameProcess.quests._quests.memory_quest.done();
     }
 
-    onClickAction() {
-        this.onQuestCleaned();
-    }
-
     onQuestCleaned() {
+        // Finish game
         this.finish.dispatch();
     }
 
@@ -234,7 +214,7 @@ class GameProcess {
             PhaserManager.get('gabator').state.getCurrentState().start();
             Canvas.get('gabator').modal.showHelp(
                 "Cliquer 1 fois sur la carte pour la retourner, une 2ème fois pour zoomer, et cliquer sur le zoom pour le faire disparaitre"
-            );
+                );
         }
 
         this.game.keys.addKey(Phaser.Keyboard.ENTER).onDown.remove(this._onStartInfoClose, this);

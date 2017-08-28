@@ -30,8 +30,6 @@ export default class CardFactory extends GameFactory {
         let bigWidthMargin = (width - 5*cardsWidth - 4*marginX) / 2;
         let bigHeightMargin = (height - 4*cardsHeight - 3*marginY) / 2;
 
-        // console.log(bigHeightMargin);
-
         let countX = 0;
         let count = 0;
 
@@ -45,6 +43,10 @@ export default class CardFactory extends GameFactory {
             }
         }
 
+        console.log(this.coordonates);
+        this.shuffle(this.coordonates);
+        console.log(this.coordonates);
+
         let count2 = 0;
 
         for (let name in cards) {
@@ -56,43 +58,23 @@ export default class CardFactory extends GameFactory {
                     cards[name].key,
                     cards[name].validated,
                     cards[name].clicked
-                ))
-            );
+                    ))
+                );
             count2++;
         }
-
-        /* for (let x = bigWidthMargin; x < width-(bigWidthMargin); x += (cardsWidth + margin)) {
-            for (let y = bigHeightMargin; y < height-(bigHeightMargin); y += (cardsHeight + margin)) {
-                console.log("x: " + x + " y: " + y);
-                // game.graphics.drawRect(x, y, x+cardsWidth, y+cardsHeight);
-                let newColor = this.newRandomColor();
-                game.graphics.lineStyle(1, newColor, 1);
-                game.graphics.drawRect(x, y, x+200, y+200);
-                count++;
-            }
-        }
-        console.log(bigWidthMargin);
-        console.log(bigHeightMargin);
-
-        /*for (let name in cards) {
-            this.add(
-                (new Card(
-                    this.game,
-                    cards[name].pair,
-                    cards[name].key,
-                    cards[name].x,
-                    cards[name].y,
-                    cards[name].clicked,
-                    cards[name].validated
-                ))
-            );
-        }*/
     }
 
-    /*newRandomColor() {
-        let colors = [0xFF3300, 0xffd900, 0xFF0000, 0xFF700B, 0x0000FF, 0xFFFF0B, 0x33FF00, 0xffffff];
-        let color = colors[Math.floor(Math.random()*colors.length)];
-        return color;
-    }*/
+    shuffle (array) {
+        let i = 0,
+        j = 0,
+        temp = null
+
+        for (i = array.length - 1; i > 0; i -= 1) {
+            j = Math.floor(Math.random() * (i + 1))
+            temp = array[i]
+            array[i] = array[j]
+            array[j] = temp
+        }
+    }
 
 }
