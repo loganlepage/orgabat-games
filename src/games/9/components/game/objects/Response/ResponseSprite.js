@@ -8,6 +8,7 @@ export default class ResponseSprite extends BasicGameSprite {
         super(game, x, y, `jeu9/${link}`, buttonObj);
         this.anchor.setTo(0.5);
         // this.scale.set(0.5);
+        this.scale.set(0.75 * this.game.SCALE);
         this.originalPosition = this.position.clone();
     }
 

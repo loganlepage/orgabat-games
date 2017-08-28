@@ -11,7 +11,6 @@ export default class ResponseFactory extends GameFactory {
 
     constructor(game, items) {
         super(game);
-        // this.game = game;
 
         let width = this.game.width;
         let height = this.game.height;
@@ -25,7 +24,7 @@ export default class ResponseFactory extends GameFactory {
         this.number = itemsNumber;
 
         let xValue = (width / itemsNumber)/2;
-        let y = 220;
+        let y = 250 * this.game.SCALE;
 
         for (let i = 0; i < itemsNumber; i++) {
             let x = i * (2 * xValue) + xValue;
@@ -33,7 +32,6 @@ export default class ResponseFactory extends GameFactory {
         }
 
         let count = 0;
-        // console.log("Factory:");
         for (let item in items) {
             this.add(
                 (new Response(
@@ -46,8 +44,6 @@ export default class ResponseFactory extends GameFactory {
             );
             count++;
         }
-        // console.log(this.children);
-
     }
 
     // destroy() {
