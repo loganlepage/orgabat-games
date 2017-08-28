@@ -17,7 +17,8 @@ export default class Player extends BasicGameObject {
     checkOverlap(currentSprite, spriteToOverlap) {
         let boundsA = currentSprite.getBounds(),
             boundsB = spriteToOverlap.getBounds(),
-            overlapHeight = spriteToOverlap.height + 5;
+            overlapHeight = (spriteToOverlap.height / 2 ) + 10;
+        console.log('height: '+ spriteToOverlap.height );
         if (Phaser.Rectangle.intersects(boundsA, boundsB)) {
             currentSprite.position.x = spriteToOverlap.position.x;
             currentSprite.position.y = spriteToOverlap.position.y + overlapHeight;

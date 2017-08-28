@@ -5,8 +5,8 @@ import Phaser from 'phaser';
 export default class PlayerSprite extends BasicGameSprite {
     constructor(game, x, y, buttonObj) {
         super(game, x, y, `jeu9/player/player`, buttonObj);
-        this.anchor.setTo(0.5);
-        // this.scale.set(0.5);
+        this.anchor.setTo(0.5, 0);
+        this.scale.set(0.75 * this.game.SCALE);
         this.input.enableDrag(false, true);
         this.originalPosition = this.position.clone();
     }
