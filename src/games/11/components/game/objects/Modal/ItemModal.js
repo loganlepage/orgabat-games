@@ -32,8 +32,8 @@ export default class ItemModal extends BasicGameObject {
 	    	mediumFont = 20 * this.game.SCALE;
 
 	    // Title
-	    let textPositionX = x - (this.sprite.width/2) + 40,
-	    	textPositionY = y - (this.sprite.height/2) + 20,
+	    let textPositionX = x - (this.sprite.width/2) + 40 * this.game.SCALE,
+	    	textPositionY = y - (this.sprite.height/2) + 20 * this.game.SCALE,
 	    	titleText = this.game.add.text(
 	    		textPositionX, 
 	    		textPositionY, 
@@ -70,8 +70,8 @@ export default class ItemModal extends BasicGameObject {
 	    }
 
 	    // Create cross to close modal
-	    let crossX = this.game.world.centerX + (this.sprite.width/2) - 40,
-	    	crossY = this.game.world.centerY - (this.sprite.height/2) + 20,
+	    let crossX = this.game.world.centerX + (this.sprite.width/2) - 40 * this.game.SCALE,
+	    	crossY = this.game.world.centerY - (this.sprite.height/2) + 20 * this.game.SCALE,
 	    	crossWidth = 20;
 	    this.cross = this.game.add.graphics(0,0);
 	    this.cross.lineStyle(2, "black", 1);

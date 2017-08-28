@@ -113,8 +113,6 @@ class Engine {
                 this.itemName.fontSize = mediumFont;
             }, this);
             item.events.onInputOut.add(() => {
-                console.log('REMOVE');
-                console.log(this.itemName);
                 this.itemName.destroy();
             }, this);
 

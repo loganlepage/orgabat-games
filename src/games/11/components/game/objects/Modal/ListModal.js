@@ -37,8 +37,8 @@ export default class ListModal extends BasicGameObject {
 	    	mediumFont = 20 * this.game.SCALE;
 
 	    // Title
-	    let textPositionX = x - (this.sprite.width/2) + 20,
-	    	textPositionY = y - (this.sprite.height/2) + 20,
+	    let textPositionX = x - (this.sprite.width/2) + 20 * this.game.SCALE,
+	    	textPositionY = y - (this.sprite.height/2) + 20 * this.game.SCALE,
 	    	titleText = this.game.add.text(
 	    		textPositionX, 
 	    		textPositionY, 
@@ -64,8 +64,8 @@ export default class ListModal extends BasicGameObject {
 	    // Validate button
 	    this.button = new Button(
 	    	this.game, 
-	    	x + (this.sprite.width/2) - (60 * this.game.SCALE),
-	    	y + (this.sprite.height/2) - (40 * this.game.SCALE),
+	    	x + (this.sprite.width/2) - (70 * this.game.SCALE),
+	    	y + (this.sprite.height/2) - (45 * this.game.SCALE),
 	    	"continue",
 	    	this
 	    	);
