@@ -30,7 +30,7 @@ export default class Element extends BasicGameObject {
         	y, 
         	this.isSelected ? "validate" : "list", 
         	this));
-        // Click on checbox image or [...]
+        // Click on checkbox image or [...]
         this.sprite.events.onInputDown.add(this.isSelected ? this.uncheckElement : this.checkElement, this);
 
         // Add mistake text
@@ -55,6 +55,7 @@ export default class Element extends BasicGameObject {
                 "validate", 
                 this));
         this.isSelected = true;
+        this.sprite.events.onInputDown.add(this.isSelected ? this.uncheckElement : this.checkElement, this);
         element.events.onInputDown.addOnce(this.uncheckElement, this);
     }
 
@@ -67,6 +68,7 @@ export default class Element extends BasicGameObject {
         	"list", 
         	this));
         this.isSelected = false;
+        this.sprite.events.onInputDown.add(this.isSelected ? this.uncheckElement : this.checkElement, this);
         element.events.onInputDown.addOnce(this.checkElement, this);
     }
 

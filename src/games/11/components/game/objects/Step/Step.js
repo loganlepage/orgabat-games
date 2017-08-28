@@ -32,20 +32,6 @@ export default class Step extends BasicGameObject {
 
         // Items:
         this.items = new ItemFactory(this.game, this.itemsData);
-        this.items.forEach((item) => {
-            console.log(item);
-        });
-
-        // Buttons:
-        this.continue = new Button(this.game, this.game.world.width - 100, this.game.world.height - 50, "continuer");
-        this.continue.sprite.events.onInputDown.add(function(){
-            //
-        }, this);
-
-        this.order = new Button(this.game, 100, this.game.world.height - 50, "commande");
-        this.order.sprite.events.onInputDown.add(function(){
-            //
-        }, this);
     }
 
     destroyItems() {
