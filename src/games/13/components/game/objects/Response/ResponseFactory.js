@@ -25,8 +25,14 @@ export default class ResponseFactory extends GameFactory {
         let width = this.game.width;
         let height = this.game.height;
 
-        let cardsWidth = 200;
-        let cardsHeight = 300; // scale 0.525
+        // let cardsWidth = 200 * this.game.SCALE;
+        // let cardsHeight = 300 * this.game.SCALE; // scale 0.525
+
+        // let cardsWidth = 290 * this.game.SCALE;
+        // let cardsHeight = 420 * this.game.SCALE;
+
+        let cardsWidth = 250 * this.game.SCALE;
+        let cardsHeight = 360 * this.game.SCALE; // scale 0.45 * this.game.SCALE
 
         let cardNumberX = 4;
         let cardNumberY = 2;

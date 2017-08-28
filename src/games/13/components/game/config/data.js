@@ -10,8 +10,8 @@ export default {
         key: "bg",
         area: [
             {
-                x: 1215,
-                y: 560,
+                x: 1155,
+                y: 600,
                 title: "1",
                 correctAnswer: "5"
             },
@@ -22,27 +22,27 @@ export default {
                 correctAnswer: "3"
             },
             {
-                x: 810,
-                y: 835,
+                x: 800,
+                y: 780,
                 title: "3",
-                correctAnswer: "7"
+                correctAnswer: "8"
             },
             {
-                x: 555,
-                y: 605,
+                x: 570,
+                y: 550,
                 title: "4",
                 correctAnswer: "4"
             },
             {
-                x: 90,
-                y: 90,
+                x: 145,
+                y: 70,
                 title: "5",
                 correctAnswer: "7"
             },
         ]
     },
     responses: {
-        title: "Réponse possibles",
+        title: "Réponses possibles",
         images: [
             {
                 key: "1",
