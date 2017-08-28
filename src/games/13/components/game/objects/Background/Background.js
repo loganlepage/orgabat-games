@@ -17,14 +17,14 @@ export default class Background extends BasicGameObject {
 
         // Background
         this.addSprite(new BackgroundSprite(this.game, this.game.world.centerX, this.game.world.centerY, data.key, this));
-        this.sprite.scale.set(1 * game.SCALE);
+        this.sprite.scale.set(0.95 * game.SCALE);
         this.game.layer.zDepth0.addChild(this.sprite);
         // To have pointe rposition
-        // this.sprite.events.onInputDown.add(function(){
-        //     console.log("X: " + this.game.input.mousePointer.x / this.game.SCALE);
-        //     console.log("Y: " + this.game.input.mousePointer.y / this.game.SCALE);
-        //     console.log("---");
-        // },this);
+        this.sprite.events.onInputDown.add(function(){
+            console.log("X: " + this.game.input.mousePointer.x / this.game.SCALE);
+            console.log("Y: " + this.game.input.mousePointer.y / this.game.SCALE);
+            console.log("---");
+        },this);
 
         // Shapes
         this.shapes = [];
@@ -46,7 +46,9 @@ export default class Background extends BasicGameObject {
         if (fill) {
             this.shapes[shapeNumber].lineStyle(2, 0x000000, 1);
             if (color == "green") {
-                this.shapes[shapeNumber].beginFill(0x008000, .5);
+                this.shapes[shapeNumber].beginFill(0x008000, .6);
+            } else if (color == "orange"){
+                this.shapes[shapeNumber].beginFill(0xFFA500, .5);
             } else {
                 this.shapes[shapeNumber].beginFill(0xffffff, .2);
             }
@@ -58,6 +60,24 @@ export default class Background extends BasicGameObject {
     validate(shapeNumber) {
         this.shapes[shapeNumber].destroy();
         this.createShapes(shapeNumber, "green");
+    }
+
+    check(shapeNumber) {
+        // this.shapes[shapeNumber].destroy();
+        this.createShapes(shapeNumber, "orange");
+    }
+
+    removeInputs() {
+        for (let shape in this.shapes) {
+            this.shapes[shape].inputEnabled = false;
+        }
+    }
+
+    addInputs() {
+        for (let shape in this.shapes) {
+            this.shapes[shape].inputEnabled = true;
+            this.shapes[shape].input.useHandCursor = true;
+        }
     }
 
     destroy(){

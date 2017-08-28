@@ -27,7 +27,7 @@ export default class Play extends State {
      * Called when the state must be created
      * init all the game (scale, physics, gameobjects...)
      */
-    create() {
+     create() {
         this.game.controlsEnabled = false;
         this.game.stage.backgroundColor = '#DADAD5';
 
@@ -60,7 +60,7 @@ export default class Play extends State {
      * Called after create, to start the state
      * this.game Rules
      */
-    start() {
+     start() {
         this.game.gameProcess = new GameProcess(this);
         this.game.gameProcess.init();
     }
@@ -90,14 +90,20 @@ class Engine {
 
         // Actions
         let answerCount = 0,
-            answerMax = this.background.shapes.length;
+        answerMax = this.background.shapes.length;
         this.background.shapes.forEach((shape) => {
             shape.events.onInputDown.add(function(){
+                // Remove inputs
+                this.background.removeInputs();
+                // Orange color when answering
+                this.background.check(parseInt(shape.shapeNumber));
+                // Display response group
                 this.responseGroup.show();
                 // Check answer
                 this.responseGroup.forEach((response) => {
                     response.events.onInputDown.add(function(){
                         if (response.obj.key == shape.data.correctAnswer) {
+                            // Correct
                             this.background.validate(parseInt(shape.shapeNumber));
                             answerCount++;
                             if (answerCount >= answerMax) {
@@ -105,10 +111,13 @@ class Engine {
                                 this.finish.dispatch();
                             }
                             this.responseGroup.hide();
+                            // Add inputs
+                            this.background.addInputs();
                         } else {
+                            // Not correct
                             Canvas.get('gabator').modal.showHelp(
                                 "Mauvaise réponse"
-                            );
+                                );
                             PhaserManager.get('gabator').stats.changeValues({
                                 health: PhaserManager.get('gabator').stats.state.health - 1,
                             });

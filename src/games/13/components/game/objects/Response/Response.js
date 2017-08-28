@@ -21,9 +21,7 @@ export default class Response extends BasicGameObject {
 
         this.addSprite(new ResponseSprite(this.game, this.x, this.y, this.key, this));
         // this.game.layer.zDepth1.addChild(this.sprite);
-        this.sprite.scale.set(0.525 * this.game.SCALE);
-        // console.log(this.sprite.width);
-        // console.log(this.sprite.height);
+        this.sprite.scale.set(0.45 * this.game.SCALE);
     }
 
 }
