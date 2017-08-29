@@ -31,7 +31,7 @@ export default class Play extends State {
      * Called when the state must be created
      * init all the game (scale, physics, gameobjects...)
      */
-    create() {
+     create() {
         this.game.controlsEnabled = false;
         this.game.stage.backgroundColor = '#f5f0d6';
 
@@ -64,7 +64,7 @@ export default class Play extends State {
      * Called after create, to start the state
      * this.game Rules
      */
-    start() {
+     start() {
         this.game.gameProcess = new GameProcess(this);
         this.game.gameProcess.init();
     }
@@ -84,12 +84,12 @@ class PartOne {
 
     start() {
         this.gameProcess.quests.add(new StepsQuest(this.gameProcess.game));
-        this.gameProcess.questsCleaned.addOnce(this.onQuestsCleaned, this);
+        // this.gameProcess.questsCleaned.addOnce(this.onQuestsCleaned, this);
         this.stepText = this.game.add.text(10, 10, `Étapes séléctionnées: ${this.clickedSteps}/8`, {fill: '#2a2a2a'});
         this.addSteps();
-        // next step ->
-        //this.addButton();
-        //this.onQuestsCleaned(); // To go to the end
+        // Next step ->
+        this.addButton();
+        this.onQuestsCleaned(); // Shortcut
     }
 
     addSteps() {
@@ -163,6 +163,7 @@ class PartTwo {
     constructor(gameProcess) {
         this.gameProcess = gameProcess;
         this.game = gameProcess.game;
+        this.gameProcess.quests.add(new TruckQuest(this.gameProcess.game));
     }
 
     start() {
@@ -175,8 +176,8 @@ class PartTwo {
         this.addTruck();
         this.addShelf();
         this.addItems();
-        this.gameProcess.quests.add(new TruckQuest(this.gameProcess.game));
-        this.gameProcess.questsCleaned.addOnce(this.onQuestsCleaned, this);
+        // this.gameProcess.questsCleaned.addOnce(this.onQuestsCleaned, this);
+        // Finish game ->
         // this.mapSteps(); // To go to the end
         // this.addButton(); // To go to the end
     }
@@ -206,9 +207,8 @@ class PartTwo {
     addItems() {
         Canvas.get('gabator').modal.showHelp(
             "Il faut: un aspirateur, une ponceuse, une caisse à outils, 30L de peinture et 6 sacs d'enduit"
-        );
+            );
         this.game.itemGroup = new ItemFactory(this.game, Config.items);
-        // this.shelf.sprite.addChild(this.game.itemGroup);
         this.game.layer.zDepth1.addChild(this.game.itemGroup);
         this.addItemsAction();
     }
@@ -220,28 +220,35 @@ class PartTwo {
             item.scale.setTo(0.6 * this.game.SCALE);
             item.events.onDragStop.add(function (currentSprite) {
                 let name = currentSprite.frameName;
-                if (name === "jeu6/peinture15l" && this.paintCapacity < 30) {
+                if (name === "jeu6/peinture15l" && this.paintCapacity <= 15) {
                     item.obj.checkOverlap(currentSprite, this.truck.sprite);
-                } else if (name === "jeu6/peinture5l" && this.paintCapacity < 30) {
-                    item.obj.checkOverlap(currentSprite, this.truck.sprite);
-                } else if ((name === "jeu6/peinture15l" || name === "jeu6/peinture5l") && this.paintCapacity >= 30) {
+                } else if (name === "jeu6/peinture15l" && this.paintCapacity > 15) {
                     Canvas.get('gabator').modal.showHelp(
-                        "La totalité de la peinture a déjà été chargée"
-                    );
+                        "Il y aura trop de peinture"
+                        );
+                    currentSprite.position.copyFrom(currentSprite.originalPosition);
+                } else if (name === "jeu6/peinture5l" && this.paintCapacity <= 25) {
+                    item.obj.checkOverlap(currentSprite, this.truck.sprite);
+                } else if (name === "jeu6/peinture5l" && this.paintCapacity > 25) {
+                    Canvas.get('gabator').modal.showHelp(
+                        "Il y aura trop de peinture"
+                        );
                     currentSprite.position.copyFrom(currentSprite.originalPosition);
                 } else if (name === "jeu6/map" && this.mapCapacity < 6) {
+                    console.log("OK");
                     item.obj.checkOverlap(currentSprite, this.truck.sprite);
                 } else if (name === "jeu6/map" && this.mapCapacity >= 6) {
+                    console.log("KO");
                     Canvas.get('gabator').modal.showHelp(
                         "La totalité des enduits a déjà été chargée"
-                    );
+                        );
                     currentSprite.position.copyFrom(currentSprite.originalPosition);
                 } else if ((name === "jeu6/aspirateur" || name === "jeu6/ponceuse" || name === "jeu6/caisse") && this.materialCapacity < 3) {
                     item.obj.checkOverlap(currentSprite, this.truck.sprite);
                 } else {
                     Canvas.get('gabator').modal.showHelp(
                         "L'élément n'est pas correct"
-                    );
+                        );
                     currentSprite.position.copyFrom(currentSprite.originalPosition);
                 }
             }, this);
@@ -250,10 +257,9 @@ class PartTwo {
     }
 
     updateQuantity(currentSprite) {
-        // TODO: ajouter les messages à Gabator
-        // TODO: Attention aux échelles, pb de déplacement
-        let name = currentSprite.frameName;
+        console.log("Update");
 
+        let name = currentSprite.frameName;
         if (currentSprite.obj.check()) {
             if (name === "jeu6/peinture15l") {
                 if (this.paintCapacity <= 15) {
@@ -263,7 +269,7 @@ class PartTwo {
                     });
                     Canvas.get('gabator').modal.showHelp(
                         "Attention, ces pots de peinture sont trop lourds"
-                    );
+                        );
                 }
             } else if (name === "jeu6/peinture5l") {
                 if (this.paintCapacity <= 25) {
@@ -274,7 +280,9 @@ class PartTwo {
                     this.materialCapacity++;
                 }
             } else if (name === "jeu6/map") {
+                console.log("Map");
                 if (this.firstMap) {
+                    console.log("First");
                     this.firstMap = false;
                     this.mapSteps();
                 }
@@ -282,6 +290,7 @@ class PartTwo {
                     this.mapCapacity++;
                 }
             }
+            console.log(this.mapCapacity);
             this.paintText.text = `Quantité de peinture : ${this.paintCapacity}/30`;
             this.suppliesText.text = `Matériels : ${this.materialCapacity}/3`;
             this.coatText.text = `Enduits : ${this.mapCapacity}/6`;
@@ -289,6 +298,7 @@ class PartTwo {
                 this.addButton();
             }
         }
+        console.log("---");
     }
 
     addButton() {
@@ -339,7 +349,7 @@ class PartTwo {
                         });
                         Canvas.get('gabator').modal.showHelp(
                             "Mauvaise étape sélectionnée"
-                        );
+                            );
                     }
                     if (currentPosition >= 4 && !finished) {
                         this.mapStepText.text = `Toutes les étapes ont été validées`;
@@ -370,6 +380,8 @@ class PartTwo {
 
     disableControls() {
         this.game.itemGroup.forEach((item) => {
+            item.events.onDragStop.removeAll();
+            item.events.onInputDown.removeAll();
             item.inputEnabled = false;
             item.input.useHandCursor = false;
         });
@@ -413,7 +425,7 @@ class GameProcess {
             PhaserManager.get('gabator').state.getCurrentState().start();
             Canvas.get('gabator').modal.showHelp(
                 "Attention à l'intégrité physique"
-            );
+                );
         }
 
         this.game.keys.addKey(Phaser.Keyboard.ENTER).onDown.remove(this._onStartInfoClose, this);
