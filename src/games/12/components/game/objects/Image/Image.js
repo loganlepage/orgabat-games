@@ -34,7 +34,7 @@ export default class Image extends BasicGameObject {
 	        	this.shapes[data.shapes[shape].correctAnswer] = this.game.add.graphics(x + data.shapes[shape].x * game.SCALE, y + data.shapes[shape].y * game.SCALE);
 	        	this.game.layer.zDepth1.addChild(this.shapes[data.shapes[shape].correctAnswer]);
 	        	if (fill) {
-		            this.shapes[data.shapes[shape].correctAnswer].beginFill(0xFF0000, .5);
+		            this.shapes[data.shapes[shape].correctAnswer].beginFill(0xFF0000, 0);
 		        }
 		        this.shapes[data.shapes[shape].correctAnswer].drawCircle(0, 0, radius);
 		        shapesCount++;
