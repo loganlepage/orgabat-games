@@ -27,6 +27,17 @@ export default class Item extends BasicGameObject {
         this.sprite.addControls();
     }
 
+    initialize() {
+        if (this.sprite.events.onDragStop != undefined) {
+            this.sprite.events.onDragStop.removeAll();
+        }
+        if (this.sprite.events.onDropped != undefined) {
+            this.sprite.events.onDropped.removeAll();
+        }
+        this.sprite.position.copyFrom(this.sprite.originalPosition);
+        this.sprite.addControls();
+    }
+
     checkOverlap(currentSprite, spriteToOverlap) {
         let boundsA = currentSprite.getBounds(),
             boundsB = spriteToOverlap.getBounds();

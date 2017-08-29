@@ -39,13 +39,36 @@ export default class Play extends State {
      * Called when the state must be created
      * init all the game (scale, physics, gameobjects...)
      */
-    create() {
+     create() {
         this.game.controlsEnabled = false;
         this.game.stage.backgroundColor = '#c3dbb6'; //green background
 
         PhaserManager.ready('game', 'play');
 
         this.initUI();
+
+        // Shelf:
+        this.shelf = new Shelf({
+            game: this.game,
+            x: this.game.world.width,
+            y: 0,
+            key: "other/background"
+        });
+        this.shelf.sprite.scale.setTo(this.game.SCALE); // Propotionnal scale
+        this.game.layer.zDepth0.addChild(this.shelf.sprite);
+
+        // Truck:
+        this.truck = new Truck({
+            game: this.game,
+            x: (this.game.world.centerX + (500 * this.game.SCALE)),
+            y: (this.game.world.centerY + (250 * this.game.SCALE)),
+            key: "other/truck"
+        });
+        this.truck.sprite.scale.setTo(this.game.SCALE); // Propotionnal scale
+        this.game.layer.zDepth0.addChild(this.truck.sprite);
+
+        // Items
+        this.itemGroup = new ItemFactory(this.game, Config.items);
         this.addObjects();
 
         this.start();
@@ -76,7 +99,7 @@ export default class Play extends State {
      * Called after create, to start the state
      * this.game Rules
      */
-    start() {
+     start() {
         this.game.gameProcess = new GameProcess(this);
         this.game.gameProcess.init();
     }
@@ -88,41 +111,22 @@ export default class Play extends State {
         // this.capacityMax = 23;
         this.capacityMax = 0;
 
-        // Shelf:
-        this.shelf = new Shelf({
-            game: this.game,
-            x: this.game.world.width,
-            y: 0,
-            key: "other/background"
-        });
-        this.shelf.sprite.scale.setTo(this.game.SCALE); // Propotionnal scale
-        this.game.layer.zDepth0.addChild(this.shelf.sprite);
-
-        // Truck:
-        this.truck = new Truck({
-            game: this.game,
-            x: (this.game.world.centerX + (500 * this.game.SCALE)),
-            y: (this.game.world.centerY + (250 * this.game.SCALE)),
-            key: "other/truck"
-        });
-        this.truck.sprite.scale.setTo(this.game.SCALE); // Propotionnal scale
-        this.game.layer.zDepth0.addChild(this.truck.sprite);
-
         // Items:
-        this.itemGroup = new ItemFactory(this.game, Config.items);
         this.itemGroup.forEach((item) => {
-            item.scale.setTo(0.7 * this.game.SCALE); // Propotionnal scale
-            item.events.onDragStop.add(function (currentSprite) {
-                item.obj.checkOverlap(currentSprite, this.truck.sprite)
-            }, this);
-            item.obj.onDropped.add(this.updateQuantity, this);
-            if (item.obj.isNeeded) {
+            if (!item.obj.isCorrect) {
+                item.obj.initialize();
+                item.scale.setTo(0.7 * this.game.SCALE); // Propotionnal scale
+                item.events.onDragStop.add(function (currentSprite) {
+                    item.obj.checkOverlap(currentSprite, this.truck.sprite)
+                }, this);
+                item.obj.onDropped.add(this.updateQuantity, this);
+                if (item.obj.isNeeded) {
                 // this.selectedItems.push(item.obj); // Shortcut
                 this.capacityMax++;
             }
-        });
+        }
+    });
 
-        // console.log(this.selectedItems); // Shortcut
         // this.attempt++; // Shortcut
         // this.proceedAttempt(); // Shortcut
 
@@ -132,9 +136,10 @@ export default class Play extends State {
         this.game.layer.zDepth0.addChild(this.questText);
         this.game.layer.zDepth0.addChild(this.titleText);
 
+        let object = this.capacityMax > 1 ? "objets" : "objet";
         Canvas.get('gabator').modal.showHelp(
-            `Attention: la capacité du camion est de ${this.capacityMax} objets`
-        );
+            `Il reste encore ${this.capacityMax} ${object}`
+            );
     }
 
     removeControls(){
@@ -159,6 +164,13 @@ export default class Play extends State {
 
     updateQuantity(currentSprite) {
         this.capacity++;
+        // Mise à jour de l'item: correct ou non
+        if (currentSprite.obj.isNeeded) {
+            currentSprite.obj.isCorrect = true;
+        } else {
+            currentSprite.obj.isCorrect = false;
+        }
+        // Ajout de l'item aux items séléctioonnés
         this.selectedItems.push(currentSprite.obj);
         this.titleText.text = `Eléments ajoutés : ${this.capacity} / ${this.capacityMax}`;
         if (this.capacity >= this.capacityMax) {
@@ -205,13 +217,18 @@ export default class Play extends State {
     removeAll() {
         this.titleText.destroy();
         this.questText.destroy();
-        this.shelf.destroy();
-        this.truck.destroy();
-        this.itemGroup.destroy();
         this.blackBackground.destroy();
         this.itemListModal.destroy();
         this.button.destroy();
-        this.selectedItems = [];
+        for (let item in this.selectedItems) {
+            let tmp = this.selectedItems;
+            this.selectedItems = [];
+            for (let item2 in tmp) {
+                if (tmp[item2].isCorrect) {
+                    this.selectedItems.push(tmp[item2]);
+                }
+            }
+        }
     }
 };
 
