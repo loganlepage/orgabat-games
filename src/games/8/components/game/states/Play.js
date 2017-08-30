@@ -106,8 +106,8 @@ Que faire ?`;
         });
 
         // console.log("1");
-        // this.care(); // To finish this screen with care step
-        // this.call(); // To finish this screen with call step
+        // this.care(); // Shortcut with care step
+        // this.call(); // Shortcut with call step
 
     }
 
@@ -544,7 +544,7 @@ class ScreenFive {
     }
 
     addResponsesActions() {
-        let self = this;
+        // let self = this;
         this.game.responseGroup.forEach((item) => {
             item.input.enableDrag(false, true);
             item.scale.set(1.5);
@@ -554,43 +554,67 @@ class ScreenFive {
             item.events.onDragStop.add(function (currentSprite) {
                 switch(currentSprite.obj.position){
                     case 1:
-                        if (item.obj.checkOverlap(currentSprite, self.shapes[0])) {
-                            self.correct_answers_count ++;
+                        if (item.obj.checkOverlap(currentSprite, this.shapes[0])) {
+                            currentSprite.position.x = this.shapes[0].position.x;
+                            currentSprite.position.y = this.shapes[0].position.y;
+                            this.correct_answers_count ++;
                         } else {
-                            self.wrongAnswer();
+                            for (let shape in this.shapes) {
+                                if (shape != 0 && item.obj.checkOverlap(currentSprite, this.shapes[shape])) {
+                                    this.wrongAnswer();
+                                }
+                            }
                         }
                         break;
                     case 2:
-                        if (item.obj.checkOverlap(currentSprite, self.shapes[1])) {
-                            self.correct_answers_count ++;
+                        if (item.obj.checkOverlap(currentSprite, this.shapes[1])) {
+                            currentSprite.position.x = this.shapes[1].position.x;
+                            currentSprite.position.y = this.shapes[1].position.y;
+                            this.correct_answers_count ++;
                         } else {
-                            self.wrongAnswer();
+                            for (let shape in this.shapes) {
+                                if (shape != 1 && item.obj.checkOverlap(currentSprite, this.shapes[shape])) {
+                                    this.wrongAnswer();
+                                }
+                            }
                         }
                         break;
                     case 3:
-                        if (item.obj.checkOverlap(currentSprite, self.shapes[2])) {
-                            self.correct_answers_count ++;
+                        if (item.obj.checkOverlap(currentSprite, this.shapes[2])) {
+                            currentSprite.position.x = this.shapes[2].position.x;
+                            currentSprite.position.y = this.shapes[2].position.y;
+                            this.correct_answers_count ++;
                         } else {
-                            self.wrongAnswer();
+                            for (let shape in this.shapes) {
+                                if (shape != 2 && item.obj.checkOverlap(currentSprite, this.shapes[shape])) {
+                                    this.wrongAnswer();
+                                }
+                            }
                         }
                         break;
                     case 4:
-                        if (item.obj.checkOverlap(currentSprite, self.shapes[3])) {
-                            self.correct_answers_count ++;
+                        if (item.obj.checkOverlap(currentSprite, this.shapes[3])) {
+                            currentSprite.position.x = this.shapes[3].position.x;
+                            currentSprite.position.y = this.shapes[3].position.y;
+                            this.correct_answers_count ++;
                         } else {
-                            self.wrongAnswer();
+                            for (let shape in this.shapes) {
+                                if (shape != 3 && item.obj.checkOverlap(currentSprite, this.shapes[shape])) {
+                                    this.wrongAnswer();
+                                }
+                            }
                         }
                         break;
                     default:
                         currentSprite.position.copyFrom(currentSprite.originalPosition);
                         break;
                 }
-                if (self.correct_answers_count >= 4) {
-                    // self.questCleaned();
-                    self.game.time.events.add(Phaser.Timer.SECOND * 1, self.questCleaned, self);
+                if (this.correct_answers_count >= 4) {
+                    // this.questCleaned();
+                    this.game.time.events.add(Phaser.Timer.SECOND * 1, this.questCleaned, this);
                 }
-            });
-        });
+            }, this);
+        }, this);
     }
 
     removeResponses() {

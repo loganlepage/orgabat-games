@@ -25,8 +25,8 @@ export default class Response extends BasicGameObject {
         let boundsA = currentSprite.getBounds(),
             boundsB = spriteToOverlap.getBounds();
         if (Phaser.Rectangle.intersects(boundsA, boundsB)) {
-            currentSprite.position.x = spriteToOverlap.position.x;
-            currentSprite.position.y = spriteToOverlap.position.y;
+            // currentSprite.position.x = spriteToOverlap.position.x;
+            // currentSprite.position.y = spriteToOverlap.position.y;
             this.onDropped.dispatch(currentSprite);
             return true;
         }
