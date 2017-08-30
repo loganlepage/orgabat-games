@@ -190,6 +190,8 @@ export default class Play extends State {
     }
 
     proceedAttempt() {
+        this.button.sprite.events.onInputDown.removeAll();
+        this.button.sprite.destroy();
         this.itemListModal = new Modal({
             game: this.game, 
             x: this.game.world.centerX, 
