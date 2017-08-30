@@ -88,8 +88,8 @@ class PartOne {
         this.stepText = this.game.add.text(10, 10, `Étapes séléctionnées: ${this.clickedSteps}/8`, {fill: '#2a2a2a'});
         this.addSteps();
         // Next step ->
-        this.addButton();
-        this.onQuestsCleaned(); // Shortcut
+        // this.addButton();
+        // this.onQuestsCleaned(); // Shortcut
     }
 
     addSteps() {
@@ -221,22 +221,30 @@ class PartTwo {
             item.events.onDragStop.add(function (currentSprite) {
                 let name = currentSprite.frameName;
                 if (name === "jeu6/peinture15l" && this.paintCapacity <= 15) {
-                    item.obj.checkOverlap(currentSprite, this.truck.sprite);
+                    if (item.obj.checkOverlap(currentSprite, this.truck.sprite)){
+                        currentSprite.position.x = spriteToOverlap.position.x + Item.X_BEGIN_AT;
+                        currentSprite.position.y = spriteToOverlap.position.y ;
+                    }
                 } else if (name === "jeu6/peinture15l" && this.paintCapacity > 15) {
                     Canvas.get('gabator').modal.showHelp(
                         "Il y aura trop de peinture"
                         );
                     currentSprite.position.copyFrom(currentSprite.originalPosition);
                 } else if (name === "jeu6/peinture5l" && this.paintCapacity <= 25) {
-                    item.obj.checkOverlap(currentSprite, this.truck.sprite);
+                    if (item.obj.checkOverlap(currentSprite, this.truck.sprite)){
+                        currentSprite.position.x = spriteToOverlap.position.x + Item.X_BEGIN_AT;
+                        currentSprite.position.y = spriteToOverlap.position.y ;
+                    }
                 } else if (name === "jeu6/peinture5l" && this.paintCapacity > 25) {
                     Canvas.get('gabator').modal.showHelp(
                         "Il y aura trop de peinture"
                         );
                     currentSprite.position.copyFrom(currentSprite.originalPosition);
                 } else if (name === "jeu6/map" && this.mapCapacity < 6) {
-                    console.log("OK");
-                    item.obj.checkOverlap(currentSprite, this.truck.sprite);
+                    if (item.obj.checkOverlap(currentSprite, this.truck.sprite)){
+                        currentSprite.position.x = spriteToOverlap.position.x + Item.X_BEGIN_AT;
+                        currentSprite.position.y = spriteToOverlap.position.y ;
+                    }
                 } else if (name === "jeu6/map" && this.mapCapacity >= 6) {
                     console.log("KO");
                     Canvas.get('gabator').modal.showHelp(
@@ -244,12 +252,17 @@ class PartTwo {
                         );
                     currentSprite.position.copyFrom(currentSprite.originalPosition);
                 } else if ((name === "jeu6/aspirateur" || name === "jeu6/ponceuse" || name === "jeu6/caisse") && this.materialCapacity < 3) {
-                    item.obj.checkOverlap(currentSprite, this.truck.sprite);
+                    if (item.obj.checkOverlap(currentSprite, this.truck.sprite)){
+                        currentSprite.position.x = spriteToOverlap.position.x + Item.X_BEGIN_AT;
+                        currentSprite.position.y = spriteToOverlap.position.y ;
+                    }
                 } else {
-                    Canvas.get('gabator').modal.showHelp(
-                        "L'élément n'est pas correct"
-                        );
-                    currentSprite.position.copyFrom(currentSprite.originalPosition);
+                    if (item.obj.checkOverlap(currentSprite, this.truck.sprite)){
+                        Canvas.get('gabator').modal.showHelp(
+                            "L'élément n'est pas correct"
+                            );
+                        currentSprite.position.copyFrom(currentSprite.originalPosition);
+                    }
                 }
             }, this);
             item.obj.onDropped.add(this.updateQuantity, this);

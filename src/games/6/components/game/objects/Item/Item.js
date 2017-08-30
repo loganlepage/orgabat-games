@@ -26,13 +26,15 @@ export default class Item extends BasicGameObject {
         if (Phaser.Rectangle.intersects(boundsA, boundsB)) {
             // currentSprite.input.draggable = true;
             // currentSprite.position.copyFrom(spriteToOverlap.position);
-            currentSprite.position.x = spriteToOverlap.position.x + Item.X_BEGIN_AT;
-            currentSprite.position.y = spriteToOverlap.position.y ;
+            // currentSprite.position.x = spriteToOverlap.position.x + Item.X_BEGIN_AT;
+            // currentSprite.position.y = spriteToOverlap.position.y ;
             // currentSprite.anchor.setTo(spriteToOverlap.anchor.x, spriteToOverlap.anchor.y);
             this.onDropped.dispatch(currentSprite);
+            return true;
         }
         else
             currentSprite.position.copyFrom(currentSprite.originalPosition);
+            return false;
     }
 
     check() {
