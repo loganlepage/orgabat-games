@@ -237,6 +237,8 @@ class ScreenThree {
                 switch(currentSprite.obj.position){
                     case 1:
                         if (item.obj.checkOverlap(currentSprite, self.shapes[0])) {
+                            currentSprite.position.x = self.shapes[0].position.x;
+                            currentSprite.position.y = self.shapes[0].position.y;
                             self.correct_answers_count ++;
                         } else {
                             self.wrongAnswer();
@@ -244,6 +246,8 @@ class ScreenThree {
                         break;
                     case 2:
                         if (item.obj.checkOverlap(currentSprite, self.shapes[1])) {
+                            currentSprite.position.x = self.shapes[1].position.x;
+                            currentSprite.position.y = self.shapes[1].position.y;
                             self.correct_answers_count ++;
                         } else {
                             self.wrongAnswer();
@@ -251,6 +255,8 @@ class ScreenThree {
                         break;
                     case 3:
                         if (item.obj.checkOverlap(currentSprite, self.shapes[2])) {
+                            currentSprite.position.x = self.shapes[2].position.x;
+                            currentSprite.position.y = self.shapes[2].position.y;
                             self.correct_answers_count ++;
                         } else {
                             self.wrongAnswer();
@@ -258,6 +264,8 @@ class ScreenThree {
                         break;
                     case 4:
                         if (item.obj.checkOverlap(currentSprite, self.shapes[3])) {
+                            currentSprite.position.x = self.shapes[3].position.x;
+                            currentSprite.position.y = self.shapes[3].position.y;
                             self.correct_answers_count ++;
                         } else {
                             self.wrongAnswer();
@@ -392,6 +400,8 @@ car c’est la premiè̀re fois pour lui. Fais glisser sur les schémas les dif
                 switch(currentSprite.obj.position){
                     case 1:
                         if (item.obj.checkOverlap(currentSprite, self.shapes[0])) {
+                            currentSprite.position.x = self.shapes[0].position.x;
+                            currentSprite.position.y = self.shapes[0].position.y;
                             self.correct_answers_count ++;
                         } else {
                             self.wrongAnswer();
@@ -399,6 +409,8 @@ car c’est la premiè̀re fois pour lui. Fais glisser sur les schémas les dif
                         break;
                     case 2:
                         if (item.obj.checkOverlap(currentSprite, self.shapes[1])) {
+                            currentSprite.position.x = self.shapes[1].position.x;
+                            currentSprite.position.y = self.shapes[1].position.y;
                             self.correct_answers_count ++;
                         } else {
                             self.wrongAnswer();
@@ -406,6 +418,8 @@ car c’est la premiè̀re fois pour lui. Fais glisser sur les schémas les dif
                         break;
                     case 3:
                         if (item.obj.checkOverlap(currentSprite, self.shapes[2])) {
+                            currentSprite.position.x = self.shapes[2].position.x;
+                            currentSprite.position.y = self.shapes[2].position.y;
                             self.correct_answers_count ++;
                         } else {
                             self.wrongAnswer();
@@ -413,6 +427,8 @@ car c’est la premiè̀re fois pour lui. Fais glisser sur les schémas les dif
                         break;
                     case 4:
                         if (item.obj.checkOverlap(currentSprite, self.shapes[3])) {
+                            currentSprite.position.x = self.shapes[3].position.x;
+                            currentSprite.position.y = self.shapes[3].position.y;
                             self.correct_answers_count ++;
                         } else {
                             self.wrongAnswer();
