@@ -88,8 +88,8 @@ class PartOne {
         this.stepText = this.game.add.text(10, 10, `Étapes séléctionnées: ${this.clickedSteps}/8`, {fill: '#2a2a2a'});
         this.addSteps();
         // Next step ->
-        // this.addButton();
-        // this.onQuestsCleaned(); // Shortcut
+        this.addButton();
+        this.onQuestsCleaned(); // Shortcut
     }
 
     addSteps() {
@@ -222,8 +222,10 @@ class PartTwo {
                 let name = currentSprite.frameName;
                 if (name === "jeu6/peinture15l" && this.paintCapacity <= 15) {
                     if (item.obj.checkOverlap(currentSprite, this.truck.sprite)){
-                        currentSprite.position.x = spriteToOverlap.position.x + Item.X_BEGIN_AT;
-                        currentSprite.position.y = spriteToOverlap.position.y ;
+                        currentSprite.position.x = this.truck.sprite.position.x - 1000;
+                        currentSprite.position.y = this.truck.sprite.position.y;
+                        // this.game.world.bringToTop(this.truck.sprite);
+                        // this.truck.sprite.bringToTop();
                     }
                 } else if (name === "jeu6/peinture15l" && this.paintCapacity > 15) {
                     Canvas.get('gabator').modal.showHelp(
@@ -232,8 +234,8 @@ class PartTwo {
                     currentSprite.position.copyFrom(currentSprite.originalPosition);
                 } else if (name === "jeu6/peinture5l" && this.paintCapacity <= 25) {
                     if (item.obj.checkOverlap(currentSprite, this.truck.sprite)){
-                        currentSprite.position.x = spriteToOverlap.position.x + Item.X_BEGIN_AT;
-                        currentSprite.position.y = spriteToOverlap.position.y ;
+                        currentSprite.position.x = this.truck.sprite.position.x - 1000;
+                        currentSprite.position.y = this.truck.sprite.position.y;
                     }
                 } else if (name === "jeu6/peinture5l" && this.paintCapacity > 25) {
                     Canvas.get('gabator').modal.showHelp(
@@ -242,19 +244,18 @@ class PartTwo {
                     currentSprite.position.copyFrom(currentSprite.originalPosition);
                 } else if (name === "jeu6/map" && this.mapCapacity < 6) {
                     if (item.obj.checkOverlap(currentSprite, this.truck.sprite)){
-                        currentSprite.position.x = spriteToOverlap.position.x + Item.X_BEGIN_AT;
-                        currentSprite.position.y = spriteToOverlap.position.y ;
+                        currentSprite.position.x = this.truck.sprite.position.x - 1000;
+                        currentSprite.position.y = this.truck.sprite.position.y;
                     }
                 } else if (name === "jeu6/map" && this.mapCapacity >= 6) {
-                    console.log("KO");
                     Canvas.get('gabator').modal.showHelp(
                         "La totalité des enduits a déjà été chargée"
                         );
                     currentSprite.position.copyFrom(currentSprite.originalPosition);
                 } else if ((name === "jeu6/aspirateur" || name === "jeu6/ponceuse" || name === "jeu6/caisse") && this.materialCapacity < 3) {
                     if (item.obj.checkOverlap(currentSprite, this.truck.sprite)){
-                        currentSprite.position.x = spriteToOverlap.position.x + Item.X_BEGIN_AT;
-                        currentSprite.position.y = spriteToOverlap.position.y ;
+                        currentSprite.position.x = this.truck.sprite.position.x - 1000;
+                        currentSprite.position.y = this.truck.sprite.position.y;
                     }
                 } else {
                     if (item.obj.checkOverlap(currentSprite, this.truck.sprite)){
@@ -270,7 +271,6 @@ class PartTwo {
     }
 
     updateQuantity(currentSprite) {
-        console.log("Update");
 
         let name = currentSprite.frameName;
         if (currentSprite.obj.check()) {
@@ -293,9 +293,7 @@ class PartTwo {
                     this.materialCapacity++;
                 }
             } else if (name === "jeu6/map") {
-                console.log("Map");
                 if (this.firstMap) {
-                    console.log("First");
                     this.firstMap = false;
                     this.mapSteps();
                 }
@@ -303,7 +301,6 @@ class PartTwo {
                     this.mapCapacity++;
                 }
             }
-            console.log(this.mapCapacity);
             this.paintText.text = `Quantité de peinture : ${this.paintCapacity}/30`;
             this.suppliesText.text = `Matériels : ${this.materialCapacity}/3`;
             this.coatText.text = `Enduits : ${this.mapCapacity}/6`;
@@ -311,7 +308,6 @@ class PartTwo {
                 this.addButton();
             }
         }
-        console.log("---");
     }
 
     addButton() {
