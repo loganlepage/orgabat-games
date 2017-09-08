@@ -90,6 +90,17 @@ class MemoryPart {
         this.game.graphics = this.game.add.graphics(0, 0);
         this.cardsGroup = new CardFactory(this.game, Config.cards);
         this.hideCards();
+        this.cardZoomed = false;
+        this.cardsGroup.forEach((card) => {
+            card.zoomSignal.add(function(){
+                this.disableAllControls();
+                this.cardZoomed = true;
+            }, this);
+            card.dezoomSignal.add(function(){
+                this.enableAllControls();
+                this.cardZoomed = false;
+            }, this);
+        }, this);
     }
 
     disableControls() {
@@ -108,15 +119,12 @@ class MemoryPart {
         });
     }
 
-    hideCards() {
+    enableAllControls() {
         let count = 0;
-        this.matching = [];
         this.cardsGroup.forEach((card) => {
-            card.turnBack();
-            card.dezoom();
+            card.sprite.inputEnabled = true;
+            card.sprite.input.useHandCursor = true;
             if (!card.validated) {
-                card.sprite.inputEnabled = true;
-                card.sprite.input.useHandCursor = true;
                 card.sprite.events.onInputDown.add(function(){
                     card.click();
                     card.clicked = true;
@@ -131,13 +139,42 @@ class MemoryPart {
         });
     }
 
+    hideCards() {
+        let count = 0;
+        this.matching = [];
+        this.cardsGroup.forEach((card) => {
+            card.turnBack();
+            // card.dezoom();
+            if (!this.cardZoomed) {
+                if (!card.validated) {
+                    card.sprite.inputEnabled = true;
+                    card.sprite.input.useHandCursor = true;
+                    card.sprite.events.onInputDown.add(function(){
+                        card.click();
+                        card.clicked = true;
+                        this.matching.push(card);
+                        count++;
+                        if (count>=2) {
+                            count=0;
+                            this.matchCards();
+                        }
+                    }, this);
+                }
+            }
+        });
+    }
+
     matchCards() {
         this.disableControls();
         if (this.matching[0].key == this.matching[1].key){
             // Keep cards displayed
             this.displayCard(this.matching);
-            // Hide ohter cards
+            let card = this.matching[0];
+            card.zoom();
+            this.cardZoomed = true;
+            // Initialize game
             this.hideCards();
+            // Force zoom
         } else {
             // Wait 2s before hide cards
             this.game.time.events.add(Phaser.Timer.SECOND * 2, function(){

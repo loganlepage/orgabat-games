@@ -16,6 +16,11 @@ export default class BigCard extends BasicGameObject {
     }
 
     addImage() {
+        try {
+            this.sprite.destroy()
+        } catch (e) {
+            //
+        }
         this.addSprite(new BigCardSprite(this.game, this.x, this.y, this.key, this));
     }
 

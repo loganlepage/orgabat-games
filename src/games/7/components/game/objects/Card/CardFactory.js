@@ -43,9 +43,7 @@ export default class CardFactory extends GameFactory {
             }
         }
 
-        console.log(this.coordonates);
-        this.shuffle(this.coordonates);
-        console.log(this.coordonates);
+        // this.shuffle(this.coordonates);
 
         let count2 = 0;
 
