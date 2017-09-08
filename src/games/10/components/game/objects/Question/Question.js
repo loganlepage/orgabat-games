@@ -27,8 +27,8 @@ export default class Question extends BasicGameObject {
 
         x += 30;
         for (let number in answers) {
-            y += 20;
-            this.answers[number] = this.game.add.text(x, y, answers[number], {font: 'Arial', fontSize: 16, fill: '#000000'});
+            y += 27;
+            this.answers[number] = this.game.add.text(x, y, answers[number], {font: 'Arial', fontSize: 15, fill: '#000000'});
             this.answers[number].inputEnabled = true;
             this.answers[number].input.useHandCursor = true;
             this.texts.push(this.answers[number]);

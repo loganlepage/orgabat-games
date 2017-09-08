@@ -28,7 +28,7 @@ export default class Play extends State {
      */
     create() {
         this.game.controlsEnabled = false;
-        this.game.stage.backgroundColor = '#DADAD5';
+        this.game.stage.backgroundColor = '#FFFFFF';
 
         this.initUI();
         PhaserManager.ready('game', 'play');
