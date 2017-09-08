@@ -9,6 +9,9 @@ import BigCard from "./BigCard";
 
 export default class Card extends BasicGameObject {
 
+    zoomSignal = new Phaser.Signal();
+    dezoomSignal = new Phaser.Signal();
+
     constructor(game, x, y, key, validated, clicked) {
         super(game);
         this.x = x;
@@ -23,6 +26,7 @@ export default class Card extends BasicGameObject {
         if (!this.validated) {
             this.sprite.destroy();
             this.addSprite(new CardSprite(this.game, this.x, this.y, this.key, this));
+            this.game.layer.zDepth0.addChild(this.sprite);
             this.sprite.inputEnabled = true;
             this.sprite.input.useHandCursor = true;
             // this.sprite.events.onInputOver.add(this.zoom, this); // Hover
@@ -33,6 +37,8 @@ export default class Card extends BasicGameObject {
 
     zoom() {
         if (!this.isZoomed) {
+            console.log("zoom");
+            this.zoomSignal.dispatch();
             this.isZoomed = true;
             // this.sprite.scale.set(1.5); // zoom with small cards
             // this.sprite.scale.set(0.8); // zoom with big cards
@@ -51,7 +57,7 @@ export default class Card extends BasicGameObject {
 
             this.bigCard = new BigCard(this.game, bigWidthMargin, bigHeightMargin, this.key, this);
             this.bigCard.addImage();
-
+            this.game.layer.zDepth1.addChild(this.bigCard.sprite);
             this.bigCard.sprite.inputEnabled = true;
             this.bigCard.sprite.input.useHandCursor = true;
 
@@ -64,7 +70,7 @@ export default class Card extends BasicGameObject {
             let y = bigHeightMargin;
             this.graphics = this.game.add.graphics(0, 0);
             this.game.layer.zDepthOverAll.addChild(this.graphics);
-            this.graphics.lineStyle(3, "balck", 1);
+            this.graphics.lineStyle(3, "black", 1);
             this.graphics.moveTo(x,y);
             this.graphics.lineTo(x + crossWidth, y + crossWidth);
             this.graphics.moveTo(x + crossWidth,y);
@@ -75,16 +81,19 @@ export default class Card extends BasicGameObject {
     dezoom() {
         // this.sprite.scale.set(0.95); // zoom with small cards
         // this.sprite.scale.set(0.28); // zoom with big cards
-        this.isZoomed = false;
-        try {
-            this.bigCard.destroy();
-        } catch (e) {
-            //
-        }
-        try {
-            this.graphics.destroy();
-        } catch (e) {
-            //
+        if (this.isZoomed) {
+            this.dezoomSignal.dispatch();
+            this.isZoomed = false;
+            try {
+                this.bigCard.destroy();
+            } catch (e) {
+                //
+            }
+            try {
+                this.graphics.destroy();
+            } catch (e) {
+                //
+            }
         }
     }
 
@@ -93,8 +102,10 @@ export default class Card extends BasicGameObject {
             try {
                 this.sprite.destroy();
             } catch (e) {
+                //
             }
             this.addSprite(new CardSprite(this.game, this.x, this.y, "cardBg", this));
+            this.game.layer.zDepth0.addChild(this.sprite);
         }
     }
 
