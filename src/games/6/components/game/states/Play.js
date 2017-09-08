@@ -88,8 +88,8 @@ class PartOne {
         this.stepText = this.game.add.text(10, 10, `Étapes séléctionnées: ${this.clickedSteps}/8`, {fill: '#2a2a2a'});
         this.addSteps();
         // Next step ->
-        this.addButton();
-        this.onQuestsCleaned(); // Shortcut
+        // this.addButton();
+        // this.onQuestsCleaned(); // Shortcut
     }
 
     addSteps() {
