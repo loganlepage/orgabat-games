@@ -2,6 +2,7 @@ import GameFactory from "system/phaser/GameFactory";
 import Phaser from "phaser";
 
 import Question from "./Question";
+import Graphic from "../Graphic/Graphic"
 
 export default class QuestionFactory extends GameFactory {
 
@@ -14,6 +15,7 @@ export default class QuestionFactory extends GameFactory {
         let y = 50;
 
         for (let question in questions) {
+            this.graphic = new Graphic(this.game, x-10, y-5, 100, 30);
             this.add(new Question(
                     this.game,
                     x,
@@ -22,7 +24,14 @@ export default class QuestionFactory extends GameFactory {
                     questions[question].questionAnswers,
                     questions[question].questionSolutions)
             );
-            y += 100;
+            console.log(questions[question].questionAnswers.length);
+            this.graphic.graphic.graphicsData[0].shape.width = this.children[question].title.width + 20;
+            if (questions[question].questionAnswers.length == 2){
+                y += 90;
+            } else {
+                y += 110;
+            }
+            
         }
 
     }

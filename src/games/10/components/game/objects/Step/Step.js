@@ -8,16 +8,17 @@ import {Signal} from 'phaser';
 
 import Button from '../Button/Button';
 import QuestionFactory from "../Question/QuestionFactory";
+import Graphic from "../Graphic/Graphic";
 
 export default class Step extends BasicGameObject {
 
     finish = new Signal();
     game;
     stepData;
-
+    graphic;
     questions = [];
-    selectedAnswers = []
-
+    selectedAnswers = [];
+    graphic;
     button;
 
     constructor(game, stepData) {
@@ -36,8 +37,9 @@ export default class Step extends BasicGameObject {
         this.title = this.game.add.text(20, 20, this.stepData.title, {font: 'Arial', fontSize: 20, fill: '#000000'});
 
         this.questions = new QuestionFactory(this.game, this.stepData.questions);
-
+    
         this.questions.forEach((question) => {
+            
             question.answers.forEach((answer) => {
                 answer.events.onInputDown.add(function(){
                     question.selectAnswer(answer);
