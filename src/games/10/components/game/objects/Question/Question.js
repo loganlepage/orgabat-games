@@ -37,7 +37,8 @@ export default class Question extends BasicGameObject {
 
     selectAnswer(answer) {
         this.selectedAnswer.push(answer);
-        answer.addColor("#ffffff", 0);
+        //answer.addColor("#ffffff", 0);
+        answer.fontWeight = "bold";
         answer.inputEnabled = false;
         answer.input.useHandCursor = false;
     }

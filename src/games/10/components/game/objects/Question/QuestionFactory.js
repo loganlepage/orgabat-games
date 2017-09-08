@@ -15,23 +15,23 @@ export default class QuestionFactory extends GameFactory {
         let y = 50;
 
         for (let question in questions) {
-            this.graphic = new Graphic(this.game, x-10, y-5, 100, 30);
+            this.graphic = new Graphic(this.game, x - 10, y - 5, 100, 30);
             this.add(new Question(
-                    this.game,
-                    x,
-                    y,
-                    questions[question].questionTitle,
-                    questions[question].questionAnswers,
-                    questions[question].questionSolutions)
+                this.game,
+                x,
+                y,
+                questions[question].questionTitle,
+                questions[question].questionAnswers,
+                questions[question].questionSolutions)
             );
             console.log(questions[question].questionAnswers.length);
             this.graphic.graphic.graphicsData[0].shape.width = this.children[question].title.width + 20;
-            if (questions[question].questionAnswers.length == 2){
-                y += 90;
+            if (questions[question].questionAnswers.length == 2) {
+                y += 80;
             } else {
                 y += 110;
             }
-            
+
         }
 
     }
