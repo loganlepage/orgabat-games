@@ -8,7 +8,7 @@ export default {
     steps: [
         {
             correctAnswer: "medecin",
-            titleText: "Suite à un arrêt de travail de longue durée. Vous allez reprendre votre activité professionnelle. \nQui vous en donnera l’autorisation ?",
+            titleText: "Suite à un arrêt de travail de longue duré (supérieur à 30 jours), vous allez reprendre votre activité professionnelle. \nQui jugera de votre aptitude à reprendre votre activité?",
             infoText: "Le médecin de santé au travail a un rôle exclusivement préventif, dont le rôle est d’éviter toute dégradation \nde la santé des salariés, du fait de leur travail."
         },
         {
@@ -18,8 +18,8 @@ export default {
         },
         {
             correctAnswer: "oppbtp",
-            titleText: "Votre patron souhaite apporter des changements au sein de son entreprise afin de faciliter le travail des \nses salariés. Il souhaite notamment investir dans du nouveau matériel. Il veut se faire conseiller. \nQui peut le conseiller ?",
-            infoText: "L’OPPBTP accompagne les professionnels du bâtiment et des travaux publics à améliorer leur conditions de \ntravail pour prévenir des accidents du travail et des maladies à caractère professionnel."
+            titleText: "Votre patron souhaite apporter des améliorations techniques au sein de son entreprise afin de faciliter \nle travail de ses salariés. Il souhaite notamment investir dans du nouveau matériel (ex : matériel anti vibratile) \nQui peut le conseiller ?",
+            infoText: "L’OPPBTP accompagne les professionnels du bâtiment et des travaux publics pour améliorer leur conditions de \ntravail pour prévenir des accidents du travail et des maladies à caractère professionnel."
         },
         {
             correctAnswer: "inspection",

@@ -43,10 +43,13 @@ export default class Step extends BasicGameObject {
         this.correctAnswer = stepData.correctAnswer;
         this.infoText = stepData.infoText;
         this.titleText = stepData.titleText;
-        // Text without response:
-        // this.title = this.game.add.text(20, 20, this.titleText, {font: 'Arial', fontSize: 20, fill: '#000000'});
-        // Text with response:
-        this.title = game.add.text(20, 20, this.titleText, {font: 'Arial', fontSize: 20, fill: '#000000'});
+        // Response title:
+        this.title = game.add.text(this.game.world.centerX, 100*this.game.SCALE, this.titleText, {
+            font: 'Arial', 
+            fontSize: 25*this.game.SCALE, 
+            fill: '#000000', 
+            align: "center"});
+        this.title.anchor.setTo(0.5);
     }
 
     check(){
@@ -56,18 +59,29 @@ export default class Step extends BasicGameObject {
             // Remove player inputs
             this.player.sprite.removeInputs();
             // Add informations text
-            this.info = this.game.add.text(20, this.game.world.height - 200, this.infoText, {font: 'Arial', fontSize: 20, fill: '#000000'});
+            this.info = this.game.add.text(this.game.world.centerX, this.game.world.centerY + 200 * this.game.SCALE, this.infoText, {
+                font: 'Arial', 
+                fontSize: 25*this.game.SCALE, 
+                fill: '#000000', 
+                align: "center"
+            });
+            this.info.anchor.setTo(0.5);
             // Add button
             this.button = new Button(this.game, this.game.world.width - 100, this.game.world.height - 50);
             this.button.sprite.events.onInputDown.add(this.finishStep, this);
         } else {
-            // Remove health point and add help message
-            PhaserManager.get('gabator').stats.changeValues({
-                health: PhaserManager.get('gabator').stats.state.health - 1,
-            });
-            Canvas.get('gabator').modal.showHelp(
-                "Mauvaise réponse"
-            );
+            for (let element in this.responseGroup.children) {
+                // Player over wrong answer
+                if(this.player.checkOverlap(this.player.sprite, this.responseGroup.children[element].obj.sprite)){
+                    // Remove health point and add help message
+                    PhaserManager.get('gabator').stats.changeValues({
+                        health: PhaserManager.get('gabator').stats.state.health - 1,
+                    });
+                    Canvas.get('gabator').modal.showHelp(
+                        "Mauvaise réponse"
+                    );
+                }
+            }
         }
     }
 

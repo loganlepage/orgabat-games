@@ -87,16 +87,13 @@ class Engine {
             this.finish.dispatch();
         }, this);
 
-        // Player
-        // this.player = new Player(gameProcess.game, gameProcess.game.world.centerX, gameProcess.game.world.centerY);
-
         // Response group
         this.responseGroup = new ResponseFactory(gameProcess.game, Config.responses);
     }
 
     start() {
+        // New step or end of the game
         if (this.stepNumber < Config.steps.length) {
-            // this.step = new Step(this.gameProcess.game, Config.steps[this.stepNumber], this.player, this.responseGroup);
             this.step = new Step(this.gameProcess.game, Config.steps[this.stepNumber], this.responseGroup);
             this.step.finish.addOnce(this.start, this);
             this.stepNumber++;

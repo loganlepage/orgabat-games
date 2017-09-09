@@ -12,6 +12,7 @@ export default class ResponseFactory extends GameFactory {
     constructor(game, items) {
         super(game);
 
+        // Game data
         let width = this.game.width;
         let height = this.game.height;
 
@@ -23,14 +24,16 @@ export default class ResponseFactory extends GameFactory {
 
         this.number = itemsNumber;
 
+        // Coordonates
         let xValue = (width / itemsNumber)/2;
-        let y = 250 * this.game.SCALE;
+        let y = this.game.world.centerY - 150 * this.game.SCALE;
 
         for (let i = 0; i < itemsNumber; i++) {
             let x = i * (2 * xValue) + xValue;
             this.coordonates.push({x,y});
         }
 
+        // Responses creation
         let count = 0;
         for (let item in items) {
             this.add(
@@ -45,14 +48,5 @@ export default class ResponseFactory extends GameFactory {
             count++;
         }
     }
-
-    // destroy() {
-    //     console.log("Destroy");
-    //     this.children.forEach((item) => {
-    //         console.log(item.obj.key);
-    //         item.destroy();
-    //         // console.log(item);
-    //     });
-    // }
 
 }
