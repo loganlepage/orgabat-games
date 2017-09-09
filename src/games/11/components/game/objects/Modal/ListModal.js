@@ -37,8 +37,8 @@ export default class ListModal extends BasicGameObject {
 	    	mediumFont = 20 * this.game.SCALE;
 
 	    // Title
-	    let textPositionX = x - (this.sprite.width/2) + 20 * this.game.SCALE,
-	    	textPositionY = y - (this.sprite.height/2) + 20 * this.game.SCALE,
+	    let textPositionX = x - (this.sprite.width/2) + 40 * this.game.SCALE,
+	    	textPositionY = y - (this.sprite.height/2) + 40 * this.game.SCALE,
 	    	titleText = this.game.add.text(
 	    		textPositionX, 
 	    		textPositionY, 
@@ -46,7 +46,7 @@ export default class ListModal extends BasicGameObject {
 	    		{fill: '#000000', fontSize: bigFont}
 	    	);
 	    this.texts.push(titleText);
-	    textPositionY += 20;
+	    // textPositionY += 20 * this.game.SCALE;
 
 	    // Elements in the list
 	    states.forEach((error) => {

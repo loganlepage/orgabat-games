@@ -57,7 +57,7 @@ export default class ElementFactory extends GameFactory {
 
         let itemName = this.game.add.text(
                 coordonates[count].x, 
-                coordonates[count].y - 30, 
+                coordonates[count].y - 40 * this.game.SCALE, 
                 "Nom:", 
                 {fill: '#000000', fontSize: mediumFont});
         this.game.layer.zDepth0.addChild(itemName);
@@ -65,7 +65,7 @@ export default class ElementFactory extends GameFactory {
 
         let itemState = this.game.add.text(
                 coordonates[count].x + (300 * this.game.SCALE), 
-                coordonates[count].y - 30, 
+                coordonates[count].y - 40 * this.game.SCALE, 
                 "État:", 
                 {fill: '#000000', fontSize: mediumFont});
         this.game.layer.zDepth0.addChild(itemState);

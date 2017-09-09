@@ -8,6 +8,8 @@ import ListModal from "../Modal/ListModal";
 
 export default class Element extends BasicGameObject {
 
+    onClicked = new Phaser.Signal();
+    onClosed = new Phaser.Signal();
     key;
     correctAnswers;
     note;
@@ -40,6 +42,7 @@ export default class Element extends BasicGameObject {
         this.button.sprite.anchor.setTo(0);
         this.button.sprite.scale.set(0.7 + 0.1 * this.game.SCALE);
         this.button.sprite.events.onInputDown.add(function(){
+            this.onClicked.dispatch();
             // Answer list creation
             this.modal = new ListModal(
                 game, 
@@ -51,6 +54,7 @@ export default class Element extends BasicGameObject {
                 this);
             // When answers are choosen
             this.modal.finish.add(function(){
+                this.onClosed.dispatch();
                 this.answers = [];
                 this.modal.checkbox.forEach((element) => {
                     if (element.isSelected) {
@@ -63,7 +67,6 @@ export default class Element extends BasicGameObject {
                 this.answers.forEach((answer) => {
                     this.answersText.text += answer + "  ";
                 });
-                // Remove
             }, this);
         }, this);
     }

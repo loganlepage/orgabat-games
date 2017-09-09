@@ -33,18 +33,26 @@ export default class ItemModal extends BasicGameObject {
 
 	    // Title
 	    let textPositionX = x - (this.sprite.width/2) + 40 * this.game.SCALE,
-	    	textPositionY = y - (this.sprite.height/2) + 20 * this.game.SCALE,
+	    	textPositionY = y - (this.sprite.height/2) + 40 * this.game.SCALE,
 	    	titleText = this.game.add.text(
 	    		textPositionX, 
 	    		textPositionY, 
 	    		title, 
 	    		{fill: '#000000', fontSize: bigFont});
 	    this.texts.push(titleText);
-	    textPositionY += 20;
+	    textPositionY += 30 * this.game.SCALE;
 
 	    // Item informations
+	    if (item.name != undefined) {
+	    	textPositionY += 30 * this.game.SCALE;
+	    	let nameText = this.game.add.text(
+	    		textPositionX, textPositionY, 
+	    		"Nom: " + item.name, 
+	    		{fill: '#000000', fontSize: mediumFont});
+	    	this.texts.push(nameText);
+	    }
 	    if (item.quantity > 0) {
-	    	textPositionY += 20;
+	    	textPositionY += 30 * this.game.SCALE;
 	    	let quantityText = this.game.add.text(
 	    		textPositionX, textPositionY, 
 	    		"Quantité: " + item.quantity, 
@@ -52,7 +60,7 @@ export default class ItemModal extends BasicGameObject {
 	    	this.texts.push(quantityText);
 	    }
 	    if (item.dimensions != "") {
-	    	textPositionY += 20;
+	    	textPositionY += 30 * this.game.SCALE;
 	    	let dimensionText = this.game.add.text(
 	    		textPositionX, 
 	    		textPositionY, 
@@ -61,7 +69,7 @@ export default class ItemModal extends BasicGameObject {
 	    	this.texts.push(dimensionText);
 	    }
 	    if (item.note != "") {
-	    	textPositionY += 20;
+	    	textPositionY += 30 * this.game.SCALE;
 	    	let noteText = this.game.add.text(
 	    		textPositionX, textPositionY, 
 	    		"Note: " + item.note, 
@@ -70,9 +78,10 @@ export default class ItemModal extends BasicGameObject {
 	    }
 
 	    // Create cross to close modal
-	    let crossX = this.game.world.centerX + (this.sprite.width/2) - 40 * this.game.SCALE,
-	    	crossY = this.game.world.centerY - (this.sprite.height/2) + 20 * this.game.SCALE,
-	    	crossWidth = 20;
+	    let crossWidth = 20 * this.game.SCALE,
+	    	crossX = this.game.world.centerX + (this.sprite.width/2) - crossWidth - (40 * this.game.SCALE),
+	    	crossY = this.game.world.centerY - (this.sprite.height/2) + crossWidth/2 + (20 * this.game.SCALE);
+
 	    this.cross = this.game.add.graphics(0,0);
 	    this.cross.lineStyle(2, "black", 1);
         this.cross.moveTo(crossX,crossY);

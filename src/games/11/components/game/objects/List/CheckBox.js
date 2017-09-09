@@ -35,7 +35,7 @@ export default class Element extends BasicGameObject {
 
         // Add mistake text
         this.text = this.game.add.text(
-    		x + 40, 
+    		x + 40 * this.game.SCALE, 
     		y, 
     		error, 
     		{fill: '#000000', fontSize: 20 * this.game.SCALE}

@@ -63,9 +63,9 @@ export default class Item extends BasicGameObject {
     }
 
     addTooltips(item){
-        var text = this.game.add.text(
+        let text = this.game.add.text(
             item.input.sprite.position.x,
-            item.input.sprite.position.y - (item.input.sprite.height / 2.5),
+            item.input.sprite.position.y - (item.input.sprite.height / 2) - 0 * this.game.SCALE,
             item.obj.name,
             {
                 font: 'Arial',

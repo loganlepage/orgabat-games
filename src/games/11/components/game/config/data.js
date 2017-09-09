@@ -116,11 +116,11 @@ export default {
         },
         {
             key: "vmc",
-            name: "VMC Hygroréglable Type B",
+            name: "VMC Autoréglable",
             correctAnswers: ["Erreur de produit"],
             quantity: 1,
             dimensions: "",
-            note: "Hygroréglable Type B"
+            note: ""
         }
     ]
 }

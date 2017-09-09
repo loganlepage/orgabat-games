@@ -94,11 +94,12 @@ class Engine {
 
         // Title
         this.title = this.gameProcess.game.add.text(
-            20, 
-            20, 
+            this.gameProcess.game.world.centerX, 
+            40 * this.gameProcess.game.SCALE, 
             "Réceptionner la livraison", 
             {font: 'Arial', fontSize: bigFont, fill: '#000000'}
         );
+        this.title.anchor.setTo(0.5);
         this.gameProcess.game.layer.zDepth0.addChild(this.title);
 
         // Items
@@ -107,7 +108,7 @@ class Engine {
             Config.items);
         this.items.forEach((item) => {
             item.scale.setTo(this.gameProcess.game.SCALE); // Propotionnal scale
-
+            // Tooltip
             item.events.onInputOver.add(() => {
                 this.itemName = item.obj.addTooltips(item);
                 this.itemName.fontSize = mediumFont;
@@ -115,7 +116,7 @@ class Engine {
             item.events.onInputOut.add(() => {
                 this.itemName.destroy();
             }, this);
-
+            // Item modal
             item.obj.onClicked.add(function(){
                 this.items.forEach((item2) => {
                     item2.obj.disableControls();
@@ -134,6 +135,21 @@ class Engine {
             Config.items, 
             Config.states
         );
+        // Element modal
+        this.list.forEach((item) => {
+            item.onClicked.add(function(){
+                console.log("OK");
+                this.items.forEach((item2) => {
+                    item2.obj.disableControls();
+                });
+            }, this);
+            item.onClosed.add(function(){
+                console.log("KO");
+                this.items.forEach((item2) => {
+                    item2.obj.enableControls();
+                });
+            }, this);
+        });
 
         // // Validate button
         this.validate = new Button(
