@@ -335,16 +335,16 @@
 },
 "jeu4/other/background":
 {
-	"frame": {"x":752,"y":992,"w":1100,"h":1001},
+	"frame": {"x":752,"y":1043,"w":1100,"h":1000},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":1100,"h":1001},
-	"sourceSize": {"w":1100,"h":1001},
+	"spriteSourceSize": {"x":0,"y":0,"w":1100,"h":1000},
+	"sourceSize": {"w":1100,"h":1000},
 	"pivot": {"x":0.5,"y":0.5}
 },
 "jeu4/other/full_modal":
 {
-	"frame": {"x":0,"y":992,"w":750,"h":583},
+	"frame": {"x":0,"y":1043,"w":750,"h":583},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":750,"h":583},
@@ -353,11 +353,11 @@
 },
 "jeu4/other/truck":
 {
-	"frame": {"x":948,"y":640,"w":400,"h":318},
+	"frame": {"x":1400,"y":640,"w":400,"h":401},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":400,"h":318},
-	"sourceSize": {"w":400,"h":318},
+	"spriteSourceSize": {"x":0,"y":0,"w":400,"h":401},
+	"sourceSize": {"w":400,"h":401},
 	"pivot": {"x":0.5,"y":0.5}
 },
 "jeu4/other/validate_button":
@@ -488,7 +488,7 @@
 },
 "modal/bg/big_modal":
 {
-	"frame": {"x":1350,"y":640,"w":450,"h":350},
+	"frame": {"x":948,"y":640,"w":450,"h":350},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":450,"h":350},
@@ -707,8 +707,8 @@
 	"version": "1.0",
 	"image": "jeu4.png",
 	"format": "RGBA8888",
-	"size": {"w":1937,"h":1993},
+	"size": {"w":1937,"h":2043},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:81a15885182ca32e942bb56e0c22e245:9a4843156fc40d6dd676f2fd47c35c87:e844659e47b45d565f6cc36f24aeb4d3$"
+	"smartupdate": "$TexturePacker:SmartUpdate:ee0be06a6bb83c971dd369af6ea1e6c7:d80bdd26b957f0038e787684a11e6736:e844659e47b45d565f6cc36f24aeb4d3$"
 }
 }

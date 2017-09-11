@@ -44,6 +44,8 @@ export default class Item extends BasicGameObject {
         if (Phaser.Rectangle.intersects(boundsA, boundsB)) {
             currentSprite.input.draggable = false;
             currentSprite.position.copyFrom(spriteToOverlap.position);
+            currentSprite.position.x += 1000;
+            currentSprite.z = -20;
             this.onDropped.dispatch(currentSprite);
         }
         else {
