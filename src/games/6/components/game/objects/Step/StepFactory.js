@@ -9,16 +9,19 @@ export default class StepFactory extends GameFactory {
 
     constructor(game, steps) {
         super(game);
+        let x = 40 * this.game.SCALE,
+            y = 90 * this.game.SCALE
         for (let name in steps) {
             this.add(
                 (new Step(
                     this.game,
                     steps[name].good,
                     steps[name].title,
-                    steps[name].x,
-                    steps[name].y
+                    x,
+                    y
                 ))
             );
+            y += 40 * this.game.SCALE;
         }
     }
 

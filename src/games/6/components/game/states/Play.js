@@ -7,10 +7,11 @@ import Canvas from "system/phaser/utils/PhaserManager";
 import StartInfoModal from '../modals/StartInfoModal';
 import EndInfoModal from '../modals/EndInfoModal';
 import {DefaultManager, Stack} from 'system/phaser/Modal';
-
 import QuestManager, {DomQuestList} from 'system/phaser/utils/Quest';
+
 import Truck from "../objects/Truck/Truck";
 import Shelf from "../objects/Shelf/Shelf";
+import Carriage from "../objects/Carriage/Carriage";
 import Button from "../objects/Button/Button";
 import ItemFactory from "../objects/Item/ItemFactory";
 import StepFactory from "../objects/Step/StepFactory";
@@ -85,11 +86,11 @@ class PartOne {
     start() {
         this.gameProcess.quests.add(new StepsQuest(this.gameProcess.game));
         // this.gameProcess.questsCleaned.addOnce(this.onQuestsCleaned, this);
-        this.stepText = this.game.add.text(10, 10, `Étapes séléctionnées: ${this.clickedSteps}/8`, {fill: '#2a2a2a'});
+        this.stepText = this.game.add.text(40 * this.game.SCALE, 40 * this.game.SCALE, `Étapes séléctionnées: ${this.clickedSteps}/8`, {fill: '#2a2a2a', fontSize: 30 * this.game.SCALE});
         this.addSteps();
         // Next step ->
-        // this.addButton();
-        // this.onQuestsCleaned(); // Shortcut
+        this.addButton();
+        this.onQuestsCleaned(); // Shortcut
     }
 
     addSteps() {
@@ -155,6 +156,7 @@ class PartTwo {
     paintCapacity = 0;
     materialCapacity = 0;
     mapCapacity = 0;
+    carriageCapacity = 0;
 
     firstMap = true;
 
@@ -167,14 +169,15 @@ class PartTwo {
     }
 
     start() {
-        this.paintText = this.game.add.text(10, 10, `Quantité de peinture : ${this.paintCapacity}/30`, {fill: '#676565'});
-        this.suppliesText = this.game.add.text(10, 40, `Matériels : ${this.materialCapacity}/3`, {fill: '#676565'});
-        this.coatText = this.game.add.text(10, 70, `Enduits : ${this.mapCapacity}/6`, {fill: '#676565'});
+        this.paintText = this.game.add.text(20 * this.game.SCALE, 20 * this.game.SCALE, `Quantité de peinture : ${this.paintCapacity}/30`, {fill: '#676565'});
+        this.suppliesText = this.game.add.text(20 * this.game.SCALE, 50 * this.game.SCALE, `Matériels : ${this.materialCapacity}/3`, {fill: '#676565'});
+        this.coatText = this.game.add.text(20 * this.game.SCALE, 80 * this.game.SCALE, `Enduits : ${this.mapCapacity}/6`, {fill: '#676565'});
         this.game.layer.zDepth0.addChild(this.paintText);
         this.game.layer.zDepth0.addChild(this.suppliesText);
         this.game.layer.zDepth0.addChild(this.coatText);
         this.addTruck();
         this.addShelf();
+        this.addCarriage();
         this.addItems();
         // this.gameProcess.questsCleaned.addOnce(this.onQuestsCleaned, this);
         // Finish game ->
@@ -204,6 +207,23 @@ class PartTwo {
         this.game.layer.zDepth0.addChild(this.shelf.sprite);
     }
 
+    addCarriage() {
+        this.carriage = new Carriage({
+            game: this.game,
+            x: 700,
+            y: 460
+        });
+        this.game.layer.zDepth1.addChild(this.carriage.sprite);
+        if (this.carriage.checkOverlap(this.carriage.sprite, this.truck.sprite)){
+            console.log("Overlap");
+            this.carriage.sprite.spritesToMove.forEach((element) => {
+                element.position.x = this.truck.sprites.position.x - 1000;
+                element.position.y = this.truck.sprites.position.y - 1000;
+            }, this);
+            this.carriage.sprite.init();
+        }
+    }
+
     addItems() {
         Canvas.get('gabator').modal.showHelp(
             "Il faut: un aspirateur, une ponceuse, une caisse à outils, 30L de peinture et 6 sacs d'enduit"
@@ -222,10 +242,12 @@ class PartTwo {
                 let name = currentSprite.frameName;
                 if (name === "jeu6/peinture15l" && this.paintCapacity <= 15) {
                     if (item.obj.checkOverlap(currentSprite, this.truck.sprite)){
+                        this.updateQuantity(currentSprite);
                         currentSprite.position.x = this.truck.sprite.position.x - 1000;
                         currentSprite.position.y = this.truck.sprite.position.y;
-                        // this.game.world.bringToTop(this.truck.sprite);
-                        // this.truck.sprite.bringToTop();
+                    }
+                    if (item.obj.checkOverlap(currentSprite, this.carriage.sprite)){
+                        this.updateCarriage(currentSprite);
                     }
                 } else if (name === "jeu6/peinture15l" && this.paintCapacity > 15) {
                     Canvas.get('gabator').modal.showHelp(
@@ -234,8 +256,12 @@ class PartTwo {
                     currentSprite.position.copyFrom(currentSprite.originalPosition);
                 } else if (name === "jeu6/peinture5l" && this.paintCapacity <= 25) {
                     if (item.obj.checkOverlap(currentSprite, this.truck.sprite)){
+                        this.updateQuantity(currentSprite);
                         currentSprite.position.x = this.truck.sprite.position.x - 1000;
                         currentSprite.position.y = this.truck.sprite.position.y;
+                    }
+                    if (item.obj.checkOverlap(currentSprite, this.carriage.sprite)){
+                        this.updateCarriage(currentSprite);
                     }
                 } else if (name === "jeu6/peinture5l" && this.paintCapacity > 25) {
                     Canvas.get('gabator').modal.showHelp(
@@ -244,8 +270,12 @@ class PartTwo {
                     currentSprite.position.copyFrom(currentSprite.originalPosition);
                 } else if (name === "jeu6/map" && this.mapCapacity < 6) {
                     if (item.obj.checkOverlap(currentSprite, this.truck.sprite)){
+                        this.updateQuantity(currentSprite);
                         currentSprite.position.x = this.truck.sprite.position.x - 1000;
                         currentSprite.position.y = this.truck.sprite.position.y;
+                    }
+                    if (item.obj.checkOverlap(currentSprite, this.carriage.sprite)){
+                        this.updateCarriage(currentSprite);
                     }
                 } else if (name === "jeu6/map" && this.mapCapacity >= 6) {
                     Canvas.get('gabator').modal.showHelp(
@@ -254,8 +284,12 @@ class PartTwo {
                     currentSprite.position.copyFrom(currentSprite.originalPosition);
                 } else if ((name === "jeu6/aspirateur" || name === "jeu6/ponceuse" || name === "jeu6/caisse") && this.materialCapacity < 3) {
                     if (item.obj.checkOverlap(currentSprite, this.truck.sprite)){
+                        this.updateQuantity(currentSprite);
                         currentSprite.position.x = this.truck.sprite.position.x - 1000;
                         currentSprite.position.y = this.truck.sprite.position.y;
+                    }
+                    if (item.obj.checkOverlap(currentSprite, this.carriage.sprite)){
+                        this.updateCarriage(currentSprite);
                     }
                 } else {
                     if (item.obj.checkOverlap(currentSprite, this.truck.sprite)){
@@ -266,12 +300,25 @@ class PartTwo {
                     }
                 }
             }, this);
-            item.obj.onDropped.add(this.updateQuantity, this);
         });
     }
 
-    updateQuantity(currentSprite) {
+    updateCarriage(currentSprite) {
+        if (this.carriageCapacity < 4) {
+            if (currentSprite.frameName == "jeu6/map") {
+                if (this.firstMap) {
+                    this.firstMap = false;
+                    this.mapSteps();
+                }
+            }
+            this.carriage.sprite.addSpriteToMove(currentSprite);
+            currentSprite.position.x = this.carriage.sprite.position.x - 10 * this.game.SCALE;
+            currentSprite.position.y = this.carriage.sprite.position.y + 30 * this.game.SCALE - this.carriageCapacity * 20;
+            this.carriageCapacity++;
+        }
+    }
 
+    updateQuantity(currentSprite) {
         let name = currentSprite.frameName;
         if (currentSprite.obj.check()) {
             if (name === "jeu6/peinture15l") {
@@ -281,7 +328,7 @@ class PartTwo {
                         health: PhaserManager.get('gabator').stats.state.health - 1,
                     });
                     Canvas.get('gabator').modal.showHelp(
-                        "Attention, ces pots de peinture sont trop lourds"
+                        "Attention, ces pots de peinture sont trop hauts"
                         );
                 }
             } else if (name === "jeu6/peinture5l") {
@@ -293,10 +340,6 @@ class PartTwo {
                     this.materialCapacity++;
                 }
             } else if (name === "jeu6/map") {
-                if (this.firstMap) {
-                    this.firstMap = false;
-                    this.mapSteps();
-                }
                 if (this.mapCapacity <= 5) {
                     this.mapCapacity++;
                 }

@@ -13,11 +13,11 @@ export default class Step extends BasicGameObject {
         this.x = x;
         this.y = y;
         this.clicked = clicked;
-        this.text1 = this.game.add.text(this.x, this.y, this.title, {fill: '#ffffff', fontSize: 20});
+        this.text1 = this.game.add.text(this.x, this.y, this.title, {fill: '#ffffff', fontSize: 25 * this.game.SCALE});
     }
 
     /*addText() {
-        this.text = this.game.add.text(this.x, this.y, this.title, {fill: '#ffffff', fontSize: 20});
+        this.text = this.game.add.text(this.x, this.y, this.title, {fill: '#ffffff', fontSize: 25 * this.game.SCALE});
     }*/
 
     removeText() {
@@ -31,11 +31,11 @@ export default class Step extends BasicGameObject {
 
     check() {
         if (this.good) {
-            this.text2 = this.game.add.text(this.x, this.y, this.title, {fill: 'green', fontSize: 20});
+            this.text2 = this.game.add.text(this.x, this.y, this.title, {fill: 'green', fontSize: 25 * this.game.SCALE});
             this.clicked = true;
             return true;
         } else {
-            this.text2 = this.game.add.text(this.x, this.y, this.title, {fill: 'red', fontSize: 20});
+            this.text2 = this.game.add.text(this.x, this.y, this.title, {fill: 'red', fontSize: 25 * this.game.SCALE});
             this.clicked = true;
             return false;
         }

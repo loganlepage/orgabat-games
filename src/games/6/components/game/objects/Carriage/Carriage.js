@@ -1,19 +1,21 @@
 "use strict";
-import ItemSprite from "./ItemSprite";
 import BasicGameObject from "system/phaser/BasicGameObject";
+import CarriageSprite from "./CarriageSprite";
 import Phaser from 'phaser';
 import {Signal} from "phaser";
 
-export default class Item extends BasicGameObject {
+export default class Carriage extends BasicGameObject {
     ready = false;
-    onDropped = new Signal();
+    onDropped = new Phaser.Signal();
 
-    constructor(game, key, category, x, y, isNeeded, clicked) {
+    constructor({game, x, y}) {
         super(game);
-        this.category = key;
-        this.isNeeded = isNeeded;
-        this.clicked = clicked;
-        this.addSprite(new ItemSprite(this.game, x, y, key, this));
+        this.addSprite(new CarriageSprite({
+            game: this.game,
+            x: x,
+            y: y,
+            shelfObj: this
+        }));
         this.ready = true;
     }
 
@@ -27,14 +29,5 @@ export default class Item extends BasicGameObject {
         else
             currentSprite.position.copyFrom(currentSprite.originalPosition);
             return false;
-    }
-
-    check() {
-        if (!this.clicked) {
-            this.clicked = true;
-            return true;
-        } else {
-            return false;
-        }
     }
 }
