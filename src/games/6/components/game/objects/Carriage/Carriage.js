@@ -5,7 +5,6 @@ import Phaser from 'phaser';
 import {Signal} from "phaser";
 
 export default class Carriage extends BasicGameObject {
-    ready = false;
     onDropped = new Phaser.Signal();
 
     constructor({game, x, y}) {
@@ -16,7 +15,6 @@ export default class Carriage extends BasicGameObject {
             y: y,
             shelfObj: this
         }));
-        this.ready = true;
     }
 
     checkOverlap(currentSprite, spriteToOverlap) {

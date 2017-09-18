@@ -210,18 +210,17 @@ class PartTwo {
     addCarriage() {
         this.carriage = new Carriage({
             game: this.game,
-            x: 700,
-            y: 460
+            x: 1190 * this.game.SCALE,
+            y: 775 * this.game.SCALE
         });
         this.game.layer.zDepth1.addChild(this.carriage.sprite);
-        if (this.carriage.checkOverlap(this.carriage.sprite, this.truck.sprite)){
-            console.log("Overlap");
-            this.carriage.sprite.spritesToMove.forEach((element) => {
-                element.position.x = this.truck.sprites.position.x - 1000;
-                element.position.y = this.truck.sprites.position.y - 1000;
-            }, this);
-            this.carriage.sprite.init();
-        }
+        this.carriage.sprite.events.onDragStop.add(function (currentSprite) {
+            if (this.carriage.checkOverlap(this.carriage.sprite, this.truck.sprite)){
+                this.removeCarriageElements();
+            } else {
+                this.carriage.sprite.dragUpdate();
+            }
+        }, this);
     }
 
     addItems() {
@@ -235,9 +234,7 @@ class PartTwo {
 
     addItemsAction() {
         this.game.itemGroup.forEach((item) => {
-            item.inputEnabled = true;
-            item.input.useHandCursor = true;
-            item.scale.setTo(0.6 * this.game.SCALE);
+            item.addControls();
             item.events.onDragStop.add(function (currentSprite) {
                 let name = currentSprite.frameName;
                 if (name === "jeu6/peinture15l" && this.paintCapacity <= 15) {
@@ -311,11 +308,22 @@ class PartTwo {
                     this.mapSteps();
                 }
             }
+            this.game.layer.zDepth2.addChild(currentSprite);
             this.carriage.sprite.addSpriteToMove(currentSprite);
             currentSprite.position.x = this.carriage.sprite.position.x - 10 * this.game.SCALE;
             currentSprite.position.y = this.carriage.sprite.position.y + 30 * this.game.SCALE - this.carriageCapacity * 20;
             this.carriageCapacity++;
         }
+    }
+
+    removeCarriageElements(){
+        this.carriage.sprite.spritesToMove.forEach((element) => {
+            this.updateQuantity(element);
+            element.position.x = this.truck.sprite.position.x - 1000;
+            element.position.y = this.truck.sprite.position.y - 1000;
+        }, this);
+        this.carriage.sprite.initElements();
+        this.carriageCapacity = 0;
     }
 
     updateQuantity(currentSprite) {
@@ -401,7 +409,7 @@ class PartTwo {
                         });
                         Canvas.get('gabator').modal.showHelp(
                             "Mauvaise étape sélectionnée"
-                            );
+                        );
                     }
                     if (currentPosition >= 4 && !finished) {
                         this.mapStepText.text = `Toutes les étapes ont été validées`;
@@ -422,6 +430,7 @@ class PartTwo {
 
     removeMapSteps() {
         this.addItemsAction();
+        this.carriage.sprite.addControls();
         this.mapButton.destroy();
         this.mapStepText.destroy();
         this.graphics.destroy();
@@ -431,6 +440,7 @@ class PartTwo {
     }
 
     disableControls() {
+        this.carriage.sprite.removeControls();
         this.game.itemGroup.forEach((item) => {
             item.events.onDragStop.removeAll();
             item.events.onInputDown.removeAll();

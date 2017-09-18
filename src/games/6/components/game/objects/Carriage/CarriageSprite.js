@@ -9,13 +9,10 @@ export default class CarriageSprite extends BasicGameSprite {
         super(game, x, y, key, shelfObj);
         this.anchor.setTo(0.5);
         this.scale.set(0.8 * this.game.SCALE);
-        this.input.enableDrag();
-        this.inputEnabled = true;
-        this.input.useHandCursor = true;
+        this.addControls();
         this.originalPosition = this.position.clone();
         this.previousX = this.originalPosition.x;
         this.previousY = this.originalPosition.y;
-
         this.events.onDragUpdate.add(this.dragUpdate, this);
         // Afficher la position pour aider le placement:
         // this.events.onDragStop.add(function(sprite){
@@ -24,13 +21,26 @@ export default class CarriageSprite extends BasicGameSprite {
         // },this);
     }
 
-    init() {
-        console.log("Init");
-        this.position = this.originalPosition;
+    removeControls(){
+        this.input.enableDrag(false, false);
+        this.inputEnabled = false;
+        this.input.useHandCursor = false;
+    }
+
+    addControls(){
+        this.input.enableDrag(false, true);
+        this.inputEnabled = true;
+        this.input.useHandCursor = true;
+    }
+
+    initElements(){
         this.spritesToMove = [];
+        this.previousX = this.x;
+        this.previousY = this.y;
     }
 
     addSpriteToMove(sprite) {
+        sprite.removeControls();
         this.spritesToMove.push(sprite);
     }
 
@@ -40,8 +50,6 @@ export default class CarriageSprite extends BasicGameSprite {
         this.previousX = this.x;
         this.previousY = this.y;
         this.spritesToMove.forEach((element) => {
-            // element.position.x = this.x;
-            // element.position.y = this.y;
             element.position.x += diffX;
             element.position.y += diffY;
         }, this);
