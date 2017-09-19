@@ -154,9 +154,13 @@ class PartOne {
 class PartTwo {
 
     paintCapacity = 0;
+    paintCapacityMax = 30;
     materialCapacity = 0;
+    materialCapacityMax = 3;
     mapCapacity = 0;
+    mapCapacityMax = 6;
     carriageCapacity = 0;
+    carriageCapacityMax = 4;
 
     firstMap = true;
 
@@ -169,9 +173,10 @@ class PartTwo {
     }
 
     start() {
-        this.paintText = this.game.add.text(20 * this.game.SCALE, 20 * this.game.SCALE, `Quantité de peinture : ${this.paintCapacity}/30`, {fill: '#676565'});
-        this.suppliesText = this.game.add.text(20 * this.game.SCALE, 50 * this.game.SCALE, `Matériels : ${this.materialCapacity}/3`, {fill: '#676565'});
-        this.coatText = this.game.add.text(20 * this.game.SCALE, 80 * this.game.SCALE, `Enduits : ${this.mapCapacity}/6`, {fill: '#676565'});
+        this.paintText = this.game.add.text(20 * this.game.SCALE, 20 * this.game.SCALE, `Quantité de peinture : ${this.paintCapacity}/${this.paintCapacityMax}`, {fill: '#676565'});
+        this.carriageText = this.game.add.text(this.game.world.width - 350 * this.game.SCALE, 20 * this.game.SCALE, `Capacité du chariot : ${this.carriageCapacity}/${this.carriageCapacityMax}`, {fill: '#676565'});
+        this.suppliesText = this.game.add.text(20 * this.game.SCALE, 60 * this.game.SCALE, `Matériels : ${this.materialCapacity}/3`, {fill: '#676565'});
+        this.coatText = this.game.add.text(20 * this.game.SCALE, 100 * this.game.SCALE, `Enduits : ${this.mapCapacity}/${this.mapCapacityMax}`, {fill: '#676565'});
         this.game.layer.zDepth0.addChild(this.paintText);
         this.game.layer.zDepth0.addChild(this.suppliesText);
         this.game.layer.zDepth0.addChild(this.coatText);
@@ -213,6 +218,7 @@ class PartTwo {
             x: 1190 * this.game.SCALE,
             y: 775 * this.game.SCALE
         });
+        this.nextPositionY = 0;
         this.game.layer.zDepth1.addChild(this.carriage.sprite);
         this.carriage.sprite.events.onDragStop.add(function (currentSprite) {
             if (this.carriage.checkOverlap(this.carriage.sprite, this.truck.sprite)){
@@ -270,7 +276,13 @@ class PartTwo {
                         this.updateQuantity(currentSprite);
                         currentSprite.position.x = this.truck.sprite.position.x - 1000;
                         currentSprite.position.y = this.truck.sprite.position.y;
-                    }
+                        PhaserManager.get('gabator').stats.changeValues({
+                            health: PhaserManager.get('gabator').stats.state.health - 1,
+                        });
+                        Canvas.get('gabator').modal.showHelp(
+                            "Attention, il vaut mieux utiliser le chariot pour les sacs lourds"
+                            );
+                        }
                     if (item.obj.checkOverlap(currentSprite, this.carriage.sprite)){
                         this.updateCarriage(currentSprite);
                     }
@@ -302,17 +314,26 @@ class PartTwo {
 
     updateCarriage(currentSprite) {
         if (this.carriageCapacity < 4) {
-            if (currentSprite.frameName == "jeu6/map") {
-                if (this.firstMap) {
-                    this.firstMap = false;
-                    this.mapSteps();
-                }
+            if (currentSprite.frameName == "jeu6/map" && this.firstMap) {
+                this.firstMap = false;
+                this.mapSteps();
             }
             this.game.layer.zDepth2.addChild(currentSprite);
             this.carriage.sprite.addSpriteToMove(currentSprite);
             currentSprite.position.x = this.carriage.sprite.position.x - 10 * this.game.SCALE;
-            currentSprite.position.y = this.carriage.sprite.position.y + 30 * this.game.SCALE - this.carriageCapacity * 20;
+            // currentSprite.position.y = this.carriage.sprite.position.y + 30 * this.game.SCALE - this.carriageCapacity * 20;
+            currentSprite.position.y = this.carriage.sprite.position.y + 30 * this.game.SCALE - this.nextPositionY;
             this.carriageCapacity++;
+            this.carriageText.text = `Capacité du chariot : ${this.carriageCapacity}/${this.carriageCapacityMax}`;
+            if (currentSprite.frameName == "jeu6/map") {
+                this.nextPositionY += currentSprite.height/3.5;
+            } else {
+                this.nextPositionY += currentSprite.height/2;
+            }
+        } else {
+            Canvas.get('gabator').modal.showHelp(
+                "Le chariot est plein"
+                );
         }
     }
 
@@ -324,6 +345,7 @@ class PartTwo {
         }, this);
         this.carriage.sprite.initElements();
         this.carriageCapacity = 0;
+        this.nextPositionY = 0;
     }
 
     updateQuantity(currentSprite) {
@@ -352,9 +374,9 @@ class PartTwo {
                     this.mapCapacity++;
                 }
             }
-            this.paintText.text = `Quantité de peinture : ${this.paintCapacity}/30`;
-            this.suppliesText.text = `Matériels : ${this.materialCapacity}/3`;
-            this.coatText.text = `Enduits : ${this.mapCapacity}/6`;
+            this.paintText.text = `Quantité de peinture : ${this.paintCapacity}/${this.paintCapacityMax}`;
+            this.suppliesText.text = `Matériels : ${this.materialCapacity}/${this.materialCapacityMax}`;
+            this.coatText.text = `Enduits : ${this.mapCapacity}/${this.mapCapacityMax}`;
             if (this.paintCapacity === 30 && this.materialCapacity === 3 && this.mapCapacity === 6) {
                 this.addButton();
             }
@@ -384,10 +406,6 @@ class PartTwo {
 
     addMapSteps() {
         this.mapStepGroup = new MapStepFactory(this.game, Config.mapSteps);
-        this.addMapStepActions();
-    }
-
-    addMapStepActions() {
         this.disableControls();
 
         let currentPosition = 1;
@@ -425,7 +443,7 @@ class PartTwo {
     addMapStepsButton() {
         this.mapButton = new Button(this.game, this.game.world.centerX*2 - 100, this.game.world.centerY*2 - 50, null, this);
         this.mapButton.sprite.events.onInputDown.add(this.removeMapSteps, this);
-        this.game.layer.zDepth1.addChild(this.mapButton.sprite);
+        this.game.layer.zDepthOverAll.addChild(this.mapButton.sprite);
     }
 
     removeMapSteps() {
