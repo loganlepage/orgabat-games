@@ -13,7 +13,8 @@ import Truck from "../objects/Truck/Truck";
 import Shelf from "../objects/Shelf/Shelf";
 import Carriage from "../objects/Carriage/Carriage";
 import Button from "../objects/Button/Button";
-import ItemFactory from "../objects/Item/ItemFactory";
+// import ItemFactory from "../objects/Item/ItemFactory";
+import Item from "../objects/Item/Item";
 import StepFactory from "../objects/Step/StepFactory";
 import MapStepFactory from "../objects/MapStep/MapStepFactory";
 import Config from "../config/data";
@@ -89,8 +90,8 @@ class PartOne {
         this.stepText = this.game.add.text(40 * this.game.SCALE, 40 * this.game.SCALE, `Étapes séléctionnées: ${this.clickedSteps}/8`, {fill: '#2a2a2a', fontSize: 30 * this.game.SCALE});
         this.addSteps();
         // Next step ->
-        this.addButton();
-        this.onQuestsCleaned(); // Shortcut
+        // this.addButton();
+        // this.onQuestsCleaned(); // Shortcut
     }
 
     addSteps() {
@@ -215,17 +216,20 @@ class PartTwo {
     addCarriage() {
         this.carriage = new Carriage({
             game: this.game,
-            x: 1190 * this.game.SCALE,
-            y: 775 * this.game.SCALE
+            // x: 1190 * this.game.SCALE,
+            // y: 775 * this.game.SCALE
+            x: 750 * this.game.SCALE,
+            y: 500 * this.game.SCALE
         });
         this.nextPositionY = 0;
         this.game.layer.zDepth1.addChild(this.carriage.sprite);
         this.carriage.sprite.events.onDragStop.add(function (currentSprite) {
             if (this.carriage.checkOverlap(this.carriage.sprite, this.truck.sprite)){
                 this.removeCarriageElements();
-            } else {
-                this.carriage.sprite.dragUpdate();
-            }
+            } // else {
+            //     console.log("Else drag update");
+            //     this.carriage.sprite.dragUpdate();
+            // }
         }, this);
     }
 
@@ -233,23 +237,46 @@ class PartTwo {
         Canvas.get('gabator').modal.showHelp(
             "Il faut: un aspirateur, une ponceuse, une caisse à outils, 30L de peinture et 6 sacs d'enduit"
             );
-        this.game.itemGroup = new ItemFactory(this.game, Config.items);
-        this.game.layer.zDepth1.addChild(this.game.itemGroup);
+        this.itemGroup = [];
+        for (let type in Config.items) {
+            for (let name in Config.items[type]) {
+                this.itemGroup.push(
+                    (new Item(this.game, Config.items[type][name].title, type,
+                        // Config.items[type][name].x + ItemFactory.X_BEGIN_AT,
+                        Config.items[type][name].x * this.game.SCALE,
+                        Config.items[type][name].y * this.game.SCALE,
+                        Config.items[type][name].needed,
+                        Config.items[type][name].clicked
+                    )).sprite
+                );
+            }
+        }
+        // this.itemGroup = new ItemFactory(this.game, Config.items);
+        // this.game.layer.zDepth2.addChild(this.itemGroup);
         this.addItemsAction();
     }
 
     addItemsAction() {
-        this.game.itemGroup.forEach((item) => {
+        this.itemGroup.forEach((item) => {
             item.addControls();
             item.events.onDragStop.add(function (currentSprite) {
                 let name = currentSprite.frameName;
                 if (name === "jeu6/peinture15l" && this.paintCapacity <= 15) {
                     if (item.obj.checkOverlap(currentSprite, this.truck.sprite)){
+                        PhaserManager.get('gabator').stats.changeValues({
+                            health: PhaserManager.get('gabator').stats.state.health - 1,
+                        });
+                        Canvas.get('gabator').modal.showHelp(
+                            "Attention, ces pots de peinture sont trop hauts"
+                            );
                         this.updateQuantity(currentSprite);
-                        currentSprite.position.x = this.truck.sprite.position.x - 1000;
-                        currentSprite.position.y = this.truck.sprite.position.y;
-                    }
-                    if (item.obj.checkOverlap(currentSprite, this.carriage.sprite)){
+                    } else if (item.obj.checkOverlap(currentSprite, this.carriage.sprite)){
+                        PhaserManager.get('gabator').stats.changeValues({
+                            health: PhaserManager.get('gabator').stats.state.health - 1,
+                        });
+                        Canvas.get('gabator').modal.showHelp(
+                            "Attention, ces pots de peinture sont trop hauts"
+                            );
                         this.updateCarriage(currentSprite);
                     }
                 } else if (name === "jeu6/peinture15l" && this.paintCapacity > 15) {
@@ -260,10 +287,7 @@ class PartTwo {
                 } else if (name === "jeu6/peinture5l" && this.paintCapacity <= 25) {
                     if (item.obj.checkOverlap(currentSprite, this.truck.sprite)){
                         this.updateQuantity(currentSprite);
-                        currentSprite.position.x = this.truck.sprite.position.x - 1000;
-                        currentSprite.position.y = this.truck.sprite.position.y;
-                    }
-                    if (item.obj.checkOverlap(currentSprite, this.carriage.sprite)){
+                    } else if (item.obj.checkOverlap(currentSprite, this.carriage.sprite)){
                         this.updateCarriage(currentSprite);
                     }
                 } else if (name === "jeu6/peinture5l" && this.paintCapacity > 25) {
@@ -271,33 +295,28 @@ class PartTwo {
                         "Il y aura trop de peinture"
                         );
                     currentSprite.position.copyFrom(currentSprite.originalPosition);
+                } else if (name === "jeu6/map" && this.mapCapacity >= 6) {
+                    Canvas.get('gabator').modal.showHelp(
+                        "Il y aura trop d'enduit"
+                        );
+                    currentSprite.position.copyFrom(currentSprite.originalPosition);
                 } else if (name === "jeu6/map" && this.mapCapacity < 6) {
                     if (item.obj.checkOverlap(currentSprite, this.truck.sprite)){
                         this.updateQuantity(currentSprite);
-                        currentSprite.position.x = this.truck.sprite.position.x - 1000;
-                        currentSprite.position.y = this.truck.sprite.position.y;
                         PhaserManager.get('gabator').stats.changeValues({
                             health: PhaserManager.get('gabator').stats.state.health - 1,
                         });
                         Canvas.get('gabator').modal.showHelp(
-                            "Attention, il vaut mieux utiliser le chariot pour les sacs lourds"
+                            "Attention, il vaut mieux utiliser le chariot pour les objets lourds"
                             );
-                        }
-                    if (item.obj.checkOverlap(currentSprite, this.carriage.sprite)){
+                    } else if (item.obj.checkOverlap(currentSprite, this.carriage.sprite)){
+                        // console.log("Update carriage");
                         this.updateCarriage(currentSprite);
                     }
-                } else if (name === "jeu6/map" && this.mapCapacity >= 6) {
-                    Canvas.get('gabator').modal.showHelp(
-                        "La totalité des enduits a déjà été chargée"
-                        );
-                    currentSprite.position.copyFrom(currentSprite.originalPosition);
-                } else if ((name === "jeu6/aspirateur" || name === "jeu6/ponceuse" || name === "jeu6/caisse") && this.materialCapacity < 3) {
+                } else if (name === "jeu6/aspirateur" || name === "jeu6/ponceuse" || name === "jeu6/caisse") {
                     if (item.obj.checkOverlap(currentSprite, this.truck.sprite)){
                         this.updateQuantity(currentSprite);
-                        currentSprite.position.x = this.truck.sprite.position.x - 1000;
-                        currentSprite.position.y = this.truck.sprite.position.y;
-                    }
-                    if (item.obj.checkOverlap(currentSprite, this.carriage.sprite)){
+                    } else if (item.obj.checkOverlap(currentSprite, this.carriage.sprite)){
                         this.updateCarriage(currentSprite);
                     }
                 } else {
@@ -305,7 +324,6 @@ class PartTwo {
                         Canvas.get('gabator').modal.showHelp(
                             "L'élément n'est pas correct"
                             );
-                        currentSprite.position.copyFrom(currentSprite.originalPosition);
                     }
                 }
             }, this);
@@ -318,18 +336,25 @@ class PartTwo {
                 this.firstMap = false;
                 this.mapSteps();
             }
-            this.game.layer.zDepth2.addChild(currentSprite);
+            if (this.carriageCapacity == 0) {
+                currentSprite.position.x = this.carriage.sprite.position.x - 10 * this.game.SCALE;
+                // currentSprite.position.y = this.carriage.sprite.position.y + 30 * this.game.SCALE - this.carriageCapacity * 20;
+                currentSprite.position.y = this.carriage.sprite.position.y + 30 * this.game.SCALE;
+            } else {
+                if (currentSprite.frameName == "jeu6/map") {
+                    this.nextPositionY += currentSprite.height/4;
+                } else if (currentSprite.frameName == "jeu6/peinture15l") {
+                    this.nextPositionY += currentSprite.height/2.25;
+                } else {
+                    this.nextPositionY += currentSprite.height/2;
+                }
+                currentSprite.position.x = this.carriage.sprite.position.x - 10 * this.game.SCALE;
+                currentSprite.position.y = this.carriage.sprite.position.y + 30 * this.game.SCALE - this.nextPositionY;
+            }
+            // this.game.layer.zDepth2.addChild(currentSprite);
             this.carriage.sprite.addSpriteToMove(currentSprite);
-            currentSprite.position.x = this.carriage.sprite.position.x - 10 * this.game.SCALE;
-            // currentSprite.position.y = this.carriage.sprite.position.y + 30 * this.game.SCALE - this.carriageCapacity * 20;
-            currentSprite.position.y = this.carriage.sprite.position.y + 30 * this.game.SCALE - this.nextPositionY;
             this.carriageCapacity++;
             this.carriageText.text = `Capacité du chariot : ${this.carriageCapacity}/${this.carriageCapacityMax}`;
-            if (currentSprite.frameName == "jeu6/map") {
-                this.nextPositionY += currentSprite.height/3.5;
-            } else {
-                this.nextPositionY += currentSprite.height/2;
-            }
         } else {
             Canvas.get('gabator').modal.showHelp(
                 "Le chariot est plein"
@@ -338,48 +363,103 @@ class PartTwo {
     }
 
     removeCarriageElements(){
+        let wrongElements = [];
         this.carriage.sprite.spritesToMove.forEach((element) => {
             this.updateQuantity(element);
-            element.position.x = this.truck.sprite.position.x - 1000;
-            element.position.y = this.truck.sprite.position.y - 1000;
+            // console.log(element.frameName);
+            // if(!this.updateQuantity(element)){
+                // wrongElements.push(element);
+                // wrongElements.unshift(element);
+            // }
         }, this);
+        // for (let i = wrongElements.length-1; i >= 0; i--) {
+        //     wrongElements[i].init();
+        // }
+        // wrongElements.forEach((element) => {
+            // element.init();
+        // }, this);
+        // for (let i = this.carriage.sprite.spritesToMove.length-1; i >= 0; i--) {
+        //     this.updateQuantity(this.carriage.sprite.spritesToMove[i]);
+        // }
+        // console.log("Remove");
+        // for (let i = this.itemGroup.length-1; i >= 0; i--) {
+        //     if (!this.itemGroup[i].obj.charged) {
+        //         console.log("Not charged");
+        //         this.itemGroup[i].init();
+        //     } else {
+        //         console.log("Charged");
+        //     }
+        // }
+        // this.itemGroup.forEach((currentSprite) => {
+        //     // console.log(currentSprite.frameName);
+        //     if (!currentSprite.obj.charged) {
+        //         console.log("Not charged");
+        //         currentSprite.init();
+        //         // console.log(currentSprite.position.x);
+        //     } else {
+        //         console.log("Charged");
+        //     }
+        // }, this);
         this.carriage.sprite.initElements();
         this.carriageCapacity = 0;
+        this.carriageText.text = `Capacité du chariot : ${this.carriageCapacity}/${this.carriageCapacityMax}`;
         this.nextPositionY = 0;
     }
 
     updateQuantity(currentSprite) {
         let name = currentSprite.frameName;
         if (currentSprite.obj.check()) {
-            if (name === "jeu6/peinture15l") {
-                if (this.paintCapacity <= 15) {
-                    this.paintCapacity += 15;
-                    PhaserManager.get('gabator').stats.changeValues({
-                        health: PhaserManager.get('gabator').stats.state.health - 1,
-                    });
-                    Canvas.get('gabator').modal.showHelp(
-                        "Attention, ces pots de peinture sont trop hauts"
-                        );
-                }
-            } else if (name === "jeu6/peinture5l") {
-                if (this.paintCapacity <= 25) {
-                    this.paintCapacity += 5;
-                }
-            } else if (name === "jeu6/aspirateur" || name === "jeu6/ponceuse" || name === "jeu6/caisse") {
-                if (this.materialCapacity < 3) {
-                    this.materialCapacity++;
-                }
+            // this.game.layer.zDepth1.addChild(currentSprite);
+            if (name === "jeu6/peinture15l" && this.paintCapacity <= 15) {
+                this.paintCapacity += 15;
+                currentSprite.position.x = this.truck.sprite.position.x - 1000;
+                currentSprite.position.y = this.truck.sprite.position.y;
+                currentSprite.obj.charged = true;
+                this.checkQuantity();
+            } else if (name === "jeu6/peinture5l" && this.paintCapacity <= 25) {
+                this.paintCapacity += 5;
+                currentSprite.position.x = this.truck.sprite.position.x - 1000;
+                currentSprite.position.y = this.truck.sprite.position.y;
+                currentSprite.obj.charged = true;
+                this.checkQuantity();
+            } else if ((name === "jeu6/aspirateur" || name === "jeu6/ponceuse" || name === "jeu6/caisse") && this.materialCapacity < 3) {
+                this.materialCapacity++;
+                currentSprite.position.x = this.truck.sprite.position.x - 1000;
+                currentSprite.position.y = this.truck.sprite.position.y;
+                currentSprite.obj.charged = true;
+                this.checkQuantity();
             } else if (name === "jeu6/map") {
                 if (this.mapCapacity <= 5) {
                     this.mapCapacity++;
+                    currentSprite.position.x = this.truck.sprite.position.x - 1000;
+                    currentSprite.position.y = this.truck.sprite.position.y;
+                    currentSprite.obj.charged = true;
+                    this.checkQuantity();
+                } else {
+                    // console.log("Too much map");
+                    // currentSprite.position.copyFrom(currentSprite.originalPosition);
+                    currentSprite.init();
+                    // return false;
                 }
+            } else {
+                PhaserManager.get('gabator').stats.changeValues({
+                    health: PhaserManager.get('gabator').stats.state.health - 1,
+                });
+                // console.log("Not correct");
+                // currentSprite.position.copyFrom(currentSprite.originalPosition);
+                currentSprite.init();
+                // return false;
             }
-            this.paintText.text = `Quantité de peinture : ${this.paintCapacity}/${this.paintCapacityMax}`;
-            this.suppliesText.text = `Matériels : ${this.materialCapacity}/${this.materialCapacityMax}`;
-            this.coatText.text = `Enduits : ${this.mapCapacity}/${this.mapCapacityMax}`;
-            if (this.paintCapacity === 30 && this.materialCapacity === 3 && this.mapCapacity === 6) {
-                this.addButton();
-            }
+            return true;
+        }
+    }
+
+    checkQuantity(){
+        this.paintText.text = `Quantité de peinture : ${this.paintCapacity}/${this.paintCapacityMax}`;
+        this.suppliesText.text = `Matériels : ${this.materialCapacity}/${this.materialCapacityMax}`;
+        this.coatText.text = `Enduits : ${this.mapCapacity}/${this.mapCapacityMax}`;
+        if (this.paintCapacity === 30 && this.materialCapacity === 3 && this.mapCapacity === 6) {
+            this.addButton();
         }
     }
 
@@ -459,7 +539,7 @@ class PartTwo {
 
     disableControls() {
         this.carriage.sprite.removeControls();
-        this.game.itemGroup.forEach((item) => {
+        this.itemGroup.forEach((item) => {
             item.events.onDragStop.removeAll();
             item.events.onInputDown.removeAll();
             item.inputEnabled = false;

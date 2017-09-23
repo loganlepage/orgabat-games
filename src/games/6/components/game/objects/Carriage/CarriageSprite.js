@@ -28,13 +28,14 @@ export default class CarriageSprite extends BasicGameSprite {
     }
 
     addControls(){
-        this.input.enableDrag(false, true);
+        this.input.enableDrag(false, false);
         this.inputEnabled = true;
         this.input.useHandCursor = true;
     }
 
     initElements(){
         this.spritesToMove = [];
+        this.position.copyFrom(this.originalPosition);
         this.previousX = this.x;
         this.previousY = this.y;
     }
@@ -42,6 +43,7 @@ export default class CarriageSprite extends BasicGameSprite {
     addSpriteToMove(sprite) {
         sprite.removeControls();
         this.spritesToMove.push(sprite);
+        // this.spritesToMove.unshift(sprite);
     }
 
     dragUpdate() {

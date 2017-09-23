@@ -9,8 +9,14 @@ export default class ItemSprite extends BasicGameSprite {
         this.scale.set(0.6 * this.game.SCALE);
         this.addControls();
         this.originalPosition = this.position.clone();
+        this.game.layer.zDepth1.addChild(this);
         this.events.onDragStart.add(function(sprite){
             this.game.layer.zDepth2.addChild(this);
+            // this.game.itemGroup.add(this);
+        }, this);
+        this.events.onDragStop.add(function(sprite){
+            this.game.layer.zDepth1.addChild(this);
+            // this.game.itemGroup.add(this);
         }, this);
         // Afficher la position pour aider le placement:
         // this.events.onDragStop.add(function(sprite){
@@ -19,10 +25,18 @@ export default class ItemSprite extends BasicGameSprite {
         // },this);
     }
 
+    init(){
+        this.position.x = this.originalPosition.x;
+        // console.log(this.frameName);
+        // console.log(this.position.y);
+        this.position.y = this.originalPosition.y;
+        this.addControls();
+    }
+
     addControls(){
         this.inputEnabled = true;
         this.input.useHandCursor = true;
-        this.input.enableDrag(false, true);
+        this.input.enableDrag(true, true);
     }
 
     removeControls(){

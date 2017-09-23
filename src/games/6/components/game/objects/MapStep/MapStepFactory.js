@@ -60,7 +60,7 @@ export default class MapStepFactory extends GameFactory {
         let height = this.cardsHeight + littleMargin;
 
         this.graphics = this.game.add.graphics(0, 0);
-        this.game.layer.zDepth1.addChild(this.graphics);
+        this.game.layer.zDepthOverAll.addChild(this.graphics);
         this.graphics.beginFill("black", 0.5);
         this.graphics.drawRect(x, y, width, height);
     }

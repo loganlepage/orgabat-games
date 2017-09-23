@@ -25,7 +25,7 @@ export default class Carriage extends BasicGameObject {
             return true;
         }
         else
-            currentSprite.position.copyFrom(currentSprite.originalPosition);
+            // currentSprite.position.copyFrom(currentSprite.originalPosition);
             return false;
     }
 }

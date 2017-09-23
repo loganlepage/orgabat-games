@@ -5,8 +5,8 @@ import Phaser from 'phaser';
 import {Signal} from "phaser";
 
 export default class Item extends BasicGameObject {
-    ready = false;
     onDropped = new Signal();
+    charged = false;
 
     constructor(game, key, category, x, y, isNeeded, clicked) {
         super(game);
@@ -14,7 +14,6 @@ export default class Item extends BasicGameObject {
         this.isNeeded = isNeeded;
         this.clicked = clicked;
         this.addSprite(new ItemSprite(this.game, x, y, key, this));
-        this.ready = true;
     }
 
     checkOverlap(currentSprite, spriteToOverlap) {
@@ -23,10 +22,10 @@ export default class Item extends BasicGameObject {
         if (Phaser.Rectangle.intersects(boundsA, boundsB)) {
             this.onDropped.dispatch(currentSprite);
             return true;
-        }
-        else
+        } else {
             currentSprite.position.copyFrom(currentSprite.originalPosition);
             return false;
+        }
     }
 
     check() {
