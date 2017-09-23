@@ -40,7 +40,7 @@ export default class StartInfoModal extends Modal {
                     type: "text",
                     x: 20,
                     y: 85,
-                    text: "Clique sur chaque zone de danger afin de choisir la bonne protection à prendre en fonction de la situation",
+                    text: "Clique sur chaque zone de danger afin de choisir la bonne protection à prendre en fonction de la situation.\nTu peux revenir au chantier en cliquant sur le fond noir.",
                     style: {
                         fill: "#5F4D21",
                         fontFamily: "Arial",

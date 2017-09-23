@@ -18,6 +18,8 @@ export default class ResponseFactory extends GameFactory {
         this.blackBackground.lineStyle(0, "balck", 0);
         this.blackBackground.beginFill("black", 0.5);
         this.blackBackground.drawRect(0, 0, this.game.width, this.game.height);
+        this.blackBackground.inputEnabled = true;
+        this.blackBackground.input.useHandCursor = true;
 
         this.add(this.blackBackground);
 

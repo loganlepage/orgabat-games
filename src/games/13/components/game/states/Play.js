@@ -89,27 +89,46 @@ class Engine {
         this.gameProcess.game.layer.zDepth1.addChild(this.responseGroup);
 
         // Actions
-        let answerCount = 0,
-        answerMax = this.background.shapes.length;
+        this.answerCount = 0,
+        this.answerMax = this.background.shapes.length;
+        this.addShapesAction();
+
+    }
+
+    addShapesAction() {
         this.background.shapes.forEach((shape) => {
+            shape.events.onInputDown.removeAll();
             shape.events.onInputDown.add(function(){
+                console.log("Shape");
+                console.log(shape.shapeNumber);
                 // Remove inputs
                 this.background.removeInputs();
                 // Orange color when answering
                 this.background.check(parseInt(shape.shapeNumber));
                 // Display response group
                 this.responseGroup.show();
+                // Allow to quit responses screen
+                this.responseGroup.blackBackground.events.onInputDown.add(function(){
+                    // Hide responses screen
+                    this.responseGroup.hide();
+                    // Add inputs
+                    this.background.addInputs();
+                    // Initialize shapes
+                    this.background.createShapes(parseInt(shape.shapeNumber), "white");
+                    this.addShapesAction();
+                },this);
                 // Check answer
                 this.responseGroup.forEach((response) => {
                     response.events.onInputDown.add(function(){
-                        if (response.obj.key == shape.data.correctAnswer) {
+                        if (response.obj.key == this.background.shapes[shape.shapeNumber].data.correctAnswer) {
                             // Correct
                             this.background.validate(parseInt(shape.shapeNumber));
-                            answerCount++;
-                            if (answerCount >= answerMax) {
+                            this.answerCount++;
+                            if (this.answerCount >= this.answerMax) {
                                 this.gameProcess.quests._quests.security_quest.done();
                                 this.finish.dispatch();
                             }
+                            // Hide responses screen
                             this.responseGroup.hide();
                             // Add inputs
                             this.background.addInputs();
@@ -126,7 +145,6 @@ class Engine {
                 })
             },this);
         });
-
     }
 
 }
