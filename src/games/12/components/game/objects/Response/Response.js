@@ -29,15 +29,8 @@ export default class Response extends BasicGameObject {
         let boundsA = currentSprite.getBounds(),
             boundsB = spriteToOverlap.getBounds();
         if (Phaser.Rectangle.intersects(boundsA, boundsB)) {
-            console.log("Overlap true");
-            // console.log(currentSprite.obj.item.key);
-            // console.log(spriteToOverlap.correctAnswer);
             return true;
         } else {
-            console.log("Overlap false");
-            // console.log(currentSprite.obj.item.key);
-            // console.log(spriteToOverlap.correctAnswer);
-            // currentSprite.position.copyFrom(currentSprite.originalPosition);
             return false;
         }
     }
@@ -46,11 +39,6 @@ export default class Response extends BasicGameObject {
         // Remove all inputs
         this.sprite.events.onInputDown.removeAll();
         this.sprite.events.onDragStop.removeAll();
-        // Come back to original place in every cases
-        // this.sprite.events.onDragStop.add(function(currentSprite){
-        //     console.log("Initialize");
-        //     currentSprite.position.copyFrom(currentSprite.originalPosition);
-        // }, this);
         this.sprite.position.copyFrom(this.sprite.originalPosition);
         this.sprite.addInputs();
     }

@@ -23,10 +23,7 @@ export default class ResponseFactory extends GameFactory {
 
         this.number = itemsNumber;
 
-        // let xValue = (width / itemsNumber)/2; // Horizontale
-        // let y = height - 200 * game.SCALE;
-
-        let yValue = (height / itemsNumber)/2; // Verticale
+        let yValue = (height / itemsNumber)/2;
         let x = game.world.centerX - 500 * game.SCALE;
 
         for (let i = 0; i < itemsNumber; i++) {

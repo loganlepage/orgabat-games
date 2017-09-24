@@ -27,7 +27,7 @@ export default class Image extends BasicGameObject {
         this.game.layer.zDepth0.addChild(this.sprite);
 
         // Shapes
-        let fill = true, // To fill or not shapes
+        let fill = false, // To fill or not shapes
         	radius = 50 * game.SCALE,
         	shapesCount = 0,
         	answerCount = 0;
@@ -44,17 +44,6 @@ export default class Image extends BasicGameObject {
             this.shapes[shape].drawCircle(0, 0, radius);
             this.shapes[shape].correctAnswer = data.shapes[shape].correctAnswer;
             shapesCount++;
-        	// if (this.shapes[data.shapes[shape].correctAnswer] == undefined) {
-        	// 	// Create shapes
-	        // 	this.shapes[data.shapes[shape].correctAnswer] = this.game.add.graphics(x + data.shapes[shape].x * game.SCALE, y + data.shapes[shape].y * game.SCALE);
-	        // 	this.game.layer.zDepth1.addChild(this.shapes[data.shapes[shape].correctAnswer]);
-	        // 	if (fill) {
-		       //      this.shapes[data.shapes[shape].correctAnswer].beginFill(0xFF0000, 0.3);
-		       //  }
-		       //  this.shapes[data.shapes[shape].correctAnswer].drawCircle(0, 0, radius);
-         //        this.shapes[data.shapes[shape].correctAnswer].correctAnswer = data.shapes[shape].correctAnswer;
-		       //  shapesCount++;
-        	// }
         }
 
         // Add actions
@@ -95,78 +84,6 @@ export default class Image extends BasicGameObject {
                         }
                     }
                 });
-                // if(this.shapes[response.item.key] != undefined) {
-                //     console.log("Correct");
-                //     // Selected answer is needed
-                //     if (response.checkOverlap(currentSprite, this.shapes[response.item.key])){
-                //         // and droped
-                //         console.log("Correct and droped");
-                //         // currentSprite.position.x = this.shapes[response.item.key].position.x;
-                //         // currentSprite.position.y = this.shapes[response.item.key].position.y;
-                //         currentSprite.position.copyFrom(this.shapes[response.item.key].position);
-                //         answerCount++;
-                //         if (answerCount >= shapesCount) {
-                //             this.finish.dispatch();
-                //         }
-                //     } else {
-                //         // but not droped
-                //         console.log("Correct but not droped");
-                //         currentSprite.position.copyFrom(currentSprite.originalPosition);
-                //         // this.shapes.forEach((shape) => {
-                //         //     if(response.checkOverlap(currentSprite, this.shapes[shape])){
-                //         //         console.log("Wrong answer 1");
-                //         //         currentSprite.position.copyFrom(currentSprite.originalPosition);
-                //         //         PhaserManager.get('gabator').stats.changeValues({
-                //         //             health: PhaserManager.get('gabator').stats.state.health - 1,
-                //         //         });
-                //         //     } else {
-                //         //         console.log("Wrong but not droped 1");
-                //         //         currentSprite.position.copyFrom(currentSprite.originalPosition);
-                //         //     }
-                //         // });
-                //     }
-                // } else {
-                //     console.log("Not Correct");
-                //     // Selected answer is not needed
-                //     currentSprite.position.copyFrom(currentSprite.originalPosition);
-                //     console.log(this.shapes[0]);
-                //     // for (let i = 0; i < this.shapes.length; i++) {
-                //     //     console.log(this.shapes[i]);
-                //     // }
-                //     // this.shapes.forEach((shape) => {
-                //     //     console.log('Shape');
-                //     //     console.log(shape);
-                //     // });
-                //     // this.shapes.forEach((shape) => {
-                //     //     console.log("Foreach");
-                //     //     if(response.checkOverlap(currentSprite, this.shapes[shape])){
-                //     //         // and droped
-                //     //         console.log("Wrong answer 2");
-                //     //         currentSprite.position.copyFrom(currentSprite.originalPosition);
-                //     //         PhaserManager.get('gabator').stats.changeValues({
-                //     //             health: PhaserManager.get('gabator').stats.state.health - 1,
-                //     //         });
-                //     //     } else {
-                //     //         // and not droped
-                //     //         console.log("Wrong but not droped 2");
-                //     //         currentSprite.position.copyFrom(currentSprite.originalPosition);
-                //     //     }
-                //     // });
-                // }
-                // if(this.shapes[response.item.key] != undefined && response.checkOverlap(currentSprite, this.shapes[response.item.key])){
-                //     currentSprite.position.x = this.shapes[response.item.key].position.x;
-                //     currentSprite.position.y = this.shapes[response.item.key].position.y;
-                //     answerCount++;
-                //     if (answerCount >= shapesCount) {
-                //         this.finish.dispatch();
-                //     }
-                // } else {
-                //     console.log("Else 2");
-                //     currentSprite.position.copyFrom(currentSprite.originalPosition);
-                //         PhaserManager.get('gabator').stats.changeValues({
-                //             health: PhaserManager.get('gabator').stats.state.health - 1,
-                //         });
-                // }
             }, this);
         });
 

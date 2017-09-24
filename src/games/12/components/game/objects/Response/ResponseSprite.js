@@ -15,7 +15,6 @@ export default class ResponseSprite extends BasicGameSprite {
 
     removeInputs() {
 		this.inputEnabled = false;
-        // this.input.useHandCursor = false;
     }
 
     addInputs() {
