@@ -12,8 +12,6 @@ import QuestManager, {DomQuestList} from 'system/phaser/utils/Quest';
 import Config from "../config/data";
 
 import SecurityQuest from "../quests/SecurityQuest";
-
-// import ResponseFactory from "../objects/Response/ResponseFactory";
 import Step from "../objects/Step/Step";
 
 export default class Play extends State {

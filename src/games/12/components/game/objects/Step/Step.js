@@ -1,11 +1,7 @@
 "use strict";
 
-import PhaserManager from 'system/phaser/utils/PhaserManager';
 import BasicGameObject from "system/phaser/BasicGameObject";
-
-import Phaser from 'phaser';
 import {Signal} from 'phaser';
-import Config from "../../config/data";
 
 import Image from "../Image/Image";
 import Button from '../Button/Button';

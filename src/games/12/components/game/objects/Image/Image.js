@@ -1,6 +1,7 @@
 "use strict";
 import BasicGameObject from "system/phaser/BasicGameObject";
 import PhaserManager from 'system/phaser/utils/PhaserManager';
+import Canvas from "system/phaser/utils/PhaserManager";
 import Phaser from 'phaser';
 import {Signal} from "phaser";
 
@@ -19,7 +20,6 @@ export default class Image extends BasicGameObject {
 
         // Responses
         this.responseGroup = new ResponseFactory(game, Config.responses);
-        // game.layer.zDepth2.addChild(this.responseGroup);
 
         // Image
         this.addSprite(new ImageSprite(this.game, x, y, data.key, this));
@@ -61,6 +61,9 @@ export default class Image extends BasicGameObject {
                             PhaserManager.get('gabator').stats.changeValues({
                                 health: PhaserManager.get('gabator').stats.state.health - 1,
                             });
+                            Canvas.get('gabator').modal.showHelp(
+                                "Mauvais type d'arrimage"
+                            );
                         } else {
                             // ... is not droped
                             currentSprite.position.copyFrom(currentSprite.originalPosition);
