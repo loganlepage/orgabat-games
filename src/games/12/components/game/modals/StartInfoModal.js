@@ -40,7 +40,7 @@ export default class StartInfoModal extends Modal {
                     type: "text",
                     x: 20,
                     y: 85,
-                    text: "L’équipement de base des véhicules ne correspond souvent pas aux besoins réels.\nA l’achat du véhicule, il faut penser aux équipements supplémentaires et indispensables de l’arrimage. \nRetrouve le nom des équipements d’arrimage sur camionnette et remorque.",
+                    text: "Dépose les numéros correspondant au bon type d'arrimage sur les zones des véhicules",
                     style: {
                         fill: "#5F4D21",
                         fontFamily: "Arial",

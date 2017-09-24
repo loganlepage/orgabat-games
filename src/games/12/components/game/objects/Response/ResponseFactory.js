@@ -43,7 +43,7 @@ export default class ResponseFactory extends GameFactory {
                     this.coordonates[count].x,
                     this.coordonates[count].y,
                     items[item]
-                )).sprite
+                ))
             );
             count++;
         }

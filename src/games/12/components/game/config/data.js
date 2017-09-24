@@ -53,21 +53,21 @@ export default {
                     y: -135,
                     correctAnswer: "shapeY1"
                 },
-                {
-                    x: -155,
-                    y: -40,
-                    correctAnswer: "shapeY1"
-                },
+                // {
+                //     x: -155,
+                //     y: -40,
+                //     correctAnswer: "shapeY1"
+                // },
                 {
                     x: -60,
                     y: -30,
                     correctAnswer: "shapeY2"
                 },
-                {
-                    x: 10,
-                    y: 65,
-                    correctAnswer: "shapeY1"
-                },
+                // {
+                //     x: 10,
+                //     y: 65,
+                //     correctAnswer: "shapeY1"
+                // },
                 {
                     x: -80,
                     y: 120,
@@ -89,16 +89,16 @@ export default {
                     y: -70,
                     correctAnswer: "shapeY2"
                 },
-                {
-                    x: 105,
-                    y: -15,
-                    correctAnswer: "shapeY1"
-                },
-                {
-                    x: 40,
-                    y: 30,
-                    correctAnswer: "shapeY2"
-                }
+                // {
+                //     x: 105,
+                //     y: -15,
+                //     correctAnswer: "shapeY1"
+                // },
+                // {
+                //     x: 40,
+                //     y: 30,
+                //     correctAnswer: "shapeY2"
+                // }
             ]
         },
         {

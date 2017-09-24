@@ -18,18 +18,16 @@ export default class Step extends BasicGameObject {
 
     title;
     image;
-    responseGroup;
 
-    constructor(game, itemsData, responseGroup) {
+    constructor(game, itemsData) {
 
         super(game);
 
         this.itemsData = itemsData;
-        this.responseGroup = responseGroup;
 
         // Title:
         this.title = this.game.add.text(
-            game.world.centerX + 200 * game.SCALE, 
+            game.world.centerX + 300 * game.SCALE, 
             game.world.centerY - 300 * game.SCALE, 
             this.itemsData.title, 
             {font: 'Arial', fontSize: 20 * game.SCALE, fill: '#000000'}
@@ -42,8 +40,7 @@ export default class Step extends BasicGameObject {
             game.world.centerX + 300 * game.SCALE, 
             game.world.centerY, 
             this.itemsData,
-            this.responseGroup
-        ); // Verti.
+        );
 
         this.image.finish.addOnce(function(){
             // Button

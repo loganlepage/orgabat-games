@@ -13,7 +13,7 @@ import Config from "../config/data";
 
 import SecurityQuest from "../quests/SecurityQuest";
 
-import ResponseFactory from "../objects/Response/ResponseFactory";
+// import ResponseFactory from "../objects/Response/ResponseFactory";
 import Step from "../objects/Step/Step";
 
 export default class Play extends State {
@@ -72,11 +72,8 @@ class Engine {
     finish = new Phaser.Signal();
 
     game;
-
-    // title;
-    // responseGroup;
+    
     step;
-    // step = [];
     stepNumber = 0;
 
     constructor(gameProcess) {
@@ -86,15 +83,11 @@ class Engine {
         // Quest
         this.gameProcess.quests.add(new SecurityQuest(this.gameProcess.game));
 
-        // Responses
-        this.responseGroup = new ResponseFactory(this.gameProcess.game, Config.responses);
-        this.gameProcess.game.layer.zDepth1.addChild(this.responseGroup);
-
     }
 
     start() {
         if (this.stepNumber < Config.images.length) {
-            this.step = new Step(this.gameProcess.game, Config.images[this.stepNumber], this.responseGroup);
+            this.step = new Step(this.gameProcess.game, Config.images[this.stepNumber]);
             this.step.finish.addOnce(this.start, this);
             this.stepNumber++;
         } else {
