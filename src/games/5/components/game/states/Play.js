@@ -35,10 +35,9 @@ export default class Play extends State {
         this.game.qcmGroup = new QcmFactory(this.game, Config.questions);
     }
 
-
     /** Called by create to add UI Layers */
     initUI() {
-        this.game.stage.backgroundColor = "#bdc3c7";
+        this.game.stage.backgroundColor = "#dedede";
         this.game.layer = {
             zDepth0: this.add.group(),
             zDepth1: this.add.group(),
@@ -55,8 +54,8 @@ export default class Play extends State {
     /** Called by Phaser to render */
     render() {
         //if(Config.developer.debug) {
-        this.game.time.advancedTiming = true; //SEE FPS
-        this.game.debug.text(this.game.time.fps, 2, 14, "#00ff00");
+        //this.game.time.advancedTiming = true; //SEE FPS
+        //this.game.debug.text(this.game.time.fps, 2, 14, "#00ff00");
         // }
     }
 
@@ -107,10 +106,11 @@ class GameProcess {
         this.game.keys.addKey(Phaser.Keyboard.A).onDown.addOnce(startTheGame, this);
         startInfoModal.items.close.items.iconA.events.onInputDown.add(startTheGame, this);
         startInfoModal.items.close.items.textA.events.onInputDown.add(startTheGame, this);
+        /*
         startInfoModal.onDeleted.addOnce(() => {
             this.game.keys.addKey(Phaser.Keyboard.ENTER).onDown.removeAll(this);
             this.game.keys.addKey(Phaser.Keyboard.A).onDown.removeAll(this);
-        }, this);
+        }, this);*/
         startInfoModal.toggle(true);
     }
 

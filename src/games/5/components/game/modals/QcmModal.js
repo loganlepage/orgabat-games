@@ -12,9 +12,9 @@ export default class QcmInfoModal extends Modal {
 
     set answer(answer) {
         this._answer = answer;
-        const check = this.items.answerPane.items.check;
-        check.visible = true;
-        check.setY(answer ? QcmInfoModal.checkGoodPosition.y : QcmInfoModal.checkBadPosition.y);
+        //const check = this.items.answerPane.items.check;
+        //check.visible = false;
+        //check.setY(answer ? QcmInfoModal.checkGoodPosition.y : QcmInfoModal.checkBadPosition.y);
     }
 
     get answer() {
@@ -31,7 +31,7 @@ export default class QcmInfoModal extends Modal {
         super(Type.deepMerge(QcmInfoModal.pattern, data), manager, game);
         this._initPicture();
         this._initAnswerEvents();
-        this._initContinueEvents();
+        //this._initContinueEvents();
     }
 
     _initPicture() {
@@ -39,17 +39,29 @@ export default class QcmInfoModal extends Modal {
         const picture = this.items.picture;
         window.picture = picture;
         window.bg = bg;
-
         const scale = bg.width / picture.width;
-        picture.scale.set(scale);
-        picture.y = bg.height - picture.height - this.game.uiScale(15) /*padding bottom*/;
+        picture.scale.set(scale/1.5);
+        //picture.y = bg.height - picture.height - this.game.uiScale(15) /*padding bottom*/;
+        picture.x = (bg.width/2) - (picture.width/2);
+        picture.y = (bg.height/2) - (picture.height/2);
     }
 
     _initAnswerEvents() {
-        this.items.answerPane.items.answer_good.events.onInputDown.add(() => this.answer = true);
-        this.items.answerPane.items.answer_bad.events.onInputDown.add(() => this.answer = false);
+        const goodAnswer = this.items.answerPane.items.answer_good;
+        const badAnswer = this.items.answerPane.items.answer_bad;
+        goodAnswer.input.useHandCursor = true;
+        badAnswer.input.useHandCursor = true;
+        goodAnswer.events.onInputDown.add(() => {
+            this.answer = true;
+            this.onContinue.dispatch(this.answer, this);
+        });
+        badAnswer.events.onInputDown.add(() => {
+            this.answer = false;
+            this.onContinue.dispatch(this.answer, this);
+        });
     }
 
+    /*
     _initContinueEvents() {
         this.game.keys.addKey(Phaser.Keyboard.ENTER).onDown.add(this._continue, this);
         this.game.keys.addKey(Phaser.Keyboard.A).onDown.add(this._continue, this);
@@ -58,20 +70,21 @@ export default class QcmInfoModal extends Modal {
     }
 
     _continue() {
+
         if(this.answer !== null) {
             this.game.keys.addKey(Phaser.Keyboard.ENTER).onDown.removeAll(this);
             this.game.keys.addKey(Phaser.Keyboard.A).onDown.removeAll(this);
         }
         this.onContinue.dispatch(this.answer, this);
-    }
+    }*/
 
-    static get checkGoodPosition() {
+    /*static get checkGoodPosition() {
         return {y: 60};
     }
 
     static get checkBadPosition() {
         return {y: 100};
-    }
+    }*/
 
     static get pattern() {
         return {
@@ -89,8 +102,8 @@ export default class QcmInfoModal extends Modal {
                 },
                 answerPane: {
                     type: "group",
-                    y: 150,
-                    x: 300,
+                    x: 15,
+                    y: 15,
                     items: {
                         question: {
                             type: "text",
@@ -98,51 +111,24 @@ export default class QcmInfoModal extends Modal {
                             style: {
                                 fill: "#5F4D21",
                                 fontFamily: "Arial",
-                                fontSize: 14,
+                                fontSize: 20,
                                 wordWrap: true,
-                                wordWrapWidth: 110
+                                wordWrapWidth: 300
                             }
                         },
                         answer_good: {
                             type: "sprite",
                             key: "jeu5/good",
-                            y: 65,
-                            props: {inputEnabled: true}
+                            x: 250,
+                            y: 300,
+                            props: {inputEnabled: true, useHandCursor: true}
                         },
                         answer_bad: {
                             type: "sprite",
                             key: "jeu5/bad",
-                            y: 105,
-                            props: {inputEnabled: true}
-                        },
-                        check: {
-                            type: "sprite",
-                            key: "jeu5/check",
-                            y: QcmInfoModal.checkGoodPosition.y,
-                            props: {visible: false}
-                        },
-                        close: {
-                            type: "group",
-                            y: 160,
-                            items: {
-                                iconA: {
-                                    type: "sprite",
-                                    key: "modal/item/button_a",
-                                    props: {scale: 0.53, inputEnabled: true}
-                                },
-                                textA: {
-                                    type: "text",
-                                    text: "CONTINUER",
-                                    x: 36,
-                                    y: 7,
-                                    style: {
-                                        fill: "#5F4D21",
-                                        fontFamily: "Arial",
-                                        fontSize: 12
-                                    },
-                                    props: {inputEnabled: true}
-                                }
-                            },
+                            x: 140,
+                            y: 300,
+                            props: {inputEnabled: true, useHandCursor: true}
                         }
                     }
                 }

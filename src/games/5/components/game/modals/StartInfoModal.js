@@ -15,6 +15,20 @@ export default class StartInfoModal extends Modal {
      */
     constructor(data, manager, game) {
         super(Type.deepMerge(StartInfoModal.pattern, data), manager, game);
+        const good = StartInfoModal.pattern.items.process.processText.goodText;
+        const bad = StartInfoModal.pattern.items.process.processText.badText;
+        good.x = this.game.width  - (this.game.width / 2.05);
+        good.y = this.game.height  - (this.game.height / 3.65);
+        bad.x = this.game.width  - (this.game.width / 1.7);
+        bad.y = this.game.height  - (this.game.height / 3.65);
+        console.log(game.world.centerX);
+        console.log(game.world.height);
+        // add text below icons
+        this.textG = this.game.add.text(good.x, good.y, good.text, good.style);
+        this.textB = this.game.add.text(bad.x, bad.y, bad.text, bad.style);
+
+        this.textG.anchor.set
+        //this.game.add.text(processT.badText);
     }
 
     static get pattern() {
@@ -39,8 +53,8 @@ export default class StartInfoModal extends Modal {
                 description: {
                     type: "text",
                     x: 20,
-                    y: 85,
-                    text: "Cocher si le mouvement est BON ou MAUVAIS par rapport aux images.",
+                    y: 70,
+                    text: "Choisir si le mouvement est BON ou MAUVAIS par rapport aux images.",
                     style: {
                         fill: "#5F4D21",
                         fontFamily: "Arial",
@@ -52,8 +66,36 @@ export default class StartInfoModal extends Modal {
                 process: {
                     type: "sprite",
                     key: "jeu5/process",
-                    x: 30,
-                    y: 155
+                    x: 120,
+                    y: 110,
+                    processText: {
+                        goodText: {
+                            type: "text",
+                            x: 245,
+                            y: 250,
+                            text: "BON",
+                            style: {
+                                fill: "#72e583",
+                                fontFamily: "Arial",
+                                fontSize: 14,
+                                wordWrap: true,
+                                wordWrapWidth: 450 - 40 //sprite.width - margin
+                            }
+                        },
+                        badText: {
+                            type: "text",
+                            x: 435,
+                            y: 485,
+                            text: "MAUVAIS",
+                            style: {
+                                fill: "#e56767",
+                                fontFamily: "Arial",
+                                fontSize: 14,
+                                wordWrap: true,
+                                wordWrapWidth: 450 - 40 //sprite.width - margin
+                            }
+                        }
+                    }
                 },
                 close: {
                     type: "group",
@@ -65,17 +107,17 @@ export default class StartInfoModal extends Modal {
                             key: "modal/item/button_a",
                             x: -36,
                             y: -7,
-                            props: { scale: 0.53, inputEnabled: true }
+                            props: {scale: 0.53, inputEnabled: true}
                         },
                         textA: {
-                            type : "text",
+                            type: "text",
                             text: "CONTINUER",
                             style: {
                                 fill: "#5F4D21",
                                 fontFamily: "Arial",
                                 fontSize: 12
                             },
-                            props: { inputEnabled: true }
+                            props: {inputEnabled: true}
                         }
                     },
                 }
