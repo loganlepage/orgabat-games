@@ -40,7 +40,7 @@ export default class StartInfoModal extends Modal {
                     type: "text",
                     x: 20,
                     y: 85,
-                    text: "Choisis les bons équipements, et clique sur Continuer lorsqu'ils ont tous été choisis",
+                    text: "Vous êtes confronté à une situation de travail. Il n’y a pas la possibilité de mettre en place de protection collective. Vous devez choisir l’EPI adapté à votre tâche.",
                     style: {
                         fill: "#5F4D21",
                         fontFamily: "Arial",

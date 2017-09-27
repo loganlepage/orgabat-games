@@ -72,7 +72,7 @@
             </struct>
         </struct>
         <key>shapePadding</key>
-        <uint>0</uint>
+        <uint>5</uint>
         <key>jpgQuality</key>
         <uint>80</uint>
         <key>pngOptimizationLevel</key>
@@ -199,10 +199,11 @@
         </struct>
         <key>individualSpriteSettings</key>
         <map type="IndividualSpriteSettingsMap">
-            <key type="filename">files/jeu15/actions/echaffaudage.jpg</key>
+            <key type="filename">files/jeu15/actions/agglos.JPG</key>
+            <key type="filename">files/jeu15/actions/ferraillage.jpg</key>
+            <key type="filename">files/jeu15/actions/isolation.jpg</key>
             <key type="filename">files/jeu15/actions/marteau-piqueur.jpg</key>
-            <key type="filename">files/jeu15/actions/peinture.jpg</key>
-            <key type="filename">files/jeu15/actions/revetement-sol.jpg</key>
+            <key type="filename">files/jeu15/actions/meuleuse.jpg</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -212,19 +213,6 @@
                 <rect>125,88,250,175</rect>
                 <key>scale9Paddings</key>
                 <rect>125,88,250,175</rect>
-                <key>scale9FromFile</key>
-                <false/>
-            </struct>
-            <key type="filename">files/jeu15/epi/bottes_de_securite.png</key>
-            <struct type="IndividualSpriteSettings">
-                <key>pivotPoint</key>
-                <point_f>0.5,0.5</point_f>
-                <key>scale9Enabled</key>
-                <false/>
-                <key>scale9Borders</key>
-                <rect>24,28,47,56</rect>
-                <key>scale9Paddings</key>
-                <rect>24,28,47,56</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
@@ -241,19 +229,6 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">files/jeu15/epi/casque_de_chantier.png</key>
-            <struct type="IndividualSpriteSettings">
-                <key>pivotPoint</key>
-                <point_f>0.5,0.5</point_f>
-                <key>scale9Enabled</key>
-                <false/>
-                <key>scale9Borders</key>
-                <rect>24,18,47,36</rect>
-                <key>scale9Paddings</key>
-                <rect>24,18,47,36</rect>
-                <key>scale9FromFile</key>
-                <false/>
-            </struct>
             <key type="filename">files/jeu15/epi/chaussures_de_securite.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
@@ -267,55 +242,146 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">files/jeu15/epi/gants.png</key>
+            <key type="filename">files/jeu15/epi/gants_chirurgie.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
                 <key>scale9Enabled</key>
                 <false/>
                 <key>scale9Borders</key>
-                <rect>22,16,44,33</rect>
+                <rect>50,50,101,100</rect>
                 <key>scale9Paddings</key>
-                <rect>22,16,44,33</rect>
+                <rect>50,50,101,100</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">files/jeu15/epi/genouilleres.png</key>
+            <key type="filename">files/jeu15/epi/gants_jardin.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
                 <key>scale9Enabled</key>
                 <false/>
                 <key>scale9Borders</key>
-                <rect>27,14,55,28</rect>
+                <rect>100,100,200,200</rect>
                 <key>scale9Paddings</key>
-                <rect>27,14,55,28</rect>
+                <rect>100,100,200,200</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">files/jeu15/epi/harnais.png</key>
+            <key type="filename">files/jeu15/epi/gants_manutention.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
                 <key>scale9Enabled</key>
                 <false/>
                 <key>scale9Borders</key>
-                <rect>14,25,27,50</rect>
+                <rect>250,250,500,500</rect>
                 <key>scale9Paddings</key>
-                <rect>14,25,27,50</rect>
+                <rect>250,250,500,500</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">files/jeu15/epi/lunettes_de_protection.png</key>
+            <key type="filename">files/jeu15/epi/gants_moto.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
                 <key>scale9Enabled</key>
                 <false/>
                 <key>scale9Borders</key>
-                <rect>23,13,46,26</rect>
+                <rect>268,188,537,376</rect>
                 <key>scale9Paddings</key>
-                <rect>23,13,46,26</rect>
+                <rect>268,188,537,376</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">files/jeu15/epi/gants_velo.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>150,150,300,300</rect>
+                <key>scale9Paddings</key>
+                <rect>150,150,300,300</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">files/jeu15/epi/lunettes_3d.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>75,50,150,100</rect>
+                <key>scale9Paddings</key>
+                <rect>75,50,150,100</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">files/jeu15/epi/lunettes_plongee.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>166,109,332,218</rect>
+                <key>scale9Paddings</key>
+                <rect>166,109,332,218</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">files/jeu15/epi/lunettes_protection.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>99,50,198,100</rect>
+                <key>scale9Paddings</key>
+                <rect>99,50,198,100</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">files/jeu15/epi/lunettes_ski.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>89,50,178,100</rect>
+                <key>scale9Paddings</key>
+                <rect>89,50,178,100</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">files/jeu15/epi/lunettes_soleil.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>98,50,195,100</rect>
+                <key>scale9Paddings</key>
+                <rect>98,50,195,100</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">files/jeu15/epi/lunettes_vue.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>96,50,192,100</rect>
+                <key>scale9Paddings</key>
+                <rect>96,50,192,100</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
@@ -326,22 +392,23 @@
                 <key>scale9Enabled</key>
                 <false/>
                 <key>scale9Borders</key>
-                <rect>22,18,44,37</rect>
+                <rect>50,50,100,100</rect>
                 <key>scale9Paddings</key>
-                <rect>22,18,44,37</rect>
+                <rect>50,50,100,100</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">files/jeu15/epi/pantalon.png</key>
+            <key type="filename">files/jeu15/other/bad.png</key>
+            <key type="filename">files/jeu15/other/good.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
                 <key>scale9Enabled</key>
                 <false/>
                 <key>scale9Borders</key>
-                <rect>20,30,39,60</rect>
+                <rect>15,15,30,30</rect>
                 <key>scale9Paddings</key>
-                <rect>20,30,39,60</rect>
+                <rect>15,15,30,30</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>

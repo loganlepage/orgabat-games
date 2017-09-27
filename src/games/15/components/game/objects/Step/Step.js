@@ -9,6 +9,7 @@ import Config from "../../config/data";
 
 import Canvas from "system/phaser/utils/PhaserManager";
 
+import ResponseFactory from "../Response/ResponseFactory";
 import Image from "../Image/Image";
 import Button from '../Button/Button';
 
@@ -20,30 +21,33 @@ export default class Step extends BasicGameObject {
 
     title;
     image;
-    responseGroup;
 
-    constructor(game, data, responseGroup) {
+    constructor(game, data) {
 
         super(game);
 
         this.data = data;
-        this.responseGroup = responseGroup;
+
+        // Responses
+        this.responseGroup = new ResponseFactory(game, this.data.responses);
+        game.layer.zDepth1.addChild(this.responseGroup);
 
         // Title:
         this.title = this.game.add.text(
-            this.game.world.width/4, 
-            50 * this.game.SCALE, 
+            // this.game.world.width/4, 
+            50 * this.game.SCALE,
+            50 * this.game.SCALE,
             this.data.title, 
-            {font: 'Arial', fontSize: 30 * this.game.SCALE, fill: '#000000'}
+            {font: 'Arial', fontSize: 25 * this.game.SCALE, fill: '#000000', align: 'left'}
         );
-        this.title.anchor.setTo(0.5);
+        this.title.anchor.setTo(0);
 
         // Image:
         this.image = new Image(
             this.game, 
             this.game.world.width/4, 
             this.game.world.centerY, 
-            this.data.key
+            "actions/"+this.data.key
         );
 
         // Data details
@@ -57,7 +61,8 @@ export default class Step extends BasicGameObject {
         this.responseGroup.forEach((item) => {
             item.events.onInputDown.removeAll();
             item.events.onInputDown.add(function(){
-                if (this.data.correctAnswer.includes(item.obj.item.key)) {
+                // if (this.data.correctAnswer.includes(item.obj.item.key)) {
+                if (this.data.correctAnswer.includes(item.obj.item.title)) {
                     item.obj.validate();
                     answerCount++;
                     if (answerCount >= answersNumber) {
@@ -69,8 +74,12 @@ export default class Step extends BasicGameObject {
                         );
                         this.button.sprite.events.onInputDown.removeAll();
                         this.button.sprite.events.onInputDown.add(this.finishStep, this);
+                        this.responseGroup.forEach((item) => {
+                            item.obj.disabbleControls();
+                        });
                     }
                 } else {
+                    item.obj.unvalidate();
                     Canvas.get('gabator').modal.showHelp(
                         "Pas besoin de cet équipement ici"
                     );
@@ -85,6 +94,7 @@ export default class Step extends BasicGameObject {
     }
 
     finishStep() {
+        this.responseGroup.destroy();
         this.title.destroy();
         this.image.destroy();
         this.button.destroy();

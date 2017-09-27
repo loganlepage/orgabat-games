@@ -23,8 +23,13 @@ export default class ResponseFactory extends GameFactory {
         };
 
         // Item dimensions and number for the grid (12 items => 4x3, 16 items => 4x4, etc)
-        let itemsWidth = 100,
-            itemsHeight = 75,
+        // let itemsWidth = 100,
+        //     itemsHeight = 75,
+        //     itemsNumberX = 2,
+        //     itemsNumberY = itemsNumber/2;
+
+        let itemsWidth = 120,
+            itemsHeight = 120,
             itemsNumberX = 2,
             itemsNumberY = itemsNumber/2;
 
@@ -63,4 +68,19 @@ export default class ResponseFactory extends GameFactory {
 
     }
 
+    destroy(){
+        while(this.children[0]){
+            this.children[0].obj.destroy();
+        }
+        // this.forEach((item) => {
+        //     console.log(item.obj.item.title);
+        //     item.destroy();
+        // });
+    }
+
 }
+
+
+
+
+

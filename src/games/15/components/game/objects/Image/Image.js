@@ -12,7 +12,7 @@ export default class Image extends BasicGameObject {
 
         this.addSprite(new ImageSprite(this.game, x, y, key, this));
         this.sprite.scale.set(this.game.SCALE);
-        this.game.layer.zDepth0.addChild(this.sprite);
+        // this.game.layer.zDepth0.addChild(this.sprite);
 
     }
 
