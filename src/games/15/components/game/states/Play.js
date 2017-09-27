@@ -12,8 +12,6 @@ import QuestManager, {DomQuestList} from 'system/phaser/utils/Quest';
 import Config from "../config/data";
 
 import SecurityQuest from "../quests/SecurityQuest";
-
-import ResponseFactory from "../objects/Response/ResponseFactory";
 import Step from "../objects/Step/Step";
 
 export default class Play extends State {
@@ -87,16 +85,17 @@ class Engine {
         this.gameProcess.quests.add(new SecurityQuest(this.gameProcess.game));
 
         // Responses
-        this.responseGroup = new ResponseFactory(this.gameProcess.game, Config.responses);
-        this.gameProcess.game.layer.zDepth1.addChild(this.responseGroup);
+        // this.responseGroup = new ResponseFactory(this.gameProcess.game, Config.responses);
+        // this.gameProcess.game.layer.zDepth1.addChild(this.responseGroup);
 
     }
 
     start() {
         if (this.stepNumber < Config.actions.length) {
-            this.responseGroup.forEach((item) => {
-                item.obj.initialize();
-            });
+            // this.responseGroup.forEach((item) => {
+            //     item.obj.initialize();
+            // });
+            // this.step = new Step(this.gameProcess.game, Config.actions[this.stepNumber], this.responseGroup);
             this.step = new Step(this.gameProcess.game, Config.actions[this.stepNumber], this.responseGroup);
             this.step.finish.addOnce(this.start, this);
             this.stepNumber++;

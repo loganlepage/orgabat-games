@@ -11,7 +11,7 @@ export default class Rules extends State {
             {font: 'Arial', fill: '#272727', fontSize: this.game.uiScale(21)});
 
         this.game.add.text(this.game.uiScale(80), this.game.uiScale(160),
-            "Pour chaque situation, choisir les bons équipements à prendre",
+            "Pour chaque situation, choisir les bons équipements à utiliser",
             {
                 font: 'Arial', fill: '#272727', fontSize: this.game.uiScale(16),
                 wordWrap: true, wordWrapWidth: this.game.world.width - this.game.uiScale(160)

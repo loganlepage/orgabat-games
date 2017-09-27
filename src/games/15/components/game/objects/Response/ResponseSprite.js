@@ -5,10 +5,12 @@ export default class ResponseSprite extends BasicGameSprite {
 
     constructor(game, x, y, link, buttonObj) {
         super(game, x, y, `jeu15/epi/${link}`, buttonObj);
-        // this.anchor.setTo(0.5);
-        this.scale.set(this.game.SCALE);
+        this.scale.set(0.6 * this.game.SCALE);
         this.inputEnabled = true;
         this.input.useHandCursor = true;
+        // To display sprtie dimensions
+        // console.log(this.width);
+        // console.log(this.height);
     }
 
     removeInputs() {
