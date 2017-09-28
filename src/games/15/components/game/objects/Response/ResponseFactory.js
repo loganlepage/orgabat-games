@@ -28,8 +28,8 @@ export default class ResponseFactory extends GameFactory {
         //     itemsNumberX = 2,
         //     itemsNumberY = itemsNumber/2;
 
-        let itemsWidth = 120,
-            itemsHeight = 120,
+        let itemsWidth = 120 * this.game.SCALE,
+            itemsHeight = 120 * this.game.SCALE,
             itemsNumberX = 2,
             itemsNumberY = itemsNumber/2;
 
