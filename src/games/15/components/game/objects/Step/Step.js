@@ -38,7 +38,14 @@ export default class Step extends BasicGameObject {
             50 * this.game.SCALE,
             50 * this.game.SCALE,
             this.data.title, 
-            {font: 'Arial', fontSize: 25 * this.game.SCALE, fill: '#000000', align: 'left'}
+            {
+                font: 'Arial',
+                fontSize: 25 * this.game.SCALE,
+                fill: '#000000',
+                align: 'left',
+                wordWrap: true,
+                wordWrapWidth: this.game.world.width - 200
+            }
         );
         this.title.anchor.setTo(0);
 
@@ -59,6 +66,14 @@ export default class Step extends BasicGameObject {
 
         // Actions
         this.responseGroup.forEach((item) => {
+            // Tooltip
+            item.events.onInputOver.add(() => {
+                this.itemInfo = item.obj.addTooltips(item);
+                this.itemInfo.fontSize = mediumFont;
+            }, this);
+            item.events.onInputOut.add(() => {
+                this.itemInfo.destroy();
+            }, this);
             item.events.onInputDown.removeAll();
             item.events.onInputDown.add(function(){
                 // if (this.data.correctAnswer.includes(item.obj.item.key)) {

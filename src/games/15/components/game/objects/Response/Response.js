@@ -39,7 +39,26 @@ export default class Response extends BasicGameObject {
         this.sprite.anchor.setTo(0.5, this.anchorY);
     }
 
-    // initialize() {
+    addTooltips(item){
+        let text = this.game.add.text(
+            this.game.world.centerX,
+            this.game.world.height - 75 * this.game.SCALE,
+            item.obj.item.info,
+            {
+                font: 'Arial',
+                fontSize: 25 * this.game.SCALE,
+                fill: '#000000',
+                backgroundColor: "white",
+                align: "center",
+                wordWrap: true,
+                wordWrapWidth: this.game.world.width - 200
+            }
+        );
+        text.padding.set(20, 20);
+        text.anchor.setTo(0.5);
+        return text;
+    }
+
     destroy() {
         if (this.shape != undefined) {
             this.shape.destroy();
@@ -54,21 +73,13 @@ export default class Response extends BasicGameObject {
 
     validate() {
         let xPosition = this.x + 20 * this.game.SCALE;
-        // let yPosition = this.y - (1-this.anchorY)*this.sprite.height;
-        let yPosition = this.y;
-        this.feedback = new Image(this.game, xPosition, yPosition, "other/good");
-        // this.shape = this.game.add.graphics(this.x, yPosition);
-        // this.shape.lineStyle(2, 0x000000, 1);
-        // this.shape.beginFill(0x008000, 0.25);
-        // this.shape.drawCircle(0, 0, 150 * this.game.SCALE);
-        // this.game.layer.zDepth0.addChild(this.shape);
+        this.feedback = new Image(this.game, xPosition, this.y, "other/good");
         this.disabbleControls();
     }
 
     unvalidate() {
         let xPosition = this.x + 20 * this.game.SCALE;
-        let yPosition = this.y;
-        this.feedback = new Image(this.game, xPosition, yPosition, "other/bad");
+        this.feedback = new Image(this.game, xPosition, this.y, "other/bad");
         this.disabbleControls();
     }
 
