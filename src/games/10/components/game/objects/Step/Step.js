@@ -47,9 +47,6 @@ export default class Step extends BasicGameObject {
             });
         });
 
-        console.log("Start :");
-        console.log(this.questions.children);
-
         this.button = new Button(this.game, this.game.world.width - 100, this.game.world.height - 50);
 
         this.button.sprite.events.onInputDown.add(function(){
@@ -73,11 +70,12 @@ export default class Step extends BasicGameObject {
 
     destroyElements() {
         this.title.destroy();
-        console.log("Destroy: ");
-        console.log(this.questions.children);
-        this.questions.forEach((question) => {
-            question.destroyTexts();
-        });
+        while(this.questions.children[0]){
+            this.questions.children[0].obj.destroy();
+        }
+        // this.questions.forEach((question) => {
+        //     question.destroyTexts();
+        // });
         // this.questions.forEach((item) => {
         //     console.log(item);
         //     item.destroyElements();

@@ -69,7 +69,7 @@ export default class Step extends BasicGameObject {
             // Tooltip
             item.events.onInputOver.add(() => {
                 this.itemInfo = item.obj.addTooltips(item);
-                this.itemInfo.fontSize = mediumFont;
+                // this.itemInfo.fontSize = mediumFont;
             }, this);
             item.events.onInputOut.add(() => {
                 this.itemInfo.destroy();
@@ -79,6 +79,7 @@ export default class Step extends BasicGameObject {
                 // if (this.data.correctAnswer.includes(item.obj.item.key)) {
                 if (this.data.correctAnswer.includes(item.obj.item.title)) {
                     item.obj.validate();
+                    this.itemInfo.destroy();
                     answerCount++;
                     if (answerCount >= answersNumber) {
                         this.button = new Button(
@@ -95,6 +96,7 @@ export default class Step extends BasicGameObject {
                     }
                 } else {
                     item.obj.unvalidate();
+                    this.itemInfo.destroy();
                     Canvas.get('gabator').modal.showHelp(
                         "Pas besoin de cet équipement ici"
                     );
