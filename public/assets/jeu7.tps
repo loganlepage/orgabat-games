@@ -6,7 +6,7 @@
         <key>texturePackerVersion</key>
         <string>4.4.0</string>
         <key>fileName</key>
-        <string>/Users/Paul/Archive/JE/Projet M1/orgabat/web/modules/game/public/assets/jeu7.tps</string>
+        <string>C:/wamp/www/orgabat/web/modules/game/public/assets/jeu7.tps</string>
         <key>autoSDSettings</key>
         <array>
             <struct type="AutoSDSettings">
@@ -76,7 +76,7 @@
         <key>jpgQuality</key>
         <uint>80</uint>
         <key>pngOptimizationLevel</key>
-        <uint>1</uint>
+        <uint>0</uint>
         <key>webpQualityLevel</key>
         <uint>101</uint>
         <key>textureSubPath</key>
@@ -104,7 +104,7 @@
         <key>algorithmSettings</key>
         <struct type="AlgorithmSettings">
             <key>algorithm</key>
-            <enum type="AlgorithmSettings::AlgorithmId">MaxRects</enum>
+            <enum type="AlgorithmSettings::AlgorithmId">Basic</enum>
             <key>freeSizeMode</key>
             <enum type="AlgorithmSettings::AlgorithmFreeSizeMode">Good</enum>
             <key>sizeConstraints</key>
@@ -167,7 +167,7 @@
             <string></string>
         </struct>
         <key>autoAliasEnabled</key>
-        <true/>
+        <false/>
         <key>trimSpriteNames</key>
         <true/>
         <key>prependSmartFolderName</key>
@@ -181,13 +181,13 @@
             <key>scaleMode</key>
             <enum type="ScaleMode">Smooth</enum>
             <key>extrude</key>
-            <uint>1</uint>
+            <uint>0</uint>
             <key>trimThreshold</key>
             <uint>1</uint>
             <key>trimMargin</key>
             <uint>1</uint>
             <key>trimMode</key>
-            <enum type="SpriteSettings::TrimMode">Polygon</enum>
+            <enum type="SpriteSettings::TrimMode">None</enum>
             <key>tracerTolerance</key>
             <int>200</int>
             <key>heuristicMask</key>
@@ -199,6 +199,19 @@
         </struct>
         <key>individualSpriteSettings</key>
         <map type="IndividualSpriteSettingsMap">
+            <key type="filename">files/jeu7/background/bg.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>200,200,400,400</rect>
+                <key>scale9Paddings</key>
+                <rect>200,200,400,400</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
             <key type="filename">files/jeu7/bigCards/card1.JPG</key>
             <key type="filename">files/jeu7/bigCards/card9.JPG</key>
             <struct type="IndividualSpriteSettings">
