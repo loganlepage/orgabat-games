@@ -65,16 +65,26 @@ export default class Card extends BasicGameObject {
             // this.game.time.events.add(Phaser.Timer.SECOND * 2, this.dezoom, this);
 
             // Draw a cross
-            let crossWidth = 40;
+            let crossWidth = 20;
             let x = bigWidthMargin + this.bigCard.sprite.width - crossWidth;
             let y = bigHeightMargin;
             this.graphics = this.game.add.graphics(0, 0);
             this.game.layer.zDepthOverAll.addChild(this.graphics);
-            this.graphics.lineStyle(3, "black", 1);
+            // add circle
+            this.graphics.beginFill(0x333333, 1);
+            this.graphics.drawCircle(x + 10, y + 10, 40);
+            this.graphics.endFill();
+
+            // add cross
+            this.graphics.lineStyle(3, 0xFFFFFF, 1);
+
             this.graphics.moveTo(x,y);
             this.graphics.lineTo(x + crossWidth, y + crossWidth);
             this.graphics.moveTo(x + crossWidth,y);
             this.graphics.lineTo(x, y + crossWidth);
+            this.graphics.endFill();
+
+
         }
     }
 
