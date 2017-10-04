@@ -25,8 +25,6 @@ export default class QuestionFactory extends GameFactory {
                 questions[question].questionSolutions)
             );
             // this.graphic.graphic.graphicsData[0].shape.width = this.children[question].title.width + 20;
-            console.log(questions[question].questionAnswers.length);
-            console.log(y);
             y += 50 * this.game.SCALE + 35 * questions[question].questionAnswers.length * this.game.SCALE;
             // if (questions[question].questionAnswers.length == 2) {
             //     y += 100 * this.game.SCALE;

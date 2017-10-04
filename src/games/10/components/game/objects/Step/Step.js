@@ -27,17 +27,27 @@ export default class Step extends BasicGameObject {
     }
 
     start() {
-
-        // try {
-        //     this.destroyElements();
-        // } catch (e) {
-        //     //
-        // }
-
-        // this.title = this.game.add.text(30 * this.game.SCALE, 30 * this.game.SCALE, this.stepData.title, {font: 'Arial', fontSize: 25 * this.game.SCALE, fill: '#000000'});
         this.questions = new QuestionFactory(this.game, this.stepData.questions);
         this.button = new Button(this.game, this.game.world.width - 100 * this.game.SCALE, this.game.world.height - 50 * this.game.SCALE);
+        this.dataButton = new Button(this.game, this.game.world.width - 100 * this.game.SCALE, this.game.world.centerY);
+        this.game.layer.zDepth2.addChild(this.dataButton.sprite);
+        this.dataButton.sprite.events.onInputDown.add(this.createDocument, this);
         this.initQuestions();
+    }
+
+    createDocument(){
+        this.dataButton.sprite.events.onInputDown.removeAll();
+        this.graphics = this.game.add.graphics(0, 0);
+        this.game.layer.zDepth1.addChild(this.graphics);
+        this.graphics.lineStyle(0, "balck", 0);
+        this.graphics.beginFill("black", 0.6);
+        this.graphics.drawRect(0, 0, this.game.world.width, this.game.world.height);
+        this.dataButton.sprite.events.onInputDown.add(this.removeDocument, this);
+    }
+
+    removeDocument(){
+        this.graphics.destroy();
+        this.dataButton.sprite.events.onInputDown.add(this.createDocument, this);
     }
 
     initQuestions(){
@@ -56,33 +66,15 @@ export default class Step extends BasicGameObject {
                 question.checkAnswer();
                 if (question.isCompleted) {
                     count++;
-                    console.log(count);
                     if (count >= this.questions.children.length) {
                         this.finishStep();
                     }
                 }
             });
-
-            // this.selectedAnswers = [];
-            // this.questions.forEach((question) => {
-            //     this.selectedAnswers.push(question.checkAnswer());
-            // });
-            // for (let a in this.selectedAnswers) {
-            //     for (let b in this.selectedAnswers[a]) {
-            //         if (!this.selectedAnswers[a].includes(false)) {
-            //             this.finishStep();
-            //         } else {
-            //             //
-            //         }
-            //     }
-            // }
-            // // this.game.time.events.add(Phaser.Timer.SECOND * 2, this.start, this);
-            // this.button.sprite.events.onInputDown.add(this.initQuestions, this);
         }, this);
     }
 
     destroyElements() {
-        // this.title.destroy();
         this.questions.forEach((question) => {
             question.destroyTexts();
         });

@@ -71,7 +71,7 @@ class Engine {
     finish = new Phaser.Signal();
 
     step;
-    stepNumber = 0;
+    stepNumber = 2;
 
     player;
     responseGroup;
@@ -89,7 +89,7 @@ class Engine {
         this.step = new Step(this.gameProcess.game, Config.qcm[this.stepNumber]);
         this.step.start();
         this.stepNumber++;
-        if (this.stepNumber <= Config.qcm.length) {
+        if (this.stepNumber < Config.qcm.length) {
             this.step.finish.addOnce(this.start, this);
         } else {
             console.log("Step finished");

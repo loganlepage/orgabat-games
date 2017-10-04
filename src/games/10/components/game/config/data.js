@@ -7,7 +7,6 @@ export default {
     atlas: "jeu10",
     qcm: [ // All exercises
         { // First exercise
-            // title: "Après avoir vu l'extrait vidéo, répond aux différentes questions:",
             title: "Premier QCM",
             questions: [ // All questions
                 {
@@ -30,9 +29,9 @@ export default {
                 {
                     questionTitle: "Quel temps fait-il ?",
                     questionAnswers: [
+                        "Il y a du vent",
                         "Il pleut",
-                        "Il fait beau",
-                        "Il y a du vent"
+                        "Il fait beau"
                     ],
                     questionSolutions: ["Il y a du vent"],
                 },
@@ -47,25 +46,24 @@ export default {
                 {
                     questionTitle: "Par quoi, l’apprenti est-il déséquilibré ?",
                     questionAnswers: [
-                        "À cause du vent",
-                        "À cause d'une glissade",
-                        "À cause d'un collègue"
+                        "Le vent",
+                        "Par son collègue",
+                        "Une glissade"
                     ],
-                    questionSolutions: ["À cause d'un collègue"],
+                    questionSolutions: ["Par son collègue"],
                 },
                 {
                     questionTitle: "Pourquoi l’employeur décide-t-il de faire monter l’apprenti en hauteur ?",
                     questionAnswers: [
+                        "Car l’ouvrier est en retard",
                         "Pour tester l’apprenti",
-                        "Car il risque de pleuvoir",
-                        "Car l’ouvrier est en retard"
+                        "Car il risque de pleuvoir"
                     ],
                     questionSolutions: ["Car l’ouvrier est en retard"],
                 },
             ] // End questions
         }, // End first exercise
         {
-            // title: "Après avoir vu l'extrait vidéo, répond aux différentes questions:",
             title: "Deuxième QCM",
             questions: [
                 {
@@ -89,8 +87,8 @@ export default {
                 {
                     questionTitle: "Mr Pierre Jacquin est:",
                     questionAnswers: [
-                        "Membre du CHSCT",
                         "Délégué du personnel",
+                        "Membre du CHSCT",
                         "Conducteur de travaux"
                     ],
                     questionSolutions: ["Délégué du personnel"],
@@ -99,8 +97,8 @@ export default {
                     questionTitle: "CHSCT signifie:",
                     questionAnswers: [
                         "Comité d'Harmonisation de la Santé, des Chanters et Travaux",
-                        "Comité d'Hygiène de Sécurité et des Conditions de Travail",
-                        "Comité d'Hygiène, de Santé et des Conditions de Travail"
+                        "Comité d'Hygiène, de Santé et des Conditions de Travail",
+                        "Comité d'Hygiène de Sécurité et des Conditions de Travail"
                     ],
                     questionSolutions: ["Comité d'Hygiène de Sécurité et des Conditions de Travail"],
                 },
@@ -116,7 +114,6 @@ export default {
             ]
         },
         {
-            // title: "Après avoir vu l'extrait vidéo, répond aux différentes questions:",
             title: "Troisième QCM",
             questions: [
                 {

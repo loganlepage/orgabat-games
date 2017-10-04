@@ -3,6 +3,8 @@ import BasicGameObject from "system/phaser/BasicGameObject";
 import Phaser from 'phaser';
 import {Signal} from "phaser";
 
+import PhaserManager from 'system/phaser/utils/PhaserManager';
+
 export default class Question extends BasicGameObject {
 
     finish = new Phaser.Signal();
@@ -24,7 +26,8 @@ export default class Question extends BasicGameObject {
         this.answers = answers;
         this.solutions = solutions;
 
-        this.title = this.game.add.text(x, y, title, {font: 'Arial', fontSize: 25 * this.game.SCALE, fill: '#000000'});
+        this.title = this.game.add.text(x, y, title, {font: 'Arial', fontSize: 25 * this.game.SCALE, fill: '#808080'});
+        this.game.layer.zDepth0.addChild(this.title);
         this.texts.push(this.title);
 
         x += 30 * this.game.SCALE;
@@ -33,6 +36,7 @@ export default class Question extends BasicGameObject {
             this.answers[number] = this.game.add.text(x, y, answers[number], {font: 'Arial', fontSize: 20 * this.game.SCALE, fill: '#000000'});
             this.answers[number].inputEnabled = true;
             this.answers[number].input.useHandCursor = true;
+            this.game.layer.zDepth0.addChild(this.answers[number]);
             this.texts.push(this.answers[number]);
         }
 
@@ -55,6 +59,9 @@ export default class Question extends BasicGameObject {
                 // resultArray.push(true);
                 this.isCompleted = true;
             } else if (this.verifySelected(answer.text)) {
+                PhaserManager.get('gabator').stats.changeValues({
+                    health: PhaserManager.get('gabator').stats.state.health - 1,
+                });
                 answer.addColor("#CC0000", 0);
                 // resultArray.push(false);
             } else {
