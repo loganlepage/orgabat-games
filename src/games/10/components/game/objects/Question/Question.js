@@ -15,6 +15,8 @@ export default class Question extends BasicGameObject {
     texts = [];
     selectedAnswer = [];
 
+    isCompleted;
+
     constructor(game, x, y, title, answers, solutions) {
         super(game);
 
@@ -22,17 +24,19 @@ export default class Question extends BasicGameObject {
         this.answers = answers;
         this.solutions = solutions;
 
-        this.title = this.game.add.text(x, y, title, {font: 'Arial', fontSize: 16, fill: '#000000'});
+        this.title = this.game.add.text(x, y, title, {font: 'Arial', fontSize: 25 * this.game.SCALE, fill: '#000000'});
         this.texts.push(this.title);
 
-        x += 30;
+        x += 30 * this.game.SCALE;
         for (let number in answers) {
-            y += 27;
-            this.answers[number] = this.game.add.text(x, y, answers[number], {font: 'Arial', fontSize: 15, fill: '#000000'});
+            y += 35 * this.game.SCALE;
+            this.answers[number] = this.game.add.text(x, y, answers[number], {font: 'Arial', fontSize: 20 * this.game.SCALE, fill: '#000000'});
             this.answers[number].inputEnabled = true;
             this.answers[number].input.useHandCursor = true;
             this.texts.push(this.answers[number]);
         }
+
+        this.isCompleted = false;
     }
 
     selectAnswer(answer) {
@@ -44,19 +48,20 @@ export default class Question extends BasicGameObject {
     }
 
     checkAnswer() {
-        let resultArray = [];
+        // let resultArray = [];
         this.answers.forEach((answer) => {
             if (this.verifySelected(answer.text) && this.verifySolution(answer.text)) {
                 answer.addColor("#4CA64C", 0);
-                resultArray.push(true);
+                // resultArray.push(true);
+                this.isCompleted = true;
             } else if (this.verifySelected(answer.text)) {
                 answer.addColor("#CC0000", 0);
-                resultArray.push(false);
+                // resultArray.push(false);
             } else {
-                resultArray.push(false);
+                // resultArray.push(false);
             }
         });
-        return resultArray;
+        // return resultArray;
     }
 
     // If element is selected
@@ -78,11 +83,10 @@ export default class Question extends BasicGameObject {
     }
 
     destroyTexts() {
-        console.log("Destroy question");
         this.texts.forEach((text) => {
             text.destroy();
         });
-        this.destroy();
+        // this.destroy();
     }
 
     preUpdate() {

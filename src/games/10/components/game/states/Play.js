@@ -92,6 +92,7 @@ class Engine {
         if (this.stepNumber <= Config.qcm.length) {
             this.step.finish.addOnce(this.start, this);
         } else {
+            console.log("Step finished");
             this.gameProcess.quests._quests.communication_quest.done();
         }
     }
