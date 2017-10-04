@@ -8,7 +8,8 @@ import {Signal} from 'phaser';
 
 import Button from '../Button/Button';
 import QuestionFactory from "../Question/QuestionFactory";
-import Graphic from "../Graphic/Graphic";
+// import Graphic from "../Graphic/Graphic";
+// import VideoObject from "../Video/VideoObject";
 
 export default class Step extends BasicGameObject {
 
@@ -36,6 +37,22 @@ export default class Step extends BasicGameObject {
     }
 
     createDocument(){
+        if ("un_cas_decole.mp4") {
+            // this.document = new Video(this.game, 'un_cas_decole', 'assets/files/jeu10/documents/un_cas_decole.mp4');
+            // this.game.load.video('un_cas_decole', 'assets/video/un_cas_decole.mp4');
+            // console.log("Video loaded");
+
+            // this.document = this.game.add.video('un_cas_decole');
+            // console.log("Video added");
+            // console.log(this.document);
+
+            // this.sprite = this.document.addToWorld(400, 300, 0.5, 0.5);
+            // console.log("Video added to world");
+            // console.log(this.sprite);
+
+            // this.document.play();
+            // console.log("Video played");
+        }
         this.dataButton.sprite.events.onInputDown.removeAll();
         this.graphics = this.game.add.graphics(0, 0);
         this.game.layer.zDepth1.addChild(this.graphics);

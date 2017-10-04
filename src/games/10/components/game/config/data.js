@@ -8,6 +8,7 @@ export default {
     qcm: [ // All exercises
         { // First exercise
             title: "Premier QCM",
+            document: "un_cas_decole.mp4",
             questions: [ // All questions
                 {
                     questionTitle: "Comment se nomme l’apprenti ?",
@@ -65,6 +66,7 @@ export default {
         }, // End first exercise
         {
             title: "Deuxième QCM",
+            document: "bande_son.wav",
             questions: [
                 {
                     questionTitle: "Si tu veux prendre rendez-vous avec le patron:",
@@ -115,6 +117,7 @@ export default {
         },
         {
             title: "Troisième QCM",
+            document: "compte_rendu",
             questions: [
                 {
                     questionTitle: "Il faut fournir le plan en détail de la salle à manger:",
