@@ -24,7 +24,6 @@ export default class QcmModalHandler extends GameModal {
         super(game);
         this.properties = properties;
         this.obj = obj;
-
     }
 
     show() {
@@ -37,7 +36,7 @@ export default class QcmModalHandler extends GameModal {
 
     continue(answer, qcmModal) {
         if (answer === null) {
-            this.cantContinue(QcmModalHandler.ANSWER_UNDEFINED)
+            this.cantContinueException(QcmModalHandler.ANSWER_UNDEFINED)
         } else {
             qcmModal.onContinue.removeAll(this);
             qcmModal.delete();
@@ -45,7 +44,7 @@ export default class QcmModalHandler extends GameModal {
         }
     }
 
-    cantContinue(message) {
+    cantContinueException(message) {
         if (this.isCantContinue) return;
         this.isCantContinue = true;
         const cantUse = new Feedback({}, StackManager, this.game);

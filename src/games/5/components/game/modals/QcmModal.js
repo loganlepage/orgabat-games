@@ -12,9 +12,6 @@ export default class QcmInfoModal extends Modal {
 
     set answer(answer) {
         this._answer = answer;
-        //const check = this.items.answerPane.items.check;
-        //check.visible = false;
-        //check.setY(answer ? QcmInfoModal.checkGoodPosition.y : QcmInfoModal.checkBadPosition.y);
     }
 
     get answer() {
@@ -31,14 +28,11 @@ export default class QcmInfoModal extends Modal {
         super(Type.deepMerge(QcmInfoModal.pattern, data), manager, game);
         this._initPicture();
         this._initAnswerEvents();
-        //this._initContinueEvents();
     }
 
     _initPicture() {
         const bg = this.items.bg;
         const picture = this.items.picture;
-        window.picture = picture;
-        window.bg = bg;
         const scale = bg.width / picture.width;
         picture.scale.set(scale/1.5);
         //picture.y = bg.height - picture.height - this.game.uiScale(15) /*padding bottom*/;
@@ -60,31 +54,6 @@ export default class QcmInfoModal extends Modal {
             this.onContinue.dispatch(this.answer, this);
         });
     }
-
-    /*
-    _initContinueEvents() {
-        this.game.keys.addKey(Phaser.Keyboard.ENTER).onDown.add(this._continue, this);
-        this.game.keys.addKey(Phaser.Keyboard.A).onDown.add(this._continue, this);
-        this.items.answerPane.items.close.items.iconA.events.onInputDown.add(this._continue, this);
-        this.items.answerPane.items.close.items.textA.events.onInputDown.add(this._continue, this);
-    }
-
-    _continue() {
-
-        if(this.answer !== null) {
-            this.game.keys.addKey(Phaser.Keyboard.ENTER).onDown.removeAll(this);
-            this.game.keys.addKey(Phaser.Keyboard.A).onDown.removeAll(this);
-        }
-        this.onContinue.dispatch(this.answer, this);
-    }*/
-
-    /*static get checkGoodPosition() {
-        return {y: 60};
-    }
-
-    static get checkBadPosition() {
-        return {y: 100};
-    }*/
 
     static get pattern() {
         return {

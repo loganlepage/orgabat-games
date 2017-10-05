@@ -3,6 +3,7 @@ import Phaser, {State, Easing, Signal} from "phaser";
 import PhaserManager from "system/phaser/utils/PhaserManager";
 import StartInfoModal from "../modals/StartInfoModal";
 import EndInfoModal from "../modals/EndInfoModal";
+import Part2InfoModal from "../modals/Part2InfoModal";
 import {DefaultManager, StackManager} from "system/phaser/Modal";
 import QuestManager, {DomQuestList} from "system/phaser/utils/Quest";
 import Config from "../config/data";
@@ -69,61 +70,70 @@ export default class Play extends State {
     }
 };
 
-class GameProcess {
-    constructor(playState) {
-        this.play = playState;
-        this.game = playState.game;
-        this.game.custom_events = {};
-        this.game.custom_events.dropAWaste = new Signal();
-        this.game.camera.y = this.game.camera.height;
+class PartOne {
 
-        //Animation de la caméra
-        //On ajuste sa durée par rapport au mouvement à effectuer (peut être égal à 0)
-        this.bootTweenTime = (this.game.world.height - this.game.camera.height) * 4.5;
-        this.bootTween = this.game.add.tween(this.game.camera).to({
-            y: this.game.canvas.height
-        }, this.bootTweenTime, Easing.Quadratic.InOut, false, 600);
+    finish = new Phaser.Signal();
 
-        //On prépare les quêtes
-        this.quests = new QuestManager(this.game);
-        new DomQuestList(this.quests);
+    constructor(gameProcess) {
+        this.process = gameProcess;
     }
 
-    init() {
-        if (this.bootTweenTime > 0) this.bootTween.start().onComplete.add(() => this._onAnimationEnd());
-        else this._onAnimationEnd();
+    onReady() {
+        //On lance le QCM
+        this.process.game.qcmGroup.start();
+
+        this.process.quests.add(new TerminerLeQcmQuest(this.process.game));
+        this.process.quests.get('qcm_finished').onDone.addOnce(this._onQuestsCleaned, this);
+        this.process.game.qcmGroup.forEach((qcm) => {
+            qcm.onFinished.addOnce((answer) => {
+                console.log(Config.questions[qcm.key - 1].prop["good-answer"]);
+                console.log(answer);
+                if (Config.questions[qcm.key - 1].prop["good-answer"] !== answer) {
+                    PhaserManager.get('gabator').stats.changeValues({
+                        health: PhaserManager.get('gabator').stats.health - 1,
+                    });
+                }
+            });
+        });
     }
 
-    _onAnimationEnd() {
-        //On affiche la modale d'information du début
-        const startInfoModal = new StartInfoModal({}, DefaultManager, this.game);
-        const startTheGame = () => {
-            startInfoModal.toggle(false);
-            this._onStart();
-        };
+    _onQuestsCleaned() {
+        this.finish.dispatch();
+    }
+}
 
-        this.game.keys.addKey(Phaser.Keyboard.ENTER).onDown.addOnce(startTheGame, this);
-        this.game.keys.addKey(Phaser.Keyboard.A).onDown.addOnce(startTheGame, this);
-        startInfoModal.items.close.items.iconA.events.onInputDown.add(startTheGame, this);
-        startInfoModal.items.close.items.textA.events.onInputDown.add(startTheGame, this);
-        /*
-        startInfoModal.onDeleted.addOnce(() => {
-            this.game.keys.addKey(Phaser.Keyboard.ENTER).onDown.removeAll(this);
-            this.game.keys.addKey(Phaser.Keyboard.A).onDown.removeAll(this);
-        }, this);*/
-        startInfoModal.toggle(true);
+class PartTwo {
+
+    finish = new Phaser.Signal();
+
+    constructor(gameProcess) {
+        this.process = gameProcess;
     }
 
-    _onStart() {
-        //On active Gabator
-        if (PhaserManager.get('gabator').state.current == "play")
-            PhaserManager.get('gabator').state.getCurrentState().start();
+    startMenu() {
+        //On affiche la modale d'information de la 2e partie
+        this.part2tInfoModal = new Part2InfoModal({}, DefaultManager, this.process.game);
+        this.process.game.keys.addKey(Phaser.Keyboard.ENTER).onDown.addOnce(this._onReady, this);
+        this.process.game.keys.addKey(Phaser.Keyboard.A).onDown.addOnce(this._onReady, this);
+        this.part2tInfoModal.items.close.items.iconA.events.onInputDown.add(this._onReady, this);
+        this.part2tInfoModal.items.close.items.textA.events.onInputDown.add(this._onReady, this);
+        this.part2tInfoModal.onDeleted.addOnce(() => {
+            delete this.part2tInfoModal
+        }, this);
+        this.part2tInfoModal.toggle(true);
+    }
+
+    _onReady() {
+        this.process.game.keys.addKey(Phaser.Keyboard.ENTER).onDown.remove(this._onReady, this);
+        this.process.game.keys.addKey(Phaser.Keyboard.A).onDown.remove(this._onReady, this);
+        this.part2tInfoModal.toggle(false, {});
 
         //On lance le QCM
-        this.game.qcmGroup.start();
+        this.process.game.qcmGroup.start();
 
-        //Events
-        this.game.qcmGroup.forEach((qcm) => {
+        this.process.quests.add(new TerminerLeQcmQuest(this.process.game));
+        this.process.quests.get('qcm_finished').onDone.addOnce(this._onQuestsCleaned, this);
+        this.process.game.qcmGroup.forEach((qcm) => {
             qcm.onFinished.addOnce((answer) => {
                 if (Config.questions[qcm.key - 1].prop["good-answer"] !== answer) {
                     PhaserManager.get('gabator').stats.changeValues({
@@ -132,11 +142,75 @@ class GameProcess {
                 }
             });
         });
-        this.quests.add(new TerminerLeQcmQuest(this.game));
-        this.quests.get('qcm_finished').onDone.addOnce(this._onFinish, this);
+    }
 
+    _onQuestsCleaned() {
+        this.finish.dispatch();
+    }
+}
+
+class GameProcess {
+
+    questsCleaned = new Phaser.Signal();
+
+    constructor(playState) {
+        this.play = playState;
+        this.game = playState.game;
+
+        //On prépare les quêtes
+        this.quests = new QuestManager(this.game);
+        this.quests.onNbQuestsDoneChange.add(this._onQuestChange, this);
+        new DomQuestList(this.quests);
+
+        this.partOne = new PartOne(this);
+        this.partTwo = new PartTwo(this);
+
+        //On prépare les quêtes
+        this.quests = new QuestManager(this.game);
+        new DomQuestList(this.quests);
+    }
+
+    _initParts() {
+        //When ready, lets init parts.
+        this.partOne.finish.addOnce(this.partTwo.startMenu, this.partTwo);
+        this.partTwo.finish.addOnce(this._onFinish, this);
+        this.partOne.onReady();
+    }
+
+    init() {
+        //On affiche la modale d'information du début
+        this.startInfoModal = new StartInfoModal({}, DefaultManager, this.game);
+        this.game.keys.addKey(Phaser.Keyboard.ENTER).onDown.addOnce(this._onStartInfoClose, this);
+        this.game.keys.addKey(Phaser.Keyboard.A).onDown.addOnce(this._onStartInfoClose, this);
+        this.startInfoModal.items.close.items.iconA.events.onInputDown.add(this._onStartInfoClose, this);
+        this.startInfoModal.items.close.items.textA.events.onInputDown.add(this._onStartInfoClose, this);
+        this.startInfoModal.onDeleted.addOnce(() => {
+            delete this.startInfoModal
+        }, this);
+        this.startInfoModal.toggle(true);
+    }
+
+    _onStartInfoClose() {
+        //On active Gabator
+        if (PhaserManager.get('gabator').state.current === "play")
+            PhaserManager.get('gabator').state.getCurrentState().start();
+
+        this.game.keys.addKey(Phaser.Keyboard.ENTER).onDown.remove(this._onStartInfoClose, this);
+        this.game.keys.addKey(Phaser.Keyboard.A).onDown.remove(this._onStartInfoClose, this);
+
+        this._initParts();
+
+        //Ferme la modale et active les controls
+        this.startInfoModal.toggle(false, {});
         this.game.controlsEnabled = true;
+
         this._timeStart = this.game.time.now;
+    }
+
+    _onQuestChange() {
+        if (this.quests.nbQuestsDone === 0) {
+            this.questsCleaned.dispatch();
+        }
     }
 
     _onFinish() {
