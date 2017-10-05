@@ -21,8 +21,6 @@ export default class StartInfoModal extends Modal {
         good.y = this.game.height  - (this.game.height / 3.65);
         bad.x = this.game.width  - (this.game.width / 1.7);
         bad.y = this.game.height  - (this.game.height / 3.65);
-        console.log(game.world.centerX);
-        console.log(game.world.height);
         // add text below icons
         this.textG = this.game.add.text(good.x, good.y, good.text, good.style);
         this.textB = this.game.add.text(bad.x, bad.y, bad.text, bad.style);

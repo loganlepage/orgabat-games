@@ -8,7 +8,9 @@ import {DefaultManager, StackManager} from "system/phaser/Modal";
 import QuestManager, {DomQuestList} from "system/phaser/utils/Quest";
 import Config from "../config/data";
 import QcmFactory from "../objects/Qcm/QcmFactory";
-import TerminerLeQcmQuest from "../quests/TerminerLeQcmQuest";
+import QcmMultipleFactory from "../objects/QcmMultiple/QcmMultipleFactory";
+import TerminerPart1Quest from "../quests/TerminerPart1Quest";
+import TerminerPart2Quest from "../quests/TerminerPart2Quest";
 
 /** State when we start the game */
 export default class Play extends State {
@@ -33,7 +35,8 @@ export default class Play extends State {
     }
 
     addQcms() {
-        this.game.qcmGroup = new QcmFactory(this.game, Config.questions);
+        this.game.qcmGroup1 = new QcmFactory(this.game, Config.questions_part_1);
+        this.game.qcmGroup2 = new QcmMultipleFactory(this.game, Config.questions_part_2);
     }
 
     /** Called by create to add UI Layers */
@@ -46,18 +49,6 @@ export default class Play extends State {
             zDepth3: this.add.group(),
             zDepthOverAll: this.add.group()
         };
-    }
-
-    /** Called by Phaser to update */
-    update() {
-    }
-
-    /** Called by Phaser to render */
-    render() {
-        //if(Config.developer.debug) {
-        //this.game.time.advancedTiming = true; //SEE FPS
-        //this.game.debug.text(this.game.time.fps, 2, 14, "#00ff00");
-        // }
     }
 
     /**
@@ -80,15 +71,13 @@ class PartOne {
 
     onReady() {
         //On lance le QCM
-        this.process.game.qcmGroup.start();
+        this.process.game.qcmGroup1.start();
 
-        this.process.quests.add(new TerminerLeQcmQuest(this.process.game));
-        this.process.quests.get('qcm_finished').onDone.addOnce(this._onQuestsCleaned, this);
-        this.process.game.qcmGroup.forEach((qcm) => {
+        this.process.quests.add(new TerminerPart1Quest(this.process.game));
+        this.process.quests.get('qcm_1_finished').onDone.addOnce(this._onQuestsCleaned, this);
+        this.process.game.qcmGroup1.forEach((qcm) => {
             qcm.onFinished.addOnce((answer) => {
-                console.log(Config.questions[qcm.key - 1].prop["good-answer"]);
-                console.log(answer);
-                if (Config.questions[qcm.key - 1].prop["good-answer"] !== answer) {
+                if (Config.questions_part_1[qcm.properties.id].prop["good-answer"] !== answer) {
                     PhaserManager.get('gabator').stats.changeValues({
                         health: PhaserManager.get('gabator').stats.health - 1,
                     });
@@ -129,13 +118,13 @@ class PartTwo {
         this.part2tInfoModal.toggle(false, {});
 
         //On lance le QCM
-        this.process.game.qcmGroup.start();
+        this.process.game.qcmGroup2.start();
 
-        this.process.quests.add(new TerminerLeQcmQuest(this.process.game));
-        this.process.quests.get('qcm_finished').onDone.addOnce(this._onQuestsCleaned, this);
-        this.process.game.qcmGroup.forEach((qcm) => {
+        this.process.quests.add(new TerminerPart2Quest(this.process.game));
+        this.process.quests.get('qcm_2_finished').onDone.addOnce(this._onQuestsCleaned, this);
+        this.process.game.qcmGroup2.forEach((qcm) => {
             qcm.onFinished.addOnce((answer) => {
-                if (Config.questions[qcm.key - 1].prop["good-answer"] !== answer) {
+                if (Config.questions_part_2[qcm.properties.id].prop["good-answer"] !== answer) {
                     PhaserManager.get('gabator').stats.changeValues({
                         health: PhaserManager.get('gabator').stats.health - 1,
                     });

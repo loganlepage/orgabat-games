@@ -2,11 +2,11 @@
 
 import Config from '../../config/data';
 import {Signal} from 'phaser';
-import QcmModalHandler from "./QcmModalHandler";
+import QcmMultipleModalHandler from "./QcmMultipleModalHandler";
 import AbstractObject from "system/phaser/AbstractObject";
 
 /** Qcm Object (include sprite and modals) */
-export default class Qcm extends AbstractObject {
+export default class QcmMultiple extends AbstractObject {
 
     ready = false;
     onFinished = new Signal();
@@ -31,20 +31,20 @@ export default class Qcm extends AbstractObject {
     /**
      * Constructor for a new Qcm form
      * @param game
-     * @param key
+     * @param keys
      * @param properties
      */
-    constructor(game, key, properties) {
+    constructor(game, keys, properties) {
         super(game);
-        this.key = key;
+        this.keys = keys;
         this.properties = properties;
-        this.addModalHandler(new QcmModalHandler(properties, this, game));
+        this.addModalHandler(new QcmMultipleModalHandler(properties, this, game));
         this.ready = true;
     }
 
     continue(answer) { //called by qcmModalHandler
         this._answer = answer;
-        Config.questions_part_1[this.properties.id].prop["user-answer"] = answer;
+        Config.questions_part_2[this.properties.id].prop["user-answer"] = answer;
         this.onFinished.dispatch(answer);
     }
 };
