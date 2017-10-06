@@ -37,8 +37,22 @@ export default class Step extends BasicGameObject {
     }
 
     createDocument(){
-        if ("un_cas_decole.mp4") {
-            // this.document = new Video(this.game, 'un_cas_decole', 'assets/files/jeu10/documents/un_cas_decole.mp4');
+        if (this.stepData.document == "un_cas_decole.mp4") {
+            this.game.iframe.setState({
+                visible:true,
+                // closeCallback: this.removeDocument.bind(this),
+                url:'https://www.youtube.com/embed/IQIPXJvX9gY?rel=0&autoplay=1&controls=0&showinfo=0'
+            });
+
+            // let load = this.game.load.video('un_cas_decole', 'https://www.youtube.com/watch?v=IQIPXJvX9gY');
+            // console.log(load);
+            // let video = new Phaser.Video(this.game, 'un_cas_decole');
+            // console.log(video);
+            // let add =  this.game.add.video(video);
+            // console.log(add);
+            // let sprite = video.addToWorld(400, 300, 0.5, 0.5);
+            // console.log(sprite);
+
             // this.game.load.video('un_cas_decole', 'assets/video/un_cas_decole.mp4');
             // console.log("Video loaded");
 
@@ -63,6 +77,9 @@ export default class Step extends BasicGameObject {
     }
 
     removeDocument(){
+        if (this.stepData.document == "un_cas_decole.mp4") {
+            this.game.iframe.setState({ visible:false });
+        }
         this.graphics.destroy();
         this.dataButton.sprite.events.onInputDown.add(this.createDocument, this);
     }
