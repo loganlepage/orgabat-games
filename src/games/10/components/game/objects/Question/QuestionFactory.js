@@ -12,7 +12,18 @@ export default class QuestionFactory extends GameFactory {
         super(game);
 
         let x = 50 * this.game.SCALE;
-        let y = 25 * this.game.SCALE;
+        // let y = 20 * this.game.SCALE;
+
+        let tmpY = 0;
+
+        for (let question in questions) {
+            tmpY += 50 * this.game.SCALE + 30 * questions[question].questionAnswers.length * this.game.SCALE;
+        }
+
+        let y = this.game.world.centerY - tmpY / 2;
+
+        console.log(y);
+        console.log(tmpY);
 
         for (let question in questions) {
             this.add(new Question(
@@ -27,7 +38,7 @@ export default class QuestionFactory extends GameFactory {
             // this.game.layer.zDepth0.addChild(this.graphic.graphic);
             // this.graphic.graphic.graphicsData[0].shape.width = this.children[question].title.width + 20;
             // this.graphic.graphic.graphicsData[0].shape.height = this.children[question].title.height + 20;
-            y += 50 * this.game.SCALE + 35 * questions[question].questionAnswers.length * this.game.SCALE;
+            y += 50 * this.game.SCALE + 30 * questions[question].questionAnswers.length * this.game.SCALE;
             // if (questions[question].questionAnswers.length == 2) {
             //     y += 100 * this.game.SCALE;
             // } else {
