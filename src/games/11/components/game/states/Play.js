@@ -121,10 +121,16 @@ class Engine {
                 this.items.forEach((item2) => {
                     item2.obj.disableControls();
                 });
+                this.list.forEach((list2) => {
+                    list2.disableControls();
+                });
             }, this);
             item.obj.onClosed.add(function(){
                 this.items.forEach((item2) => {
                     item2.obj.enableControls();
+                });
+                this.list.forEach((list2) => {
+                    list2.enableControls();
                 });
             }, this);
         });
@@ -138,15 +144,19 @@ class Engine {
         // Element modal
         this.list.forEach((item) => {
             item.onClicked.add(function(){
-                console.log("OK");
                 this.items.forEach((item2) => {
                     item2.obj.disableControls();
                 });
+                this.list.forEach((list2) => {
+                    list2.disableControls();
+                });
             }, this);
             item.onClosed.add(function(){
-                console.log("KO");
                 this.items.forEach((item2) => {
                     item2.obj.enableControls();
+                });
+                this.list.forEach((list2) => {
+                    list2.enableControls();
                 });
             }, this);
         });
@@ -188,6 +198,21 @@ class Engine {
 
         this.order.sprite.scale.setTo(this.gameProcess.game.SCALE); // Propotionnal scale
         this.order.sprite.events.onInputDown.add(function(){
+            // Disable all controls
+            this.items.forEach((item2) => {
+                item2.obj.enableControls();
+            });
+            this.list.forEach((list2) => {
+                list2.enableControls();
+            });
+            // Create black background
+            this.blackBackground = this.gameProcess.game.add.graphics(0,0);
+            this.gameProcess.game.layer.zDepth1.addChild(this.blackBackground);
+            this.blackBackground.lineStyle(0, "balck", 0);
+            this.blackBackground.beginFill("black", 0.5);
+            this.blackBackground.drawRect(0, 0, this.gameProcess.game.world.width, this.gameProcess.game.world.height);
+            this.blackBackground.inputEnabled = true;
+            this.blackBackground.input.useHandCursor = true;
             // Display order image, not a button
             this.order = new Button(
                 this.gameProcess.game, 
@@ -195,9 +220,19 @@ class Engine {
                 this.gameProcess.game.world.centerY, 
                 "order_image"
             );
-            this.order.sprite.events.onInputDown.add(function(){
+            this.order.sprite.inputEnabled = false;
+            this.gameProcess.game.layer.zDepth1.addChild(this.order.sprite);
+            this.blackBackground.events.onInputDown.add(function(){
                 this.order.sprite.destroy();
                 this.order = null;
+                // Enable all controls
+                this.items.forEach((item2) => {
+                    item2.obj.enableControls();
+                });
+                this.list.forEach((list2) => {
+                    list2.enableControls();
+                });
+                this.blackBackground.destroy();
             }, this);
         }, this);
 

@@ -100,6 +100,16 @@ export default class Element extends BasicGameObject {
         return true;
     }
 
+    disableControls() {
+        this.button.sprite.inputEnabled = false;
+        this.button.sprite.input.useHandCursor = false;
+    }
+
+    enableControls() {
+        this.button.sprite.inputEnabled = true;
+        this.button.sprite.input.useHandCursor = true;
+    }
+
     preUpdate() {
         //
     }
