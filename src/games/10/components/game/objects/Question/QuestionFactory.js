@@ -15,7 +15,6 @@ export default class QuestionFactory extends GameFactory {
         let y = 25 * this.game.SCALE;
 
         for (let question in questions) {
-            // this.graphic = new Graphic(this.game, x - 10, y - 5, 100, 30);
             this.add(new Question(
                 this.game,
                 x,
@@ -24,7 +23,10 @@ export default class QuestionFactory extends GameFactory {
                 questions[question].questionAnswers,
                 questions[question].questionSolutions)
             );
+            // this.graphic = new Graphic(this.game, x - 10, y - 4, this.children[question].title.width + 20, this.children[question].title.height + 6);
+            // this.game.layer.zDepth0.addChild(this.graphic.graphic);
             // this.graphic.graphic.graphicsData[0].shape.width = this.children[question].title.width + 20;
+            // this.graphic.graphic.graphicsData[0].shape.height = this.children[question].title.height + 20;
             y += 50 * this.game.SCALE + 35 * questions[question].questionAnswers.length * this.game.SCALE;
             // if (questions[question].questionAnswers.length == 2) {
             //     y += 100 * this.game.SCALE;

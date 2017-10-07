@@ -27,7 +27,7 @@ export default class Question extends BasicGameObject {
         this.solutions = solutions;
 
         this.title = this.game.add.text(x, y, title, {font: 'Arial', fontSize: 25 * this.game.SCALE, fill: '#808080'});
-        this.game.layer.zDepth0.addChild(this.title);
+        this.game.layer.zDepth1.addChild(this.title);
         this.texts.push(this.title);
 
         x += 30 * this.game.SCALE;
@@ -41,6 +41,19 @@ export default class Question extends BasicGameObject {
         }
 
         this.isCompleted = false;
+    }
+
+    removeControls(){
+        for (let number in this.answers) {
+            this.answers[number].inputEnabled = false;
+        }
+    }
+
+    addControls(){
+        for (let number in this.answers) {
+            this.answers[number].inputEnabled = true;
+            this.answers[number].input.useHandCursor = true;
+        }
     }
 
     selectAnswer(answer) {

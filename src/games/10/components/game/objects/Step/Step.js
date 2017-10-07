@@ -8,8 +8,7 @@ import {Signal} from 'phaser';
 
 import Button from '../Button/Button';
 import QuestionFactory from "../Question/QuestionFactory";
-// import Graphic from "../Graphic/Graphic";
-// import VideoObject from "../Video/VideoObject";
+import Document from "../Document/Document";
 
 export default class Step extends BasicGameObject {
 
@@ -29,59 +28,74 @@ export default class Step extends BasicGameObject {
 
     start() {
         this.questions = new QuestionFactory(this.game, this.stepData.questions);
-        this.button = new Button(this.game, this.game.world.width - 100 * this.game.SCALE, this.game.world.height - 50 * this.game.SCALE);
-        this.dataButton = new Button(this.game, this.game.world.width - 100 * this.game.SCALE, this.game.world.centerY);
-        this.game.layer.zDepth2.addChild(this.dataButton.sprite);
+        this.button = new Button(
+            this.game, 
+            this.game.world.width - 100 * this.game.SCALE, 
+            this.game.world.height - 50 * this.game.SCALE, 
+            'continuer');
+        this.dataButton = new Button(
+            this.game, 
+            this.game.world.width - 100 * this.game.SCALE, 
+            this.game.world.centerY, 
+            'doc');
+        // this.game.layer.zDepth2.addChild(this.dataButton.sprite);
         this.dataButton.sprite.events.onInputDown.add(this.createDocument, this);
         this.initQuestions();
     }
 
     createDocument(){
-        if (this.stepData.document == "un_cas_decole.mp4") {
-            this.game.iframe.setState({
-                visible:true,
-                // closeCallback: this.removeDocument.bind(this),
-                url:'https://www.youtube.com/embed/IQIPXJvX9gY?rel=0&autoplay=1&controls=0&showinfo=0'
-            });
-
-            // let load = this.game.load.video('un_cas_decole', 'https://www.youtube.com/watch?v=IQIPXJvX9gY');
-            // console.log(load);
-            // let video = new Phaser.Video(this.game, 'un_cas_decole');
-            // console.log(video);
-            // let add =  this.game.add.video(video);
-            // console.log(add);
-            // let sprite = video.addToWorld(400, 300, 0.5, 0.5);
-            // console.log(sprite);
-
-            // this.game.load.video('un_cas_decole', 'assets/video/un_cas_decole.mp4');
-            // console.log("Video loaded");
-
-            // this.document = this.game.add.video('un_cas_decole');
-            // console.log("Video added");
-            // console.log(this.document);
-
-            // this.sprite = this.document.addToWorld(400, 300, 0.5, 0.5);
-            // console.log("Video added to world");
-            // console.log(this.sprite);
-
-            // this.document.play();
-            // console.log("Video played");
-        }
-        this.dataButton.sprite.events.onInputDown.removeAll();
+        // Remove controls
+        this.questions.forEach((question) => {
+            question.removeControls();
+        });
+        this.button.sprite.inputEnabled = false;
+        // this.dataButton.changeSprite('continuer');
+        // Background
         this.graphics = this.game.add.graphics(0, 0);
         this.game.layer.zDepth1.addChild(this.graphics);
         this.graphics.lineStyle(0, "balck", 0);
         this.graphics.beginFill("black", 0.6);
         this.graphics.drawRect(0, 0, this.game.world.width, this.game.world.height);
-        this.dataButton.sprite.events.onInputDown.add(this.removeDocument, this);
+        // this.dataButton.sprite.events.onInputDown.add(this.removeDocument, this);
+        //Background controls
+        this.graphics.inputEnabled = true;
+        this.graphics.input.useHandCursor = true;
+        this.graphics.events.onInputDown.add(this.removeDocument, this);
+        // Document
+        if (this.stepData.document == "un_cas_decole.mp4") {
+            // Video
+            this.game.iframe.setState({
+                visible:true,
+                url:'https://www.youtube.com/embed/IQIPXJvX9gY?rel=0&autoplay=1&controls=0&showinfo=0'
+            });
+        } else if (this.stepData.document == "bande_son.wav") {
+            // Sound
+            this.game.iframe.setState({
+                visible:true,
+                url:'https://www.youtube.com/embed/Q0q9a5QS6WQ?rel=0&autoplay=1&controls=0&showinfo=0'
+            });
+        } else {
+            this.document = new Document(this.game, this.game.world.centerX, this.game.world.centerY, 'compte_rendu');
+        }
+
+        this.dataButton.sprite.events.onInputDown.removeAll();
+        
     }
 
     removeDocument(){
-        if (this.stepData.document == "un_cas_decole.mp4") {
+        console.log("Remove");
+        if (this.stepData.document == "un_cas_decole.mp4" || this.stepData.document == "bande_son.wav") {
             this.game.iframe.setState({ visible:false });
+        } else {
+            this.document.destroy();
         }
         this.graphics.destroy();
         this.dataButton.sprite.events.onInputDown.add(this.createDocument, this);
+        // Add controls
+        this.questions.forEach((question) => {
+            question.addControls();
+        });
+        this.button.sprite.inputEnabled = true;
     }
 
     initQuestions(){
