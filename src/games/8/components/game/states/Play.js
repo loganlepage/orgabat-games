@@ -90,7 +90,8 @@ class ScreenOne {
 où dix maisons individuelles sont en cours de construction. Il manutentionne des par paings afin 
 d’approvisionner le poste de travail d’un collègue. Soudain, il glisse et se coupe profondément à la cuisse. 
 Que faire ?`;
-        this.title = this.game.add.text(20, 20, text, {font: 'Arial', fontSize: 20, fill: '#000000'});
+        this.title = this.game.add.text(this.game.world.centerX, 25 * this.game.SCALE, text, {font: 'Arial', fontSize: 25 * this.game.SCALE, fill: '#000000', align:'center'});
+        this.title.anchor.setTo(0.5, 0);
 
         this.game.responseGroup = new ResponseFactory(this.game, Config.screenOne);
         this.game.responseGroup.forEach((item) => {
@@ -155,7 +156,8 @@ class ScreenTwo {
 
     start() {
         let text = `As-tu ta formation SST ?`;
-        this.title = this.game.add.text(20, 20, text, {font: 'Arial', fontSize: 20, fill: '#000000'});
+        this.title = this.game.add.text(this.game.world.centerX, 25 * this.game.SCALE, text, {font: 'Arial', fontSize: 25 * this.game.SCALE, fill: '#000000', align:'center'});
+        this.title.anchor.setTo(0.5, 0);
 
         this.game.responseGroup = new ResponseFactory(this.game, Config.screenTwo);
         this.game.responseGroup.forEach((item) => {
@@ -215,9 +217,10 @@ class ScreenThree {
         this.gameProcess.quests.add(new CareStepsQuest(this.gameProcess.game));
 
         let text = `Remet les quatre étapes, par ordre chronologique, de l’intervention du SST.`;
-        this.title = this.game.add.text(20, 20, text, {font: 'Arial', fontSize: 20, fill: '#000000'});
+        this.title = this.game.add.text(this.game.world.centerX, 25 * this.game.SCALE, text, {font: 'Arial', fontSize: 25 * this.game.SCALE, fill: '#000000', align:'center'});
+        this.title.anchor.setTo(0.5, 0);
 
-        this.background = new Background(this.game, this.game.world.centerX, 300, "steps/bg");
+        this.background = new Background(this.game, this.game.world.centerX, 300 * this.game.SCALE, "steps/bg");
         this.game.layer.zDepth0.addChild(this.background.sprite);
         
         this.game.responseGroup = new ResponseFactory(this.game, Config.screenThree);
@@ -291,7 +294,8 @@ class ScreenThree {
     addShapes(element) {
         let x = element.x, 
             y = element.y,
-            y2 = y + 15,
+            // y2 = y + 15,
+            y2 = y,
 
             width = element.sprite.width,
             number = this.game.responseGroup.number,
@@ -376,9 +380,10 @@ class ScreenFour {
 
         let text = `Paul a été pris en charge par les secours. Il te demande conseil sur la procédure en cas d’accident du travail, 
 car c’est la premiè̀re fois pour lui. Fais glisser sur les schémas les différents acteurs :`;
-        this.title = this.game.add.text(20, 20, text, {font: 'Arial', fontSize: 20, fill: '#000000'});
+        this.title = this.game.add.text(this.game.world.centerX, 25 * this.game.SCALE, text, {font: 'Arial', fontSize: 25 * this.game.SCALE, fill: '#000000', align:'center'});
+        this.title.anchor.setTo(0.5, 0);
 
-        this.background = new Background(this.game, this.game.world.centerX, 300, "process/bg");
+        this.background = new Background(this.game, this.game.world.centerX, 350 * this.game.SCALE, "process/bg");
         this.game.layer.zDepth0.addChild(this.background.sprite);
 
         this.game.responseGroup = new ResponseFactory(this.game, Config.screenFour);
@@ -456,20 +461,20 @@ car c’est la premiè̀re fois pour lui. Fais glisser sur les schémas les dif
         let x = element.x, 
             y = element.y,
 
-            x1 = x - 270,
-            y1 = y - 0,
+            x1 = x - 270 * this.game.SCALE,
+            y1 = y - 0 * this.game.SCALE,
 
-            x2 = x + 70,
-            y2 = y - 0,
+            x2 = x + 70 * this.game.SCALE,
+            y2 = y - 0 * this.game.SCALE,
 
-            x3 = x + 265,
-            y3 = y - 135,
+            x3 = x + 265 * this.game.SCALE,
+            y3 = y - 135 * this.game.SCALE,
 
-            x4 = x + 265,
-            y4 = y + 135,
+            x4 = x + 265 * this.game.SCALE,
+            y4 = y + 135 * this.game.SCALE,
 
             fill = false,
-            radius = 80;
+            radius = 80 * this.game.SCALE;
 
         // CPAM
         this.shapes[0] = this.game.add.graphics(x1, y1);
@@ -545,9 +550,10 @@ class ScreenFive {
         this.gameProcess.quests.add(new NumbersQuest(this.gameProcess.game));
 
         let text = `Fais glisser le numéro corespondant aux urgences associées:`;
-        this.title = this.game.add.text(20, 20, text, {font: 'Arial', fontSize: 20, fill: '#000000'});
+        this.title = this.game.add.text(this.game.world.centerX, 25 * this.game.SCALE, text, {font: 'Arial', fontSize: 25 * this.game.SCALE, fill: '#000000', align:'center'});
+        this.title.anchor.setTo(0.5, 0);
 
-        this.background = new Background(this.game, this.game.world.centerX, 300, "numbers/bg");
+        this.background = new Background(this.game, this.game.world.centerX, 300 * this.game.SCALE, "numbers/bg");
         this.background.sprite.scale.set(1.5);
         this.game.layer.zDepth0.addChild(this.background.sprite);
         this.game.responseGroup = new ResponseFactory(this.game, Config.screenFive);
@@ -643,21 +649,21 @@ class ScreenFive {
         let x = element.x, 
             y = element.y,
 
-            x1 = x + 50,
-            y1 = y - 80,
+            x1 = x + 50 * this.game.SCALE,
+            y1 = y - 73 * this.game.SCALE,
 
-            x2 = x + 90,
-            y2 = y - 20,
+            x2 = x + 83 * this.game.SCALE,
+            y2 = y - 13 * this.game.SCALE,
 
-            x3 = x + 120,
-            y3 = y + 50,
+            x3 = x + 118 * this.game.SCALE,
+            y3 = y + 54 * this.game.SCALE,
 
-            x4 = x + 110,
-            y4 = y + 130,
+            x4 = x + 97 * this.game.SCALE,
+            y4 = y + 115 * this.game.SCALE,
 
             // Pour afficher les zones de drag n drop
             fill = false,
-            radius = 20;
+            radius = 20 * this.game.SCALE;
 
         // Samu
         this.shapes[0] = this.game.add.graphics(x1, y1);

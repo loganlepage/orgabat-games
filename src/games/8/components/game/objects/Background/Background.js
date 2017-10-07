@@ -15,7 +15,7 @@ export default class Background extends BasicGameObject {
         this.addSprite(new BackgroundSprite(this.game, this.x, this.y, this.key, this));
     }
 
-    preUpdate() {
+    /*preUpdate() {
         //
     }
 
@@ -33,5 +33,5 @@ export default class Background extends BasicGameObject {
 
     _renderCanvas() {
         //
-    }
+    }*/
 }
