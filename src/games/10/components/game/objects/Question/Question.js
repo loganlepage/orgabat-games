@@ -36,6 +36,7 @@ export default class Question extends BasicGameObject {
             this.answers[number] = this.game.add.text(x, y, answers[number], {font: 'Arial', fontSize: 20 * this.game.SCALE, fill: '#000000'});
             this.answers[number].inputEnabled = true;
             this.answers[number].input.useHandCursor = true;
+            this.answers[number].isSelected = false;
             this.game.layer.zDepth0.addChild(this.answers[number]);
             this.texts.push(this.answers[number]);
         }
@@ -58,11 +59,19 @@ export default class Question extends BasicGameObject {
 
     selectAnswer(answer) {
         if (!this.isCompleted) {
-            answer.isSelected = true;
-            this.selectedAnswer.push(answer);
-            answer.fontWeight = "bold";
-            answer.inputEnabled = false;
-            answer.input.useHandCursor = false;
+            if (answer.isSelected) {
+                answer.isSelected = false;
+                this.selectedAnswer.splice(this.selectedAnswer.indexOf(answer), 1);
+                answer.fontWeight = "";
+                // answer.inputEnabled = true;
+                // answer.input.useHandCursor = true;
+            } else {
+                answer.isSelected = true;
+                this.selectedAnswer.push(answer);
+                answer.fontWeight = "bold";
+                // answer.inputEnabled = false;
+                // answer.input.useHandCursor = false;
+            }
         }
     }
 
@@ -81,6 +90,7 @@ export default class Question extends BasicGameObject {
                 } else {
                     answer.fontWeight = "";
                 }
+                answer.inputEnabled = false;
             }
         });
     }

@@ -47,7 +47,7 @@ export default class Step extends BasicGameObject {
         this.questions.forEach((question) => {
             question.removeControls();
         });
-        this.button.sprite.inputEnabled = false;
+        // this.button.sprite.inputEnabled = false;
         // Background
         this.graphics = this.game.add.graphics(0, 0);
         this.game.layer.zDepth1.addChild(this.graphics);
@@ -63,13 +63,13 @@ export default class Step extends BasicGameObject {
             // Video
             this.game.iframe.setState({
                 visible:true,
-                url:'https://www.youtube.com/embed/IQIPXJvX9gY?rel=0&autoplay=1&controls=0&showinfo=0'
+                url:'https://www.youtube.com/embed/Phn7N0YaaCI?rel=0&autoplay=1&controls=0&showinfo=0'
             });
         } else if (this.stepData.document == "bande_son.wav") {
             // Sound
             this.game.iframe.setState({
                 visible:true,
-                url:'https://www.youtube.com/embed/Q0q9a5QS6WQ?rel=0&autoplay=1&controls=0&showinfo=0'
+                url:'https://www.youtube.com/embed/1ksOG4eI3ZQ?rel=0&autoplay=1&controls=0&showinfo=0'
             });
         } else {
             this.document = new Document(this.game, this.game.world.centerX, this.game.world.centerY, 'compte_rendu');
@@ -80,7 +80,6 @@ export default class Step extends BasicGameObject {
     }
 
     removeDocument(){
-        console.log("Remove");
         if (this.stepData.document == "un_cas_decole.mp4" || this.stepData.document == "bande_son.wav") {
             this.game.iframe.setState({ visible:false });
         } else {
@@ -92,7 +91,6 @@ export default class Step extends BasicGameObject {
         this.questions.forEach((question) => {
             question.addControls();
         });
-        this.button.sprite.inputEnabled = true;
     }
 
     initQuestions(){
