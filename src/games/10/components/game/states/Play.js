@@ -71,7 +71,7 @@ class Engine {
     finish = new Phaser.Signal();
 
     step;
-    stepNumber = 0;
+    stepNumber = 2;
 
     player;
     responseGroup;
@@ -86,14 +86,15 @@ class Engine {
     }
 
     start() {
-        this.step = new Step(this.gameProcess.game, Config.qcm[this.stepNumber]);
-        this.step.start();
-        this.stepNumber++;
         if (this.stepNumber < Config.qcm.length) {
+            this.step = new Step(this.gameProcess.game, Config.qcm[this.stepNumber]);
+            this.step.start();
+            this.stepNumber++;
             this.step.finish.addOnce(this.start, this);
         } else {
             console.log("Step finished");
             this.gameProcess.quests._quests.communication_quest.done();
+            this.finish.dispatch();
         }
     }
 
@@ -154,6 +155,7 @@ class GameProcess {
 
     _initParts() {
         //When ready, lets init parts.
+        this.engine.finish.addOnce(this._onFinish, this);
         this.engine.start();
     }
 
