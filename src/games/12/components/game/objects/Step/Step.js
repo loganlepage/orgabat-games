@@ -26,7 +26,7 @@ export default class Step extends BasicGameObject {
             game.world.centerX + 300 * game.SCALE, 
             game.world.centerY - 300 * game.SCALE, 
             this.itemsData.title, 
-            {font: 'Arial', fontSize: 20 * game.SCALE, fill: '#000000'}
+            {font: 'Arial', fontSize: 22 * game.SCALE, fill: '#000000'}
         );
         this.title.anchor.setTo(0.5);
 
