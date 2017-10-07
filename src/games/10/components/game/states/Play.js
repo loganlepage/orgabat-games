@@ -71,7 +71,7 @@ class Engine {
     finish = new Phaser.Signal();
 
     step;
-    stepNumber = 2;
+    stepNumber = 0;
 
     player;
     responseGroup;
