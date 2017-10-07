@@ -67,7 +67,7 @@ export default class Step extends BasicGameObject {
             });
             this.info.anchor.setTo(0.5);
             // Add button
-            this.button = new Button(this.game, this.game.world.width - 100, this.game.world.height - 50);
+            this.button = new Button(this.game, this.game.world.width - 120 * this.game.SCALE, this.game.world.height - 70 * this.game.SCALE);
             this.button.sprite.events.onInputDown.add(this.finishStep, this);
         } else {
             for (let element in this.responseGroup.children) {
