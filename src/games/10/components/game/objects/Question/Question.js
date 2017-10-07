@@ -57,31 +57,32 @@ export default class Question extends BasicGameObject {
     }
 
     selectAnswer(answer) {
-        this.selectedAnswer.push(answer);
-        //answer.addColor("#ffffff", 0);
-        answer.fontWeight = "bold";
-        answer.inputEnabled = false;
-        answer.input.useHandCursor = false;
+        if (!this.isCompleted) {
+            answer.isSelected = true;
+            this.selectedAnswer.push(answer);
+            answer.fontWeight = "bold";
+            answer.inputEnabled = false;
+            answer.input.useHandCursor = false;
+        }
     }
 
     checkAnswer() {
-        // let resultArray = [];
         this.answers.forEach((answer) => {
-            if (this.verifySelected(answer.text) && this.verifySolution(answer.text)) {
-                answer.addColor("#4CA64C", 0);
-                // resultArray.push(true);
-                this.isCompleted = true;
-            } else if (this.verifySelected(answer.text)) {
-                PhaserManager.get('gabator').stats.changeValues({
-                    health: PhaserManager.get('gabator').stats.state.health - 1,
-                });
-                answer.addColor("#CC0000", 0);
-                // resultArray.push(false);
-            } else {
-                // resultArray.push(false);
+            if (answer.isSelected) {
+                answer.isSelected = false;
+                if (this.verifySelected(answer.text) && this.verifySolution(answer.text)) {
+                    answer.addColor("#4CA64C", 0);
+                    this.isCompleted = true;
+                } else if (this.verifySelected(answer.text)) {
+                    PhaserManager.get('gabator').stats.changeValues({
+                        health: PhaserManager.get('gabator').stats.state.health - 1,
+                    });
+                    answer.addColor("#CC0000", 0);
+                } else {
+                    answer.fontWeight = "";
+                }
             }
         });
-        // return resultArray;
     }
 
     // If element is selected
@@ -106,7 +107,6 @@ export default class Question extends BasicGameObject {
         this.texts.forEach((text) => {
             text.destroy();
         });
-        // this.destroy();
     }
 
     preUpdate() {

@@ -31,14 +31,13 @@ export default class Step extends BasicGameObject {
         this.button = new Button(
             this.game, 
             this.game.world.width - 100 * this.game.SCALE, 
-            this.game.world.height - 50 * this.game.SCALE, 
+            this.game.world.centerY + 50 * this.game.SCALE,  
             'continuer');
         this.dataButton = new Button(
             this.game, 
             this.game.world.width - 100 * this.game.SCALE, 
-            this.game.world.centerY, 
+            this.game.world.centerY - 50 * this.game.SCALE, 
             'doc');
-        // this.game.layer.zDepth2.addChild(this.dataButton.sprite);
         this.dataButton.sprite.events.onInputDown.add(this.createDocument, this);
         this.initQuestions();
     }
@@ -49,14 +48,12 @@ export default class Step extends BasicGameObject {
             question.removeControls();
         });
         this.button.sprite.inputEnabled = false;
-        // this.dataButton.changeSprite('continuer');
         // Background
         this.graphics = this.game.add.graphics(0, 0);
         this.game.layer.zDepth1.addChild(this.graphics);
         this.graphics.lineStyle(0, "balck", 0);
         this.graphics.beginFill("black", 0.6);
         this.graphics.drawRect(0, 0, this.game.world.width, this.game.world.height);
-        // this.dataButton.sprite.events.onInputDown.add(this.removeDocument, this);
         //Background controls
         this.graphics.inputEnabled = true;
         this.graphics.input.useHandCursor = true;
@@ -128,6 +125,7 @@ export default class Step extends BasicGameObject {
         });
         this.questions = null;
         this.button.destroy();
+        this.dataButton.destroy();
     }
 
     finishStep() {
