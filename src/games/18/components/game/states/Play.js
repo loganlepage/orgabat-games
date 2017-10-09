@@ -12,6 +12,7 @@ import QuestManager, {DomQuestList} from 'system/phaser/utils/Quest';
 import Config from "../config/data";
 
 import ResponseFactory from "../objects/Response/ResponseFactory";
+import MatchFactory from "../objects/Response/MatchFactory";
 import WorkspaceQuest from "../quests/WorkspaceQuest";
 
 export default class Play extends State {
@@ -89,31 +90,52 @@ class Engine {
         this.title.anchor.setTo(0.5);
 
         // Response group
-        this.responseGroup = new ResponseFactory(this.game, Config.responses, Config.match);
+        this.responseGroup = new ResponseFactory(this.game, Config.responses);
+
+        // Match group
+        this.matchGroup = new MatchFactory(this.game, Config.match);
     }
 
     start() {
         this.currentMatch = [];
         let count = 0;
-        this.responseGroup.forEach((response) => {
-            response.events.onInputDown.add(function(){
-                console.log(response.obj.match);
-                this.currentMatch.push(response.obj.match);
-                response.position.x = this.game.world.centerX - 50 * this.game.SCALE + (count * 100 * this.game.SCALE);
-                response.position.y = this.game.world.centerY;
-                count++;
-                if (this.currentMatch.length >= 2){
-                    if (this.currentMatch[0] == this.currentMatch[1]) {
-                        console.log("OK");
-                    } else {
-                        console.log("KO");
-                    }
-                    count = 0;
-                } else {
+        this.addEvents(this.responseGroup);
+        this.addEvents(this.matchGroup);
+    }
 
+    addEvents(group){
+        group.forEach((element) => {
+            element.obj.enableControls();
+            element.events.onInputDown.removeAll();
+            element.events.onInputDown.add(function(){
+                this.currentMatch.push(element.obj);
+                if (this.currentMatch.length >= 2) {
+                    this.checkMatch();
                 }
+                element.obj.move();
+                group.forEach((element) => {
+                    element.obj.disableControls();
+                });
             }, this);
-        })
+        });
+    }
+
+    checkMatch(){
+        console.log(this.currentMatch);
+        console.log(this.currentMatch[0].match);
+        console.log(this.currentMatch[1].match);
+        if (this.currentMatch[0].match == this.currentMatch[1].match) {
+            console.log("Match");
+            this.currentMatch.forEach((element) => {
+                element.validate();
+            });
+        } else {
+            console.log("No match");
+            this.currentMatch.forEach((element) => {
+                element.reset();
+            });
+        }
+        this.start();
     }
 
 }
