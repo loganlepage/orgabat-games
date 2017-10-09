@@ -1,0 +1,14 @@
+"use strict";
+import BasicGameSprite from "system/phaser/BasicGameSprite";
+import Phaser from 'phaser';
+
+export default class MatchSprite extends BasicGameSprite {
+
+    constructor(game, x, y, link, buttonObj) {
+        super(game, x, y, `jeu18/images/${link}`, buttonObj);
+        this.anchor.setTo(0.5);
+        this.scale.set(0.4 * this.game.SCALE);
+        this.originalPosition = this.position.clone();
+    }
+
+};
