@@ -72,6 +72,8 @@ class Engine {
 
     finish = new Phaser.Signal();
     responseGroup;
+    answerCount;
+    currentCount;
 
     constructor(gameProcess) {
         this.game = gameProcess.game;
@@ -93,6 +95,9 @@ class Engine {
 
         // Response group
         this.responseGroup = new ResponseFactory(this.game, Config.responses);
+
+        this.answerCount = this.responseGroup.length;
+        this.currentCount = 0;
 
         // Match group
         this.matchGroup = new MatchFactory(this.game, Config.match);
@@ -126,6 +131,10 @@ class Engine {
         // Wait before check
         this.game.time.events.add(Phaser.Timer.SECOND * 0.75, function(){
             if (this.currentMatch[0].match == this.currentMatch[1].match) {
+                this.currentCount++;
+                if (this.currentCount >= this.answerCount) {
+                    this.finish.dispatch();
+                }
                 this.currentMatch.forEach((element) => {
                     element.validate();
                 });
