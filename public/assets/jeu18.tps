@@ -199,6 +199,19 @@
         </struct>
         <key>individualSpriteSettings</key>
         <map type="IndividualSpriteSettingsMap">
+            <key type="filename">files/jeu18/background/bg.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>143,143,285,285</rect>
+                <key>scale9Paddings</key>
+                <rect>143,143,285,285</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
             <key type="filename">files/jeu18/images/1a.png</key>
             <key type="filename">files/jeu18/images/1b.png</key>
             <key type="filename">files/jeu18/images/2a.png</key>
