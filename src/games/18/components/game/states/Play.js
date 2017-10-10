@@ -108,34 +108,35 @@ class Engine {
             element.obj.enableControls();
             element.events.onInputDown.removeAll();
             element.events.onInputDown.add(function(){
-                this.currentMatch.push(element.obj);
-                if (this.currentMatch.length >= 2) {
-                    this.checkMatch();
-                }
                 element.obj.move();
                 group.forEach((element) => {
                     element.obj.disableControls();
                 });
+                this.currentMatch.push(element.obj);
+                if (this.currentMatch.length >= 2) {
+                    this.checkMatch();
+                }
             }, this);
         });
     }
 
     checkMatch(){
-        console.log(this.currentMatch);
-        console.log(this.currentMatch[0].match);
-        console.log(this.currentMatch[1].match);
-        if (this.currentMatch[0].match == this.currentMatch[1].match) {
-            console.log("Match");
-            this.currentMatch.forEach((element) => {
-                element.validate();
-            });
-        } else {
-            console.log("No match");
-            this.currentMatch.forEach((element) => {
-                element.reset();
-            });
-        }
-        this.start();
+        // Wait before check
+        this.game.time.events.add(Phaser.Timer.SECOND * 0.75, function(){
+            if (this.currentMatch[0].match == this.currentMatch[1].match) {
+                this.currentMatch.forEach((element) => {
+                    element.validate();
+                });
+            } else {
+                PhaserManager.get('gabator').stats.changeValues({
+                    health: PhaserManager.get('gabator').stats.state.health - 1,
+                });
+                this.currentMatch.forEach((element) => {
+                    element.reset();
+                });
+            }
+            this.start();
+        }, this);
     }
 
 }
@@ -183,8 +184,6 @@ class GameProcess {
         this.game.keys.addKey(Phaser.Keyboard.A).onDown.remove(this._onStartInfoClose, this);
 
         this._initParts();
-
-        //Evenements de progression du jeu ici (voir jeu 1 ou jeu 2)
 
         //Ferme la modale et active les controls
         this.startInfoModal.toggle(false, {});

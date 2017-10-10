@@ -6,6 +6,8 @@ import {Signal} from "phaser";
 
 export default class Response extends BasicGameObject {
 
+    validated;
+
     constructor(game, x, y, key, match) {
         super(game);
         this.x = x;
@@ -13,6 +15,7 @@ export default class Response extends BasicGameObject {
         this.key = key;
         this.match = match;
         this.addSprite(new ResponseSprite(this.game, this.x, this.y, this.key, this));
+        this.validated = false;
         this.enableControls();
     }
 
@@ -22,22 +25,24 @@ export default class Response extends BasicGameObject {
     }
 
     enableControls(){
-        this.sprite.inputEnabled = true;
-        this.sprite.input.useHandCursor = true;
+        if (!this.validated) {
+            this.sprite.inputEnabled = true;
+            this.sprite.input.useHandCursor = true;
+        }
     }
 
     move(){
-        // this.disableControls();
         this.sprite.position.x = this.game.world.centerX + 150 * this.game.SCALE;
         this.sprite.position.y = this.game.world.centerY;
     }
 
     validate(){
-        console.log("OK");
+        this.validated = true;
+        // this.disableControls();
+        this.sprite.destroy();
     }
 
     reset(){
-        console.log("Reset");
         this.sprite.position.copyFrom(this.sprite.originalPosition);
     }
 }

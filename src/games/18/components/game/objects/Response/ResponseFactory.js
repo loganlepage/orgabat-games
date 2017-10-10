@@ -33,6 +33,8 @@ export default class ResponseFactory extends GameFactory {
             this.coordonates.push({x,y});
         }
 
+        // this.shuffle(this.coordonates);
+
         let count = 0;
         // Responses creation
         for (let item in responses) {
@@ -48,6 +50,19 @@ export default class ResponseFactory extends GameFactory {
             count++;
         }
         
+    }
+
+    shuffle (array) {
+        let i = 0,
+        j = 0,
+        temp = null
+
+        for (i = array.length - 1; i > 0; i -= 1) {
+            j = Math.floor(Math.random() * (i + 1))
+            temp = array[i]
+            array[i] = array[j]
+            array[j] = temp
+        }
     }
 
 }
