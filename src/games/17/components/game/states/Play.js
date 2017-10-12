@@ -12,6 +12,8 @@ import QuestManager, {DomQuestList} from 'system/phaser/utils/Quest';
 import Config from "../config/data";
 
 import SituationFactory from "../objects/Situation/SituationFactory";
+import Button from "../objects/Button/Button";
+import PrincipesModal from "../objects/Modal/PrincipesModal";
 
 import ProtectionQuest from "../quests/ProtectionQuest";
 
@@ -94,6 +96,26 @@ class Engine {
 
         // Situation group
         this.situations = new SituationFactory(this.game, Config.situations);
+
+        // Button
+        this.button = new Button(this.game, this.game.world.centerX, this.game.world.height - 100*this.game.SCALE, "principes");
+        this.game.layer.zDepth0.addChild(this.button.sprite);
+
+        // Principes modal
+        this.principesModal = new PrincipesModal(this.game, Config.principes.title, Config.principes);
+        this.button.sprite.events.onInputDown.add(function(){
+            this.button.disableControls();
+            this.situations.forEach((item) => {
+                item.obj.disableControls();
+            });
+            this.principesModal.show();
+            this.principesModal.onClosed.add(function(){
+                this.button.enableControls();
+                this.situations.forEach((item) => {
+                    item.obj.enableControls();
+                });
+            }, this);
+        }, this);
     }
 
     start() {

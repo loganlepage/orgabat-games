@@ -18,6 +18,8 @@ export default class Situation extends BasicGameObject {
         this.responses = responses;
         this.addSprite(new SituationSprite(this.game, this.x, this.y, this.image, this));
         this.validated = false;
+        this.questionModal = new QuestionModal(this.game, this.title, this.responses);
+        this.questionModal.visible = false;
         this.enableControls();
     }
 
@@ -43,9 +45,6 @@ export default class Situation extends BasicGameObject {
     }
 
     displayQuestion(){
-        this.questionModal = new QuestionModal(this.game, this.title, this.responses);
-        this.questionModal.sprite.events.onInputDown.add(function(){
-            this.questionModal.removeElements();
-        }, this);
+        this.questionModal.show();
     }
 }

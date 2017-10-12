@@ -6,6 +6,22 @@ export default {
     canvasParent: "#gameDiv",
     atlas: "jeu17",
     title: "Proposer des mesures de prévention adaptées à chaque situation à l'aide des neufs principes généraux",
+    principes: [
+        {
+            title: "Les principes généraux de prévention",
+            preventions: [
+                "Éviter les risques, c'est supprimer le danger ou l'exposition au danger",
+                "Évaluer les risques, c'est apprécier l'exposition au danger et l'importance du risque afin de prioriser les actions d eprévention à mener",
+                "Combattre les risques à la source, c'est intégrer la prévention le plus en amont possible, notamment dès la conception des lieux de travail, des équipements ou des modes opératoires",
+                "Adapter le travail à l'Homme en tenant compte des différences interindividuelles, dans le but de réduire les effets du travail sur la santé",
+                "Tenir compte de l'évolution de la technique, c'est adapter la prévention aux évolutions techniques et organisationnelles",
+                "Remplacer ce qui est dangereux par ce qui l'est moins, c'est éviter l'utilisation de procédés ou de produits dangereux lorsqu'un même résultat peut être obtenu avec une méthode présentant des dangers moindres",
+                "Planifier la prévention en intégrant technique, organisation et conditions de travail, relations sociales et environnement",
+                "Donner la priorité aux mesures de protection collectives et n'utiliser les équipements de protection interindividuelles qu'en complément des protections collectives si elles se révèlent insuffisantes",
+                "Donner les instructions appropriées aux salariés, c'est former et informer les salarisé afin qu'ils connaissent les risques et les mesures de prévention"
+            ]
+        }
+    ],
     situations:[
         {
             title: "Éviter les risques, c'est supprimer le danger ou l'exposition au danger",
@@ -52,7 +68,7 @@ export default {
             ]
         },
         {
-            title: "Adapter le trabail à l'Homme en tenant compte des différences interindividuelles, dans le but de réduire les effets du travail sur la santé",
+            title: "Adapter le travail à l'Homme en tenant compte des différences interindividuelles, dans le but de réduire les effets du travail sur la santé",
             image: "plan",
             responses: [
                 {
@@ -139,7 +155,7 @@ export default {
             ]
         },
         {
-            title: "Tenir compte de l'évoultion ",
+            title: "Tenir compte de l'évolution de la technique, c'est adapter la prévention aux évolutions techniques et organisationnelles",
             image: "approvisionnement",
             responses: [
                 {
