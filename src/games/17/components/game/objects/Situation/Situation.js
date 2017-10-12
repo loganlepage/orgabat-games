@@ -21,6 +21,7 @@ export default class Situation extends BasicGameObject {
         this.questionModal = new QuestionModal(this.game, this.title, this.responses);
         this.questionModal.visible = false;
         this.enableControls();
+        this.questionModal.finish.add(this.validate, this);
     }
 
     disableControls(){
@@ -41,7 +42,7 @@ export default class Situation extends BasicGameObject {
         this.rect.drawRect(- this.sprite.width / 2, - this.sprite.height / 2, this.sprite.width, this.sprite.height);
         this.validated = true;
         this.disableControls();
-        // this.sprite.destroy();
+        this.game.layer.zDepth0.addChild(this.rect);
     }
 
     displayQuestion(){

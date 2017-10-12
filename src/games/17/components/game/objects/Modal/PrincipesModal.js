@@ -52,7 +52,7 @@ export default class PrincipesModal extends BasicGameObject {
 	    	let text = this.game.add.text(
 	    		textPositionX, 
 	    		textPositionY, 
-	    		principes.preventions[item], 
+	    		principes.preventions[item],
 	    		{fill: '#666666', fontSize: mediumFont, align: "left", wordWrap: true, wordWrapWidth: this.sprite.width - 100 * this.game.SCALE});
 	    	this.texts.push(text);
 	    	textPositionY+= text.height + 20 * this.game.SCALE;
@@ -65,7 +65,6 @@ export default class PrincipesModal extends BasicGameObject {
 		this.texts.forEach((item) => {
 			item.visible = false;
 		});
-		// this.titleText.visible = false;
 	    this.blackBackground.visible = false;
 	    this.sprite.visible = false;
 	}
@@ -74,7 +73,6 @@ export default class PrincipesModal extends BasicGameObject {
 		this.texts.forEach((item) => {
 			item.visible = true;
 		});
-		// this.titleText.visible = true;
 	    this.blackBackground.visible = true;
 	    this.sprite.visible = true;
 	    this.blackBackground.events.onInputDown.add(function(){
@@ -84,11 +82,7 @@ export default class PrincipesModal extends BasicGameObject {
 
 	removeElements() {
 		this.onClosed.dispatch();
-		this.sprite.destroy();
-		this.blackBackground.destroy();
-		this.texts.forEach((text) => {
-			text.destroy();
-		});
+		this.hide();
 	}
 }
 
