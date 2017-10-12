@@ -8,7 +8,7 @@ export default class PrincipesModal extends BasicGameObject {
 	texts = [];
 	onClosed = new Phaser.Signal();
 
-	constructor(game, title, responses) {
+	constructor(game, title, principes) {
 
 	    super(game);
 
@@ -32,7 +32,7 @@ export default class PrincipesModal extends BasicGameObject {
 
 	    // Fonts size
 	    let bigFont = 24 * this.game.SCALE,
-	    	mediumFont = 20 * this.game.SCALE;
+	    	mediumFont = 18 * this.game.SCALE;
 
 	    // Title
 	    let textPositionX = this.game.world.centerX,
@@ -44,19 +44,37 @@ export default class PrincipesModal extends BasicGameObject {
 	    		{fill: '#000000', fontSize: bigFont, align: "center", wordWrap: true, wordWrapWidth: this.sprite.width - 80 * this.game.SCALE});
 	    this.titleText.anchor.setTo(0.5);
 	    this.texts.push(this.titleText);
-	    textPositionY += 30 * this.game.SCALE;
+
+	    // Informations
+	    textPositionX = this.game.world.centerX - this.sprite.width / 2 + 50 * this.game.SCALE;
+	    textPositionY = this.game.world.centerY - this.sprite.height / 2 + this.titleText.height + 100 * this.game.SCALE;
+	    for(let item in principes.preventions){
+	    	let text = this.game.add.text(
+	    		textPositionX, 
+	    		textPositionY, 
+	    		principes.preventions[item], 
+	    		{fill: '#666666', fontSize: mediumFont, align: "left", wordWrap: true, wordWrapWidth: this.sprite.width - 100 * this.game.SCALE});
+	    	this.texts.push(text);
+	    	textPositionY+= text.height + 20 * this.game.SCALE;
+	    }
 
 	    this.hide();
 	}
 
 	hide(){
-		this.titleText.visible = false;
+		this.texts.forEach((item) => {
+			item.visible = false;
+		});
+		// this.titleText.visible = false;
 	    this.blackBackground.visible = false;
 	    this.sprite.visible = false;
 	}
 
 	show(){
-		this.titleText.visible = true;
+		this.texts.forEach((item) => {
+			item.visible = true;
+		});
+		// this.titleText.visible = true;
 	    this.blackBackground.visible = true;
 	    this.sprite.visible = true;
 	    this.blackBackground.events.onInputDown.add(function(){

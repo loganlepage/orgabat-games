@@ -137,11 +137,11 @@
 },
 "jeu17/modal/full_modal":
 {
-	"frame": {"x":1085,"y":2281,"w":900,"h":800},
+	"frame": {"x":1085,"y":2281,"w":900,"h":900},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":900,"h":800},
-	"sourceSize": {"w":900,"h":800},
+	"spriteSourceSize": {"x":0,"y":0,"w":900,"h":900},
+	"sourceSize": {"w":900,"h":900},
 	"pivot": {"x":0.5,"y":0.5}
 },
 "jeu17/modal/half_modal":
@@ -491,8 +491,8 @@
 	"version": "1.0",
 	"image": "jeu17.png",
 	"format": "RGBA8888",
-	"size": {"w":2030,"h":3086},
+	"size": {"w":2030,"h":3186},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:88ba44a268dd805a5641fbbd025ed354:7e732ec104e378efcd12c77178f756ef:ccc472836b3494aa4c8722bf5ab5b2da$"
+	"smartupdate": "$TexturePacker:SmartUpdate:470640876319191174b391f10f444ba8:2b7bdd2470371a45d6354da11a5bdaff:ccc472836b3494aa4c8722bf5ab5b2da$"
 }
 }
