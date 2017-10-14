@@ -80,9 +80,6 @@ class Engine {
 
         // Quest
         gameProcess.quests.add(new ProtectionQuest(this.game));
-        gameProcess.questsCleaned.addOnce(function(){
-            this.finish.dispatch();
-        }, this);
 
         // Title
         this.title = this.game.add.text(
@@ -119,6 +116,7 @@ class Engine {
     }
 
     start() {
+        let totalcount = this.situations.children.length;
         this.situations.forEach((item) => {
             item.events.onInputDown.add(function(){
                 this.situations.forEach((item2) => {
@@ -126,7 +124,14 @@ class Engine {
                 });
                 item.obj.displayQuestion();
                 item.obj.questionModal.onClosed.add(function(){
+                    let validatedCount = 0;
                     this.situations.forEach((item3) => {
+                        if (item3.obj.validated) {
+                            validatedCount++;
+                            if (validatedCount >= totalcount) {
+                                this.finish.dispatch();
+                            }
+                        }
                         item3.obj.enableControls();
                     });
                 }, this);
