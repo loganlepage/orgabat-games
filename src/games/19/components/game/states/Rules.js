@@ -11,7 +11,7 @@ export default class Rules extends State {
             {font: 'Arial', fill: '#272727', fontSize: this.game.uiScale(21)});
 
         this.game.add.text(this.game.uiScale(80), this.game.uiScale(160),
-            "Vous arrivez sur le chantier, vous devez approvisionner votre poste de travail. Vous devez rénover le sol et le plafond de cette pièce.",
+            "La livraison de sable, de graviers et d'agglos a été faite. Il faut maintenant les placer sur le chantier pour faciliter le travail.",
             {
                 font: 'Arial', fill: '#272727', fontSize: this.game.uiScale(16),
                 wordWrap: true, wordWrapWidth: this.game.world.width - this.game.uiScale(160)
