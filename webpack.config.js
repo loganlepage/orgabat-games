@@ -30,7 +30,7 @@ module.exports = {
          '15': "./src/games/15/app.jsx", // Jeu 15
          '17': "./src/games/17/app.jsx", // Jeu 17
          '18': "./src/games/18/app.jsx", // Jeu 18
-         '99': "./src/games/99/app.jsx" // Jeu 99
+         '19': "./src/games/19/app.jsx", // Jeu 19
     },
     /** description de nos sorties */
     output: {
