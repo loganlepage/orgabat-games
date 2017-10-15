@@ -42,6 +42,7 @@ export default class Response extends BasicGameObject {
             if (Phaser.Rectangle.intersects(boundsA, boundsB) && shapeToOverlap.data.correctAnswer.includes(currentSprite.link)) {
                 currentSprite.obj.validate();
                 currentSprite.position.copyFrom(shapeToOverlap.position);
+                shapeToOverlap.destroy();
                 this.onDropped.dispatch(currentSprite);
             } else if (Phaser.Rectangle.intersects(boundsA, boundsB) && !shapeToOverlap.data.correctAnswer.includes(currentSprite.link)) {
                 currentSprite.position.copyFrom(currentSprite.originalPosition);

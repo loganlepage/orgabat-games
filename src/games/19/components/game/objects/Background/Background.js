@@ -28,22 +28,6 @@ export default class Background extends BasicGameObject {
         //     console.log("---");
         // },this);
 
-        // Title:
-        this.title = this.game.add.text(
-            this.game.world.centerX, 
-            20 * this.game.SCALE, 
-            this.data.title, 
-            {
-                font: 'Arial', 
-                fontSize: 30 * this.game.SCALE, 
-                fill: '#000000',
-                align: 'center',
-                backgroundColor: 'rgba(255,255,255,0.9)'
-            }
-        );
-        this.title.anchor.setTo(0.5);
-        this.game.layer.zDepth0.addChild(this.title);
-
         // Shapes
         this.shapes = [];
         for (let shapeNumber in this.data.area){
