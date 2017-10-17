@@ -40,7 +40,7 @@ export default class StartInfoModal extends Modal {
                     type: "text",
                     x: 20,
                     y: 85,
-                    text: "Aider Paul à travers le différentes étapes qui peuvent arriver lors d'un accident. Pour cela, il faut choisir les bonnes actions et les bonnes étapes.",
+                    text: "Vous devez remplacer quelques mètres carrés d’ardoises avec votre patron. Comme d’habitude, pour ces petites réparations qui ne sont pas fréquentes, il veut installer une échelle pour monter sur le toit et deux autres posées bout à bout sur les ardoises. Dans ce cas, aucune échelle n’est attachée. Elles tiennent simplement en appui sur la gouttière. De plus, il pleut. En se penchant pour atteindre une ardoise, l’échelle glisse. Votre patron chute de 7 mètres. Sa moelle épinière est sectionnée, il se retrouve en incapacité de travail pendant un an. Avec une inaptitude définitive à exercer son métier.",
                     style: {
                         fill: "#5F4D21",
                         fontFamily: "Arial",
