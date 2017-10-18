@@ -6,16 +6,41 @@ export default class ResponseFactory extends GameFactory {
 
     coordonates = [];
 
-    constructor(game, items, repo) {
+    constructor(game, repo, responses) {
         super(game);
-        // Positions
-        for (let item in items) {
+        this.game = game;
+
+        // Game data
+        let width = this.game.width;
+        let height = this.game.height;
+
+        let responsesNumber = 0;
+
+        for (let item in responses) {
+            responsesNumber++;
+        };
+
+        // Coordonates
+        let x = this.game.world.centerX - 500 * this.game.SCALE;
+        let yValue = (height / responsesNumber)/2;
+
+        this.coordonates = [];
+
+        for (let i = 0; i < responsesNumber; i++) {
+            let y = i * (2 * yValue) + yValue;
+            this.coordonates.push({x,y});
+        }
+
+        // Responses
+        let count = 0;
+        for (let response in responses) {
             this.add(
                 (new Response(
                     this.game,
-                    items[item].x,
-                    items[item].y,
-                    repo + "/" + items[item].key,
+                    this.coordonates[count].x,
+                    this.coordonates[count].y,
+                    repo,
+                    responses[response].key,
                 )).sprite
             );
             count++;

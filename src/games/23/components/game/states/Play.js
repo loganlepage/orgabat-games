@@ -82,16 +82,17 @@ class Engine {
         this.gameProcess.quests.add(new PreventionQuest(this.gameProcess.game));
         this.gameProcess.quests.add(new RescueQuest(this.gameProcess.game));
         this.gameProcess.quests.add(new SafetyQuest(this.gameProcess.game));
+
+        this.stepNumber = 0;
     }
 
     start(){
         // Init
-        let stepNumber = 0,
-            questList = this.gameProcess.quests._quests,
+        let questList = this.gameProcess.quests._quests,
             step = null;
         // Create steps
-        if (stepNumber < Config.steps.length) {
-            step = new Step(this.gameProcess.game, Config.steps[stepNumber]);
+        if (this.stepNumber < Config.steps.length) {
+            step = new Step(this.gameProcess.game, Config.steps[this.stepNumber]);
             step.finish.addOnce(function(){
                 // Validate quests
                 for(let quest in questList){
@@ -101,7 +102,7 @@ class Engine {
                 }
                 this.start();
             }, this);
-            stepNumber++;
+            this.stepNumber++;
             step.start();
         } else {
             this.finish.dispatch();

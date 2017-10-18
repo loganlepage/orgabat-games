@@ -8,12 +8,13 @@ export default class ProcedureSprite extends BasicGameSprite {
         super(game, x, y, `jeu23/${key}`, itemObj);
         this.anchor.setTo(0.5, 0.5);
         this.scale.set(this.game.SCALE);
-        this.inputEnabled = true;
+        
         // To have shapes position:
-        this.events.onInputDown.add(function(){
-            console.log((this.centerX - this.game.input.mousePointer.x) / this.game.SCALE);
-            console.log((this.centerY - this.game.input.mousePointer.y) / this.game.SCALE);
-        }, this);
+        // this.inputEnabled = true;
+        // this.events.onInputDown.add(function(){
+        //     console.log((this.centerX - this.game.input.mousePointer.x) / this.game.SCALE);
+        //     console.log((this.centerY - this.game.input.mousePointer.y) / this.game.SCALE);
+        // }, this);
     }
 
 };

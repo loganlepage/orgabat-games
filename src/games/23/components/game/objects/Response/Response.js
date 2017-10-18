@@ -1,6 +1,7 @@
 "use strict";
 import BasicGameObject from "system/phaser/BasicGameObject";
 import ResponseSprite from "./ResponseSprite";
+import PhaserManager from 'system/phaser/utils/PhaserManager';
 import Phaser from 'phaser';
 import {Signal} from "phaser";
 
@@ -8,27 +9,55 @@ export default class Response extends BasicGameObject {
 
     onDropped = new Signal();
 
-    constructor(game, x, y, key) {
+    constructor(game, x, y, repo, key) {
         super(game);
         this.x = x;
         this.y = y;
+        this.repo = repo;
         this.key = key;
-        this.addSprite(new ResponseSprite(this.game, this.x, this.y, this.key, this));
-        this.sprite.inputEnabled = true;
+        this.addSprite(new ResponseSprite(this.game, this.x, this.y, this.repo, this.key, this));
+        this.addControls();
+        this.validated = false;
+    }
+
+    validate(){
+        this.validated = true;
+        this.removeControls();
+    }
+
+    addControls(){
         this.sprite.input.useHandCursor = true;
+        this.sprite.input.enableDrag(true, true);
+        this.sprite.inputEnabled = true;
+    }
+
+    removeControls(){
+        this.sprite.input.useHandCursor = false;
+        this.sprite.input.enableDrag(false, false);
+        this.sprite.inputEnabled = false;
     }
 
     checkOverlap(currentSprite, shapeToOverlap) {
-        let boundsA = currentSprite.getBounds(),
-            boundsB = shapeToOverlap.getBounds();
-        if (Phaser.Rectangle.intersects(boundsA, boundsB) && shapeToOverlap.answers.includes(currentSprite.obj.key)) {
-            currentSprite.position.x = shapeToOverlap.position.x;
-            currentSprite.position.y = shapeToOverlap.position.y;
-            this.onDropped.dispatch(currentSprite);
-            return true;
+        if (!currentSprite.obj.validated) {
+            let boundsA = currentSprite.getBounds(),
+                boundsB = shapeToOverlap.getBounds();
+            if (Phaser.Rectangle.intersects(boundsA, boundsB) && shapeToOverlap.answers.includes(currentSprite.link)) {
+                console.log("OK");
+                currentSprite.obj.validate();
+                console.log(currentSprite.position.x);
+                console.log(shapeToOverlap.position.x);
+                currentSprite.position.copyFrom(shapeToOverlap.position);
+                console.log(currentSprite.position.x);
+                shapeToOverlap.destroy();
+                this.onDropped.dispatch(currentSprite);
+            } else if (Phaser.Rectangle.intersects(boundsA, boundsB) && !shapeToOverlap.answers.includes(currentSprite.link)) {
+                currentSprite.position.copyFrom(currentSprite.originalPosition);
+                PhaserManager.get('gabator').stats.changeValues({
+                    health: PhaserManager.get('gabator').stats.state.health - 1,
+                });
+            } else {
+                currentSprite.position.copyFrom(currentSprite.originalPosition);
+            }
         }
-        else
-            currentSprite.position.copyFrom(currentSprite.originalPosition);
-            return false;
     }
 }
