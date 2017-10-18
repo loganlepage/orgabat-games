@@ -14,28 +14,18 @@ export default {
         responses:[
         {
             key:"analyse1",
-            // x: 200,
-            // y: 200
         },
         {
             key:"analyse2",
-            // x: 200,
-            // y: 300
         },
         {
             key:"analyse3",
-            // x: 200,
-            // y: 400
         },
         {
             key:"analyse4",
-            // x: 200,
-            // y: 500
         },
         {
             key:"analyse5",
-            // x: 200,
-            // y: 600
         },
         ], // end responses
         shapes: [
@@ -68,6 +58,80 @@ export default {
             x: 1015,
             y: 369,
             answers: ["analyse5"]
+        },
+        ] // end shapes
+    }, // end step
+    {
+        title: "Analyser la situation de travail et évaluer le risque d’accident",
+        quest: "measure_quest",
+        repo: "mesures/",
+        background: "mesures",
+        responses:[
+        {
+            key:"mesures1",
+        },
+        {
+            key:"mesures2",
+        },
+        {
+            key:"mesures3",
+        },
+        {
+            key:"mesures4",
+        },
+        {
+            key:"mesures5",
+        },
+        {
+            key:"mesures6",
+        },
+        {
+            key:"mesures7",
+        },
+        {
+            key:"mesures8",
+        },
+        ], // end responses
+        shapes: [
+        {
+            x: 610,
+            y: 269,
+            answers: ["mesures3"]
+        },
+        {
+            x: 610,
+            y: 393,
+            answers: ["mesures1"]
+        },
+        {
+            x: 610,
+            y: 517,
+            answers: ["mesures4"]
+        },
+        {
+            x: 610,
+            y: 641,
+            answers: ["mesures2"]
+        },
+        {
+            x: 1194,
+            y: 270,
+            answers: ["mesures5"]
+        },
+        {
+            x: 1194,
+            y: 393,
+            answers: ["mesures8"]
+        },
+        {
+            x: 1194,
+            y: 518,
+            answers: ["mesures7"]
+        },
+        {
+            x: 1194,
+            y: 642,
+            answers: ["mesures6"]
         },
         ] // end shapes
     }, // end step

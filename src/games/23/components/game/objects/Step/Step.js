@@ -48,7 +48,7 @@ export default class Step extends BasicGameObject {
 
         // Shapes to answer
         let fill = true, // to fill or not
-            radius = 100;
+            radius = 75;
         if (this.stepData.shapes != undefined) {
             this.shapes = [];
             this.stepData.shapes.forEach((shape) => {
@@ -81,7 +81,8 @@ export default class Step extends BasicGameObject {
                 response.obj.onDropped.add(function(){
                     correctAnswer++;
                     if (correctAnswer >= totalAnswer) {
-                        this.finish.dispatch();
+                        // this.finish.dispatch();
+                        this.finishStep();
                     }
                 }, this);
             });
@@ -94,6 +95,20 @@ export default class Step extends BasicGameObject {
 
     finishStep() {
         console.log("Finish step");
+        this.title.destroy();
+        if (this.stepData.background != undefined) {
+            this.background.sprite.destroy();
+        }
+        if (this.stepData.shapes != undefined) {
+            this.shapes.forEach((shape) => {
+                shape.destroy();
+            });
+        }
+        if (this.stepData.responses != undefined) {
+            while(this.responseGroup.children[0]){
+                this.responseGroup.children[0].destroy();
+            }
+        }
         this.finish.dispatch();
     }
 }

@@ -83,7 +83,7 @@ class Engine {
         this.gameProcess.quests.add(new RescueQuest(this.gameProcess.game));
         this.gameProcess.quests.add(new SafetyQuest(this.gameProcess.game));
 
-        this.stepNumber = 0;
+        this.stepNumber = 1;
     }
 
     start(){
@@ -188,8 +188,8 @@ class GameProcess {
         let healthLevelMax = PhaserManager.get('gabator').stats.healthMax;
 
         endInfoModal.toggle(true, {}, {
-            star1: healthLevel >= healthLevelMax / 2 ? true : false,
-            star2: healthLevel >= (2 * healthLevelMax) / 3 ? true : false,
+            star1: healthLevel >= true,
+            star2: healthLevel >= (2 * healthLevelMax) / 2 ? true : false,
             star3: healthLevel == healthLevelMax ? true : false
         }, {
             health: PhaserManager.get('gabator').stats.state.health,

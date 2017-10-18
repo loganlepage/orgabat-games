@@ -42,12 +42,8 @@ export default class Response extends BasicGameObject {
             let boundsA = currentSprite.getBounds(),
                 boundsB = shapeToOverlap.getBounds();
             if (Phaser.Rectangle.intersects(boundsA, boundsB) && shapeToOverlap.answers.includes(currentSprite.link)) {
-                console.log("OK");
                 currentSprite.obj.validate();
-                console.log(currentSprite.position.x);
-                console.log(shapeToOverlap.position.x);
                 currentSprite.position.copyFrom(shapeToOverlap.position);
-                console.log(currentSprite.position.x);
                 shapeToOverlap.destroy();
                 this.onDropped.dispatch(currentSprite);
             } else if (Phaser.Rectangle.intersects(boundsA, boundsB) && !shapeToOverlap.answers.includes(currentSprite.link)) {
