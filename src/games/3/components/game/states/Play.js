@@ -72,8 +72,8 @@ export default class Play extends State {
     /** Called by Phaser to render */
     render() {
         //if(Config.developer.debug) {
-        this.game.time.advancedTiming = true; //SEE FPS
-        this.game.debug.text(this.game.time.fps, 2, 14, "#00ff00");
+        /*this.game.time.advancedTiming = true; //SEE FPS
+        this.game.debug.text(this.game.time.fps, 2, 14, "#00ff00");*/
         // }
     }
 

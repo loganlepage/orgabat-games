@@ -12,7 +12,7 @@ export default class WasteSprite extends BasicGameSprite {
      * @param wasteObj
      */
     constructor(game, x, y, wasteObj) {
-        super(game, x, y, `jeu3/actions/dechets_industriels_banals`, wasteObj);
+        super(game, x, y, `jeu3/malle`, wasteObj);
         this.scale.set(0.7);
     }
 };
