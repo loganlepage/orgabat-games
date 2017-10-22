@@ -28,7 +28,7 @@ export default class Play extends State {
      */
     create() {
         this.game.controlsEnabled = false;
-
+        this.game.stage.backgroundColor = '#f5f0d6';
         this.initMap();
         this.initUI();
         this.addInventary();
