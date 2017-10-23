@@ -83,7 +83,7 @@ class Engine {
         this.gameProcess.quests.add(new RescueQuest(this.gameProcess.game));
         this.gameProcess.quests.add(new SafetyQuest(this.gameProcess.game));
 
-        this.stepNumber = 1;
+        this.stepNumber = 0;
     }
 
     start(){
@@ -103,7 +103,7 @@ class Engine {
                 this.start();
             }, this);
             this.stepNumber++;
-            step.start();
+            // step.start();
         } else {
             this.finish.dispatch();
         }
@@ -145,9 +145,6 @@ class GameProcess {
         //On active Gabator
         if (PhaserManager.get('gabator').state.current == "play") {
             PhaserManager.get('gabator').state.getCurrentState().start();
-            // Canvas.get('gabator').modal.showHelp(
-            //     "..."
-            // );
         }
 
         this.game.keys.addKey(Phaser.Keyboard.ENTER).onDown.remove(this._onStartInfoClose, this);
@@ -188,8 +185,8 @@ class GameProcess {
         let healthLevelMax = PhaserManager.get('gabator').stats.healthMax;
 
         endInfoModal.toggle(true, {}, {
-            star1: healthLevel >= true,
-            star2: healthLevel >= (2 * healthLevelMax) / 2 ? true : false,
+            star1: true,
+            star2: healthLevel >= healthLevelMax / 2 ? true : false,
             star3: healthLevel == healthLevelMax ? true : false
         }, {
             health: PhaserManager.get('gabator').stats.state.health,

@@ -9,12 +9,13 @@ export default class Response extends BasicGameObject {
 
     onDropped = new Signal();
 
-    constructor(game, x, y, repo, key) {
+    constructor(game, x, y, repo, key, isUsed) {
         super(game);
         this.x = x;
         this.y = y;
         this.repo = repo;
         this.key = key;
+        this.isUsed = isUsed;
         this.addSprite(new ResponseSprite(this.game, this.x, this.y, this.repo, this.key, this));
         this.addControls();
         this.validated = false;

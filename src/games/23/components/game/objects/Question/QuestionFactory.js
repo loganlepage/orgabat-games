@@ -1,18 +1,18 @@
 import GameFactory from "system/phaser/GameFactory";
-import Response from "./Response";
+import Question from "./Question";
 import Phaser from "phaser";
 
 export default class ResponseFactory extends GameFactory {
 
     coordonates = [];
 
-    constructor(game, repo, responses) {
+    constructor(game, responses) {
         super(game);
         this.game = game;
 
         // Game data
         let width = this.game.width;
-        let height = this.game.height;
+        let height = this.game.height - 300 * this.game.SCALE;
 
         let responsesNumber = 0;
 
@@ -21,13 +21,13 @@ export default class ResponseFactory extends GameFactory {
         };
 
         // Coordonates
-        let x = this.game.world.centerX - 500 * this.game.SCALE;
+        let x = this.game.world.centerX;
         let yValue = (height / responsesNumber)/2;
 
         this.coordonates = [];
 
         for (let i = 0; i < responsesNumber; i++) {
-            let y = i * (2 * yValue) + yValue;
+            let y = i * (2 * yValue) + yValue + 150*this.game.SCALE;
             this.coordonates.push({x,y});
         }
 
@@ -35,14 +35,13 @@ export default class ResponseFactory extends GameFactory {
         let count = 0;
         for (let response in responses) {
             this.add(
-                (new Response(
+                (new Question(
                     this.game,
                     this.coordonates[count].x,
                     this.coordonates[count].y,
-                    repo,
-                    responses[response].key,
-                    responses[response].isUsed,
-                )).sprite
+                    responses[response].title,
+                    responses[response].correct,
+                )).text
             );
             count++;
         }
