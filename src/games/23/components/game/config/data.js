@@ -5,6 +5,7 @@ export default {
     },
     canvasParent: "#gameDiv",
     atlas: "jeu23",
+    tile: "bg",
     steps:[
     {
         title: "Analyser la situation de travail et évaluer le risque d’accident",

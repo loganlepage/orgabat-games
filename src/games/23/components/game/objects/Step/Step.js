@@ -33,7 +33,10 @@ export default class Step extends BasicGameObject {
             font: 'Arial', 
             fontSize: 25*this.game.SCALE, 
             fill: '#000000', 
-            align: "center"});
+            align: "center",
+            wordWrap: true,
+            wordWrapWidth: this.game.world.width - 100*this.game.SCALE
+        });
         this.title.anchor.setTo(0.5);
 
         // Background
