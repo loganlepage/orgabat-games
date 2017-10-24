@@ -199,6 +199,19 @@
         </struct>
         <key>individualSpriteSettings</key>
         <map type="IndividualSpriteSettingsMap">
+            <key type="filename">files/jeu23/_bg.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>143,143,285,285</rect>
+                <key>scale9Paddings</key>
+                <rect>143,143,285,285</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
             <key type="filename">files/jeu23/analyse/analyse.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
@@ -346,29 +359,16 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">files/jeu23/preventions/alerter.png</key>
+            <key type="filename">files/jeu23/preventions/background.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
                 <key>scale9Enabled</key>
                 <false/>
                 <key>scale9Borders</key>
-                <rect>176,242,352,483</rect>
+                <rect>731,249,1462,498</rect>
                 <key>scale9Paddings</key>
-                <rect>176,242,352,483</rect>
-                <key>scale9FromFile</key>
-                <false/>
-            </struct>
-            <key type="filename">files/jeu23/preventions/examiner.png</key>
-            <struct type="IndividualSpriteSettings">
-                <key>pivotPoint</key>
-                <point_f>0.5,0.5</point_f>
-                <key>scale9Enabled</key>
-                <false/>
-                <key>scale9Borders</key>
-                <rect>176,242,352,484</rect>
-                <key>scale9Paddings</key>
-                <rect>176,242,352,484</rect>
+                <rect>731,249,1462,498</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
@@ -500,32 +500,6 @@
                 <rect>165,46,330,91</rect>
                 <key>scale9Paddings</key>
                 <rect>165,46,330,91</rect>
-                <key>scale9FromFile</key>
-                <false/>
-            </struct>
-            <key type="filename">files/jeu23/preventions/proteger.png</key>
-            <struct type="IndividualSpriteSettings">
-                <key>pivotPoint</key>
-                <point_f>0.5,0.5</point_f>
-                <key>scale9Enabled</key>
-                <false/>
-                <key>scale9Borders</key>
-                <rect>177,242,353,484</rect>
-                <key>scale9Paddings</key>
-                <rect>177,242,353,484</rect>
-                <key>scale9FromFile</key>
-                <false/>
-            </struct>
-            <key type="filename">files/jeu23/preventions/secourir.png</key>
-            <struct type="IndividualSpriteSettings">
-                <key>pivotPoint</key>
-                <point_f>0.5,0.5</point_f>
-                <key>scale9Enabled</key>
-                <false/>
-                <key>scale9Borders</key>
-                <rect>177,241,353,482</rect>
-                <key>scale9Paddings</key>
-                <rect>177,241,353,482</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>

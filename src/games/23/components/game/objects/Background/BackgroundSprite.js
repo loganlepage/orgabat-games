@@ -12,10 +12,12 @@ export default class ProcedureSprite extends BasicGameSprite {
         // To have shapes position:
         this.inputEnabled = true;
         this.events.onInputDown.add(function(){
-            // console.log((this.centerX - this.game.input.mousePointer.x) / this.game.SCALE);
-            // console.log((this.centerY - this.game.input.mousePointer.y) / this.game.SCALE);
-            console.log((this.game.input.mousePointer.x) / this.game.SCALE);
-            console.log((this.game.input.mousePointer.y) / this.game.SCALE);
+            console.log((x - Math.round(this.game.input.mousePointer.x)) / this.game.SCALE);
+            console.log((y - Math.round(this.game.input.mousePointer.y)) / this.game.SCALE);
+            // console.log((Math.round(this.game.input.mousePointer.x)) / this.game.SCALE);
+            // console.log(Math.round((this.game.input.mousePointer.y)) / this.game.SCALE);
+            // console.log(this.game.input.mousePointer.x);
+            // console.log(this.game.input.mousePointer.y);
         }, this);
     }
 

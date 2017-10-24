@@ -29,7 +29,7 @@ export default class Step extends BasicGameObject {
         this.stepData = stepData;
 
         // Response title:
-        this.title = game.add.text(this.game.world.centerX, 50*this.game.SCALE, this.stepData.title, {
+        this.title = game.add.text(this.game.world.centerX, 40*this.game.SCALE, this.stepData.title, {
             font: 'Arial', 
             fontSize: 25*this.game.SCALE, 
             fill: '#000000', 
@@ -53,13 +53,13 @@ export default class Step extends BasicGameObject {
 
         // Shapes to answer
         let fill = true, // to fill or not
-            radius = 75;
+            radius = 75 * this.game.SCALE;
         if (this.stepData.shapes != undefined) {
             this.shapes = [];
             this.stepData.shapes.forEach((shape) => {
                 let shapeGraphic = this.game.add.graphics(
-                    shape.x * this.game.SCALE, 
-                    shape.y * this.game.SCALE
+                    this.background.sprite.position.x - shape.x * this.game.SCALE, 
+                    this.background.sprite.position.y - shape.y * this.game.SCALE
                 );
                 shapeGraphic.answers = shape.answers;
                 if (fill) {
