@@ -14,6 +14,6 @@ export default class WasteSprite extends BasicGameSprite {
      */
     constructor(game, x, y, key, wasteObj) {
         super(game, x, y, `jeu3/dechets/${key}`, wasteObj);
-        this.scale.set(this.game.SCALE / (this.game.world.width/500));
+        this.scale.set(this.game.SCALE / (this.game.world.width/400));
     }
 };
