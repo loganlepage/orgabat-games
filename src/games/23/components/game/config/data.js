@@ -150,7 +150,7 @@ export default {
         ] // end shapes
     }, // end step
     {
-        title: "Choisir la meilleure mesure de prévention et indiquer son niveau",
+        title: "Choisir la meilleure mesure de prévention parmi les 4 proposées et indiquer son niveau d'importance",
         quest: "prevention_quest",
         repo: "situations/",
         background: "situations",

@@ -29,15 +29,15 @@ export default class Step extends BasicGameObject {
         this.stepData = stepData;
 
         // Response title:
-        this.title = game.add.text(this.game.world.centerX, 40*this.game.SCALE, this.stepData.title, {
+        this.title = game.add.text(this.game.world.centerX, 18*this.game.SCALE, this.stepData.title, {
             font: 'Arial', 
             fontSize: 25*this.game.SCALE, 
             fill: '#000000', 
             align: "center",
             wordWrap: true,
-            wordWrapWidth: this.game.world.width - 100*this.game.SCALE
+            wordWrapWidth: this.game.world.width - 400*this.game.SCALE
         });
-        this.title.anchor.setTo(0.5);
+        this.title.anchor.setTo(0.5, 0);
 
         // Background
         if (this.stepData.background != undefined) {
@@ -45,7 +45,7 @@ export default class Step extends BasicGameObject {
             this.background = new Background(
                 this.game,
                 this.game.world.centerX + 150 * this.game.SCALE,
-                this.game.world.centerY,
+                this.game.world.centerY + 50 * this.game.SCALE,
                 this.stepData.repo + this.stepData.background
             );
             this.game.layer.zDepth0.addChild(this.background.sprite);
