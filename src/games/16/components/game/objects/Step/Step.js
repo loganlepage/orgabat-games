@@ -10,6 +10,7 @@ import {Signal} from 'phaser';
 import Config from "../../config/data";
 
 import ResponseFactory from "../Response/ResponseFactory";
+import ImageFactory from "../Image/ImageFactory";
 import QuestionFactory from "../Question/QuestionFactory";
 import Background from "../Background/Background";
 
@@ -28,23 +29,25 @@ export default class Step extends BasicGameObject {
         super(game);
         this.stepData = stepData;
 
+        let xMargin = 300 * this.game.SCALE;
+
         // Response title:
-        this.title = game.add.text(this.game.world.centerX, 40*this.game.SCALE, this.stepData.title, {
+        this.title = game.add.text(this.game.world.centerX, 50 * this.game.SCALE, this.stepData.title, {
             font: 'Arial', 
             fontSize: 25*this.game.SCALE, 
             fill: '#000000', 
             align: "center",
             wordWrap: true,
-            wordWrapWidth: this.game.world.width - 100*this.game.SCALE
+            wordWrapWidth: this.game.world.width - 600*this.game.SCALE
         });
         this.title.anchor.setTo(0.5);
 
         // Background
         if (this.stepData.background != undefined) {
-            this.title.position.x += + 150 * this.game.SCALE;
+            this.title.position.x += xMargin;
             this.background = new Background(
                 this.game,
-                this.game.world.centerX + 150 * this.game.SCALE,
+                this.game.world.centerX - xMargin,
                 this.game.world.centerY,
                 this.stepData.repo + this.stepData.background
             );
@@ -71,9 +74,33 @@ export default class Step extends BasicGameObject {
             });
         }
 
+        // Image group
+        if (this.stepData.images != undefined) {
+            this.imageGroup = new ImageFactory(this.game, this.stepData.repo, this.stepData.images, xMargin);
+            let correctAnswer = 0,
+                totalAnswer = 0;
+            this.imageGroup.forEach((image) => {
+                if (image.obj.correct) {
+                    totalAnswer++;
+                }
+            });
+            // Drag stop event
+            this.imageGroup.forEach((image) => {
+                image.events.onInputDown.add(function(){
+                    if (image.obj.validate()) {
+                        correctAnswer++;
+                        if (correctAnswer >= totalAnswer) {
+                            this.game.time.events.add(Phaser.Timer.SECOND * .75, this.finishStep,this);
+                        }
+                    }
+                }, this);
+            });
+        }
+
         // Response group
         if (this.stepData.responses != undefined) {
-            this.responseGroup = new ResponseFactory(this.game, this.stepData.repo, this.stepData.responses);
+            this.background.sprite.position.x += 2 * xMargin;
+            this.responseGroup = new ResponseFactory(this.game, this.stepData.repo, this.stepData.responses, xMargin);
             let correctAnswer = 0,
                 totalAnswer = 0;
             this.responseGroup.forEach((response) => {
@@ -97,8 +124,9 @@ export default class Step extends BasicGameObject {
             });
         }
 
+        // QCM
         if (this.stepData.qcm != undefined) {
-            this.responseGroup = new QuestionFactory(this.game, this.stepData.qcm);
+            this.responseGroup = new QuestionFactory(this.game, this.stepData.qcm, xMargin);
             let correctAnswer = 0,
                 totalAnswer = 0;
             this.responseGroup.forEach((response) => {
@@ -133,6 +161,11 @@ export default class Step extends BasicGameObject {
         if (this.stepData.responses != undefined) {
             while(this.responseGroup.children[0]){
                 this.responseGroup.children[0].destroy();
+            }
+        }
+        if (this.stepData.images != undefined) {
+            while(this.imageGroup.children[0]){
+                this.imageGroup.children[0].destroy();
             }
         }
         if (this.stepData.qcm != undefined) {

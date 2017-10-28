@@ -2,11 +2,11 @@ import GameFactory from "system/phaser/GameFactory";
 import Question from "./Question";
 import Phaser from "phaser";
 
-export default class ResponseFactory extends GameFactory {
+export default class QuestionFactory extends GameFactory {
 
     coordonates = [];
 
-    constructor(game, responses) {
+    constructor(game, responses, xMargin) {
         super(game);
         this.game = game;
 
@@ -21,13 +21,13 @@ export default class ResponseFactory extends GameFactory {
         };
 
         // Coordonates
-        let x = this.game.world.centerX;
+        let x = this.game.world.centerX + xMargin;
         let yValue = (height / responsesNumber)/2;
 
         this.coordonates = [];
 
         for (let i = 0; i < responsesNumber; i++) {
-            let y = i * (2 * yValue) + yValue + 150*this.game.SCALE;
+            let y = i * (2 * yValue) + yValue + 150 * this.game.SCALE;
             this.coordonates.push({x,y});
         }
 

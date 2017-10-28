@@ -3,7 +3,7 @@ import Config from '../config/data';
 
 export default class EndStepQuest extends Quest {
 
-    _name = 'Remettre dans l’ordre les quatre étapes principales à effectuer';
+    _name = "Remettre dans l’ordre les quatre étapes principales à effectuer";
     _key = 'end_step_quest';
     _help = 'Déposer chaque étape correcte dans le bon ordre';
 

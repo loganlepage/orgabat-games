@@ -1,12 +1,12 @@
 import GameFactory from "system/phaser/GameFactory";
-import Response from "./Response";
+import Image from "./Image";
 import Phaser from "phaser";
 
-export default class ResponseFactory extends GameFactory {
+export default class ImageFactory extends GameFactory {
 
     coordonates = [];
 
-    constructor(game, repo, responses, xMargin) {
+    constructor(game, repo, responses) {
         super(game);
         this.game = game;
 
@@ -21,27 +21,29 @@ export default class ResponseFactory extends GameFactory {
         };
 
         // Coordonates
-        let x = this.game.world.centerX - xMargin;
-        let yValue = (height / responsesNumber)/2;
+        let y = this.game.world.centerY;
+        // let yValue = (height / responsesNumber)/2;
+        let xValue = (width / responsesNumber)/2;
 
         this.coordonates = [];
 
         for (let i = 0; i < responsesNumber; i++) {
-            let y = i * (2 * yValue) + yValue;
+            // let y = i * (2 * yValue) + yValue;
+            let x = i * (2 * xValue) + xValue;
             this.coordonates.push({x,y});
         }
 
-        // Responses
+        // Images
         let count = 0;
         for (let response in responses) {
             this.add(
-                (new Response(
+                (new Image(
                     this.game,
                     this.coordonates[count].x,
                     this.coordonates[count].y,
                     repo,
                     responses[response].key,
-                    responses[response].isUsed,
+                    responses[response].correct,
                 )).sprite
             );
             count++;

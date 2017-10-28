@@ -18,7 +18,9 @@ export default class Response extends BasicGameObject {
             font: 'Arial', 
             fontSize: 25*this.game.SCALE, 
             fill: '#666666', 
-            align: "center"});
+            align: "center",
+            wordWrap: true,
+            wordWrapWidth: this.game.world.width - 600*this.game.SCALE});
         this.text.obj = this;
         this.text.anchor.setTo(0.5);
         this.addControls();
