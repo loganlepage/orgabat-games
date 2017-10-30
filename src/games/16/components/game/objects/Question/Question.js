@@ -8,12 +8,13 @@ export default class Response extends BasicGameObject {
 
     onDropped = new Signal();
 
-    constructor(game, x, y, title, correct) {
+    constructor(game, x, y, title, correct, point) {
         super(game);
         this.x = x;
         this.y = y;
         this.title = title;
         this.correct = correct;
+        this.point = point;
         this.text = this.game.add.text(this.x, this.y, this.title, {
             font: 'Arial', 
             fontSize: 25*this.game.SCALE, 
@@ -34,9 +35,24 @@ export default class Response extends BasicGameObject {
             this.text.addColor("#4CA64C", 0);
             return true;
         } else {
-            PhaserManager.get('gabator').stats.changeValues({
-                health: PhaserManager.get('gabator').stats.state.health - 1,
-            });
+            switch(this.point){
+                case 'organization':
+                    console.log("Case");
+                    PhaserManager.get('gabator').stats.changeValues({
+                        organization: PhaserManager.get('gabator').stats.state.organization - 1,
+                    });
+                    break;
+                case 'enterprise':
+                    PhaserManager.get('gabator').stats.changeValues({
+                        enterprise: PhaserManager.get('gabator').stats.state.enterprise - 1,
+                    });
+                    break;
+                default:
+                    PhaserManager.get('gabator').stats.changeValues({
+                        health: PhaserManager.get('gabator').stats.state.health - 1,
+                    });
+                    break;
+            }
             // Text
             this.text.addColor("#CC0000", 0);
             return false;

@@ -42,6 +42,7 @@ export default class ResponseFactory extends GameFactory {
                     repo,
                     responses[response].key,
                     responses[response].isUsed,
+                    responses[response].point,
                 )).sprite
             );
             count++;

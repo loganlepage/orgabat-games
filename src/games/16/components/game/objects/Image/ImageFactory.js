@@ -44,6 +44,7 @@ export default class ImageFactory extends GameFactory {
                     repo,
                     responses[response].key,
                     responses[response].correct,
+                    responses[response].point,
                 )).sprite
             );
             count++;

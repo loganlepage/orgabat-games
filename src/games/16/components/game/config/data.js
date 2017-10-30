@@ -15,15 +15,18 @@ export default {
         images:[
         {
             key:"1",
-            correct: false
+            correct: false,
+            point: "organization"
         },
         {
             key:"2",
-            correct: false
+            correct: false,
+            point: "organization"
         },
         {
             key:"3",
-            correct: false
+            correct: false,
+            point: "organization"
         },
         {
             key:"4",
@@ -41,7 +44,8 @@ export default {
         qcm:[
         {
             title:"Non, Monsieur",
-            correct: false
+            correct: false,
+            point: "enterprise"
         },
         {
             title:"Oui, bien sûr",
@@ -63,31 +67,38 @@ export default {
         responses:[
         {
             key:"mettre_protection",
-            isUsed: true
+            isUsed: true,
+            point: "organization"
         },
         {
             key:"decharger",
-            isUsed: true
+            isUsed: true,
+            point: "organization"
         },
         {
             key:"bruler",
-            isUsed: false
+            isUsed: false,
+            point: "organization"
         },
         {
             key:"vider",
-            isUsed: true
+            isUsed: true,
+            point: "organization"
         },
         {
             key:"evaluer",
-            isUsed: false
+            isUsed: false,
+            point: "organization"
         },
         {
             key:"mettre_epi",
-            isUsed: true
+            isUsed: true,
+            point: "organization"
         },
         {
             key:"mettre_ambiance",
-            isUsed: false
+            isUsed: false,
+            point: "organization"
         },
         ],
         shapes: [
@@ -123,15 +134,18 @@ export default {
         qcm:[
         {
             title:"Je ne demande jamais, je fais.",
-            correct: false
+            correct: false,
+            point: "enterprise"
         },
         {
             title:"Je demande la permission au client",
-            correct: false
+            correct: false,
+            point: "enterprise"
         },
         {
             title:"Je demande la permission au client et je fais attention de laisser propre le lavabo",
-            correct: true
+            correct: true,
+            point: "enterprise"
         }
         ]
     },
@@ -201,15 +215,18 @@ export default {
         qcm:[
         {
             title:"Jamais ce n’est pas professionnel devant le client",
-            correct: false
+            correct: false,
+            point: "enterprise"
         },
         {
             title:"J’allume à faible volume",
-            correct: false
+            correct: false,
+            point: "enterprise"
         },
         {
             title:"Fermer la porte",
-            correct: false
+            correct: false,
+            point: "enterprise"
         },
         {
             title:"Je demande la permission au client, qui se trouve deux étages plus bas",
@@ -227,27 +244,33 @@ export default {
         responses:[
         {
             key:"dire",
-            isUsed: true
+            isUsed: true,
+            point: "organization"
         },
         {
             key:"laver",
-            isUsed: true
+            isUsed: true,
+            point: "organization"
         },
         {
             key:"retirer",
-            isUsed: true
+            isUsed: true,
+            point: "organization"
         },
         {
             key:"enlever",
-            isUsed: true
+            isUsed: true,
+            point: "organization"
         },
         {
             key:"charger",
-            isUsed: true
+            isUsed: true,
+            point: "organization"
         },
         {
             key:"nettoyer",
-            isUsed: true
+            isUsed: true,
+            point: "organization"
         },
         ],
         shapes: [

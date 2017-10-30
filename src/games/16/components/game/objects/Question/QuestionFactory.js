@@ -41,6 +41,7 @@ export default class QuestionFactory extends GameFactory {
                     this.coordonates[count].y,
                     responses[response].title,
                     responses[response].correct,
+                    responses[response].point
                 )).text
             );
             count++;

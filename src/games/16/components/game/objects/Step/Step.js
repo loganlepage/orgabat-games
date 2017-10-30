@@ -30,6 +30,7 @@ export default class Step extends BasicGameObject {
         this.stepData = stepData;
 
         let xMargin = 300 * this.game.SCALE;
+        let yMargin = 25 * this.game.SCALE;
 
         // Response title:
         this.title = game.add.text(this.game.world.centerX, 50 * this.game.SCALE, this.stepData.title, {
@@ -52,6 +53,9 @@ export default class Step extends BasicGameObject {
                 this.stepData.repo + this.stepData.background
             );
             this.game.layer.zDepth0.addChild(this.background.sprite);
+            if (this.stepData.responses != undefined) {
+                this.background.sprite.position.y += yMargin;
+            }
         }
 
         // Shapes to answer
@@ -148,7 +152,6 @@ export default class Step extends BasicGameObject {
     }
 
     finishStep() {
-        console.log("Finish step");
         this.title.destroy();
         if (this.stepData.background != undefined) {
             this.background.sprite.destroy();
