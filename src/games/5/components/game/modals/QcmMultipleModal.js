@@ -47,12 +47,12 @@ export default class QcmMultipleModal extends Modal {
             items: {
                 bg: {
                     type: "sprite",
-                    key: "modal/bg/big_modal"
+                    key: "jeu5/custom_modal"
                 },
                 answerPane: {
                     type: "group",
-                    x: 15,
-                    y: 15,
+                    x: 20,
+                    y: 20,
                     items: {
                         question: {
                             type: "text",
@@ -62,7 +62,7 @@ export default class QcmMultipleModal extends Modal {
                                 fontFamily: "Arial",
                                 fontSize: 20,
                                 wordWrap: true,
-                                wordWrapWidth: 300
+                                wordWrapWidth: 500
                             }
                         }
                     }
