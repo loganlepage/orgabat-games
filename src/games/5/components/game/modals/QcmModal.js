@@ -2,7 +2,6 @@
 import {Signal} from "phaser";
 import Type from "system/utils/Type";
 import Modal from "system/phaser/Modal";
-import StartInfoModal from "./StartInfoModal";
 
 
 /** Description Tooltip Modal */
@@ -35,7 +34,7 @@ export default class QcmInfoModal extends Modal {
         const bg = this.items.bg;
         const picture = this.items.picture;
         const scale = bg.width / picture.width;
-        picture.scale.set(scale/1.5);
+        picture.scale.set((scale/2.5) * this.game.SCALE);
         picture.x = (bg.width/2) - (picture.width/2);
         picture.y = (bg.height/2) - (picture.height/2);
     }
