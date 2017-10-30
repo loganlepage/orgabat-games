@@ -7,6 +7,8 @@ import GameModal from 'system/phaser/GameModal';
 /** Description Tooltip Modal */
 export default class StartInfoModal extends Modal {
 
+    textG;
+    textB;
     /**
      * Constructor for a new modal
      * @param data
@@ -15,18 +17,7 @@ export default class StartInfoModal extends Modal {
      */
     constructor(data, manager, game) {
         super(Type.deepMerge(StartInfoModal.pattern, data), manager, game);
-        const good = StartInfoModal.pattern.items.process.processText.goodText;
-        const bad = StartInfoModal.pattern.items.process.processText.badText;
-        good.x = this.game.width  - (this.game.width / 2.05);
-        good.y = this.game.height  - (this.game.height / 3.65);
-        bad.x = this.game.width  - (this.game.width / 1.7);
-        bad.y = this.game.height  - (this.game.height / 3.65);
-        // add text below icons
-        this.textG = this.game.add.text(good.x, good.y, good.text, good.style);
-        this.textB = this.game.add.text(bad.x, bad.y, bad.text, bad.style);
 
-        this.textG.anchor.set
-        //this.game.add.text(processT.badText);
     }
 
     static get pattern() {
@@ -66,34 +57,6 @@ export default class StartInfoModal extends Modal {
                     key: "jeu5/process",
                     x: 120,
                     y: 110,
-                    processText: {
-                        goodText: {
-                            type: "text",
-                            x: 245,
-                            y: 250,
-                            text: "BON",
-                            style: {
-                                fill: "#72e583",
-                                fontFamily: "Arial",
-                                fontSize: 14,
-                                wordWrap: true,
-                                wordWrapWidth: 450 - 40 //sprite.width - margin
-                            }
-                        },
-                        badText: {
-                            type: "text",
-                            x: 435,
-                            y: 485,
-                            text: "MAUVAIS",
-                            style: {
-                                fill: "#e56767",
-                                fontFamily: "Arial",
-                                fontSize: 14,
-                                wordWrap: true,
-                                wordWrapWidth: 450 - 40 //sprite.width - margin
-                            }
-                        }
-                    }
                 },
                 close: {
                     type: "group",

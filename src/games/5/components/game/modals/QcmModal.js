@@ -2,6 +2,7 @@
 import {Signal} from "phaser";
 import Type from "system/utils/Type";
 import Modal from "system/phaser/Modal";
+import StartInfoModal from "./StartInfoModal";
 
 
 /** Description Tooltip Modal */
@@ -35,7 +36,6 @@ export default class QcmInfoModal extends Modal {
         const picture = this.items.picture;
         const scale = bg.width / picture.width;
         picture.scale.set(scale/1.5);
-        //picture.y = bg.height - picture.height - this.game.uiScale(15) /*padding bottom*/;
         picture.x = (bg.width/2) - (picture.width/2);
         picture.y = (bg.height/2) - (picture.height/2);
     }
@@ -88,15 +88,15 @@ export default class QcmInfoModal extends Modal {
                         answer_good: {
                             type: "sprite",
                             key: "jeu5/good",
-                            x: 250,
-                            y: 300,
+                            x: 245,
+                            y: 340,
                             props: {inputEnabled: true, useHandCursor: true}
                         },
                         answer_bad: {
                             type: "sprite",
                             key: "jeu5/bad",
-                            x: 140,
-                            y: 300,
+                            x: 135,
+                            y: 340,
                             props: {inputEnabled: true, useHandCursor: true}
                         }
                     }
