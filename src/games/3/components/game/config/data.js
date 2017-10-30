@@ -59,9 +59,9 @@ export default {
             },
             terre_non_polluee: {
                 title: "Terre non polluée",
-                epi: ["protection_des_mains", "protection_des_yeux", "protection_du_corps"],
+                epi: [],
                 action: ["dechets_inertes"],
-                description: "Description manquante"
+                description: "Terres de déblais ne contenant pas de substances dangereuses."
             },
             palettes: {
                 title: "Palettes",
@@ -74,97 +74,98 @@ export default {
                 title: "Bois",
                 epi: ["protection_des_mains"],
                 action: ["dechets_industriels_banals"],
-                description: "description manquante"
+                description: "Ils concernent également les produits usagés et les emballages en bois (palettes, bois d'emballages, caisses, bois de démolition ou d'ameublement, …)."
             },
             bois_traite: {
                 title: "Bois traité",
                 epi: ["protection_des_mains"],
                 action: ["dechets_industriels_speciaux"],
-                description: "description manquante"
+                description: "Bois ayant subi différents traitements chimiques."
             },
             brosses_et_chiffons_souilles: {
                 title: "Brosses et chiffons souillés",
                 epi: ["protection_des_mains"],
                 action: ["dechets_industriels_speciaux"],
-                description: "description manquante"
+                description: "Ce sont des objets ayant contenus des matières ou déchets dangereux (absorbants, chiffons, EPI...)"
             },
             cartouches_dangereuses: {
                 title: "Cartouches dangereuses",
                 epi: ["protection_des_mains"],
                 action: ["dechets_industriels_speciaux"],
-                description: "description manquante"
+                description: "Cartouche contenant des substances pouvant être néfastes pour l’homme et l’environnement. Exemples : Silicone sanitaire, cartouches de SIKA …)"
             },
             cartouches_non_dangereuses: {
                 title: "Cartouches non dangereuses",
-                epi: ["protection_des_mains"],
+                epi: [],
                 action: ["dechets_industriels_banals"],
-                description: "description manquante"
+                description: "Cartouche contenant des substances ne pouvant pas être néfastes pour l’homme et l’environnement."
             },
             dechets_dangereux: {
                 title: "Déchets dangereux",
                 epi: ["protection_des_mains"],
                 action: ["dechets_industriels_speciaux"],
-                description: "description manquante"
+                description: "Un déchet est classé dangereux s'il présente une ou plusieurs propriétés de danger (explosif, comburant, nocif, cancérigène, etc.) qui peuvent générer des nuisances pour l'homme ou pour l'environnement."
             },
             emballages_souilles: {
                 title: "Emballages souillés",
                 epi: ["protection_des_mains"],
                 action: ["dechets_industriels_speciaux"],
-                description: "description manquante"
+                description: "Ce sont des emballages ayant contenus des matières ou déchets dangereux"
             },
             inertes: {
                 title: "Inertes",
-                epi: ["protection_des_mains"],
+                epi: [],
                 action: ["dechets_inertes"],
-                description: "description manquante"
+                description: "Déchets qui ne subit aucune modification physique, chimique ou biologique importante, ne brule pas, ne se décompose pas, ne produit aucune réaction physique ou chimique, n’est pas biodégradable… "
             },
             inertes_platre: {
                 title: "Inertes platre",
-                epi: ["protection_des_mains"],
+                epi: [],
                 action: ["dechets_inertes"],
-                description: "description manquante"
+                description: "Déchets inertes avec faible quantité de plâtre."
             },
             isolants: {
                 title: "Isolants",
-                epi: ["protection_des_mains"],
+                epi: [],
                 action: ["dechets_industriels_banals"],
-                description: "description manquante"
+                description: "Un isolant est un matériau qui limite les échanges d'énergie entre deux systèmes. Ex :  les isolants phoniques ;  les isolants mécaniques. Le contraire d'un isolant est un conducteur (électricité et chaleur), ou transmetteur (mécanique et son)."
             },
             peinture_dangereuse: {
                 title: "Peinture dangereuse",
                 epi: ["protection_des_mains"],
                 action: ["dechets_industriels_speciaux"],
-                description: "description manquante"
+                description: "Peinture composée de résines, solvants, pigments, charges et\n" +
+                "additifs. Ces composées chimiques sont toxiques pour l’homme et l’environnement\n"
             },
             peinture_non_dangereuse: {
                 title: "Peinture non dangereuse",
-                epi: ["protection_des_mains"],
+                epi: [],
                 action: ["dechets_industriels_banals"],
-                description: "description manquante"
+                description: "Peinture ne présentant pas de risques pour la sante de l’homme et pour l’environnement."
             },
             polystyrene: {
                 title: "Polystyrene",
-                epi: ["protection_des_mains"],
+                epi: [],
                 action: ["dechets_industriels_banals"],
-                description: "description manquante"
+                description: "Matière plastique résultant de la polymérisation du styrène."
             },
             verre: {
                 title: "Verre",
                 epi: ["protection_des_mains"],
                 action: ["dechets_inertes"],
-                description: "description manquante"
+                description: "Le verre est un matériau solide transparent, homogène et cassant. Il résiste bien au feu et au contact de pratiquement tous les liquides et solides connus."
             },
             amiante: {
                 title: "Amiante",
-                epi: ["protection_des_mains"],
+                epi: ["protection_des_mains", "protection_des_voies"],
                 action: ["dechets_industriels_speciaux"],
-                description: "description manquante"
+                description: "L'amiante est un silicate naturel hydraté de calcium et de magnésium à contexture fibreuse (variété de serpentine), résistant à l'action du feu. Il était utilisé pour fabriquer des matériaux, des tissus incombustibles"
             },
             amiante_ciment: {
                 title: "Amiante",
-                epi: ["protection_des_mains"],
+                epi: ["protection_des_mains", "protection_des_voies"],
                 action: ["dechets_industriels_speciaux"],
-                description: "description manquante"
+                description: "L'Amiante ciment est un matériau formé en présence d'eau, à partir d'un mélange intime d'amiante et de ciment comprimé puis séché après mise en forme. L'amiante ciment était utilisé pour la fabrication de plaques ondulées, ardoises, tuyaux et gaines..."
             },
         },
         actions: {
