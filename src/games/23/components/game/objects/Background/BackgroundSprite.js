@@ -7,7 +7,7 @@ export default class ProcedureSprite extends BasicGameSprite {
     constructor(game, x, y, key, itemObj) {
         super(game, x, y, `jeu23/${key}`, itemObj);
         this.anchor.setTo(0.5, 0.5);
-        this.scale.set(this.game.SCALE);
+        this.scale.set(0.9 * this.game.SCALE);
         
         // To have shapes position:
         this.inputEnabled = true;

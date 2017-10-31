@@ -52,7 +52,7 @@ export default class Step extends BasicGameObject {
         }
 
         // Shapes to answer
-        let fill = false, // to fill or not
+        let fill = true, // to fill or not
             radius = 75 * this.game.SCALE;
         if (this.stepData.shapes != undefined) {
             this.shapes = [];

@@ -8,7 +8,7 @@ export default class ResponseSprite extends BasicGameSprite {
         super(game, x, y, `jeu23/${repo}${link}`, buttonObj);
         this.link = link;
         this.anchor.setTo(0.5);
-        this.scale.set(0.5 * this.game.SCALE);
+        this.scale.set(0.4 * this.game.SCALE);
         this.cloneOriginalPosition();
         // Afficher la position pour aider le placement:
         // this.events.onDragStop.add(function(sprite){

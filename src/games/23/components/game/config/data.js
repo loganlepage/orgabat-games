@@ -37,32 +37,32 @@ export default {
         shapes: [
         {
             key:"shape1",
-            x: -215,
-            y: 295,
+            x: -190,
+            y: 267,
             answers: ["analyse1"] // dangerous event
         },
         {
             key:"shape1",
-            x: 205,
-            y: 90,
+            x: 190,
+            y: 80,
             answers: ["analyse2"] // danger
         },
         {
             key:"shape1",
-            x: 9,
-            y: -196,
+            x: 10,
+            y: -173,
             answers: ["analyse3"] // damage
         },
         {
             key:"shape1",
-            x: 223,
-            y: 280,
+            x: 196,
+            y: 255,
             answers: ["analyse4"] // dangerous situation
         },
         {
             key:"shape1",
-            x: -170,
-            y: 90,
+            x: -165,
+            y: 80,
             answers: ["analyse5"] // operator
         },
         ] // end shapes
@@ -108,43 +108,43 @@ export default {
         ], // end responses
         shapes: [
         {
-            x: 230,
-            y: 192,
+            x: 207,
+            y: 172,
             answers: ["mesures3"] // Orange ones
         },
         {
-            x: 230,
-            y: 67,
+            x: 207,
+            y: 60,
             answers: ["mesures1"]
         },
         {
-            x: 230,
-            y: -55,
+            x: 207,
+            y: -49,
             answers: ["mesures4"]
         },
         {
-            x: 230,
-            y: -179,
+            x: 207,
+            y: -161,
             answers: ["mesures2"]
         },
         {
-            x: -355,
-            y: 191,
+            x: -319,
+            y: 171,
             answers: ["mesures5"] // Blue ones
         },
         {
-            x: -355,
-            y: 69,
+            x: -319,
+            y: 62,
             answers: ["mesures8"]
         },
         {
-            x: -355,
-            y: -55,
+            x: -319,
+            y: -49,
             answers: ["mesures7"]
         },
         {
-            x: -355,
-            y: -180,
+            x: -319,
+            y: -162,
             answers: ["mesures6"]
         },
         ] // end shapes
@@ -174,23 +174,23 @@ export default {
         ], // end responses
         shapes: [
         {
-            x: 138,
-            y: 285,
+            x: 124,
+            y: 256,
             answers: [""]
         },
         {
-            x: 138,
-            y: 103,
+            x: 124,
+            y: 92,
             answers: [""]
         },
         {
-            x: 138,
-            y: -89,
+            x: 124,
+            y: -80,
             answers: ["situation2"]
         },
         {
-            x: 138,
-            y: -285,
+            x: 124,
+            y: -256,
             answers: [""]
         },
         ] // end shapes
@@ -244,63 +244,63 @@ export default {
         ], // end responses
         shapes: [
         { // top left
-            x: 135,
-            y: 255,
+            x: 121,
+            y: 229,
             answers: ["preventions6"]
         },
         {
-            x: 135,
-            y: 151,
+            x: 121,
+            y: 135,
             answers: ["preventions6"]
         },
         {
-            x: 135,
-            y: 49,
+            x: 121,
+            y: 44,
             answers: ["preventions6"]
         },
         { // top right
-            x: -137,
-            y: 255,
+            x: -123,
+            y: 229,
             answers: ["preventions", "preventions7", "preventions2"]
         },
         {
-            x: -137,
-            y: 151,
+            x: -123,
+            y: 135,
             answers: ["preventions", "preventions7", "preventions2"]
         },
         {
-            x: -137,
-            y: 49,
+            x: -123,
+            y: 44,
             answers: ["preventions", "preventions7", "preventions2"]
         },
         { // bottom left
-            x: 137,
-            y: -114,
+            x: 123,
+            y: -102,
             answers: ["preventions10"]
         },
         {
-            x: 137,
-            y: -216,
+            x: 123,
+            y: -194,
             answers: ["preventions10"]
         },
         {
-            x: 137,
-            y: -318,
+            x: 123,
+            y: -286,
             answers: ["preventions10"]
         },
         { // bottom right
             x: -133,
-            y: -114,
+            y: -102,
             answers: ["preventions4"]
         },
         {
             x: -133,
-            y: -216,
+            y: -194,
             answers: ["preventions4"]
         },
         {
             x: -133,
-            y: -318,
+            y: -286,
             answers: ["preventions4"]
         }
         ] // end shapes
