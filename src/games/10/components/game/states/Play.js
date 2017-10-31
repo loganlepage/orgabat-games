@@ -30,6 +30,9 @@ export default class Play extends State {
         this.game.controlsEnabled = false;
         this.game.stage.backgroundColor = '#FFFFFF';
 
+        this.tileSprite = this.game.add.tileSprite(0, 0, this.game.world.width, this.game.world.height, "atlas");
+        this.tileSprite.tileScale.set(0.5);
+
         this.initUI();
         PhaserManager.ready('game', 'play');
 
@@ -92,7 +95,6 @@ class Engine {
             this.stepNumber++;
             this.step.finish.addOnce(this.start, this);
         } else {
-            console.log("Step finished");
             this.gameProcess.quests._quests.communication_quest.done();
             this.finish.dispatch();
         }

@@ -22,9 +22,6 @@ export default class QuestionFactory extends GameFactory {
 
         let y = this.game.world.centerY - tmpY / 2;
 
-        console.log(y);
-        console.log(tmpY);
-
         for (let question in questions) {
             this.add(new Question(
                 this.game,
