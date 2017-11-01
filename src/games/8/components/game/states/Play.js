@@ -32,8 +32,9 @@ export default class Play extends State {
      */
     create() {
         this.game.controlsEnabled = false;
-        this.game.stage.backgroundColor = '#DADAD5';
-
+        this.game.stage.backgroundColor = '#e1f0f0';
+        this.tileSprite = this.game.add.tileSprite(0, 0, this.game.world.width, this.game.world.height, "atlas");
+        this.tileSprite.tileScale.set(this.game.SCALE * 1.2);
         this.initUI();
         PhaserManager.ready('game', 'play');
 
@@ -554,7 +555,7 @@ class ScreenFive {
         this.title.anchor.setTo(0.5, 0);
 
         this.background = new Background(this.game, this.game.world.centerX, 300 * this.game.SCALE, "numbers/bg");
-        this.background.sprite.scale.set(1.5);
+        this.background.sprite.scale.set(this.game.SCALE * 1.2);
         this.game.layer.zDepth0.addChild(this.background.sprite);
         this.game.responseGroup = new ResponseFactory(this.game, Config.screenFive);
 
@@ -569,7 +570,7 @@ class ScreenFive {
         // let self = this;
         this.game.responseGroup.forEach((item) => {
             item.input.enableDrag(false, true);
-            item.scale.set(1.5);
+            item.scale.set(this.game.SCALE * 1.4);
             item.position.y += 150;
             item.cloneOriginalPosition();
             item.inputEnabled = true;
@@ -649,17 +650,17 @@ class ScreenFive {
         let x = element.x, 
             y = element.y,
 
-            x1 = x + 50 * this.game.SCALE,
-            y1 = y - 73 * this.game.SCALE,
+            x1 = x + 85 * this.game.SCALE,
+            y1 = y - 115 * this.game.SCALE,
 
-            x2 = x + 83 * this.game.SCALE,
-            y2 = y - 13 * this.game.SCALE,
+            x2 = x + 150 * this.game.SCALE,
+            y2 = y - 10 * this.game.SCALE,
 
-            x3 = x + 118 * this.game.SCALE,
-            y3 = y + 54 * this.game.SCALE,
+            x3 = x + 200 * this.game.SCALE,
+            y3 = y + 100 * this.game.SCALE,
 
-            x4 = x + 97 * this.game.SCALE,
-            y4 = y + 115 * this.game.SCALE,
+            x4 = x + 175 * this.game.SCALE,
+            y4 = y + 210 * this.game.SCALE,
 
             // Pour afficher les zones de drag n drop
             fill = false,
