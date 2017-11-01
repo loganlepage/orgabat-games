@@ -87,7 +87,7 @@ class Engine {
         this.gameProcess.quests.add(new SafetyQuest(this.gameProcess.game));
         this.gameProcess.quests.add(new RescueQuest(this.gameProcess.game));
 
-        this.stepNumber = 0;
+        this.stepNumber = 5;
     }
 
     start(){
@@ -181,7 +181,7 @@ class GameProcess {
             organizationMax: PhaserManager.get('gabator').stats.organizationMax,
             enterpriseMax: PhaserManager.get('gabator').stats.enterpriseMax
         });
-        endInfoModal.onExit.addOnce(() => window.closeGameModal(), this);
+        endInfoModal.onExit.addOnce(() => window.parent.closeGameModal(), this);
         endInfoModal.onReplay.addOnce(() => window.location.reload(), this);
 
         // Stars:
