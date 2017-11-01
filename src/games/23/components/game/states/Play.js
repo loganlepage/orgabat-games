@@ -87,7 +87,7 @@ class Engine {
         this.gameProcess.quests.add(new SafetyQuest(this.gameProcess.game));
         this.gameProcess.quests.add(new RescueQuest(this.gameProcess.game));
 
-        this.stepNumber = 5;
+        this.stepNumber = 0;
     }
 
     start(){
