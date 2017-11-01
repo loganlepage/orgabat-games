@@ -174,6 +174,7 @@ class PartTwo {
     }
 
     start() {
+        this.addBackground();
         this.paintText = this.game.add.text(20 * this.game.SCALE, 20 * this.game.SCALE, `Quantité de peinture : ${this.paintCapacity}/${this.paintCapacityMax}`, {fill: '#676565'});
         this.carriageText = this.game.add.text(this.game.world.width - 350 * this.game.SCALE, 20 * this.game.SCALE, `Capacité du chariot : ${this.carriageCapacity}/${this.carriageCapacityMax}`, {fill: '#676565'});
         this.suppliesText = this.game.add.text(20 * this.game.SCALE, 60 * this.game.SCALE, `Matériels : ${this.materialCapacity}/3`, {fill: '#676565'});
@@ -193,6 +194,14 @@ class PartTwo {
 
     onQuestsCleaned() {
         this.finish.dispatch();
+    }
+
+    addBackground(){
+        this.bg = this.game.add.sprite(0, 0, "atlas", "jeu6/bg");
+        this.bg.scale.set(this.game.SCALE);
+        this.bg.position.x = this.game.width - this.bg.width;
+        this.bg.position.y = this.game.height - this.bg.height - 20;
+        this.game.layer.zDepth0.addChild(this.bg);
     }
 
     addTruck() {
