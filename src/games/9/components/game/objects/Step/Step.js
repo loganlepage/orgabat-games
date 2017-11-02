@@ -62,9 +62,11 @@ export default class Step extends BasicGameObject {
             this.info = this.game.add.text(this.game.world.centerX, this.game.world.centerY + 200 * this.game.SCALE, this.infoText, {
                 font: 'Arial', 
                 fontSize: 25*this.game.SCALE, 
-                fill: '#000000', 
-                align: "center"
+                fill: '#073e11', 
+                align: "center",
+                fontWeight: 'bold'
             });
+            this.info.setShadow(1, 1, 'rgba(255,255,255,0.4)', 5);
             this.info.anchor.setTo(0.5);
             // Add button
             this.button = new Button(this.game, this.game.world.width - 120 * this.game.SCALE, this.game.world.height - 70 * this.game.SCALE);
