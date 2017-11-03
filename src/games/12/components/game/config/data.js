@@ -73,6 +73,20 @@ export default {
                     y: 120,
                     correctAnswer: "shapeY3"
                 }
+            ],
+            lines: [
+                {
+                    x1: -5,
+                    y1: -120,
+                    x2: -5,
+                    y2: 70,
+                },
+                {
+                    x1: -20,
+                    y1: -130,
+                    x2: -140,
+                    y2: -45,
+                }
             ]
         },
         {
@@ -99,6 +113,20 @@ export default {
                 //     y: 30,
                 //     correctAnswer: "shapeY2"
                 // }
+            ],
+            lines: [
+                {
+                    x1: -54,
+                    y1: -54,
+                    x2: -35,
+                    y2: 25,
+                },
+                {
+                    x1: -164,
+                    y1: -20,
+                    x2: 175,
+                    y2: -20,
+                }
             ]
         },
         {

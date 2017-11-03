@@ -13,6 +13,8 @@ export default class Image extends BasicGameObject {
 
 	game;
 	shapes = [];
+    lines = [];
+    circle = [];
 	finish = new Signal();
 
     constructor(game, x, y, data) {
@@ -26,6 +28,26 @@ export default class Image extends BasicGameObject {
         this.sprite.scale.set(1.2 * game.SCALE);
         this.game.layer.zDepth0.addChild(this.sprite);
 
+        // lines (arrows)
+        this.lines = [];
+        this.circles = [];
+        
+        if(data.lines){
+            for(let line in data.lines) {
+                // draw line
+                this.lines[line] = this.game.add.graphics(x, y);
+                this.game.layer.zDepth1.addChild(this.lines[line]);
+                this.lines[line].lineStyle(6 * this.game.SCALE, 0x009306);
+                this.lines[line].moveTo(data.lines[line].x1 * this.game.SCALE, data.lines[line].y1 * this.game.SCALE);
+                this.lines[line].lineTo(data.lines[line].x2 * this.game.SCALE, data.lines[line].y2 * this.game.SCALE);
+                //draw circle
+                this.circles[line] = this.game.add.graphics(x,y);
+                this.game.layer.zDepth1.addChild(this.circles[line]);
+                this.circles[line].beginFill(0x009306, 1);
+                this.circles[line].drawCircle(data.lines[line].x2 * this.game.SCALE, data.lines[line].y2 * this.game.SCALE, 15 * this.game.SCALE);
+            }
+        }
+        
         // Shapes
         let fill = false, // To fill or not shapes
         	radius = 50 * game.SCALE,
@@ -94,6 +116,10 @@ export default class Image extends BasicGameObject {
 
     destroy(){
     	this.sprite.destroy();
+        for(let line in this.lines){
+            this.lines[line].destroy();
+            this.circles[line].destroy();
+        }
     	for (let shape in this.shapes){
         	this.shapes[shape].destroy();
         }
