@@ -40,7 +40,7 @@ export default class StartInfoModal extends Modal {
                     type: "text",
                     x: 20,
                     y: 85,
-                    text: "Utilise le document pour obtenir les informations et réponds aux questions en sélectionnant une ou plusieurs réponses",
+                    text: "Après avoir pris les informations des documents, séléctionne les réponses et clique sur Continuer pour valider les réponses",
                     style: {
                         fill: "#5F4D21",
                         fontFamily: "Arial",

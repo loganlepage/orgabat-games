@@ -6,7 +6,7 @@
         <key>texturePackerVersion</key>
         <string>4.4.0</string>
         <key>fileName</key>
-        <string>/Users/Paul/Archive/JE/Projet M1/orgabat/web/modules/game/public/assets/jeu11.tps</string>
+        <string>C:/wamp/www/orgabat/web/modules/game/public/assets/jeu11.tps</string>
         <key>autoSDSettings</key>
         <array>
             <struct type="AutoSDSettings">
@@ -72,7 +72,7 @@
             </struct>
         </struct>
         <key>shapePadding</key>
-        <uint>0</uint>
+        <uint>2</uint>
         <key>jpgQuality</key>
         <uint>80</uint>
         <key>pngOptimizationLevel</key>
@@ -90,9 +90,9 @@
         <key>maxTextureSize</key>
         <QSize>
             <key>width</key>
-            <int>2048</int>
+            <int>4096</int>
             <key>height</key>
-            <int>2048</int>
+            <int>4096</int>
         </QSize>
         <key>fixedTextureSize</key>
         <QSize>
@@ -199,6 +199,19 @@
         </struct>
         <key>individualSpriteSettings</key>
         <map type="IndividualSpriteSettingsMap">
+            <key type="filename">files/jeu11/background/bg.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>238,132,476,264</rect>
+                <key>scale9Paddings</key>
+                <rect>238,132,476,264</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
             <key type="filename">files/jeu11/items/adhesif.png</key>
             <key type="filename">files/jeu11/items/cartouche.png</key>
             <key type="filename">files/jeu11/items/pointes.png</key>

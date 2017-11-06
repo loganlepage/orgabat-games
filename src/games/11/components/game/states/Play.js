@@ -30,7 +30,11 @@ export default class Play extends State {
      */
     create() {
         this.game.controlsEnabled = false;
-        this.game.stage.backgroundColor = '#DADAD5';
+        this.game.stage.backgroundColor = '#FFFFFF';
+
+        this.tileSprite = this.game.add.tileSprite(0, 0, this.game.world.width, this.game.world.height, "atlas");
+        this.tileSprite.tileScale.set(this.game.SCALE * 1.5);
+        this.tileSprite.alpha = 0.3;
 
         this.initUI();
         PhaserManager.ready('game', 'play');
@@ -121,10 +125,16 @@ class Engine {
                 this.items.forEach((item2) => {
                     item2.obj.disableControls();
                 });
+                this.list.forEach((list2) => {
+                    list2.disableControls();
+                });
             }, this);
             item.obj.onClosed.add(function(){
                 this.items.forEach((item2) => {
                     item2.obj.enableControls();
+                });
+                this.list.forEach((list2) => {
+                    list2.enableControls();
                 });
             }, this);
         });
@@ -138,15 +148,19 @@ class Engine {
         // Element modal
         this.list.forEach((item) => {
             item.onClicked.add(function(){
-                console.log("OK");
                 this.items.forEach((item2) => {
                     item2.obj.disableControls();
                 });
+                this.list.forEach((list2) => {
+                    list2.disableControls();
+                });
             }, this);
             item.onClosed.add(function(){
-                console.log("KO");
                 this.items.forEach((item2) => {
                     item2.obj.enableControls();
+                });
+                this.list.forEach((list2) => {
+                    list2.enableControls();
                 });
             }, this);
         });
@@ -188,6 +202,21 @@ class Engine {
 
         this.order.sprite.scale.setTo(this.gameProcess.game.SCALE); // Propotionnal scale
         this.order.sprite.events.onInputDown.add(function(){
+            // Disable all controls
+            this.items.forEach((item2) => {
+                item2.obj.enableControls();
+            });
+            this.list.forEach((list2) => {
+                list2.enableControls();
+            });
+            // Create black background
+            this.blackBackground = this.gameProcess.game.add.graphics(0,0);
+            this.gameProcess.game.layer.zDepth1.addChild(this.blackBackground);
+            this.blackBackground.lineStyle(0, "balck", 0);
+            this.blackBackground.beginFill("black", 0.5);
+            this.blackBackground.drawRect(0, 0, this.gameProcess.game.world.width, this.gameProcess.game.world.height);
+            this.blackBackground.inputEnabled = true;
+            this.blackBackground.input.useHandCursor = true;
             // Display order image, not a button
             this.order = new Button(
                 this.gameProcess.game, 
@@ -195,9 +224,19 @@ class Engine {
                 this.gameProcess.game.world.centerY, 
                 "order_image"
             );
-            this.order.sprite.events.onInputDown.add(function(){
+            this.order.sprite.inputEnabled = false;
+            this.gameProcess.game.layer.zDepth1.addChild(this.order.sprite);
+            this.blackBackground.events.onInputDown.add(function(){
                 this.order.sprite.destroy();
                 this.order = null;
+                // Enable all controls
+                this.items.forEach((item2) => {
+                    item2.obj.enableControls();
+                });
+                this.list.forEach((list2) => {
+                    list2.enableControls();
+                });
+                this.blackBackground.destroy();
             }, this);
         }, this);
 
@@ -274,7 +313,7 @@ class GameProcess {
             organizationMax: PhaserManager.get('gabator').stats.organizationMax,
             enterpriseMax: PhaserManager.get('gabator').stats.enterpriseMax
         });
-        endInfoModal.onExit.addOnce(() => window.closeGameModal(), this);
+        endInfoModal.onExit.addOnce(() => window.parent.closeGameModal(), this);
         endInfoModal.onReplay.addOnce(() => window.location.reload(), this);
 
         // Étoiles:

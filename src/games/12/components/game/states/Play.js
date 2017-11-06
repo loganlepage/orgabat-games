@@ -28,6 +28,9 @@ export default class Play extends State {
     create() {
         this.game.controlsEnabled = false;
         this.game.stage.backgroundColor = '#DADAD5';
+        // Add background
+        this.tileSprite = this.game.add.tileSprite(0, 0, this.game.world.width, this.game.world.height, "atlas");
+        this.tileSprite.tileScale.set(0.5);
 
         this.initUI();
         PhaserManager.ready('game', 'play');
@@ -165,7 +168,7 @@ class GameProcess {
             organizationMax: PhaserManager.get('gabator').stats.organizationMax,
             enterpriseMax: PhaserManager.get('gabator').stats.enterpriseMax
         });
-        endInfoModal.onExit.addOnce(() => window.closeGameModal(), this);
+        endInfoModal.onExit.addOnce(() => window.parent.closeGameModal(), this);
         endInfoModal.onReplay.addOnce(() => window.location.reload(), this);
 
         // Étoiles:

@@ -12,9 +12,6 @@ export default class QcmInfoModal extends Modal {
 
     set answer(answer) {
         this._answer = answer;
-        //const check = this.items.answerPane.items.check;
-        //check.visible = false;
-        //check.setY(answer ? QcmInfoModal.checkGoodPosition.y : QcmInfoModal.checkBadPosition.y);
     }
 
     get answer() {
@@ -31,17 +28,13 @@ export default class QcmInfoModal extends Modal {
         super(Type.deepMerge(QcmInfoModal.pattern, data), manager, game);
         this._initPicture();
         this._initAnswerEvents();
-        //this._initContinueEvents();
     }
 
     _initPicture() {
         const bg = this.items.bg;
         const picture = this.items.picture;
-        window.picture = picture;
-        window.bg = bg;
         const scale = bg.width / picture.width;
-        picture.scale.set(scale/1.5);
-        //picture.y = bg.height - picture.height - this.game.uiScale(15) /*padding bottom*/;
+        picture.scale.set((scale/2.5) * this.game.SCALE);
         picture.x = (bg.width/2) - (picture.width/2);
         picture.y = (bg.height/2) - (picture.height/2);
     }
@@ -60,31 +53,6 @@ export default class QcmInfoModal extends Modal {
             this.onContinue.dispatch(this.answer, this);
         });
     }
-
-    /*
-    _initContinueEvents() {
-        this.game.keys.addKey(Phaser.Keyboard.ENTER).onDown.add(this._continue, this);
-        this.game.keys.addKey(Phaser.Keyboard.A).onDown.add(this._continue, this);
-        this.items.answerPane.items.close.items.iconA.events.onInputDown.add(this._continue, this);
-        this.items.answerPane.items.close.items.textA.events.onInputDown.add(this._continue, this);
-    }
-
-    _continue() {
-
-        if(this.answer !== null) {
-            this.game.keys.addKey(Phaser.Keyboard.ENTER).onDown.removeAll(this);
-            this.game.keys.addKey(Phaser.Keyboard.A).onDown.removeAll(this);
-        }
-        this.onContinue.dispatch(this.answer, this);
-    }*/
-
-    /*static get checkGoodPosition() {
-        return {y: 60};
-    }
-
-    static get checkBadPosition() {
-        return {y: 100};
-    }*/
 
     static get pattern() {
         return {
@@ -119,15 +87,15 @@ export default class QcmInfoModal extends Modal {
                         answer_good: {
                             type: "sprite",
                             key: "jeu5/good",
-                            x: 250,
-                            y: 300,
+                            x: 245,
+                            y: 340,
                             props: {inputEnabled: true, useHandCursor: true}
                         },
                         answer_bad: {
                             type: "sprite",
                             key: "jeu5/bad",
-                            x: 140,
-                            y: 300,
+                            x: 135,
+                            y: 340,
                             props: {inputEnabled: true, useHandCursor: true}
                         }
                     }

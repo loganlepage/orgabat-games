@@ -20,8 +20,8 @@ export default class MapStepFactory extends GameFactory {
         this.cardNumberX = 6;
         this.cardNumberY = 1;
 
-        this.marginX = 20;
-        this.marginY = 20;
+        this.marginX = 10;
+        this.marginY = 10;
 
         this.bigWidthMargin = (this.game.width - (this.cardNumberX*this.cardsWidth) - ((this.cardNumberX-1)*this.marginX)) / 2;
         this.bigHeightMargin = 150;
@@ -36,11 +36,11 @@ export default class MapStepFactory extends GameFactory {
 
         let countX = 0;
         // for (let x = (bigWidthMargin + (cardsWidth / 2)); countX < cardNumberX; x += (cardsWidth + marginX)) { // anchor(0.5)
-        for (let x = (this.bigWidthMargin); countX < this.cardNumberX; x += (this.cardsWidth + this.marginX)) { // anchor(0)
+        for (let x = this.bigWidthMargin; countX < this.cardNumberX; x += (this.cardsWidth + this.marginX)) { // anchor(0)
             countX++;
             let countY = 0;
             // for (let y = (bigHeightMargin + (cardsHeight / 2)); countY < cardNumberY; y += (cardsHeight + marginY)) { // anchor(0.5)
-            for (let y = (this.bigHeightMargin); countY < this.cardNumberY; y += (this.cardsHeight + this.marginY)) { // anchor(0)
+            for (let y = this.bigHeightMargin; countY < this.cardNumberY; y += (this.cardsHeight + this.marginY)) { // anchor(0)
                 countY++;
                 this.coordonates.push({x,y});
             }

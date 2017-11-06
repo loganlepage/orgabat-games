@@ -14,7 +14,7 @@ export default class Numbers extends BasicGameObject {
         this.addSprite(new NumbersSprite(this.game, this.x, this.y, this));
     }
 
-    preUpdate() {
+    /*preUpdate() {
         //
     }
 
@@ -32,5 +32,5 @@ export default class Numbers extends BasicGameObject {
 
     _renderCanvas() {
         //
-    }
+    }*/
 }

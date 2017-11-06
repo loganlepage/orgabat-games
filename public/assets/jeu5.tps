@@ -90,7 +90,7 @@
         <key>maxTextureSize</key>
         <QSize>
             <key>width</key>
-            <int>2048</int>
+            <int>4096</int>
             <key>height</key>
             <int>2048</int>
         </QSize>
@@ -199,6 +199,19 @@
         </struct>
         <key>individualSpriteSettings</key>
         <map type="IndividualSpriteSettingsMap">
+            <key type="filename">files/jeu5/0.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>143,143,285,285</rect>
+                <key>scale9Paddings</key>
+                <rect>143,143,285,285</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
             <key type="filename">files/jeu5/1.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
@@ -209,6 +222,136 @@
                 <rect>56,57,111,114</rect>
                 <key>scale9Paddings</key>
                 <rect>56,57,111,114</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">files/jeu5/10.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>51,67,102,134</rect>
+                <key>scale9Paddings</key>
+                <rect>51,67,102,134</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">files/jeu5/11.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>42,46,83,91</rect>
+                <key>scale9Paddings</key>
+                <rect>42,46,83,91</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">files/jeu5/12.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>35,54,69,108</rect>
+                <key>scale9Paddings</key>
+                <rect>35,54,69,108</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">files/jeu5/13.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>53,54,106,108</rect>
+                <key>scale9Paddings</key>
+                <rect>53,54,106,108</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">files/jeu5/14.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>38,54,77,108</rect>
+                <key>scale9Paddings</key>
+                <rect>38,54,77,108</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">files/jeu5/15.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>56,54,111,108</rect>
+                <key>scale9Paddings</key>
+                <rect>56,54,111,108</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">files/jeu5/16.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>25,50,50,100</rect>
+                <key>scale9Paddings</key>
+                <rect>25,50,50,100</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">files/jeu5/17.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>35,50,70,100</rect>
+                <key>scale9Paddings</key>
+                <rect>35,50,70,100</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">files/jeu5/18.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>53,60,105,120</rect>
+                <key>scale9Paddings</key>
+                <rect>53,60,105,120</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">files/jeu5/19.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>59,60,118,120</rect>
+                <key>scale9Paddings</key>
+                <rect>59,60,118,120</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
@@ -225,6 +368,113 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
+            <key type="filename">files/jeu5/20.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>83,60,165,120</rect>
+                <key>scale9Paddings</key>
+                <rect>83,60,165,120</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">files/jeu5/21.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>55,27,109,53</rect>
+                <key>scale9Paddings</key>
+                <rect>55,27,109,53</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">files/jeu5/22.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>55,20,109,41</rect>
+                <key>scale9Paddings</key>
+                <rect>55,20,109,41</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">files/jeu5/23.png</key>
+            <key type="filename">files/jeu5/24.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>75,20,150,41</rect>
+                <key>scale9Paddings</key>
+                <rect>75,20,150,41</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">files/jeu5/25.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>48,48,95,95</rect>
+                <key>scale9Paddings</key>
+                <rect>48,48,95,95</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">files/jeu5/26.png</key>
+            <key type="filename">files/jeu5/27.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>62,41,124,82</rect>
+                <key>scale9Paddings</key>
+                <rect>62,41,124,82</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">files/jeu5/28.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>50,50,100,100</rect>
+                <key>scale9Paddings</key>
+                <rect>50,50,100,100</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">files/jeu5/29.png</key>
+            <key type="filename">files/jeu5/30.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>46,69,92,138</rect>
+                <key>scale9Paddings</key>
+                <rect>46,69,92,138</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
             <key type="filename">files/jeu5/3.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
@@ -235,6 +485,45 @@
                 <rect>56,40,112,79</rect>
                 <key>scale9Paddings</key>
                 <rect>56,40,112,79</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">files/jeu5/31.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>72,48,143,95</rect>
+                <key>scale9Paddings</key>
+                <rect>72,48,143,95</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">files/jeu5/32.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>50,66,99,132</rect>
+                <key>scale9Paddings</key>
+                <rect>50,66,99,132</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">files/jeu5/33.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>44,66,88,132</rect>
+                <key>scale9Paddings</key>
+                <rect>44,66,88,132</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
@@ -277,6 +566,33 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
+            <key type="filename">files/jeu5/7.png</key>
+            <key type="filename">files/jeu5/8.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>44,47,87,95</rect>
+                <key>scale9Paddings</key>
+                <rect>44,47,87,95</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">files/jeu5/9.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>68,40,135,80</rect>
+                <key>scale9Paddings</key>
+                <rect>68,40,135,80</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
             <key type="filename">files/jeu5/bad.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
@@ -300,6 +616,19 @@
                 <rect>6,7,12,14</rect>
                 <key>scale9Paddings</key>
                 <rect>6,7,12,14</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">files/jeu5/custom_modal.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>150,113,300,225</rect>
+                <key>scale9Paddings</key>
+                <rect>150,113,300,225</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>

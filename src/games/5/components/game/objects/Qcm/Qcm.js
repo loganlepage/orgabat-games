@@ -44,7 +44,7 @@ export default class Qcm extends AbstractObject {
 
     continue(answer) { //called by qcmModalHandler
         this._answer = answer;
-        Config.questions[this.key - 1].prop["user-answer"] = answer;
+        Config.questions_part_1[this.properties.id].prop["user-answer"] = answer;
         this.onFinished.dispatch(answer);
     }
 };

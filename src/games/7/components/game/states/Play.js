@@ -287,7 +287,7 @@ class GameProcess {
             organizationMax: PhaserManager.get('gabator').stats.organizationMax,
             enterpriseMax: PhaserManager.get('gabator').stats.enterpriseMax
         });
-        endInfoModal.onExit.addOnce(() => window.closeGameModal(), this);
+        endInfoModal.onExit.addOnce(() => window.parent.closeGameModal(), this);
         endInfoModal.onReplay.addOnce(() => window.location.reload(), this);
         let healthLevel = PhaserManager.get('gabator').stats.state.health;
         let healthLevelMax = PhaserManager.get('gabator').stats.healthMax;

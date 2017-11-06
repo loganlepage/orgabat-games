@@ -39,6 +39,16 @@ html {
     height: 100%;
 }
 
+.small-iframe {
+    width: 75%;
+    height: 75%;
+    top: 12.5%;
+    left: 12.5%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .iframe-manager-close {
     position: absolute;
     right: 0;

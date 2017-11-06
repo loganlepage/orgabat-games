@@ -86,12 +86,11 @@ class PartOne {
 
     start() {
         this.gameProcess.quests.add(new StepsQuest(this.gameProcess.game));
-        // this.gameProcess.questsCleaned.addOnce(this.onQuestsCleaned, this);
         this.stepText = this.game.add.text(40 * this.game.SCALE, 40 * this.game.SCALE, `Étapes séléctionnées: ${this.clickedSteps}/8`, {fill: '#2a2a2a', fontSize: 30 * this.game.SCALE});
         this.addSteps();
         // Next step ->
-        // this.addButton();
-        // this.onQuestsCleaned(); // Shortcut
+        this.addButton();
+        this.onQuestsCleaned(); // Shortcut
     }
 
     addSteps() {
@@ -174,10 +173,12 @@ class PartTwo {
     }
 
     start() {
-        this.paintText = this.game.add.text(20 * this.game.SCALE, 20 * this.game.SCALE, `Quantité de peinture : ${this.paintCapacity}/${this.paintCapacityMax}`, {fill: '#676565'});
-        this.carriageText = this.game.add.text(this.game.world.width - 350 * this.game.SCALE, 20 * this.game.SCALE, `Capacité du chariot : ${this.carriageCapacity}/${this.carriageCapacityMax}`, {fill: '#676565'});
-        this.suppliesText = this.game.add.text(20 * this.game.SCALE, 60 * this.game.SCALE, `Matériels : ${this.materialCapacity}/3`, {fill: '#676565'});
-        this.coatText = this.game.add.text(20 * this.game.SCALE, 100 * this.game.SCALE, `Enduits : ${this.mapCapacity}/${this.mapCapacityMax}`, {fill: '#676565'});
+        this.addBackground();
+        this.paintText = this.game.add.text(20 * this.game.SCALE, 20 * this.game.SCALE, `Quantité de peinture : ${this.paintCapacity}/${this.paintCapacityMax}`, {fontSize: 30*this.game.SCALE, fill: '#676565'});
+        this.carriageText = this.game.add.text(this.game.world.width - 20 * this.game.SCALE, 20 * this.game.SCALE, `Capacité du chariot : ${this.carriageCapacity}/${this.carriageCapacityMax}`, {fontSize: 30*this.game.SCALE, fill: '#676565'});
+        this.suppliesText = this.game.add.text(20 * this.game.SCALE, 60 * this.game.SCALE, `Matériels : ${this.materialCapacity}/3`, {fontSize: 30*this.game.SCALE, fill: '#676565'});
+        this.coatText = this.game.add.text(20 * this.game.SCALE, 100 * this.game.SCALE, `Enduits : ${this.mapCapacity}/${this.mapCapacityMax}`, {fontSize: 30*this.game.SCALE, fill: '#676565'});
+        this.carriageText.anchor.setTo(1, 0);
         this.game.layer.zDepth0.addChild(this.paintText);
         this.game.layer.zDepth0.addChild(this.suppliesText);
         this.game.layer.zDepth0.addChild(this.coatText);
@@ -193,6 +194,15 @@ class PartTwo {
 
     onQuestsCleaned() {
         this.finish.dispatch();
+    }
+
+    addBackground(){
+        this.bg = this.game.add.sprite(this.game.width, 0, "atlas", "jeu6/bg");
+        this.bg.scale.set(this.game.SCALE);
+        // this.bg.position.x = this.game.width - this.bg.width;
+        // this.bg.position.y = this.game.height - this.bg.height - 20;
+        this.bg.anchor.setTo(1, 0);
+        this.game.layer.zDepth0.addChild(this.bg);
     }
 
     addTruck() {
@@ -216,8 +226,6 @@ class PartTwo {
     addCarriage() {
         this.carriage = new Carriage({
             game: this.game,
-            // x: 1190 * this.game.SCALE,
-            // y: 775 * this.game.SCALE
             x: 750 * this.game.SCALE,
             y: 500 * this.game.SCALE
         });
@@ -226,10 +234,7 @@ class PartTwo {
         this.carriage.sprite.events.onDragStop.add(function (currentSprite) {
             if (this.carriage.checkOverlap(this.carriage.sprite, this.truck.sprite)){
                 this.removeCarriageElements();
-            } // else {
-            //     console.log("Else drag update");
-            //     this.carriage.sprite.dragUpdate();
-            // }
+            }
         }, this);
     }
 
@@ -242,7 +247,6 @@ class PartTwo {
             for (let name in Config.items[type]) {
                 this.itemGroup.push(
                     (new Item(this.game, Config.items[type][name].title, type,
-                        // Config.items[type][name].x + ItemFactory.X_BEGIN_AT,
                         Config.items[type][name].x * this.game.SCALE,
                         Config.items[type][name].y * this.game.SCALE,
                         Config.items[type][name].needed,
@@ -251,8 +255,6 @@ class PartTwo {
                 );
             }
         }
-        // this.itemGroup = new ItemFactory(this.game, Config.items);
-        // this.game.layer.zDepth2.addChild(this.itemGroup);
         this.addItemsAction();
     }
 
@@ -338,7 +340,6 @@ class PartTwo {
             }
             if (this.carriageCapacity == 0) {
                 currentSprite.position.x = this.carriage.sprite.position.x - 10 * this.game.SCALE;
-                // currentSprite.position.y = this.carriage.sprite.position.y + 30 * this.game.SCALE - this.carriageCapacity * 20;
                 currentSprite.position.y = this.carriage.sprite.position.y + 30 * this.game.SCALE;
             } else {
                 if (currentSprite.frameName == "jeu6/map") {
@@ -351,14 +352,13 @@ class PartTwo {
                 currentSprite.position.x = this.carriage.sprite.position.x - 10 * this.game.SCALE;
                 currentSprite.position.y = this.carriage.sprite.position.y + 30 * this.game.SCALE - this.nextPositionY;
             }
-            // this.game.layer.zDepth2.addChild(currentSprite);
             this.carriage.sprite.addSpriteToMove(currentSprite);
             this.carriageCapacity++;
             this.carriageText.text = `Capacité du chariot : ${this.carriageCapacity}/${this.carriageCapacityMax}`;
         } else {
             Canvas.get('gabator').modal.showHelp(
                 "Le chariot est plein"
-                );
+            );
         }
     }
 
@@ -366,40 +366,7 @@ class PartTwo {
         let wrongElements = [];
         this.carriage.sprite.spritesToMove.forEach((element) => {
             this.updateQuantity(element);
-            // console.log(element.frameName);
-            // if(!this.updateQuantity(element)){
-                // wrongElements.push(element);
-                // wrongElements.unshift(element);
-            // }
         }, this);
-        // for (let i = wrongElements.length-1; i >= 0; i--) {
-        //     wrongElements[i].init();
-        // }
-        // wrongElements.forEach((element) => {
-            // element.init();
-        // }, this);
-        // for (let i = this.carriage.sprite.spritesToMove.length-1; i >= 0; i--) {
-        //     this.updateQuantity(this.carriage.sprite.spritesToMove[i]);
-        // }
-        // console.log("Remove");
-        // for (let i = this.itemGroup.length-1; i >= 0; i--) {
-        //     if (!this.itemGroup[i].obj.charged) {
-        //         console.log("Not charged");
-        //         this.itemGroup[i].init();
-        //     } else {
-        //         console.log("Charged");
-        //     }
-        // }
-        // this.itemGroup.forEach((currentSprite) => {
-        //     // console.log(currentSprite.frameName);
-        //     if (!currentSprite.obj.charged) {
-        //         console.log("Not charged");
-        //         currentSprite.init();
-        //         // console.log(currentSprite.position.x);
-        //     } else {
-        //         console.log("Charged");
-        //     }
-        // }, this);
         this.carriage.sprite.initElements();
         this.carriageCapacity = 0;
         this.carriageText.text = `Capacité du chariot : ${this.carriageCapacity}/${this.carriageCapacityMax}`;
@@ -409,25 +376,54 @@ class PartTwo {
     updateQuantity(currentSprite) {
         let name = currentSprite.frameName;
         if (currentSprite.obj.check()) {
-            // this.game.layer.zDepth1.addChild(currentSprite);
-            if (name === "jeu6/peinture15l" && this.paintCapacity <= 15) {
-                this.paintCapacity += 15;
-                currentSprite.position.x = this.truck.sprite.position.x - 1000;
-                currentSprite.position.y = this.truck.sprite.position.y;
-                currentSprite.obj.charged = true;
-                this.checkQuantity();
-            } else if (name === "jeu6/peinture5l" && this.paintCapacity <= 25) {
-                this.paintCapacity += 5;
-                currentSprite.position.x = this.truck.sprite.position.x - 1000;
-                currentSprite.position.y = this.truck.sprite.position.y;
-                currentSprite.obj.charged = true;
-                this.checkQuantity();
-            } else if ((name === "jeu6/aspirateur" || name === "jeu6/ponceuse" || name === "jeu6/caisse") && this.materialCapacity < 3) {
-                this.materialCapacity++;
-                currentSprite.position.x = this.truck.sprite.position.x - 1000;
-                currentSprite.position.y = this.truck.sprite.position.y;
-                currentSprite.obj.charged = true;
-                this.checkQuantity();
+            if (name === "jeu6/peinture15l") {
+                if (this.paintCapacity <= 15) {
+                    this.paintCapacity += 15;
+                    currentSprite.position.x = this.truck.sprite.position.x - 1000;
+                    currentSprite.position.y = this.truck.sprite.position.y;
+                    currentSprite.obj.charged = true;
+                    this.checkQuantity();
+                } else {
+                    currentSprite.init();
+                    PhaserManager.get('gabator').stats.changeValues({
+                        health: PhaserManager.get('gabator').stats.state.health - 1,
+                    });
+                    Canvas.get('gabator').modal.showHelp(
+                        "Il y a trop de peinture"
+                    );
+                }
+            } else if (name === "jeu6/peinture5l") {
+                if (this.paintCapacity <= 25) {
+                    this.paintCapacity += 5;
+                    currentSprite.position.x = this.truck.sprite.position.x - 1000;
+                    currentSprite.position.y = this.truck.sprite.position.y;
+                    currentSprite.obj.charged = true;
+                    this.checkQuantity();
+                } else {
+                    currentSprite.init();
+                    PhaserManager.get('gabator').stats.changeValues({
+                        health: PhaserManager.get('gabator').stats.state.health - 1,
+                    });
+                    Canvas.get('gabator').modal.showHelp(
+                        "Il y a trop de peinture"
+                    );
+                }
+            } else if ((name === "jeu6/aspirateur" || name === "jeu6/ponceuse" || name === "jeu6/caisse")) {
+                if (this.materialCapacity < 3) {
+                    this.materialCapacity++;
+                    currentSprite.position.x = this.truck.sprite.position.x - 1000;
+                    currentSprite.position.y = this.truck.sprite.position.y;
+                    currentSprite.obj.charged = true;
+                    this.checkQuantity();
+                } else {
+                    currentSprite.init();
+                    PhaserManager.get('gabator').stats.changeValues({
+                        health: PhaserManager.get('gabator').stats.state.health - 1,
+                    });
+                    Canvas.get('gabator').modal.showHelp(
+                        "Il y a trop de matériel"
+                    );
+                }
             } else if (name === "jeu6/map") {
                 if (this.mapCapacity <= 5) {
                     this.mapCapacity++;
@@ -436,19 +432,19 @@ class PartTwo {
                     currentSprite.obj.charged = true;
                     this.checkQuantity();
                 } else {
-                    // console.log("Too much map");
-                    // currentSprite.position.copyFrom(currentSprite.originalPosition);
                     currentSprite.init();
-                    // return false;
+                    PhaserManager.get('gabator').stats.changeValues({
+                        health: PhaserManager.get('gabator').stats.state.health - 1,
+                    });
+                    Canvas.get('gabator').modal.showHelp(
+                        "Il y a trop de sac d'enduit"
+                    );
                 }
             } else {
                 PhaserManager.get('gabator').stats.changeValues({
                     health: PhaserManager.get('gabator').stats.state.health - 1,
                 });
-                // console.log("Not correct");
-                // currentSprite.position.copyFrom(currentSprite.originalPosition);
                 currentSprite.init();
-                // return false;
             }
             return true;
         }
@@ -491,7 +487,15 @@ class PartTwo {
         let currentPosition = 1;
         let finished = false;
 
-        this.mapStepText = this.game.add.text(200, 100, `Schéma pour l'étape numéro : ${currentPosition}/3`, {fill: '#ffffff'});
+        this.mapStepText = this.game.add.text(
+            this.game.world.centerX, 
+            150 * this.game.SCALE, 
+            `Schéma pour l'étape numéro : ${currentPosition}/3`, 
+            {
+                align: "center", 
+                fill: '#ffffff'}
+        );
+        this.mapStepText.anchor.setTo(0.5);
 
         this.mapStepGroup.forEach((mapStep) => {
             mapStep.sprite.input.useHandCursor = true;
@@ -619,7 +623,7 @@ class GameProcess {
             organizationMax: PhaserManager.get('gabator').stats.organizationMax,
             enterpriseMax: PhaserManager.get('gabator').stats.enterpriseMax
         });
-        endInfoModal.onExit.addOnce(() => window.closeGameModal(), this);
+        endInfoModal.onExit.addOnce(() => window.parent.closeGameModal(), this);
         endInfoModal.onReplay.addOnce(() => window.location.reload(), this);
         let healthLevel = PhaserManager.get('gabator').stats.state.health;
         let healthLevelMax = PhaserManager.get('gabator').stats.healthMax;

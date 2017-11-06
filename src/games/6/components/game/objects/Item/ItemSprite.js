@@ -12,25 +12,23 @@ export default class ItemSprite extends BasicGameSprite {
         this.game.layer.zDepth1.addChild(this);
         this.events.onDragStart.add(function(sprite){
             this.game.layer.zDepth2.addChild(this);
-            // this.game.itemGroup.add(this);
         }, this);
         this.events.onDragStop.add(function(sprite){
             this.game.layer.zDepth1.addChild(this);
-            // this.game.itemGroup.add(this);
         }, this);
         // Afficher la position pour aider le placement:
-        // this.events.onDragStop.add(function(sprite){
-        //     console.log("X: " + Math.round(sprite.position.x / this.game.SCALE));
-        //     console.log("Y: " + Math.round(sprite.position.y / this.game.SCALE));
-        // },this);
+        this.events.onDragStop.add(function(sprite){
+            console.log("X: " + Math.round(sprite.position.x / this.game.SCALE));
+            console.log("Y: " + Math.round(sprite.position.y / this.game.SCALE));
+        },this);
     }
 
     init(){
         this.position.x = this.originalPosition.x;
-        // console.log(this.frameName);
-        // console.log(this.position.y);
         this.position.y = this.originalPosition.y;
         this.addControls();
+        console.log("Init");
+        this.game.layer.zDepth1.addChild(this);
     }
 
     addControls(){

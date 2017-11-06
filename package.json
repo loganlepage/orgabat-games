@@ -22,8 +22,8 @@
   },
   "homepage": "https://github.com/loganlepage/orgabat-games#readme",
   "devDependencies": {
-    "babel-core": "^6.24.1",
-    "babel-loader": "^7.0.0",
+    "babel-core": "^6.26.0",
+    "babel-loader": "^6.4.1",
     "babel-plugin-transform-async-to-generator": "^6.24.1",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-flow-strip-types": "^6.22.0",
@@ -37,7 +37,7 @@
     "jsx-loader": "^0.13.2",
     "path": "^0.12.7",
     "react": "^15.5.4",
-    "webpack": "^1.14.0"
+    "webpack": "^1.14.1"
   },
   "dependencies": {
     "flexbox-react": "^4.4.0",

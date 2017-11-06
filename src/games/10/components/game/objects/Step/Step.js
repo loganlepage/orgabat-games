@@ -8,7 +8,7 @@ import {Signal} from 'phaser';
 
 import Button from '../Button/Button';
 import QuestionFactory from "../Question/QuestionFactory";
-import Graphic from "../Graphic/Graphic";
+import Document from "../Document/Document";
 
 export default class Step extends BasicGameObject {
 
@@ -27,19 +27,74 @@ export default class Step extends BasicGameObject {
     }
 
     start() {
+        this.questions = new QuestionFactory(this.game, this.stepData.questions);
+        this.button = new Button(
+            this.game, 
+            this.game.world.width - 100 * this.game.SCALE, 
+            this.game.world.centerY + 50 * this.game.SCALE,  
+            'continuer');
+        this.dataButton = new Button(
+            this.game, 
+            this.game.world.width - 100 * this.game.SCALE, 
+            this.game.world.centerY - 50 * this.game.SCALE, 
+            'doc');
+        this.dataButton.sprite.events.onInputDown.add(this.createDocument, this);
+        this.initQuestions();
+    }
 
-        try {
-            this.destroyElements();
-        } catch (e) {
-            //
+    createDocument(){
+        // Remove controls
+        this.questions.forEach((question) => {
+            question.removeControls();
+        });
+        // this.button.sprite.inputEnabled = false;
+        // Background
+        this.graphics = this.game.add.graphics(0, 0);
+        this.game.layer.zDepth1.addChild(this.graphics);
+        this.graphics.lineStyle(0, "balck", 0);
+        this.graphics.beginFill("black", 0.6);
+        this.graphics.drawRect(0, 0, this.game.world.width, this.game.world.height);
+        //Background controls
+        this.graphics.inputEnabled = true;
+        this.graphics.input.useHandCursor = true;
+        this.graphics.events.onInputDown.add(this.removeDocument, this);
+        // Document
+        if (this.stepData.document == "un_cas_decole.mp4") {
+            // Video
+            this.game.iframe.setState({
+                visible:true,
+                url:'https://www.youtube.com/embed/Phn7N0YaaCI?rel=0&autoplay=1&controls=0&showinfo=0'
+            });
+        } else if (this.stepData.document == "bande_son.wav") {
+            // Sound
+            this.game.iframe.setState({
+                visible:true,
+                url:'https://www.youtube.com/embed/1ksOG4eI3ZQ?rel=0&autoplay=1&controls=0&showinfo=0'
+            });
+        } else {
+            this.document = new Document(this.game, this.game.world.centerX, this.game.world.centerY, 'compte_rendu');
         }
 
-        this.title = this.game.add.text(20, 20, this.stepData.title, {font: 'Arial', fontSize: 20, fill: '#000000'});
+        this.dataButton.sprite.events.onInputDown.removeAll();
+        
+    }
 
-        this.questions = new QuestionFactory(this.game, this.stepData.questions);
-    
+    removeDocument(){
+        if (this.stepData.document == "un_cas_decole.mp4" || this.stepData.document == "bande_son.wav") {
+            this.game.iframe.setState({ visible:false });
+        } else {
+            this.document.destroy();
+        }
+        this.graphics.destroy();
+        this.dataButton.sprite.events.onInputDown.add(this.createDocument, this);
+        // Add controls
         this.questions.forEach((question) => {
-            
+            question.addControls();
+        });
+    }
+
+    initQuestions(){
+        this.questions.forEach((question) => {
             question.answers.forEach((answer) => {
                 answer.events.onInputDown.add(function(){
                     question.selectAnswer(answer);
@@ -47,41 +102,28 @@ export default class Step extends BasicGameObject {
             });
         });
 
-        this.button = new Button(this.game, this.game.world.width - 100, this.game.world.height - 50);
-
         this.button.sprite.events.onInputDown.add(function(){
-            this.selectedAnswers = [];
+
+            let count = 0;
             this.questions.forEach((question) => {
-                this.selectedAnswers.push(question.checkAnswer());
-            });
-            for (let a in this.selectedAnswers) {
-                for (let b in this.selectedAnswers[a]) {
-                    if (!this.selectedAnswers[a].includes(false)) {
+                question.checkAnswer();
+                if (question.isCompleted) {
+                    count++;
+                    if (count >= this.questions.children.length) {
                         this.finishStep();
-                    } else {
-                        //
                     }
                 }
-            }
-            // this.game.time.events.add(Phaser.Timer.SECOND * 2, this.start, this);
-            this.button.sprite.events.onInputDown.add(this.start, this);
+            });
         }, this);
     }
 
     destroyElements() {
-        this.title.destroy();
-        while(this.questions.children[0]){
-            this.questions.children[0].obj.destroy();
-        }
-        // this.questions.forEach((question) => {
-        //     question.destroyTexts();
-        // });
-        // this.questions.forEach((item) => {
-        //     console.log(item);
-        //     item.destroyElements();
-        // });
-        this.questions.destroy();
+        this.questions.forEach((question) => {
+            question.destroyTexts();
+        });
+        this.questions = null;
         this.button.destroy();
+        this.dataButton.destroy();
     }
 
     finishStep() {

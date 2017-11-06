@@ -66,7 +66,6 @@ export default class Play extends State {
         });
         this.truck.sprite.scale.setTo(this.game.SCALE); // Propotionnal scale
         this.game.layer.zDepth0.addChild(this.truck.sprite);
-        console.log(this.truck.sprite);
 
         // Items
         this.itemGroup = new ItemFactory(this.game, Config.items);
@@ -118,11 +117,14 @@ export default class Play extends State {
                 item.obj.initialize();
                 item.scale.setTo(0.7 * this.game.SCALE); // Propotionnal scale
                 item.events.onDragStop.add(function (currentSprite) {
+                    // Afficher la position pour aider le placement:
+                    // console.log(currentSprite.obj.name);
+                    // console.log("X: " + Math.round(currentSprite.position.x / this.game.SCALE));
+                    // console.log("Y: " + Math.round(currentSprite.position.y / this.game.SCALE));
                     item.obj.checkOverlap(currentSprite, this.truck.sprite);
                     item.obj.sprite.z = -50;
                 }, this);
                 item.obj.onDropped.add(this.updateQuantity, this);
-                //item.obj.sprite.z = -50;
                 if (item.obj.isNeeded) {
                 // this.selectedItems.push(item.obj); // Shortcut
                 this.capacityMax++;
@@ -304,7 +306,7 @@ class GameProcess {
             organizationMax: PhaserManager.get('gabator').stats.organizationMax,
             enterpriseMax: PhaserManager.get('gabator').stats.enterpriseMax
         });
-        endInfoModal.onExit.addOnce(() => window.closeGameModal(), this);
+        endInfoModal.onExit.addOnce(() => window.parent.closeGameModal(), this);
         endInfoModal.onReplay.addOnce(() => window.location.reload(), this);
         // endInfoModal.toggle(true, {}, {
         //     star1: false,

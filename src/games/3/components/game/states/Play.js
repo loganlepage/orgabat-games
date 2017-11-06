@@ -28,14 +28,17 @@ export default class Play extends State {
      */
     create() {
         this.game.controlsEnabled = false;
-
+        this.game.stage.backgroundColor = '#f5f0d6';
         this.initMap();
         this.initUI();
         this.addInventary();
         this.addWastes();
+
         PhaserManager.ready('game', 'play');
 
         this.start();
+
+        this.addWastesEvents();
     }
 
     /** Called by create to init the map */
@@ -65,6 +68,36 @@ export default class Play extends State {
         this.map.addChild(this.game.wasteGroup);
     }
 
+    addWastesEvents() {
+        this.game.wasteCountTotal = 0;
+        this.game.wasteCount = 0;
+        this.game.wasteGroup.forEach((waste) => {
+            this.game.wasteCountTotal++;
+        });
+
+        this.game.wasteText = this.game.add.text(
+            this.game.world.centerX, 
+            15 * this.game.SCALE, 
+            `Déchets traités: ${this.game.wasteCount}/${this.game.wasteCountTotal}`, 
+            {
+                fill: '#2a2a2a', 
+                fontSize: 15 * this.game.SCALE,
+                align: 'center'
+            }
+        );
+        this.game.wasteText.anchor.setTo(0.5);
+
+        // this.game.gameProcess._onFinish();
+
+        this.game.gameProcess.game.custom_events.dropAWaste.add(function(){
+            this.game.wasteCount++;
+            this.game.wasteText.text = `Déchets traités: ${this.game.wasteCount}/${this.game.wasteCountTotal}`;
+            if (this.game.wasteCount >= this.game.wasteCountTotal) {
+                this.game.gameProcess._onFinish();
+            }
+        }, this);
+    }
+
     /** Called by Phaser to update */
     update() {
     }
@@ -72,8 +105,8 @@ export default class Play extends State {
     /** Called by Phaser to render */
     render() {
         //if(Config.developer.debug) {
-        this.game.time.advancedTiming = true; //SEE FPS
-        this.game.debug.text(this.game.time.fps, 2, 14, "#00ff00");
+        /*this.game.time.advancedTiming = true; //SEE FPS
+        this.game.debug.text(this.game.time.fps, 2, 14, "#00ff00");*/
         // }
     }
 
@@ -179,7 +212,7 @@ class GameProcess {
                         let doAction = false;
                         if (!isValidAction) {
                             if(!waste.obj.properties.isFail) {
-                                waste.obj.properties.isFail = true;
+                                // waste.obj.properties.isFail = true;
                                 feedbackModal(Config.infos.actions[action.data.name].fail);
                                 PhaserManager.get('gabator').stats.changeValues({
                                     organization: PhaserManager.get('gabator').stats.state.organization - 1,
@@ -188,7 +221,7 @@ class GameProcess {
                             }
                         } else if (!isAllEpiSetted) {
                             if(!waste.obj.properties.isNotEquipped) {
-                                waste.obj.properties.isNotEquipped = true;
+                                // waste.obj.properties.isNotEquipped = true;
                                 feedbackModal("Vous n'êtes pas équipé pour déplacer ce déchet.");
                                 PhaserManager.get('gabator').stats.changeValues({
                                     organization: PhaserManager.get('gabator').stats.state.organization - 1,
@@ -228,12 +261,27 @@ class GameProcess {
             organizationMax: PhaserManager.get('gabator').stats.organizationMax,
             enterpriseMax: PhaserManager.get('gabator').stats.enterpriseMax
         });
-        endInfoModal.onExit.addOnce(() => window.closeGameModal(), this);
+
+        endInfoModal.onExit.addOnce(() => window.parent.closeGameModal(), this);
         endInfoModal.onReplay.addOnce(() => window.location.reload(), this);
+
+        // Stars:
+        let healthLevel = PhaserManager.get('gabator').stats.state.health,
+            healthLevelMax = PhaserManager.get('gabator').stats.healthMax,
+
+            organizationLevel = PhaserManager.get('gabator').stats.state.organization,
+            organizationLevelMax = PhaserManager.get('gabator').stats.organizationMax,
+
+            enterpriseLevel = PhaserManager.get('gabator').stats.state.enterprise,
+            enterpriseLevelMax = PhaserManager.get('gabator').stats.enterpriseMax,
+
+            maxLevel = healthLevel + organizationLevel + enterpriseLevel,
+            max = healthLevelMax + organizationLevelMax + enterpriseLevelMax;
+
         endInfoModal.toggle(true, {}, {
-            star1: false,
-            star2: false,
-            star3: false
+            star1: true,
+            star2: maxLevel >= max / 2 ? true : false,
+            star3: maxLevel == max ? true : false
         }, {
             health: PhaserManager.get('gabator').stats.state.health,
             organization: PhaserManager.get('gabator').stats.state.organization,

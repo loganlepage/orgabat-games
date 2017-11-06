@@ -23,7 +23,7 @@ export default class WasteModal extends Modal {
         super(Type.deepMerge(WasteModal.pattern, data), manager, game);
         this.obj = obj;
 
-        this.items.description.x = this.items.bg.width - this.items.description.width - game.uiScale(30);
+        this.items.description.x = this.items.bg.width - this.items.description.width - game.uiScale(30) + 20;
 
         //Initialisation de la barre d'action
         this.items.actions = new Stack(
@@ -62,24 +62,24 @@ export default class WasteModal extends Modal {
                 },
                 title: {
                     type: "text",
-                    y: 50,
-                    x: 30,
+                    y: 20,
+                    x: 20,
                     text: "[changer ce titre]",
                     style: {
                         fill: "#5F4D21",
                         fontFamily: "Arial",
-                        fontSize: 28
+                        fontSize: 25
                     }
                 },
                 waste: {
                     type: "sprite",
-                    y: 115,
-                    x: 30,
+                    y: 80,
+                    x: 20,
                     key: "[changer cette clé]"
                 },
                 description: {
                     type: "text",
-                    y: 115,
+                    y: 80,
                     text: "[changer ce texte]",
                     style: {
                         fill: "#5F4D21",
@@ -92,7 +92,7 @@ export default class WasteModal extends Modal {
                 choice: {
                     type: "text",
                     y: 262,
-                    x: 30,
+                    x: 20,
                     text: "Choisir une action : ",
                     style: {
                         fill: "#5F4D21",

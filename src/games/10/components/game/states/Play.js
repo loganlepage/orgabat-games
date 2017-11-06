@@ -30,6 +30,9 @@ export default class Play extends State {
         this.game.controlsEnabled = false;
         this.game.stage.backgroundColor = '#FFFFFF';
 
+        this.tileSprite = this.game.add.tileSprite(0, 0, this.game.world.width, this.game.world.height, "atlas");
+        this.tileSprite.tileScale.set(0.5);
+
         this.initUI();
         PhaserManager.ready('game', 'play');
 
@@ -86,13 +89,14 @@ class Engine {
     }
 
     start() {
-        this.step = new Step(this.gameProcess.game, Config.qcm[this.stepNumber]);
-        this.step.start();
-        this.stepNumber++;
-        if (this.stepNumber <= Config.qcm.length) {
+        if (this.stepNumber < Config.qcm.length) {
+            this.step = new Step(this.gameProcess.game, Config.qcm[this.stepNumber]);
+            this.step.start();
+            this.stepNumber++;
             this.step.finish.addOnce(this.start, this);
         } else {
             this.gameProcess.quests._quests.communication_quest.done();
+            this.finish.dispatch();
         }
     }
 
@@ -153,6 +157,7 @@ class GameProcess {
 
     _initParts() {
         //When ready, lets init parts.
+        this.engine.finish.addOnce(this._onFinish, this);
         this.engine.start();
     }
 
@@ -166,7 +171,7 @@ class GameProcess {
             organizationMax: PhaserManager.get('gabator').stats.organizationMax,
             enterpriseMax: PhaserManager.get('gabator').stats.enterpriseMax
         });
-        endInfoModal.onExit.addOnce(() => window.closeGameModal(), this);
+        endInfoModal.onExit.addOnce(() => window.parent.closeGameModal(), this);
         endInfoModal.onReplay.addOnce(() => window.location.reload(), this);
 
         // Étoiles:

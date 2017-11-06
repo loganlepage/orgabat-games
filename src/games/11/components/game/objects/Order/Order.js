@@ -16,7 +16,7 @@ export default class Modal extends BasicGameObject {
 	    this.blackBackground = this.game.add.graphics(0,0);
         this.game.layer.zDepth1.addChild(this.blackBackground);
         this.blackBackground.lineStyle(0, "balck", 0);
-        this.blackBackground.beginFill("black", 0.4);
+        this.blackBackground.beginFill("black", 0.5);
         this.blackBackground.drawRect(0, 0, this.game.world.width, this.game.world.height);
 
         // Modal image
