@@ -32,9 +32,10 @@ export default class Play extends State {
      */
     create() {
         this.game.controlsEnabled = false;
-        this.game.stage.backgroundColor = '#e1f0f0';
+        this.game.stage.backgroundColor = '#FFFFFF';
         this.tileSprite = this.game.add.tileSprite(0, 0, this.game.world.width, this.game.world.height, "atlas");
         this.tileSprite.tileScale.set(this.game.SCALE * 1.2);
+        this.tileSprite.alpha = 0.3;
         this.initUI();
         PhaserManager.ready('game', 'play');
 
