@@ -30,9 +30,8 @@ export default {
             aspirateur: {needed: true, title: "aspirateur", x: 1138, y: 563, clicked: false},
             ponceuse: {needed: true, title: "ponceuse", x: 1165, y: 340, clicked: false},
             caisse: {needed: true, title: "caisse", x: 1009, y: 492, clicked: false},
-            // chariot: {needed: false, title: "chariot", x: 776, y: 711, clicked: false},
-            escabeau: {needed: false, title: "escabeau", x: 825, y: 265, clicked: false},
-            echaffaudage: {needed: false, title: "echaffaudage", x: 686, y: 220, clicked: false}
+            escabeau: {needed: false, title: "escabeau", x: 790, y: 310, clicked: false},
+            echaffaudage: {needed: false, title: "echaffaudage", x: 680, y: 265, clicked: false}
         }
     },
     steps: {
