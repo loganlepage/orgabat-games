@@ -20,11 +20,11 @@
 },
 "jeu6/bg":
 {
-	"frame": {"x":523,"y":946,"w":1200,"h":900},
+	"frame": {"x":0,"y":1948,"w":1200,"h":1050},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":1200,"h":900},
-	"sourceSize": {"w":1200,"h":900},
+	"spriteSourceSize": {"x":0,"y":0,"w":1200,"h":1050},
+	"sourceSize": {"w":1200,"h":1050},
 	"pivot": {"x":0.5,"y":0.5}
 },
 "jeu6/caisse":
@@ -65,7 +65,7 @@
 },
 "jeu6/etageres":
 {
-	"frame": {"x":0,"y":1848,"w":1000,"h":1000},
+	"frame": {"x":523,"y":946,"w":1000,"h":1000},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":1000,"h":1000},
@@ -527,8 +527,8 @@
 	"version": "1.0",
 	"image": "jeu6.png",
 	"format": "RGBA8888",
-	"size": {"w":1747,"h":2848},
+	"size": {"w":1747,"h":2998},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:39426bc47820c6888de770f06598597b:b4e04cffd033d4b0e91fc7a47e0f1b92:fdd3e06621f4dafe2a9581dd70932c2a$"
+	"smartupdate": "$TexturePacker:SmartUpdate:a329dfa8cc10160a62cceefa9178604d:fcadeb29917120dc42e1b866dd832e9e:fdd3e06621f4dafe2a9581dd70932c2a$"
 }
 }
