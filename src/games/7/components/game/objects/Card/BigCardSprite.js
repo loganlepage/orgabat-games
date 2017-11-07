@@ -6,11 +6,11 @@ export default class BigCardSprite extends BasicGameSprite {
 
     constructor(game, x, y, key, itemObj) {
         super(game, x, y, `jeu7/bigCards/${key}`, itemObj);
-        this.anchor.setTo(0, 0);
-        this.scale.set(1.1);
+        this.anchor.setTo(0.5);
+        this.scale.set(1.2 * this.game.SCALE);
         // this.originalPosition = this.position.clone();
-        // console.log(this.width);
-        // console.log(this.height);
+        console.log(this.width);
+        console.log(this.height);
     }
 
     getInfos() {

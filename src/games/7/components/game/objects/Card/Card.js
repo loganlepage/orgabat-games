@@ -37,46 +37,32 @@ export default class Card extends BasicGameObject {
 
     zoom() {
         if (!this.isZoomed) {
-            console.log("zoom");
             this.zoomSignal.dispatch();
             this.isZoomed = true;
-            // this.sprite.scale.set(1.5); // zoom with small cards
-            // this.sprite.scale.set(0.8); // zoom with big cards
 
-            let width = this.game.width;
-            let height = this.game.height;
-
-            // let cardsWidth = 254;
-            // let cardsHeight = 377; // sprite scale(1)
-
-            let cardsWidth = 386;
-            let cardsHeight = 572; // sprite scale(1.1)
-
-            let bigWidthMargin = (width - cardsWidth) / 2;
-            let bigHeightMargin = (height - cardsHeight) / 2;
-
-            this.bigCard = new BigCard(this.game, bigWidthMargin, bigHeightMargin, this.key, this);
+            this.bigCard = new BigCard(this.game, this.game.world.centerX, this.game.world.centerY, this.key, this);
             this.bigCard.addImage();
             this.game.layer.zDepth1.addChild(this.bigCard.sprite);
             this.bigCard.sprite.inputEnabled = true;
             this.bigCard.sprite.input.useHandCursor = true;
 
-            this.bigCard.sprite.events.onInputDown.add(this.dezoom, this);
-            // this.game.time.events.add(Phaser.Timer.SECOND * 2, this.dezoom, this);
-
             // Draw a cross
-            let crossWidth = 20;
-            let x = bigWidthMargin + this.bigCard.sprite.width - crossWidth;
-            let y = bigHeightMargin;
+            let crossWidth = 20*this.game.SCALE;
+            let x = this.game.world.centerX + this.bigCard.sprite.width/2 + 10 * this.game.SCALE;
+            let y = this.game.world.centerY - this.bigCard.sprite.height/2 - 10 * this.game.SCALE;
+
             this.graphics = this.game.add.graphics(0, 0);
             this.game.layer.zDepthOverAll.addChild(this.graphics);
             // add circle
             this.graphics.beginFill(0x333333, 1);
-            this.graphics.drawCircle(x + 10, y + 10, 40);
+            this.graphics.drawCircle(x, y, 40 * this.game.SCALE);
             this.graphics.endFill();
 
             // add cross
             this.graphics.lineStyle(3, 0xFFFFFF, 1);
+
+            x -= 10*this.game.SCALE;
+            y -= 10*this.game.SCALE;
 
             this.graphics.moveTo(x,y);
             this.graphics.lineTo(x + crossWidth, y + crossWidth);
@@ -84,13 +70,15 @@ export default class Card extends BasicGameObject {
             this.graphics.lineTo(x, y + crossWidth);
             this.graphics.endFill();
 
+            this.bigCard.sprite.events.onInputDown.add(this.dezoom, this);
+            this.graphics.inputEnabled = true;
+            this.graphics.input.useHandCursor = true;
+            this.graphics.events.onInputDown.add(this.dezoom, this);
 
         }
     }
 
     dezoom() {
-        // this.sprite.scale.set(0.95); // zoom with small cards
-        // this.sprite.scale.set(0.28); // zoom with big cards
         if (this.isZoomed) {
             this.dezoomSignal.dispatch();
             this.isZoomed = false;
