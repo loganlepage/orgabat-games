@@ -19,15 +19,15 @@ export default class Background extends BasicGameObject {
 
         // Background image
         this.addSprite(new BackgroundSprite(this.game, this.game.world.centerX, this.game.world.centerY, data.key, this));
-        this.sprite.scale.set(this.game.SCALE);
+        this.sprite.scale.set(this.game.SCALE * 1.2);
         this.sprite.alpha = 0.6;
         this.game.layer.zDepth0.addChild(this.sprite);
-        // To have pointer position
-        // this.sprite.events.onInputDown.add(function(){
-        //     console.log("X: " + this.game.input.mousePointer.x / this.game.SCALE);
-        //     console.log("Y: " + this.game.input.mousePointer.y / this.game.SCALE);
-        //     console.log("---");
-        // },this);
+         //To have pointer position
+         /*this.sprite.events.onInputDown.add(function(){
+             console.log("X: " + this.game.input.mousePointer.x / this.game.SCALE);
+             console.log("Y: " + this.game.input.mousePointer.y / this.game.SCALE);
+             console.log("---");
+         },this);*/
 
         // Title:
         this.title = this.game.add.text(
@@ -166,6 +166,10 @@ export default class Background extends BasicGameObject {
             if (shape.data.position != this.currentPosition) {
                 shape.events.onInputDown.removeAll();
                 shape.inputEnabled = false;
+                if(shape.data.correctAnswer == false){
+                    shape.destroy();
+                    shape.titleText.destroy();
+                }
             }
             // Add envents only on current step shapes
             if (shape.data.position == this.currentPosition) {
@@ -204,7 +208,7 @@ export default class Background extends BasicGameObject {
         } else {
             // Create next step
             this.createStep();
-            this.addActions();  
+            this.addActions();
         } 
     }
 

@@ -56,4 +56,11 @@ export default class Question extends BasicGameObject {
         }
     }
 
+    destroy(){
+        this.title.destroy();
+        for (let answer in this.answer){
+            this.answer[answer].destroy();
+        }
+    }
+
 }

@@ -9,75 +9,75 @@ export default {
         title: "Plan de la maison, il faut aller du portail au poste de travail",
         key: "bg",
         start: {
-            x: 110,
-            y: 210,
+            x: 1100,
+            y: 720,
             title: "Point de départ"
         },
         work: {
-            x: 1150,
-            y: 375,
+            x: 420,
+            y: 280,
             title: "Poste de travail"
         },
         area: [
             { // First step
-                x: 300,
-                y: 400,
+                x: 800,
+                y: 560,
                 title: "Emprunter la cours de graviers",
                 correctAnswer: false,
                 position: 1
             },
             {
-                x: 300,
-                y: 150,
+                x: 650,
+                y: 650,
                 title: "Emprunter la cours bitumée",
                 correctAnswer: true,
                 position: 1
             },
             {
-                x: 300,
-                y: 650,
+                x: 1000,
+                y: 450,
                 title: "Emprunter les escaliers",
                 correctAnswer: false,
                 position: 1
             },
             { // Second step
-                x: 800,
-                y: 335,
+                x: 650,
+                y: 380,
                 title: "Passer les éléments par la fenêtre",
                 correctAnswer: false,
                 position: 2
             },
             {
                 x: 800,
-                y: 530,
+                y: 335,
                 title: "Passer par la porte d’entrée",
                 correctAnswer: false,
                 position: 2
             },
             {
-                x: 800,
-                y: 145,
+                x: 440,
+                y: 520,
                 title: "Demander au client d’enlever sa voiture du garage",
                 correctAnswer: true,
                 position: 2
             },
             { // Third step
-                x: 950,
-                y: 390,
+                x: 720,
+                y: 200,
                 title: "Encombrement au sol",
                 correctAnswer: false,
                 position: 3
             },
             {
-                x: 1000,
-                y: 515,
+                x: 720,
+                y: 280,
                 title: "Menuisier posant les portes du placard de l’entrée",
                 correctAnswer: false,
                 position: 3
             },
             {
-                x: 1085,
-                y: 190,
+                x: 260,
+                y: 260,
                 title: "Emprunter le garage",
                 correctAnswer: true,
                 position: 3

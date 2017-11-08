@@ -84,10 +84,6 @@ class Engine {
         // Background
         this.background = new Background(this.gameProcess.game, Config.background);
         this.background.finish.addOnce(this.addQuestion, this);
-        
-        // this.addQuestion(); // Shortcut
-        
-
     }
 
     addQuestion() {
@@ -96,7 +92,7 @@ class Engine {
 
         // Question and answers
         this.question = new Question(this.gameProcess.game, Config.question);
-
+        
         // Actions
         this.question.answer.forEach((answer) => {
             answer.events.onInputDown.add(function(){
@@ -104,8 +100,13 @@ class Engine {
                     answer.addColor("#008000", 0);
                     this.gameProcess.quests._quests.security_quest.done();
                     this.finish.dispatch();
+                    answer.events.onInputDown.removeAll();
+                    answer.inputEnabled = false;
+                    this.question.destroy();
                 } else {
                     answer.addColor("#FF0000", 0);
+                    answer.events.onInputDown.removeAll();
+                    answer.inputEnabled = false;
                     Canvas.get('gabator').modal.showHelp(
                         "Mauvaise réponse"
                     );
