@@ -36,26 +36,27 @@ export default class PrincipesModal extends BasicGameObject {
 
 	    // Title
 	    let textPositionX = this.game.world.centerX,
-	    	textPositionY = this.y - (this.sprite.height/2) + 75 * this.game.SCALE;
+	    	textPositionY = this.y - (this.sprite.height/2) + 80 * this.game.SCALE;
+
 	    this.titleText = this.game.add.text(
 	    		textPositionX, 
 	    		textPositionY, 
 	    		title, 
 	    		{fill: '#000000', fontSize: bigFont, align: "center", wordWrap: true, wordWrapWidth: this.sprite.width - 80 * this.game.SCALE});
-	    this.titleText.anchor.setTo(0.5);
 	    this.texts.push(this.titleText);
 
 	    // Informations
 	    textPositionX = this.game.world.centerX - this.sprite.width / 2 + 50 * this.game.SCALE;
-	    textPositionY = this.game.world.centerY - this.sprite.height / 2 + this.titleText.height + 100 * this.game.SCALE;
+	    textPositionY = this.game.world.centerY - this.sprite.height / 2 + this.titleText.height + 125 * this.game.SCALE;
 	    for(let item in principes.preventions){
 	    	let text = this.game.add.text(
 	    		textPositionX, 
 	    		textPositionY, 
 	    		principes.preventions[item],
 	    		{fill: '#666666', fontSize: mediumFont, align: "left", wordWrap: true, wordWrapWidth: this.sprite.width - 100 * this.game.SCALE});
+	    	text.anchor.setTo(0);
 	    	this.texts.push(text);
-	    	textPositionY+= text.height + 20 * this.game.SCALE;
+	    	textPositionY+= text.height + 40 * this.game.SCALE;
 	    }
 
 	    this.hide();

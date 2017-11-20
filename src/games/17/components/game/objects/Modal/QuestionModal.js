@@ -50,7 +50,7 @@ export default class QuestionModal extends BasicGameObject {
 
 	    // Responses
 	    textPositionX = this.game.world.centerX - this.sprite.width / 2 + 50 * this.game.SCALE;
-	    textPositionY = this.game.world.centerY - this.sprite.height / 2 + this.titleText.height + 100 * this.game.SCALE;
+	    textPositionY = this.game.world.centerY - this.sprite.height / 2 + this.titleText.height + 150 * this.game.SCALE;
 
 	    this.responsesGroup = [];
 	    let correcAnswerCount = 0,

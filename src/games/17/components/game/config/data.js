@@ -157,7 +157,7 @@ export default {
         image: "approvisionnement",
         responses: [
         {
-            title: "Monte-charge sur railles",
+            title: "Monte-charge sur rais",
             image: "approvisionnement1",
             correct: true
         },
