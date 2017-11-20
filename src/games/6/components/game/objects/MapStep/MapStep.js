@@ -32,8 +32,8 @@ export default class MapStep extends BasicGameObject {
         // this.sprite.position.x = this.x;
         // this.validated = true;
 
-        let littleMargin = 20;
-        let bigMargin = 40;
+        let littleMargin = 20 * this.game.SCALE;
+        let bigMargin = 40 * this.game.SCALE;
         let cardsNumber = 3;
 
         let moveY = this.sprite.height + bigMargin;

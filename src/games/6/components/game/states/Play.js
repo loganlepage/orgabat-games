@@ -334,10 +334,6 @@ class PartTwo {
 
     updateCarriage(currentSprite) {
         if (this.carriageCapacity < 4) {
-            if (currentSprite.frameName == "jeu6/map" && this.firstMap) {
-                this.firstMap = false;
-                this.mapSteps();
-            }
             if (this.carriageCapacity == 0) {
                 currentSprite.position.x = this.carriage.sprite.position.x - 10 * this.game.SCALE;
                 currentSprite.position.y = this.carriage.sprite.position.y + 30 * this.game.SCALE;
@@ -425,6 +421,10 @@ class PartTwo {
                     );
                 }
             } else if (name === "jeu6/map") {
+                if (this.firstMap) {
+                    this.firstMap = false;
+                    this.mapSteps();
+                }
                 if (this.mapCapacity <= 5) {
                     this.mapCapacity++;
                     currentSprite.position.x = this.truck.sprite.position.x - 1000;

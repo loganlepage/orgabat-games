@@ -14,22 +14,21 @@ export default class MapStepFactory extends GameFactory {
         // this.cardsWidth = 150;
         // this.cardsHeight = 150;  // scale(1)
 
-        this.cardsWidth = 146;
-        this.cardsHeight = 146;  // scale(0.95) and achor(1)
+        this.cardsWidth = 146 * this.game.SCALE;
+        this.cardsHeight = 146 * this.game.SCALE;  // scale(0.95) and achor(1)
 
         this.cardNumberX = 6;
         this.cardNumberY = 1;
 
-        this.marginX = 10;
-        this.marginY = 10;
+        this.marginX = 10 * this.game.SCALE;
+        this.marginY = 10 * this.game.SCALE;
 
         this.bigWidthMargin = (this.game.width - (this.cardNumberX*this.cardsWidth) - ((this.cardNumberX-1)*this.marginX)) / 2;
-        this.bigHeightMargin = 150;
+        this.bigHeightMargin = 200 * this.game.SCALE;
 
         this.createCoordonates();
         this.draw();
         this.createSteps();
-
     }
 
     createCoordonates() {
@@ -56,8 +55,8 @@ export default class MapStepFactory extends GameFactory {
         let x = this.coordonates[0].x - littleMargin;
         let y = this.coordonates[0].y - littleMargin;
 
-        let width = this.game.width - (2*this.bigWidthMargin) + littleMargin;
-        let height = this.cardsHeight + littleMargin;
+        let width = this.game.width - 2*this.bigWidthMargin + 2*littleMargin;
+        let height = this.cardsHeight + 2*littleMargin;
 
         this.graphics = this.game.add.graphics(0, 0);
         this.game.layer.zDepthOverAll.addChild(this.graphics);
