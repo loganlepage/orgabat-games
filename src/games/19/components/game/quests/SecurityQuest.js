@@ -5,7 +5,7 @@ export default class CommunicationQuest extends Quest {
 
     _name = "Approvisionner le chantier";
     _key = 'security_quest';
-    _help = "Déplace chaque élément aux bons endroits afin de faciliter le travail sur le chantier.";
+    _help = "Déplace chaque élément aux bons endroits afin de faciliter le travail sur le chantier et limiter les déplacements";
 
     constructor(game) {
         super(game);

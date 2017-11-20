@@ -8,18 +8,18 @@ export default {
     responses: [
     {
         key:'sable',
-        x: 200,
-        y: 100
+        x: -350,
+        y: -200
     },
     {
         key:'graviers',
-        x: 200,
-        y: 200
+        x: -350,
+        y: -100
     },
     {
         key:'agglos',
-        x: 200,
-        y: 300
+        x: -350,
+        y: 0
     }
     ],
     background: {
@@ -27,48 +27,48 @@ export default {
         key: "bg",
         area: [
         {
-            x: 400,
-            y: 150,
+            x: -100,
+            y: -350,
             correctAnswer: []
         },
         {
-            x: 500,
-            y: 150,
+            x: -200,
+            y: -350,
             correctAnswer: []
         },
         {
-            x: 600,
-            y: 150,
+            x: -300,
+            y: -350,
             correctAnswer: []
         },
         {
-            x: 150,
-            y: 450,
+            x: -540,
+            y: -100,
             correctAnswer: ['graviers', 'sable']
         },
         {
-            x: 150,
-            y: 550,
+            x: -540,
+            y: 0,
             correctAnswer: ['graviers', 'sable'],
         },
         {
-            x: 150,
-            y: 650,
+            x: -540,
+            y: 100,
             correctAnswer: ['graviers', 'sable']
         },
         {
-            x: 900,
-            y: 600,
+            x: 200,
+            y: 200,
             correctAnswer: ['agglos']
         },
         {
-            x: 1000,
-            y: 600,
+            x: 300,
+            y: 200,
             correctAnswer: ['agglos']
         },
         {
-            x: 1100,
-            y: 600,
+            x: 400,
+            y: 200,
             correctAnswer: ['agglos']
         }
         ]

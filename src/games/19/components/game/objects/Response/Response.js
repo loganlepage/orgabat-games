@@ -15,7 +15,12 @@ export default class Response extends BasicGameObject {
         this.key = key;
         this.x = x;
         this.y = y;
-        this.addSprite(new ResponseSprite(this.game, this.x, this.y, this.key, this));
+        this.addSprite(new ResponseSprite(
+            this.game, 
+            this.game.world.centerX + this.x * this.game.SCALE, 
+            this.game.world.centerY + this.y * this.game.SCALE, 
+            this.key, 
+            this));
         this.validated = false;
         this.enableControls();
     }

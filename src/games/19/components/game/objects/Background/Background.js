@@ -22,11 +22,11 @@ export default class Background extends BasicGameObject {
         this.sprite.scale.set(0.9 * this.game.SCALE);
         this.game.layer.zDepth0.addChild(this.sprite);
         // To have pointer position
-        // this.sprite.events.onInputDown.add(function(){
-        //     console.log("X: " + this.game.input.mousePointer.x / this.game.SCALE);
-        //     console.log("Y: " + this.game.input.mousePointer.y / this.game.SCALE);
-        //     console.log("---");
-        // },this);
+        this.sprite.events.onInputDown.add(function(){
+            console.log("X: " + (this.game.input.mousePointer.x - this.game.world.centerX)/this.game.SCALE);
+            console.log("Y: " + (this.game.input.mousePointer.y - this.game.world.centerY)/this.game.SCALE);
+            console.log("---");
+        },this);
 
         // Shapes
         this.shapes = [];
@@ -35,7 +35,10 @@ export default class Background extends BasicGameObject {
             let fill = true,
             radius = 50 * this.game.SCALE;
             // shape
-            this.shapes[shapeNumber] = this.game.add.graphics(this.data.area[shapeNumber].x * this.game.SCALE, this.data.area[shapeNumber].y * this.game.SCALE);
+            this.shapes[shapeNumber] = this.game.add.graphics(
+                this.game.world.centerX + this.data.area[shapeNumber].x * this.game.SCALE, 
+                this.game.world.centerY + this.data.area[shapeNumber].y * this.game.SCALE
+            );
             this.shapes[shapeNumber].data = this.data.area[shapeNumber];
             // Fill or not
             if (fill) {
