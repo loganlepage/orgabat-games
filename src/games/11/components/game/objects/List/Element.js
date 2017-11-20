@@ -26,8 +26,8 @@ export default class Element extends BasicGameObject {
         this.states = states;
 
         // Fonts size
-        let bigFont = 24 * this.game.SCALE,
-            mediumFont = 20 * this.game.SCALE;
+        let bigFont = 30 * this.game.SCALE,
+            mediumFont = 25 * this.game.SCALE;
 
         // Title
         this.title = this.game.add.text(x, y, name, {font: 'Arial', fontSize: mediumFont, fill: '#000000'});

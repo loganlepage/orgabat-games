@@ -69,7 +69,8 @@ export default class Item extends BasicGameObject {
             item.obj.name,
             {
                 font: 'Arial',
-                fontSize: 50 * game.SCALE,
+                // fontSize: 50 * this.game.SCALE,
+                // fontSize: 50,
                 fill: '#000000',
             }
         );
