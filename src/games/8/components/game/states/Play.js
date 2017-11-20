@@ -234,57 +234,71 @@ class ScreenThree {
     }
 
     addResponsesActions() {
-        let self = this;
         this.game.responseGroup.forEach((item) => {
             item.input.enableDrag(false, true);
-            // To do: vérifier la perte de scope dans "item.events.onDragStop.add"
             item.events.onDragStop.add(function (currentSprite) {
                 switch(currentSprite.obj.position){
                     case 1:
-                        if (item.obj.checkOverlap(currentSprite, self.shapes[0])) {
-                            currentSprite.position.x = self.shapes[0].position.x;
-                            currentSprite.position.y = self.shapes[0].position.y;
-                            self.correct_answers_count ++;
+                        if (item.obj.checkOverlap(currentSprite, this.shapes[0])) {
+                            currentSprite.position.x = this.shapes[0].position.x;
+                            currentSprite.position.y = this.shapes[0].position.y;
+                            this.correct_answers_count ++;
                         } else {
-                            self.wrongAnswer();
+                            for (var shape in this.shapes) {
+                                if (shape != 0 && item.obj.checkOverlap(currentSprite, this.shapes[shape])) {
+                                    this.wrongAnswer();
+                                }
+                            }
                         }
                         break;
                     case 2:
-                        if (item.obj.checkOverlap(currentSprite, self.shapes[1])) {
-                            currentSprite.position.x = self.shapes[1].position.x;
-                            currentSprite.position.y = self.shapes[1].position.y;
-                            self.correct_answers_count ++;
+                        if (item.obj.checkOverlap(currentSprite, this.shapes[1])) {
+                            currentSprite.position.x = this.shapes[1].position.x;
+                            currentSprite.position.y = this.shapes[1].position.y;
+                            this.correct_answers_count ++;
                         } else {
-                            self.wrongAnswer();
+                            for (var shape in this.shapes) {
+                                if (shape != 1 && item.obj.checkOverlap(currentSprite, this.shapes[shape])) {
+                                    this.wrongAnswer();
+                                }
+                            }
                         }
                         break;
                     case 3:
-                        if (item.obj.checkOverlap(currentSprite, self.shapes[2])) {
-                            currentSprite.position.x = self.shapes[2].position.x;
-                            currentSprite.position.y = self.shapes[2].position.y;
-                            self.correct_answers_count ++;
+                        if (item.obj.checkOverlap(currentSprite, this.shapes[2])) {
+                            currentSprite.position.x = this.shapes[2].position.x;
+                            currentSprite.position.y = this.shapes[2].position.y;
+                            this.correct_answers_count ++;
                         } else {
-                            self.wrongAnswer();
+                            for (var shape in this.shapes) {
+                                if (shape != 2 && item.obj.checkOverlap(currentSprite, this.shapes[shape])) {
+                                    this.wrongAnswer();
+                                }
+                            }
                         }
                         break;
                     case 4:
-                        if (item.obj.checkOverlap(currentSprite, self.shapes[3])) {
-                            currentSprite.position.x = self.shapes[3].position.x;
-                            currentSprite.position.y = self.shapes[3].position.y;
-                            self.correct_answers_count ++;
+                        if (item.obj.checkOverlap(currentSprite, this.shapes[3])) {
+                            currentSprite.position.x = this.shapes[3].position.x;
+                            currentSprite.position.y = this.shapes[3].position.y;
+                            this.correct_answers_count ++;
                         } else {
-                            self.wrongAnswer();
+                            for (var shape in this.shapes) {
+                                if (shape != 3 && item.obj.checkOverlap(currentSprite, this.shapes[shape])) {
+                                    this.wrongAnswer();
+                                }
+                            }
                         }
                         break;
                     default:
                         currentSprite.position.copyFrom(currentSprite.originalPosition);
                         break;
                 }
-                if (self.correct_answers_count >= 4) {
-                    self.game.time.events.add(Phaser.Timer.SECOND * 1, self.questCleaned, self);
+                if (this.correct_answers_count >= 4) {
+                    this.game.time.events.add(Phaser.Timer.SECOND * 1, this.questCleaned, this);
                 }
-            });
-        });
+            }, this);
+        }, this);
     }
 
     removeResponses() {
@@ -344,9 +358,9 @@ class ScreenThree {
     }
 
     wrongAnswer() {
-        Canvas.get('gabator').modal.showHelp(
-            "Mauvaise réponse"
-        );
+        // Canvas.get('gabator').modal.showHelp(
+        //     "Mauvaise réponse"
+        // );
         PhaserManager.get('gabator').stats.changeValues({
             health: PhaserManager.get('gabator').stats.state.health - 1,
             organization: PhaserManager.get('gabator').stats.state.organization - 1,
@@ -397,60 +411,75 @@ car c’est la premiè̀re fois pour lui. Fais glisser sur les schémas les dif
     }
 
     addResponsesActions() {
-        let self = this;
         this.game.responseGroup.forEach((item) => {
             item.input.enableDrag(false, true);
             item.position.y += 150;
             item.cloneOriginalPosition();
             // To do: vérifier la perte de scope dans "item.events.onDragStop.add"
-            item.events.onDragStop.add(function (currentSprite) {
+            item.events.onDragStop.add(function(currentSprite) {
                 switch(currentSprite.obj.position){
                     case 1:
-                        if (item.obj.checkOverlap(currentSprite, self.shapes[0])) {
-                            currentSprite.position.x = self.shapes[0].position.x;
-                            currentSprite.position.y = self.shapes[0].position.y;
-                            self.correct_answers_count ++;
+                        if (item.obj.checkOverlap(currentSprite, this.shapes[0])) {
+                            currentSprite.position.x = this.shapes[0].position.x;
+                            currentSprite.position.y = this.shapes[0].position.y;
+                            this.correct_answers_count ++;
                         } else {
-                            self.wrongAnswer();
+                            for (var shape in this.shapes) {
+                                if (shape != 0 && item.obj.checkOverlap(currentSprite, this.shapes[shape])) {
+                                    this.wrongAnswer();
+                                }
+                            }
                         }
                         break;
                     case 2:
-                        if (item.obj.checkOverlap(currentSprite, self.shapes[1])) {
-                            currentSprite.position.x = self.shapes[1].position.x;
-                            currentSprite.position.y = self.shapes[1].position.y;
-                            self.correct_answers_count ++;
+                        if (item.obj.checkOverlap(currentSprite, this.shapes[1])) {
+                            currentSprite.position.x = this.shapes[1].position.x;
+                            currentSprite.position.y = this.shapes[1].position.y;
+                            this.correct_answers_count ++;
                         } else {
-                            self.wrongAnswer();
+                            for (var shape in this.shapes) {
+                                if (shape != 1 && item.obj.checkOverlap(currentSprite, this.shapes[shape])) {
+                                    this.wrongAnswer();
+                                }
+                            }
                         }
                         break;
                     case 3:
-                        if (item.obj.checkOverlap(currentSprite, self.shapes[2])) {
-                            currentSprite.position.x = self.shapes[2].position.x;
-                            currentSprite.position.y = self.shapes[2].position.y;
-                            self.correct_answers_count ++;
+                        if (item.obj.checkOverlap(currentSprite, this.shapes[2])) {
+                            currentSprite.position.x = this.shapes[2].position.x;
+                            currentSprite.position.y = this.shapes[2].position.y;
+                            this.correct_answers_count ++;
                         } else {
-                            self.wrongAnswer();
+                            for (var shape in this.shapes) {
+                                if (shape != 2 && item.obj.checkOverlap(currentSprite, this.shapes[shape])) {
+                                    this.wrongAnswer();
+                                }
+                            }
                         }
                         break;
                     case 4:
-                        if (item.obj.checkOverlap(currentSprite, self.shapes[3])) {
-                            currentSprite.position.x = self.shapes[3].position.x;
-                            currentSprite.position.y = self.shapes[3].position.y;
-                            self.correct_answers_count ++;
+                        if (item.obj.checkOverlap(currentSprite, this.shapes[3])) {
+                            currentSprite.position.x = this.shapes[3].position.x;
+                            currentSprite.position.y = this.shapes[3].position.y;
+                            this.correct_answers_count ++;
                         } else {
-                            self.wrongAnswer();
+                            for (var shape in this.shapes) {
+                                if (shape != 3 && item.obj.checkOverlap(currentSprite, this.shapes[shape])) {
+                                    this.wrongAnswer();
+                                }
+                            }
                         }
                         break;
                     default:
                         currentSprite.position.copyFrom(currentSprite.originalPosition);
                         break;
                 }
-                if (self.correct_answers_count >= 4) {
-                    // self.questCleaned();
-                    self.game.time.events.add(Phaser.Timer.SECOND * 1, self.questCleaned, self);
+                if (this.correct_answers_count >= 4) {
+                    // this.questCleaned();
+                    this.game.time.events.add(Phaser.Timer.SECOND * 1, this.questCleaned, this);
                 }
-            });
-        });
+            }, this);
+        }, this);
     }
 
     removeResponses() {
@@ -513,22 +542,22 @@ car c’est la premiè̀re fois pour lui. Fais glisser sur les schémas les dif
         });
     }
 
-    wrongAnswer() {
-        Canvas.get('gabator').modal.showHelp(
-            "Mauvaise réponse"
-        );
-        PhaserManager.get('gabator').stats.changeValues({
-            health: PhaserManager.get('gabator').stats.state.health - 1,
-            organization: PhaserManager.get('gabator').stats.state.organization - 1,
-        });
-    }
-
     questCleaned() {
         this.removeResponses();
         this.removeShapes();
         this.gameProcess.quests._quests.steps_quest.done();
         this.gameProcess.quests._quests.rescue_quest.done();
         this.finish.dispatch();
+    }
+
+    wrongAnswer(){
+        // Canvas.get('gabator').modal.showHelp(
+        //     "Mauvaise réponse"
+        // );
+        PhaserManager.get('gabator').stats.changeValues({
+            health: PhaserManager.get('gabator').stats.state.health - 1,
+            organization: PhaserManager.get('gabator').stats.state.organization - 1,
+        });
     }
 
 }
@@ -703,9 +732,9 @@ class ScreenFive {
     }
 
     wrongAnswer() {
-        Canvas.get('gabator').modal.showHelp(
-            "Mauvaise réponse"
-        );
+        // Canvas.get('gabator').modal.showHelp(
+        //     "Mauvaise réponse"
+        // );
         PhaserManager.get('gabator').stats.changeValues({
             health: PhaserManager.get('gabator').stats.state.health - 1,
             enterprise: PhaserManager.get('gabator').stats.state.enterprise - 1,
@@ -807,7 +836,7 @@ class GameProcess {
             organizationMax: PhaserManager.get('gabator').stats.organizationMax,
             enterpriseMax: PhaserManager.get('gabator').stats.enterpriseMax
         });
-        endInfoModal.onExit.addOnce(() => window.closeGameModal(), this);
+        endInfoModal.onExit.addOnce(() => window.parent.closeGameModal(), this);
         endInfoModal.onReplay.addOnce(() => window.location.reload(), this);
 
         // Étoiles:
