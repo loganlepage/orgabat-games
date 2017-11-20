@@ -10,32 +10,32 @@ export default {
         key: "bg",
         area: [
             {
-                x: 1155,
-                y: 600,
+                x: 450,
+                y: 82,
                 title: "1",
                 correctAnswer: "5"
             },
             {
-                x: 1325,
-                y: 420,
+                x: 613,
+                y: 29,
                 title: "2",
                 correctAnswer: "3"
             },
             {
-                x: 800,
-                y: 780,
+                x: 120,
+                y: 375,
                 title: "3",
                 correctAnswer: "8"
             },
             {
-                x: 570,
-                y: 550,
+                x: -116,
+                y: 131,
                 title: "4",
                 correctAnswer: "4"
             },
             {
-                x: 145,
-                y: 70,
+                x: -570,
+                y: -370,
                 title: "5",
                 correctAnswer: "7"
             },

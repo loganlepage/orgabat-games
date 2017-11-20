@@ -21,11 +21,11 @@ export default class Background extends BasicGameObject {
         this.sprite.scale.set(game.SCALE);
         this.game.layer.zDepth0.addChild(this.sprite);
         // To have pointe rposition
-        // this.sprite.events.onInputDown.add(function(){
-        //     console.log("X: " + this.game.input.mousePointer.x / this.game.SCALE);
-        //     console.log("Y: " + this.game.input.mousePointer.y / this.game.SCALE);
-        //     console.log("---");
-        // },this);
+        this.sprite.events.onInputDown.add(function(){
+            // console.log("X: " + this.game.input.mousePointer.x / this.game.SCALE + " Y: " + this.game.input.mousePointer.y / this.game.SCALE);
+            console.log((this.game.input.mousePointer.x - this.game.world.centerX)/ this.game.SCALE + " / " + (this.game.input.mousePointer.y - this.game.world.centerY)/ this.game.SCALE);
+            console.log("---");
+        }, this);
 
         // Shapes
         this.shapes = [];
@@ -44,7 +44,10 @@ export default class Background extends BasicGameObject {
         } catch (e) {
             //
         }
-        this.shapes[shapeNumber] = this.game.add.graphics(this.data[shapeNumber].x * this.game.SCALE, this.data[shapeNumber].y * this.game.SCALE);
+        this.shapes[shapeNumber] = this.game.add.graphics(
+            this.game.world.centerX + this.data[shapeNumber].x * this.game.SCALE,
+            this.game.world.centerY + this.data[shapeNumber].y * this.game.SCALE
+        );
         this.shapes[shapeNumber].shapeNumber = shapeNumber;
         this.shapes[shapeNumber].data = this.data[shapeNumber];
         if (fill) {
@@ -55,10 +58,10 @@ export default class Background extends BasicGameObject {
                 this.shapes[shapeNumber].beginFill(0xFFA500, .5);
             } else {
                 this.shapes[shapeNumber].beginFill(0xffffff, .2);
+                this.shapes[shapeNumber].inputEnabled = true;
+                this.shapes[shapeNumber].input.useHandCursor = true;
             }
         }
-        this.shapes[shapeNumber].inputEnabled = true;
-        this.shapes[shapeNumber].input.useHandCursor = true;
         this.shapes[shapeNumber].drawCircle(0, 0, radius);
         this.game.layer.zDepth0.addChild(this.shapes[shapeNumber]);
     }
@@ -71,6 +74,10 @@ export default class Background extends BasicGameObject {
     check(shapeNumber) {
         // this.shapes[shapeNumber].destroy();
         this.createShapes(shapeNumber, "orange");
+    }
+
+    removeSpecificInputs(shapeNumber) {
+        this.shapes[shapeNumber].inputEnabled = false;
     }
 
     removeInputs() {
