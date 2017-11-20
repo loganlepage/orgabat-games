@@ -37,32 +37,32 @@ export default {
             key: "meuleuse",
             responses: [
             {
-                title: "Lunettes 3D",
+                title: "",
                 info: "Lunettes 3D",
                 key: "lunettes_3d"
             },
             {
-                title: "Lunettes de sport d'hiver",
+                title: "",
                 info: "Lunettes de sport d'hiver",
                 key: "lunettes_ski"
             },
             {
-                title: "Lunettes de soleil",
+                title: "",
                 info: "Lunettes de soleil",
                 key: "lunettes_soleil"
             },
             {
-                title: "Lunettes de vue",
+                title: "",
                 info: "Lunettes de vue",
                 key: "lunettes_vue"
             },
             {
-                title: "Lunettes de protection",
+                title: "",
                 info: "Lunettes de protection",
                 key: "lunettes_protection"
             },
             {
-                title: "Lunettes de plongée",
+                title: "",
                 info: "Lunettes de plongée",
                 key: "lunettes_plongee"
             }
@@ -97,7 +97,7 @@ export default {
             ]
         },
         {
-            title: "Vous êtes chef d’équipe et devez vérifier les ferraillages (ensemble des fers d'une construction en béton armé). Vous travaillez souvent dans un environnement boueux et humide. Vous avez un bon d’achat dans un magasin de bricolage pour vous équiper d’une paire de chaussure de sécurité.",
+            title: "Vous êtes chef d’équipe et devez vérifier les ferraillages (ensemble des fers d'une construction en béton armé). Vous travaillez souvent dans un environnement boueux et humide. Vous avez un bon d’achat chez un fournisseur pour vous équiper d’une paire de chaussure de sécurité.",
             question: "Quelles chaussures de sécurité choisir ?",
             key: "ferraillage",
             responses: [

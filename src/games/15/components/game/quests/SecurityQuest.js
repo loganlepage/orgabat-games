@@ -5,7 +5,7 @@ export default class CommunicationQuest extends Quest {
 
     _name = "Retrouver le nom des équipements d'arrimage";
     _key = 'security_quest';
-    _help = "Choisis les équipements en cliquant dessus, un bouton apparaîtra lorsqu'ils auront tous été choisis correctement";
+    _help = "Choisis les équipements à utiliser en cliquant dessus";
 
     constructor(game) {
         super(game);
