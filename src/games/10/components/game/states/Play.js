@@ -32,6 +32,7 @@ export default class Play extends State {
 
         this.tileSprite = this.game.add.tileSprite(0, 0, this.game.world.width, this.game.world.height, "atlas");
         this.tileSprite.tileScale.set(0.5);
+        this.tileSprite.alpha = 0.5;
 
         this.initUI();
         PhaserManager.ready('game', 'play');
