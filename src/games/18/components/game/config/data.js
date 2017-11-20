@@ -5,7 +5,7 @@ export default {
     },
     canvasParent: "#gameDiv",
     atlas: "jeu18",
-    title: "Gestion de l'espace de travail sur un chantier",
+    title: "Aménagement de l’espace de travail",
     responses: [
         {
             key: "1a",

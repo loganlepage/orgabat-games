@@ -40,7 +40,7 @@ export default class StartInfoModal extends Modal {
                     type: "text",
                     x: 20,
                     y: 85,
-                    text: "Quels sont les moyens pour éliminer la pénibilité sur un chantier ?",
+                    text: "Quels sont les moyens pour éliminer prévenir les risques sur un chantier ?",
                     style: {
                         fill: "#5F4D21",
                         fontFamily: "Arial",
