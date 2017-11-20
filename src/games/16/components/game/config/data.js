@@ -158,23 +158,23 @@ export default {
         background: "fumeur",
         qcm:[
         {
-            title:"Je fume avec le client",
+            title:"Je fume / vapote avec le client",
             correct: false
         },
         {
-            title:"Je fume sur le chantier",
+            title:"Je fume / vapote sur le chantier",
             correct: false
         },
         {
-            title:"Je fume à l’extérieur du chantier",
+            title:"Je fume / vapote à l’extérieur du chantier",
             correct: false
         },
         {
-            title:"Je fume dans le camion",
+            title:"Je fume / vapote dans le camion",
             correct: false
         },
         {
-            title:"Je suis non-fumeur",
+            title:"Je ne fume / vapote pas durant mon temps de travail / Je suis non-fumeur",
             correct: true
         }
         ]
