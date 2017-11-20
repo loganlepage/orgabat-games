@@ -222,7 +222,7 @@ class ScreenThree {
         this.title = this.game.add.text(this.game.world.centerX, 25 * this.game.SCALE, text, {font: 'Arial', fontSize: 25 * this.game.SCALE, fill: '#000000', align:'center'});
         this.title.anchor.setTo(0.5, 0);
 
-        this.background = new Background(this.game, this.game.world.centerX, 300 * this.game.SCALE, "steps/bg");
+        this.background = new Background(this.game, this.game.world.centerX, 350 * this.game.SCALE, "steps/bg");
         this.game.layer.zDepth0.addChild(this.background.sprite);
         
         this.game.responseGroup = new ResponseFactory(this.game, Config.screenThree);
@@ -463,17 +463,17 @@ car c’est la premiè̀re fois pour lui. Fais glisser sur les schémas les dif
         let x = element.x, 
             y = element.y,
 
-            x1 = x - 270 * this.game.SCALE,
+            x1 = x - 330 * this.game.SCALE,
             y1 = y - 0 * this.game.SCALE,
 
-            x2 = x + 70 * this.game.SCALE,
+            x2 = x + 90 * this.game.SCALE,
             y2 = y - 0 * this.game.SCALE,
 
-            x3 = x + 265 * this.game.SCALE,
-            y3 = y - 135 * this.game.SCALE,
+            x3 = x + 320 * this.game.SCALE,
+            y3 = y - 170 * this.game.SCALE,
 
-            x4 = x + 265 * this.game.SCALE,
-            y4 = y + 135 * this.game.SCALE,
+            x4 = x + 320 * this.game.SCALE,
+            y4 = y + 170 * this.game.SCALE,
 
             fill = false,
             radius = 80 * this.game.SCALE;
@@ -555,7 +555,7 @@ class ScreenFive {
         this.title = this.game.add.text(this.game.world.centerX, 25 * this.game.SCALE, text, {font: 'Arial', fontSize: 25 * this.game.SCALE, fill: '#000000', align:'center'});
         this.title.anchor.setTo(0.5, 0);
 
-        this.background = new Background(this.game, this.game.world.centerX, 300 * this.game.SCALE, "numbers/bg");
+        this.background = new Background(this.game, this.game.world.centerX, 350 * this.game.SCALE, "numbers/bg");
         this.background.sprite.scale.set(this.game.SCALE * 1.2);
         this.game.layer.zDepth0.addChild(this.background.sprite);
         this.game.responseGroup = new ResponseFactory(this.game, Config.screenFive);

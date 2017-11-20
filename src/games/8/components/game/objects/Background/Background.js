@@ -14,24 +14,4 @@ export default class Background extends BasicGameObject {
         this.key = key;
         this.addSprite(new BackgroundSprite(this.game, this.x, this.y, this.key, this));
     }
-
-    /*preUpdate() {
-        //
-    }
-
-    update() {
-        //
-    }
-
-    postUpdate() {
-        //
-    }
-
-    updateTransform() {
-        //
-    }
-
-    _renderCanvas() {
-        //
-    }*/
 }

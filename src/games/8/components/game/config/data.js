@@ -21,10 +21,10 @@ export default {
         response4 : {key: "proteger", file: "steps", position: 1}
     },
     screenFour: {
-        response1 : {key: "cpam", file: "people", position: 1},
-        response2 : {key: "employeur", file: "people", position: 4},
+        response1 : {key: "cpam", file: "people", position: 4},
+        response2 : {key: "employeur", file: "people", position: 3},
         response3 : {key: "medecin", file: "people", position: 2},
-        response4 : {key: "salarie", file: "people", position: 3}
+        response4 : {key: "salarie", file: "people", position: 1}
     },
     screenFive: {
         response1 : {key: "police", file: "numbers", position: 3},
