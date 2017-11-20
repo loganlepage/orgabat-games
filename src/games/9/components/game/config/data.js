@@ -8,7 +8,7 @@ export default {
     steps: [
         {
             correctAnswer: "medecin",
-            titleText: "Suite à un arrêt de travail de longue duré (supérieur à 30 jours), vous allez reprendre votre activité professionnelle. \nQui jugera de votre aptitude à reprendre votre activité?",
+            titleText: "Suite à un arrêt de travail de longue duréé (supérieur à 30 jours), vous allez reprendre votre activité professionnelle. \nQui jugera de votre aptitude à reprendre votre activité?",
             infoText: "Le médecin de santé au travail a un rôle exclusivement préventif, dont le rôle est d’éviter toute dégradation \nde la santé des salariés, du fait de leur travail."
         },
         {
