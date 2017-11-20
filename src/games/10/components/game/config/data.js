@@ -37,7 +37,7 @@ export default {
                     questionSolutions: ["Il y a du vent"],
                 },
                 { 
-                    questionTitle: "L’apprenti a-t-il déjà monté une panne fuitrére sur un toit ?",
+                    questionTitle: "L’apprenti a-t-il déjà monté une panne faîtière sur un toit ?",
                     questionAnswers: [
                         "Oui",
                         "Non, c'est la première fois"
