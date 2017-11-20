@@ -289,24 +289,24 @@ export default {
             answers: ["preventions10"]
         },
         { // bottom right
-            x: -133,
+            x: -120,
             y: -102,
             answers: ["preventions4"]
         },
         {
-            x: -133,
+            x: -120,
             y: -194,
             answers: ["preventions4"]
         },
         {
-            x: -133,
+            x: -120,
             y: -286,
             answers: ["preventions4"]
         }
-        ] // end shapes
+        ]
     }, // end step
     {
-        title: "Suite à votre examen, la victime est inconsciente et elle respire. Parmi les gestes de secours proposés, cocher celui qui correspond à la situation",
+        title: "Suite à votre examen, la victime est au sol, inconsciente et respire. Parmi les gestes de secours proposés, cocher celui qui correspond à la situation",
         quest: "",
         repo: "",
         qcm: [
