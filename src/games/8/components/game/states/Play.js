@@ -89,7 +89,7 @@ class ScreenOne {
 
     start() {
         let text = `Paul est salarié depuis 3 ans dans l’entreprise Bâtiplus. Actuellement, il travaille sur un chantier 
-où dix maisons individuelles sont en cours de construction. Il manutentionne des par paings afin 
+où dix maisons individuelles sont en cours de construction. Il manutentionne des parpaings afin 
 d’approvisionner le poste de travail d’un collègue. Soudain, il glisse et se coupe profondément à la cuisse. 
 Que faire ?`;
         this.title = this.game.add.text(this.game.world.centerX, 25 * this.game.SCALE, text, {font: 'Arial', fontSize: 25 * this.game.SCALE, fill: '#000000', align:'center'});

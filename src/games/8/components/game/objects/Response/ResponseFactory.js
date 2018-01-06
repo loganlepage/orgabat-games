@@ -3,7 +3,6 @@ import Response from "./Response";
 import Phaser from "phaser";
 
 export default class ResponseFactory extends GameFactory {
-
     coordonates = [];
 
     constructor(game, items) {
@@ -16,12 +15,12 @@ export default class ResponseFactory extends GameFactory {
 
         for (let item in items) {
             itemsNumber++;
-        };
+        }
 
         this.number = itemsNumber;
 
         let xValue = (width / itemsNumber)/2;
-        let y = this.game.world.centerY + 100 * this.game.SCALE;
+        let y = this.game.world.centerY + (this.game.world.centerY / 3.2 * this.game.SCALE);
 
         for (let i = 0; i < itemsNumber; i++) {
             let x = i * (2 * xValue) + xValue;
@@ -43,7 +42,5 @@ export default class ResponseFactory extends GameFactory {
             );
             count++;
         }
-
     }
-
 }
