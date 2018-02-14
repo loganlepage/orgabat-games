@@ -7,11 +7,11 @@ export default class Rules extends State {
 
     /** Called when the state must be created */
     create() {
-        this.game.add.text(this.game.uiScale(80), this.game.uiScale(80), "La communication - Accident de travail",
+        this.game.add.text(this.game.uiScale(80), this.game.uiScale(80), "La protection",
             {font: 'Arial', fill: '#272727', fontSize: this.game.uiScale(21)});
 
         this.game.add.text(this.game.uiScale(80), this.game.uiScale(160),
-            "Lorsqu’il s’agit de mettre en place une démarche de prévention, l’entreprise doit se référer aux 9 principes généraux de prévention. A partir de la situation de travail et des deux principes de prévention ci-dessous: analyser le risque, donner la mesure de prévention permettant au salarié de travailler dans de meilleurs conditions, secourir la victime.",
+            "Objectif: A partir de la situation de travail ci-dessous, analyser le risque, trouver une mesure de prévention et secourir la victime.\n\nSituation de travail: Vous devez remplacer quelques mètres carrés d’ardoises avec votre patron. Comme d’habitude, pour ces petites réparations qui ne sont pas fréquentes, il veut installer une échelle pour monter sur le toit et deux autres posées bout à bout sur les ardoises. Dans ce cas, aucune échelle n’est attachée. Elles tiennent simplement en appui sur la gouttière. De plus, il pleut. En se penchant pour atteindre une ardoise, l’échelle glisse. Votre patron chute de 7 mètres. Sa moelle épinière est sectionnée, il se retrouve en incapacité de travail pendant un an avec une inaptitude définitive à exercer son métier.",
             {
                 font: 'Arial', fill: '#272727', fontSize: this.game.uiScale(16),
                 wordWrap: true, wordWrapWidth: this.game.world.width - this.game.uiScale(160)

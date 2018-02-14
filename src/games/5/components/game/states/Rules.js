@@ -11,9 +11,8 @@ export default class Rules extends State {
             { font: 'Arial', fill: '#272727', fontSize: this.game.uiScale(21) });
 
         this.game.add.text(this.game.uiScale(80), this.game.uiScale(160),
-            "Depuis quelques temps, je ressens des douleurs au niveau de mes articulations notamment au niveau du  dos. " +
-            "En  observant  mes  collègues,  je  m’aperçois  que  les  situations  de  travail  sur  les  chantiers  " +
-            "sont  assez contraignantes.",
+            "Depuis quelques temps, je ressens des douleurs articulaires notamment au niveau du dos. En observant mes collègues, je m’aperçois que les situations de travail sur les chantiers sont assez contraignantes." + 
+            "Indiquer si les situations de travail suivantes sont bonnes ou mauvaises pour la santé.",
             { font: 'Arial', fill: '#272727', fontSize: this.game.uiScale(16),
                 wordWrap: true, wordWrapWidth: this.game.world.width - this.game.uiScale(160) });
 

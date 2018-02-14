@@ -68,7 +68,7 @@ export default {
             }
             ],
             correctAnswer: [
-            "Lunettes de protection"
+            "lunettes_protection"
             ]
         },
         {

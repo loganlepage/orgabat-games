@@ -38,7 +38,9 @@ export default class Background extends BasicGameObject {
                 font: 'Arial', 
                 fontSize: 30 * this.game.SCALE, 
                 fill: '#000000', 
-                backgroundColor: 'rgba(255,255,255,0.85)'
+                backgroundColor: 'rgba(255,255,255,0.85)',
+                wordWrap: true,
+                wordWrapWidth: this.game.world.width - 50 * this.game.SCALE
             }
         );
         this.game.layer.zDepth0.addChild(this.title);

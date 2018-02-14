@@ -72,7 +72,7 @@ export default {
                     questionTitle: "Si tu veux prendre rendez-vous avec le patron:",
                     questionAnswers: [
                         "Tu vas voir la secrétaire Sylvianne",
-                        "Tu vas voir la Sylvie",
+                        "Tu vas voir Sylvie",
                         "Tu demandes à ton collègue"
                     ],
                     questionSolutions: ["Tu vas voir la Sylvie"],
@@ -80,8 +80,8 @@ export default {
                 {
                     questionTitle: "Le patron de l'entreprise s'appelle:",
                     questionAnswers: [
-                        "Mr Dupont",
-                        "Mr Durand",
+                        "Mr Dupont avec un t",
+                        "Mr Dupond avec un d",
                         "Mr Marie"
                     ],
                     questionSolutions: ["Mr Dupont"],

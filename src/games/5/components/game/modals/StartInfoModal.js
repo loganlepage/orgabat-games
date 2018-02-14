@@ -43,7 +43,7 @@ export default class StartInfoModal extends Modal {
                     type: "text",
                     x: 20,
                     y: 70,
-                    text: "Choisir si le mouvement est BON ou MAUVAIS par rapport aux images.",
+                    text: "Identifier les bonnes et les mauvaises postures au travail",
                     style: {
                         fill: "#5F4D21",
                         fontFamily: "Arial",

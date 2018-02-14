@@ -120,7 +120,6 @@ export default class Step extends BasicGameObject {
     }
 
     finishStep() {
-        console.log("Finish step");
         this.title.destroy();
         if (this.stepData.background != undefined) {
             this.background.sprite.destroy();

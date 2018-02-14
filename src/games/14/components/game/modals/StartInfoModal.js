@@ -40,7 +40,7 @@ export default class StartInfoModal extends Modal {
                     type: "text",
                     x: 20,
                     y: 85,
-                    text: "Choisis le cheminement le plus adapté pour approvisionner ton poste de travai",
+                    text: "Choisir le cheminement le plus adapté pour approvisionner ton poste de travail.",
                     style: {
                         fill: "#5F4D21",
                         fontFamily: "Arial",

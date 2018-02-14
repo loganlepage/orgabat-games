@@ -5,7 +5,7 @@ export default class AnalyzeQuest extends Quest {
 
     _name = 'Analyser la situation de travail et évaluer le risque d’accident';
     _key = 'analyze_quest';
-    _help = "Remplir le schéma d’apparition du dommage en faisant glisser la réponse sur les différentes bulles";
+    _help = "Rappel de la situation: Vous devez remplacer quelques mètres carrés d’ardoises avec votre patron. En se penchant pour atteindre une ardoise, l’échelle glisse. Votre patron chute de 7 mètres. ";
 
     constructor(game) {
         super(game);

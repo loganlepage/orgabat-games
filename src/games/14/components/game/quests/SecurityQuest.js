@@ -5,7 +5,7 @@ export default class CommunicationQuest extends Quest {
 
     _name = "Sécuriser toutes les zones du chantier";
     _key = 'security_quest';
-    _help = "Choisir le bon chemin en sélectionnant 1 des 3 choix à chaque étape, entre le portail et le poste de travail";
+    _help = "Pour choisir le bon chemin, clique sur l’un des trois choix pour chaque étape.";
 
     constructor(game) {
         super(game);

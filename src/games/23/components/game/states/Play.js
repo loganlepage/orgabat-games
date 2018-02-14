@@ -87,7 +87,7 @@ class Engine {
         this.gameProcess.quests.add(new SafetyQuest(this.gameProcess.game));
         this.gameProcess.quests.add(new RescueQuest(this.gameProcess.game));
 
-        this.stepNumber = 3;
+        this.stepNumber = 0;
     }
 
     start(){
@@ -134,15 +134,16 @@ class GameProcess {
 
     init() {
         //On affiche la modale d'information du début
-        this.startInfoModal = new StartInfoModal({}, DefaultManager, this.game);
-        this.game.keys.addKey(Phaser.Keyboard.ENTER).onDown.addOnce(this._onStartInfoClose, this);
-        this.game.keys.addKey(Phaser.Keyboard.A).onDown.addOnce(this._onStartInfoClose, this);
-        this.startInfoModal.items.close.items.iconA.events.onInputDown.add(this._onStartInfoClose, this);
-        this.startInfoModal.items.close.items.textA.events.onInputDown.add(this._onStartInfoClose, this);
-        this.startInfoModal.onDeleted.addOnce(() => {
-            delete this.startInfoModal
-        }, this);
-        this.startInfoModal.toggle(true);
+        // this.startInfoModal = new StartInfoModal({}, DefaultManager, this.game);
+        // this.game.keys.addKey(Phaser.Keyboard.ENTER).onDown.addOnce(this._onStartInfoClose, this);
+        // this.game.keys.addKey(Phaser.Keyboard.A).onDown.addOnce(this._onStartInfoClose, this);
+        // this.startInfoModal.items.close.items.iconA.events.onInputDown.add(this._onStartInfoClose, this);
+        // this.startInfoModal.items.close.items.textA.events.onInputDown.add(this._onStartInfoClose, this);
+        // this.startInfoModal.onDeleted.addOnce(() => {
+        //     delete this.startInfoModal
+        // }, this);
+        // this.startInfoModal.toggle(true);
+        this._onStartInfoClose()
     }
 
     _onStartInfoClose() {
@@ -151,15 +152,15 @@ class GameProcess {
             PhaserManager.get('gabator').state.getCurrentState().start();
         }
 
-        this.game.keys.addKey(Phaser.Keyboard.ENTER).onDown.remove(this._onStartInfoClose, this);
-        this.game.keys.addKey(Phaser.Keyboard.A).onDown.remove(this._onStartInfoClose, this);
+        // this.game.keys.addKey(Phaser.Keyboard.ENTER).onDown.remove(this._onStartInfoClose, this);
+        // this.game.keys.addKey(Phaser.Keyboard.A).onDown.remove(this._onStartInfoClose, this);
 
         this._initParts();
 
         //Evenements de progression du jeu ici (voir jeu 1 ou jeu 2)
 
         //Ferme la modale et active les controls
-        this.startInfoModal.toggle(false, {});
+        // this.startInfoModal.toggle(false, {});
         this.game.controlsEnabled = true;
 
         this._timeStart = this.game.time.now;

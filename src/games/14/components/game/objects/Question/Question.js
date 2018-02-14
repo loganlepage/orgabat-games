@@ -30,11 +30,14 @@ export default class Question extends BasicGameObject {
             {
                 font: 'Arial', 
                 fontSize: 30 * this.game.SCALE, 
-                fill: '#000000'
+                fill: '#000000',
+                wordWrap: true,
+                wordWrapWidth: this.game.world.width - 50 * this.game.SCALE
             }
         );
 
-        x += 20;
+        // x += 20;
+        x = this.game.world.centerX;
         y += this.title.height + 40;
 
         // Answers
@@ -46,7 +49,9 @@ export default class Question extends BasicGameObject {
                 {
                     font: 'Arial', 
                     fontSize: 25 * this.game.SCALE, 
-                    fill: '#000000'
+                    fill: '#000000',
+                    wordWrap: true,
+                    wordWrapWidth: this.game.world.width/2
                 }
             );
             this.answer[answerNumber].correctAnswer = this.data.answers[answerNumber].correctAnswer;

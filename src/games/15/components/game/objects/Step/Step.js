@@ -76,8 +76,29 @@ export default class Step extends BasicGameObject {
             }, this);
             item.events.onInputDown.removeAll();
             item.events.onInputDown.add(function(){
-                // if (this.data.correctAnswer.includes(item.obj.item.key)) {
-                if (this.data.correctAnswer.includes(item.obj.item.title)) {
+                console.log(this.data.correctAnswer)
+                console.log(item.obj.item.title)
+                console.log(item.obj.item.key)
+                if(item.obj.item.title == "") {
+                    if (this.data.correctAnswer.includes(item.obj.item.key)){
+                        item.obj.validate();
+                        this.itemInfo.destroy();
+                        answerCount++;
+                        if (answerCount >= answersNumber) {
+                            this.button = new Button(
+                                this.game, 
+                                this.game.world.width/4, 
+                                this.game.world.height - 70 * this.game.SCALE, 
+                                "continue"
+                            );
+                            this.button.sprite.events.onInputDown.removeAll();
+                            this.button.sprite.events.onInputDown.add(this.finishStep, this);
+                            this.responseGroup.forEach((item) => {
+                                item.obj.disabbleControls();
+                            });
+                        }
+                    }
+                } else if (this.data.correctAnswer.includes(item.obj.item.title)) {
                     item.obj.validate();
                     this.itemInfo.destroy();
                     answerCount++;

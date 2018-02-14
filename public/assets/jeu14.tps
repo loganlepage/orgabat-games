@@ -72,7 +72,7 @@
             </struct>
         </struct>
         <key>shapePadding</key>
-        <uint>0</uint>
+        <uint>10</uint>
         <key>jpgQuality</key>
         <uint>80</uint>
         <key>pngOptimizationLevel</key>
@@ -235,6 +235,19 @@
                 <rect>200,75,400,150</rect>
                 <key>scale9Paddings</key>
                 <rect>200,75,400,150</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">files/jeu14/image.jpg</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>279,196,557,391</rect>
+                <key>scale9Paddings</key>
+                <rect>279,196,557,391</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>

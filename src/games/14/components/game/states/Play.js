@@ -4,6 +4,8 @@ import Phaser, {State, Easing} from 'phaser';
 import PhaserManager from 'system/phaser/utils/PhaserManager';
 import Canvas from "system/phaser/utils/PhaserManager";
 
+import BasicGameSprite from "system/phaser/BasicGameSprite";
+
 import StartInfoModal from '../modals/StartInfoModal';
 import EndInfoModal from '../modals/EndInfoModal';
 import {DefaultManager, Stack} from 'system/phaser/Modal';
@@ -14,6 +16,7 @@ import Config from "../config/data";
 import SecurityQuest from "../quests/SecurityQuest";
 
 import Background from "../objects/Background/Background";
+import Image from "../objects/Image/Image";
 import Question from "../objects/Question/Question";
 
 export default class Play extends State {
@@ -116,6 +119,9 @@ class Engine {
                 }
             },this);
         });
+
+        // Image
+        this.image = new Image(this.gameProcess.game, 30 * this.gameProcess.game.SCALE + this.question.title.height , Config.question);
 
     }
 

@@ -6,7 +6,7 @@ export default {
     canvasParent: "#gameDiv",
     atlas: "jeu14",
     background: {
-        title: "Plan de la maison, il faut aller du portail au poste de travail",
+        title: "Vous devez approvisionner votre poste de travail en partant du portail. Vous avez un chariot à disposition.",
         key: "bg",
         start: {
             x: 1100,
@@ -85,7 +85,8 @@ export default {
         ]
     },
     question: {
-        title: "Les ouvriers disposent de 8 heures pour réaliser la pose de parquet.\nAfin de réaliser ce travail dans les meilleurs conditions, sélectionner les principes de prévention les\nplus adaptés parmi les propositions suivantes:",
+        title: "Les ouvriers doivent réaliser une pose de parquet dans les conditions ci-dessous. Afin de réaliser ce travail dans les meilleurs conditions possibles, sélectionner les principes de prévention les plus adaptés parmi les propositions suivantes:",
+        key: "image",
         answers: [
             {
                 title: "- Organiser son poste de travail, adapter le travail à l’homme, éviter les risques",

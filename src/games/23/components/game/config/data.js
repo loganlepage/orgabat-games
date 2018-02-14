@@ -213,14 +213,14 @@ export default {
             key:"preventions3",
             isUsed: false
         },
-        {
-            key:"preventions4",
-            isUsed: true
-        },
-        {
-            key:"preventions5",
-            isUsed: false
-        },
+        // {
+        //     key:"preventions4",
+        //     isUsed: true
+        // },
+        // {
+        //     key:"preventions5",
+        //     isUsed: false
+        // },
         {
             key:"preventions6",
             isUsed: true
@@ -229,14 +229,14 @@ export default {
             key:"preventions7",
             isUsed: true
         },
-        {
-            key:"preventions8",
-            isUsed: false
-        },
-        {
-            key:"preventions9",
-            isUsed: false
-        },
+        // {
+        //     key:"preventions8",
+        //     isUsed: false
+        // },
+        // {
+        //     key:"preventions9",
+        //     isUsed: false
+        // },
         {
             key:"preventions10",
             isUsed: true
@@ -244,65 +244,65 @@ export default {
         ], // end responses
         shapes: [
         { // top left
-            x: 121,
-            y: 229,
+            x: 305,
+            y: 72,
             answers: ["preventions6"]
         },
         {
-            x: 121,
-            y: 135,
-            answers: ["preventions6"]
+            x: 305,
+            y: -25,
+            answers: [""]
         },
         {
-            x: 121,
-            y: 44,
-            answers: ["preventions6"]
+            x: 305,
+            y: -137,
+            answers: [""]
         },
         { // top right
-            x: -123,
-            y: 229,
-            answers: ["preventions", "preventions7", "preventions2"]
+            x: 0,
+            y: 72,
+            answers: ["preventions"]
         },
         {
-            x: -123,
-            y: 135,
-            answers: ["preventions", "preventions7", "preventions2"]
+            x: 0,
+            y: -25,
+            answers: ["preventions7"]
         },
         {
-            x: -123,
-            y: 44,
-            answers: ["preventions", "preventions7", "preventions2"]
+            x: 0,
+            y: -137,
+            answers: ["preventions2"]
         },
         { // bottom left
-            x: 123,
-            y: -102,
+            x: -305,
+            y: 72,
             answers: ["preventions10"]
         },
         {
-            x: 123,
-            y: -194,
-            answers: ["preventions10"]
+            x: -305,
+            y: -25,
+            answers: [""]
         },
         {
-            x: 123,
-            y: -286,
-            answers: ["preventions10"]
+            x: -305,
+            y: -137,
+            answers: [""]
         },
-        { // bottom right
-            x: -120,
-            y: -102,
-            answers: ["preventions4"]
-        },
-        {
-            x: -120,
-            y: -194,
-            answers: ["preventions4"]
-        },
-        {
-            x: -120,
-            y: -286,
-            answers: ["preventions4"]
-        }
+        // { // bottom right
+        //     x: -120,
+        //     y: -102,
+        //     answers: ["preventions4"]
+        // },
+        // {
+        //     x: -120,
+        //     y: -194,
+        //     answers: ["preventions4"]
+        // },
+        // {
+        //     x: -120,
+        //     y: -286,
+        //     answers: ["preventions4"]
+        // }
         ]
     }, // end step
     {

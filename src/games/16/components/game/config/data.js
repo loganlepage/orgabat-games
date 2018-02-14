@@ -174,7 +174,7 @@ export default {
             correct: false
         },
         {
-            title:"Je ne fume / vapote pas durant mon temps de travail / Je suis non-fumeur",
+            title:"Je ne fume / vapote pas durant mon temps de travail \n Je suis non-fumeur",
             correct: true
         }
         ]

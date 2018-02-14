@@ -7,11 +7,11 @@ export default class Rules extends State {
 
     /** Called when the state must be created */
     create() {
-        this.game.add.text(this.game.uiScale(80), this.game.uiScale(80), "La communication - Accident de travail",
+        this.game.add.text(this.game.uiScale(80), this.game.uiScale(80), "La cohabitation avec le client",
             {font: 'Arial', fill: '#272727', fontSize: this.game.uiScale(21)});
 
         this.game.add.text(this.game.uiScale(80), this.game.uiScale(160),
-            "Lorsqu’il s’agit de mettre en place une démarche de prévention, l’entreprise doit se référer aux 9 principes généraux de prévention. A partir de la situation de travail et des deux principes de prévention ci-dessous: analyser le risque, donner la mesure de prévention permettant au salarié de travailler dans de meilleurs conditions, secourir la victime.",
+            "La cohabitation entre l’intervention professionnelle et le cadre de vie du client est importante.",
             {
                 font: 'Arial', fill: '#272727', fontSize: this.game.uiScale(16),
                 wordWrap: true, wordWrapWidth: this.game.world.width - this.game.uiScale(160)

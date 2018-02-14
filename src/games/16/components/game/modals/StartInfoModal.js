@@ -40,7 +40,7 @@ export default class StartInfoModal extends Modal {
                     type: "text",
                     x: 20,
                     y: 85,
-                    text: "Vous devez remplacer quelques mètres carrés d’ardoises avec votre patron. Comme d’habitude, pour ces petites réparations qui ne sont pas fréquentes, il veut installer une échelle pour monter sur le toit et deux autres posées bout à bout sur les ardoises. Dans ce cas, aucune échelle n’est attachée. Elles tiennent simplement en appui sur la gouttière. De plus, il pleut. En se penchant pour atteindre une ardoise, l’échelle glisse. Votre patron chute de 7 mètres. Sa moelle épinière est sectionnée, il se retrouve en incapacité de travail pendant un an. Avec une inaptitude définitive à exercer son métier.",
+                    text: "En fonction des différentes situations, choisi la meilleure conduite à avoir pour avoir la meilleure cohabitation possible entre l’intervention professionnelle et le cadre de vie du client.",
                     style: {
                         fill: "#5F4D21",
                         fontFamily: "Arial",

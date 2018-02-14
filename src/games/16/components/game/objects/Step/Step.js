@@ -33,13 +33,13 @@ export default class Step extends BasicGameObject {
         let yMargin = 25 * this.game.SCALE;
 
         // Response title:
-        this.title = game.add.text(this.game.world.centerX, 50 * this.game.SCALE, this.stepData.title, {
+        this.title = game.add.text(this.game.world.centerX, 75 * this.game.SCALE, this.stepData.title, {
             font: 'Arial', 
             fontSize: 25*this.game.SCALE, 
             fill: '#000000', 
             align: "center",
             wordWrap: true,
-            wordWrapWidth: this.game.world.width - 600*this.game.SCALE
+            wordWrapWidth: this.game.world.width - 650*this.game.SCALE
         });
         this.title.anchor.setTo(0.5);
 

@@ -40,9 +40,7 @@ export default class Part2InfoModal extends Modal {
                     type: "text",
                     x: 20,
                     y: 85,
-                    text: "Tu sais repérer une bonne façon de faire d'une mauvaise.\n\n" +
-                        "En situation réelle, tu seras mené à devoir choisir entre plusieurs façons de faire.\n" +
-                        "Choisis pour chaque plan l'action te permettant de mieux préserver ton intégrité physique.",
+                    text: "Parmi les situations suivantes, choisis  celles qui te semblent les moins contraignantes.",
                     style: {
                         fill: "#5F4D21",
                         fontFamily: "Arial",
