@@ -7,9 +7,9 @@ export default {
     atlas: 'jeu4',
     items: {
         materiaux: {
-            ferraille: {needed: true, title: "Ferraille", x: 605, y: 470},
+            ferraille: {needed: true, title: "Ferraillage", x: 605, y: 470},
             agglos: {needed: true, title: "Agglos", x: 500, y: 685},
-            hourdis: {needed: true, title: "Hourdis", x: 390, y: 640},
+            hourdis: {needed: true, title: "Bloc d'angle", x: 390, y: 640},
             briques: {needed: false, title: "Briques", x: 350, y: 570},
             beton_cellulaire: {needed: false, title: "Béton cellulaire", x: 685, y: 610},
             sacs_de_ciment: {needed: true, title: "Sacs de ciment", x: 450, y: 525},
