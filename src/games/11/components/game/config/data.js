@@ -94,7 +94,7 @@ export default {
             key: "peinture",
             name: "Peinture monocouche",
             correctAnswers: ["Produit OK"],
-            quantity: 2,
+            quantity: 6,
             dimensions: "",
             note: ""
         },

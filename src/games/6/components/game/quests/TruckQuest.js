@@ -3,9 +3,9 @@ import Config from '../config/data';
 
 export default class TruckQuest extends Quest {
 
-    _name = 'Charger le camion';
+    _name = "Ajouter 30L de peinture, 1 aspirateur, 1 ponceuse, 1 caisse à outils, 6 sacs d'enduit de rebouchage";
     _key = 'truck_quest';
-    _help = "Repérer les conduites qui permettent de charger le véhicule tout en préservant son intégrité physique.";
+    _help = "Glisser les matériels et matériaux dans le camion";
 
     constructor(game) {
         super(game);

@@ -13,26 +13,26 @@ var isProd = process.argv.indexOf("-p") > -1;
 module.exports = {
     /** nos points d'entrée, par clé */
     entry: {
-         '1': "./src/games/1/app.jsx", // Jeu 1
-         '2': "./src/games/2/app.jsx", // Jeu 2
-         '3': "./src/games/3/app.jsx", // Jeu 3
-         '4': "./src/games/4/app.jsx", // Jeu 4
-         '5': "./src/games/5/app.jsx", // Jeu 5
-         '6': "./src/games/6/app.jsx", // Jeu 6
-         '7': "./src/games/7/app.jsx", // Jeu 7
-         '8': "./src/games/8/app.jsx", // Jeu 8
-         '9': "./src/games/9/app.jsx", // Jeu
-         '10': "./src/games/10/app.jsx", // Jeu 10
-         '11': "./src/games/11/app.jsx", // Jeu 11
-         '12': "./src/games/12/app.jsx", // Jeu 12
-         '13': "./src/games/13/app.jsx", // Jeu 13
-         '14': "./src/games/14/app.jsx", // Jeu 14
-         '15': "./src/games/15/app.jsx", // Jeu 15
-         '16': "./src/games/16/app.jsx", // Jeu 16
-         '17': "./src/games/17/app.jsx", // Jeu 17
-         '18': "./src/games/18/app.jsx", // Jeu 18
-         '19': "./src/games/19/app.jsx", // Jeu 19
-         '23': "./src/games/23/app.jsx", // Jeu 23
+         '1': "./src/games/1/app.jsx", 
+         '2': "./src/games/2/app.jsx", // Jeu 3H À corriger
+         '3': "./src/games/3/app.jsx", // Jeu 1H À corriger
+         '4': "./src/games/4/app.jsx", // Jeu 1B
+         '5': "./src/games/5/app.jsx", // Jeu 3E À corriger
+         '6': "./src/games/6/app.jsx", // Jeu 1E
+         '7': "./src/games/7/app.jsx", // Jeu 1C
+         '8': "./src/games/8/app.jsx", // Jeu 1A
+         '9': "./src/games/9/app.jsx", // Jeu 2A
+         '10': "./src/games/10/app.jsx", // Jeu 3A À corriger
+         '11': "./src/games/11/app.jsx", // Jeu 2B
+         '12': "./src/games/12/app.jsx", // Jeu 2C À corriger
+         '13': "./src/games/13/app.jsx", // Jeu 1D
+         '14': "./src/games/14/app.jsx", // Jeu 2E À corriger
+         '15': "./src/games/15/app.jsx", // Jeu 2F À corriger
+         '16': "./src/games/16/app.jsx", // Jeu 3G À corriger
+         '17': "./src/games/17/app.jsx", // Jeu 1F
+         '18': "./src/games/18/app.jsx", // Jeu À corriger
+         '19': "./src/games/19/app.jsx", // Jeu 3B À corriger
+         '23': "./src/games/23/app.jsx", // Jeu 3F À corriger
     },
     /** description de nos sorties */
     output: {

@@ -40,7 +40,7 @@ export default class StartInfoModal extends Modal {
                     type: "text",
                     x: 20,
                     y: 85,
-                    text: "Choisir les solutions de prévention adaptées pour chaque situation. Une ou plusieurs réponses sont possibles.",
+                    text: "Choisir les mesures de prévention les plus adaptées aux  situations. Une ou plusieurs réponses sont possibles.",
                     style: {
                         fill: "#5F4D21",
                         fontFamily: "Arial",

@@ -40,11 +40,18 @@ export default class QuestionModal extends BasicGameObject {
 	    // Title
 	    let textPositionX = this.game.world.centerX,
 	    textPositionY = this.y - (this.sprite.height/2) + 125 * this.game.SCALE;
+	    
 	    this.titleText = this.game.add.text(
 	    	textPositionX, 
 	    	textPositionY, 
 	    	title, 
-	    	{fill: '#000000', fontSize: bigFont, align: "center", wordWrap: true, wordWrapWidth: this.sprite.width - 80 * this.game.SCALE});
+	    	{
+	    		fill: '#000000', 
+	    		fontSize: bigFont, 
+	    		align: "center", 
+	    		wordWrap: true, 
+	    		wordWrapWidth: this.sprite.width - 80 * this.game.SCALE
+	    	});
 	    this.titleText.anchor.setTo(0.5);
 	    this.texts.push(this.titleText);
 

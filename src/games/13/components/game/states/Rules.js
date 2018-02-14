@@ -11,7 +11,7 @@ export default class Rules extends State {
             {font: 'Arial', fill: '#272727', fontSize: this.game.uiScale(21)});
 
         this.game.add.text(this.game.uiScale(80), this.game.uiScale(160),
-            "Sur un chantier se trouvent de nombreuses zones de danger. Pour plus de sécurité, il faut toutes les baliser. Parmis l'ensemble des situations suivantes, protège les 5 plus importantes.",
+            "Sur un chantier se trouvent de nombreuses zones de danger. Pour plus de sécurité, il faut toutes les baliser. Pour les situations entourées, trouve la bonne protection.",
             {
                 font: 'Arial', fill: '#272727', fontSize: this.game.uiScale(16),
                 wordWrap: true, wordWrapWidth: this.game.world.width - this.game.uiScale(160)

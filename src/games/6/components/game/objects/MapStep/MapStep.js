@@ -26,12 +26,6 @@ export default class MapStep extends BasicGameObject {
     }
 
     validate() {
-        // this.y += 100;
-        // this.sprite.position.y += 100;
-        // this.x = 300 + 100 * this.position;
-        // this.sprite.position.x = this.x;
-        // this.validated = true;
-
         let littleMargin = 20 * this.game.SCALE;
         let bigMargin = 40 * this.game.SCALE;
         let cardsNumber = 3;

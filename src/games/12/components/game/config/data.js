@@ -169,7 +169,7 @@ export default {
         },
         shape6: {
             key: "shapeG2",
-            title: "Supports profilés longs"
+            title: "Galerie"
         }
     }
 }

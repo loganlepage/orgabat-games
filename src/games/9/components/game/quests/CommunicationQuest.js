@@ -5,7 +5,7 @@ export default class CommunicationQuest extends Quest {
 
     _name = "Trouver les bonnes personnes vers qui s'adresser";
     _key = 'communication_quest';
-    _help = "Glisser le personnage vers la personne appropriée en fonction de la situation";
+    _help = "Glisser le personnage sur la personne ou l’instance appropriée pour répondre à la situation";
 
     constructor(game) {
         super(game);

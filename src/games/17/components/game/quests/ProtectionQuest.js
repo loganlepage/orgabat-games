@@ -5,7 +5,7 @@ export default class WorkspaceQuest extends Quest {
 
     _name = "Trouver les bonnes protections pour chaque chantier";
     _key = 'protection_quest';
-    _help = "Choisis d'abord une situation et répond ensuite à la question posée";
+    _help = "Clique d’abord sur une situation et choisis ensuite les mesures de prévention parmi la liste proposée.";
 
     constructor(game) {
         super(game);

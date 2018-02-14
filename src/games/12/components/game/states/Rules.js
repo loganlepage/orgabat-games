@@ -11,7 +11,7 @@ export default class Rules extends State {
             {font: 'Arial', fill: '#272727', fontSize: this.game.uiScale(21)});
 
         this.game.add.text(this.game.uiScale(80), this.game.uiScale(160),
-            "L’équipement de base des véhicules ne correspond souvent pas aux besoins réels.\nA l’achat du véhicule, il faut penser aux équipements supplémentaires et indispensables de l’arrimage. \nRetrouve le nom des équipements d’arrimage sur camionnette et remorque.",
+            "L’équipement de base des véhicules ne correspond souvent pas aux besoins réels.\nA l’achat du véhicule, il faut penser aux équipements supplémentaires et indispensables de l’arrimage. \nRetrouve le nom des équipements d’arrimage sur la camionnette et la remorque.",
             {
                 font: 'Arial', fill: '#272727', fontSize: this.game.uiScale(16),
                 wordWrap: true, wordWrapWidth: this.game.world.width - this.game.uiScale(160)

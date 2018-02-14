@@ -86,7 +86,14 @@ class Engine {
             this.game.world.centerX, 
             75 * this.game.SCALE,
             Config.title, 
-            {font: 'Arial', fontSize: 25 * this.game.SCALE, fill: '#000000', align: "center"}
+            {
+                font: 'Arial', 
+                fontSize: 25 * this.game.SCALE, 
+                fill: '#000000', 
+                align: "center",
+                wordWrap: true,
+                wordWrapWidth: this.game.world.width - 50 * this.game.SCALE
+            }
         );
         this.title.anchor.setTo(0.5);
         this.game.layer.zDepth0.addChild(this.title);

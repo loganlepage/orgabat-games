@@ -40,7 +40,7 @@ export default class StartInfoModal extends Modal {
                     type: "text",
                     x: 20,
                     y: 85,
-                    text: "La liste des matériels et matériaux à charger est donnée. Il faut cliquer sur les conduites à tenir pour permettre de charger le véhicule tout en préservant son intégrité physique.",
+                    text: "Cliquer sur les conduites à tenir qui  permettent de charger le véhicule tout en préservant son intégrité physique.",
                     style: {
                         fill: "#5F4D21",
                         fontFamily: "Arial",

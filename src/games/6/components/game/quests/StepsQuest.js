@@ -5,7 +5,7 @@ export default class StepsQuest extends Quest {
 
     _name = 'Choisir les bonnes conduites';
     _key = 'steps_quest';
-    _help = "Repérer les conduites à prendre afin de préparer correctement le chantier de peinture.";
+    _help = "Sélectionner les conduites qui permettent de charger le véhicule tout en préservant son intégrité physique";
 
     constructor(game) {
         super(game);

@@ -86,7 +86,7 @@ class PartOne {
 
     start() {
         this.gameProcess.quests.add(new StepsQuest(this.gameProcess.game));
-        this.stepText = this.game.add.text(40 * this.game.SCALE, 40 * this.game.SCALE, `Étapes séléctionnées: ${this.clickedSteps}/8`, {fill: '#2a2a2a', fontSize: 30 * this.game.SCALE});
+        this.stepText = this.game.add.text(40 * this.game.SCALE, 40 * this.game.SCALE, `Sélectionner les conduites à tenir parmi la liste ci-dessous: ${this.clickedSteps}/8`, {fill: '#2a2a2a', fontSize: 30 * this.game.SCALE});
         this.addSteps();
         // Next step ->
         // this.addButton();
@@ -113,7 +113,7 @@ class PartOne {
                         });
                         healthMax--;
                     }
-                    this.stepText.text = `Étapes séléctionnées: ${this.clickedSteps}/8`;
+                    this.stepText.text = `Sélectionner les conduites à tenir parmi la liste ci-dessous: ${this.clickedSteps}/8`;
                 }
             }, this);
         });
@@ -199,8 +199,6 @@ class PartTwo {
     addBackground(){
         this.bg = this.game.add.sprite(this.game.width, 0, "atlas", "jeu6/bg");
         this.bg.scale.set(this.game.SCALE);
-        // this.bg.position.x = this.game.width - this.bg.width;
-        // this.bg.position.y = this.game.height - this.bg.height - 20;
         this.bg.anchor.setTo(1, 0);
         this.game.layer.zDepth0.addChild(this.bg);
     }
@@ -489,11 +487,14 @@ class PartTwo {
 
         this.mapStepText = this.game.add.text(
             this.game.world.centerX, 
-            150 * this.game.SCALE, 
-            `Schéma pour l'étape numéro : ${currentPosition}/3`, 
+            125 * this.game.SCALE,
+            `Sélectionner les 3 images permettant d’effectuer la manutention en sécurité. Respecter l’ordre chronologique: ${currentPosition}/3`, 
             {
                 align: "center", 
-                fill: '#ffffff'}
+                fill: '#ffffff',
+                wordWrap: true,
+                wordWrapWidth: this.game.world.width - (50 * this.game.SCALE)
+            }
         );
         this.mapStepText.anchor.setTo(0.5);
 
@@ -503,7 +504,7 @@ class PartTwo {
                 if (!mapStep.validated) {
                     if (mapStep.check(currentPosition) && !finished){
                         currentPosition++;
-                        this.mapStepText.text = `Schéma pour l'étape numéro : ${currentPosition}/3`;
+                        this.mapStepText.text = `Sélectionner les 3 images permettant d’effectuer la manutention en sécurité. Respecter l’ordre chronologique: ${currentPosition}/3`;
                         mapStep.validate();
                     } else if (!mapStep.check(currentPosition) || !finished){
                         PhaserManager.get('gabator').stats.changeValues({

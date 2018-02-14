@@ -48,7 +48,10 @@ export default class Step extends BasicGameObject {
             font: 'Arial', 
             fontSize: 25*this.game.SCALE, 
             fill: '#000000', 
-            align: "center"});
+            align: "center",
+            wordWrap: true,
+            wordWrapWidth: this.game.world.width - 50 * this.game.SCALE
+        });
         this.title.anchor.setTo(0.5);
     }
 
@@ -64,7 +67,9 @@ export default class Step extends BasicGameObject {
                 fontSize: 25*this.game.SCALE, 
                 fill: '#073e11', 
                 align: "center",
-                fontWeight: 'bold'
+                fontWeight: 'bold',
+                wordWrap: true,
+                wordWrapWidth: this.game.world.width - 50 * this.game.SCALE
             });
             this.info.setShadow(1, 1, 'rgba(255,255,255,0.4)', 5);
             this.info.anchor.setTo(0.5);

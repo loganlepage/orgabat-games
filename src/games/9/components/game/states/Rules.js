@@ -7,11 +7,11 @@ export default class Rules extends State {
 
     /** Called when the state must be created */
     create() {
-        this.game.add.text(this.game.uiScale(80), this.game.uiScale(80), "La communication - Accident de travail",
+        this.game.add.text(this.game.uiScale(80), this.game.uiScale(80), "La communication",
             {font: 'Arial', fill: '#272727', fontSize: this.game.uiScale(21)});
 
         this.game.add.text(this.game.uiScale(80), this.game.uiScale(160),
-            "Il faut aider Paul dans les différentes étapes qui surviennent lors d'un accident sur le lieu de travail",
+            "Repérer la personne ou l’instance  à consulter dans les situations suivantes.",
             {
                 font: 'Arial', fill: '#272727', fontSize: this.game.uiScale(16),
                 wordWrap: true, wordWrapWidth: this.game.world.width - this.game.uiScale(160)

@@ -35,26 +35,25 @@ export default {
         }
     },
     steps: {
-        step1: {good: false, title: "Je vais prendre un café avec mes collèques", clicked: false},
-        step2: {good: true, title: "Je prends quelques minutes pour me préparer à l’activité physique (mouvements d’échauffement)", clicked: false},
-        step3: {good: false, title: "Je commence immédiatement à charger seul", clicked: false},
-        step4: {good: true, title: "Je demande à un collègue de m’aider pour manutentionner", clicked: false},
-        step5: {good: true, title: "Je demande à un collègue de rapprocher le véhicule de l’espace de stockage", clicked: false},
-        step6: {good: false, title: "Je suis le plus jeune, c’est à moi de charger seul le véhicule", clicked: false},
-        step7: {good: true, title: "Je commence par manutentionner les charges les moins lourdes", clicked: false},
-        step8: {good: true, title: "Je déplace le rouleau de moquette avec un collègue", clicked: false},
-        step9: {good: false, title: "Nous laissons le rouleau de moquette au sol, nous n’avons pas de temps à perdre", clicked: false},
-        step10: {good: false, title: "Je choisis de prendre les pots de 15 litres", clicked: false},
-        step11: {good: true, title: "Je choisis de prendre les pots de 5 litres", clicked: false},
-        step12: {good: true, title: "J’utilise un chariot", clicked: false},
-        step13: {good: true, title: "Je dégage la zone de passage", clicked: false}
+        step1: {good: false, title: " - Je vais prendre un café avec mes collèques", clicked: false},
+        step2: {good: true, title: " - Je prends quelques minutes pour me préparer à l’activité physique (mouvements d’échauffement)", clicked: false},
+        step3: {good: false, title: " - Je commence à charger seul. Je suis le plus jeune de l’entreprise, donc c’est à moi de le faire.", clicked: false},
+        step4: {good: true, title: " - Je demande à un collègue de m’aider pour manutentionner", clicked: false},
+        step5: {good: true, title: " - Je demande à un collègue de rapprocher le véhicule de l’espace de stockage", clicked: false},
+        step7: {good: true, title: " - Je commence par manutentionner les charges les moins lourdes", clicked: false},
+        step8: {good: true, title: " - Je déplace le rouleau de moquette qui gêne le passage avec un collègue", clicked: false},
+        step9: {good: false, title: " - Nous laissons le rouleau de moquette au sol, nous n’avons pas de temps à perdre", clicked: false},
+        step10: {good: false, title: " - Je choisis de prendre les pots de 15 litres", clicked: false},
+        step11: {good: true, title: " - Je choisis de prendre les pots de 5 litres", clicked: false},
+        step12: {good: true, title: " - J’utilise un chariot", clicked: false},
+        step13: {good: true, title: " - Je dégage la zone de passage", clicked: false}
     },
     mapSteps: {
         mapStep1: {good: false, key: "mapStep1", validated: false, position: null},
         mapStep2: {good: true, key: "mapStep4", validated: false, position: 1},
         mapStep3: {good: false, key: "mapStep2", validated: false, position: null},
-        mapStep4: {good: true, key: "mapStep5", validated: false, position: 2},
+        mapStep4: {good: true, key: "mapStep5", validated: false, position: 3},
         mapStep5: {good: false, key: "mapStep3", validated: false, position: null},
-        mapStep6: {good: true, key: "mapStep6", validated: false, position: 3}
+        mapStep6: {good: true, key: "mapStep6", validated: false, position: 2}
     }
 }
