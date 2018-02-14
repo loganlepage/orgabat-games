@@ -65,7 +65,7 @@ export default class Step extends BasicGameObject {
             this.info = this.game.add.text(this.game.world.centerX, this.game.world.centerY + 200 * this.game.SCALE, this.infoText, {
                 font: 'Arial', 
                 fontSize: 25*this.game.SCALE, 
-                fill: '#073e11', 
+                fill: '#000000',
                 align: "center",
                 fontWeight: 'bold',
                 wordWrap: true,

@@ -40,7 +40,7 @@ export default class StartInfoModal extends Modal {
                     type: "text",
                     x: 20,
                     y: 85,
-                    text: "Aider Paul à travers le différentes étapes qui peuvent arriver lors d'un accident. Pour cela, il faut choisir les bonnes actions et les bonnes étapes.",
+                    text: "Aider Paul à travers les différentes étapes qui peuvent arriver lors d'un accident. Pour cela, il faut choisir les bonnes actions et les bonnes étapes.",
                     style: {
                         fill: "#5F4D21",
                         fontFamily: "Arial",

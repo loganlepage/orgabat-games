@@ -2,7 +2,7 @@
 
 "jeu9/bg":
 {
-	"frame": {"x":736,"y":446,"w":1200,"h":800},
+	"frame": {"x":746,"y":446,"w":1200,"h":800},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":1200,"h":800},
@@ -47,7 +47,7 @@
 },
 "jeu9/people/inspection":
 {
-	"frame": {"x":132,"y":446,"w":150,"h":330},
+	"frame": {"x":142,"y":446,"w":150,"h":330},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":150,"h":330},
@@ -56,11 +56,11 @@
 },
 "jeu9/people/medecin":
 {
-	"frame": {"x":0,"y":446,"w":130,"h":330},
+	"frame": {"x":0,"y":446,"w":140,"h":330},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":130,"h":330},
-	"sourceSize": {"w":130,"h":330},
+	"spriteSourceSize": {"x":0,"y":0,"w":140,"h":330},
+	"sourceSize": {"w":140,"h":330},
 	"pivot": {"x":0.5,"y":0.5}
 },
 "jeu9/people/oppbtp":
@@ -209,7 +209,7 @@
 },
 "modal/bg/big_modal":
 {
-	"frame": {"x":284,"y":446,"w":450,"h":350},
+	"frame": {"x":294,"y":446,"w":450,"h":350},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":450,"h":350},
@@ -430,6 +430,6 @@
 	"format": "RGBA8888",
 	"size": {"w":1972,"h":1246},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:dc9c646ff4eb0cfad74efeab587ce7f8:d6ce6bcb04fc8013260e2ab83a8e1d2b:acc0e6580d82adcea97537e0cfeca77b$"
+	"smartupdate": "$TexturePacker:SmartUpdate:e1c60a76323faaa7837530d7588045cc:866257a06cc2bf549609ef34a7ebfae9:acc0e6580d82adcea97537e0cfeca77b$"
 }
 }
