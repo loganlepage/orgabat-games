@@ -85,6 +85,8 @@ export default class Question extends BasicGameObject {
                 } else if (this.verifySelected(answer.text)) {
                     PhaserManager.get('gabator').stats.changeValues({
                         health: PhaserManager.get('gabator').stats.state.health - 1,
+                        organization: PhaserManager.get('gabator').stats.state.organization - 1,
+                        enterprise: PhaserManager.get('gabator').stats.state.enterprise - 1
                     });
                     answer.addColor("#CC0000", 0);
                 } else {

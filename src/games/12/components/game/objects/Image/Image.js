@@ -82,6 +82,8 @@ export default class Image extends BasicGameObject {
                             currentSprite.position.copyFrom(currentSprite.originalPosition);
                             PhaserManager.get('gabator').stats.changeValues({
                                 health: PhaserManager.get('gabator').stats.state.health - 1,
+                                organization: PhaserManager.get('gabator').stats.state.organization - 1,
+                                enterprise: PhaserManager.get('gabator').stats.state.enterprise - 1,
                             });
                             Canvas.get('gabator').modal.showHelp(
                                 "Mauvais type d'arrimage"

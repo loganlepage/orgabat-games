@@ -184,9 +184,7 @@ class MemoryPart {
                 this.matching.forEach((card) => {
                     card.clicked = false;
                 });
-                PhaserManager.get('gabator').stats.changeValues({
-                    health: PhaserManager.get('gabator').stats.state.health - 1,
-                });
+                //no point is removed in case of error
                 this.hideCards();
             }, this); // wait
         }
@@ -281,33 +279,46 @@ class GameProcess {
         this.game.controlsEnabled = false;
         this._timeEnd = this.game.time.now;
 
+        let healthLevel = Math.abs(PhaserManager.get('gabator').stats.state.health),
+            healthLevelMax = PhaserManager.get('gabator').stats.healthMax,
+
+            organizationLevel = Math.abs(PhaserManager.get('gabator').stats.state.organization),
+            organizationLevelMax = PhaserManager.get('gabator').stats.organizationMax,
+
+            enterpriseLevel = Math.abs(PhaserManager.get('gabator').stats.state.enterprise),
+            enterpriseLevelMax = PhaserManager.get('gabator').stats.enterpriseMax,
+
+            maxLevel = healthLevel + organizationLevel + enterpriseLevel,
+            max = healthLevelMax + organizationLevelMax + enterpriseLevelMax;
+
         //On affiche la modale de fin
         const endInfoModal = new EndInfoModal({}, DefaultManager, this.game, {
-            healthMax: PhaserManager.get('gabator').stats.healthMax,
-            organizationMax: PhaserManager.get('gabator').stats.organizationMax,
-            enterpriseMax: PhaserManager.get('gabator').stats.enterpriseMax
+            healthMax: healthLevelMax,
+            organizationMax: organizationLevelMax,
+            enterpriseMax: enterpriseLevelMax
         });
+
         endInfoModal.onExit.addOnce(() => window.parent.closeGameModal(), this);
         endInfoModal.onReplay.addOnce(() => window.location.reload(), this);
-        let healthLevel = PhaserManager.get('gabator').stats.state.health;
-        let healthLevelMax = PhaserManager.get('gabator').stats.healthMax;
+
+        // Stars:
         endInfoModal.toggle(true, {}, {
-            star1: healthLevel >= healthLevelMax / 2 ? true : false,
-            star2: healthLevel >= (2 * healthLevelMax) / 3 ? true : false,
-            star3: healthLevel == healthLevelMax ? true : false
+            star1: true,
+            star2: true,
+            star3: true
         }, {
-            health: PhaserManager.get('gabator').stats.state.health,
-            organization: PhaserManager.get('gabator').stats.state.organization,
-            enterprise: PhaserManager.get('gabator').stats.state.enterprise,
+            health: healthLevel,
+            organization: organizationLevel,
+            enterprise: enterpriseLevel,
         });
 
         //Et on envoie le score à l'API
         window.api.sendScore({
             exerciseId: game_id,
             time: Math.round((this._timeEnd - this._timeStart) / 1000),
-            health: PhaserManager.get('gabator').stats.state.health,
-            organization: PhaserManager.get('gabator').stats.state.organization,
-            business: PhaserManager.get('gabator').stats.state.enterprise
+            health: healthLevel,
+            organization: organizationLevel,
+            business: enterpriseLevel
         }, () => {
         });
     }

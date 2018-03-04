@@ -215,8 +215,9 @@ class GameProcess {
                                 // waste.obj.properties.isFail = true;
                                 feedbackModal(Config.infos.actions[action.data.name].fail);
                                 PhaserManager.get('gabator').stats.changeValues({
-                                    organization: PhaserManager.get('gabator').stats.state.organization - 1,
-                                    enterprise: PhaserManager.get('gabator').stats.state.enterprise - 1,
+                                    health: PhaserManager.get('gabator').stats.state.health - 0.5,
+                                    organization: PhaserManager.get('gabator').stats.state.organization - 0.5,
+                                    enterprise: PhaserManager.get('gabator').stats.state.enterprise - 0.5,
                                 });
                             }
                         } else if (!isAllEpiSetted) {
@@ -224,14 +225,17 @@ class GameProcess {
                                 // waste.obj.properties.isNotEquipped = true;
                                 feedbackModal("Vous n'êtes pas équipé pour déplacer ce déchet.");
                                 PhaserManager.get('gabator').stats.changeValues({
-                                    organization: PhaserManager.get('gabator').stats.state.organization - 1,
-                                    health: PhaserManager.get('gabator').stats.state.health - 1,
+                                    health: PhaserManager.get('gabator').stats.state.health - 0.5,
+                                    organization: PhaserManager.get('gabator').stats.state.organization - 0.5,
+                                    enterprise: PhaserManager.get('gabator').stats.state.enterprise - 0.5,
                                 });
                             }
                         } else if (isTooMuchEpi) {
                             feedbackModal("Vous êtes trop équipé, mais vous traitez le déchet.");
                             PhaserManager.get('gabator').stats.changeValues({
-                                organization: PhaserManager.get('gabator').stats.state.organization - 1,
+                                health: PhaserManager.get('gabator').stats.state.health - 0.5,
+                                organization: PhaserManager.get('gabator').stats.state.organization - 0.5,
+                                enterprise: PhaserManager.get('gabator').stats.state.enterprise - 0.5,
                             });
                             doAction = true;
                         } else {
@@ -255,46 +259,46 @@ class GameProcess {
         this.game.controlsEnabled = false;
         this._timeEnd = this.game.time.now;
 
+        let healthLevel = Math.abs(PhaserManager.get('gabator').stats.state.health),
+            healthLevelMax = PhaserManager.get('gabator').stats.healthMax,
+
+            organizationLevel = Math.abs(PhaserManager.get('gabator').stats.state.organization),
+            organizationLevelMax = PhaserManager.get('gabator').stats.organizationMax,
+
+            enterpriseLevel = Math.abs(PhaserManager.get('gabator').stats.state.enterprise),
+            enterpriseLevelMax = PhaserManager.get('gabator').stats.enterpriseMax,
+
+            maxLevel = healthLevel + organizationLevel + enterpriseLevel,
+            max = healthLevelMax + organizationLevelMax + enterpriseLevelMax;
+
         //On affiche la modale de fin
         const endInfoModal = new EndInfoModal({}, DefaultManager, this.game, {
-            healthMax: PhaserManager.get('gabator').stats.healthMax,
-            organizationMax: PhaserManager.get('gabator').stats.organizationMax,
-            enterpriseMax: PhaserManager.get('gabator').stats.enterpriseMax
+            healthMax: healthLevelMax,
+            organizationMax: organizationLevelMax,
+            enterpriseMax: enterpriseLevelMax
         });
 
         endInfoModal.onExit.addOnce(() => window.parent.closeGameModal(), this);
         endInfoModal.onReplay.addOnce(() => window.location.reload(), this);
 
         // Stars:
-        let healthLevel = PhaserManager.get('gabator').stats.state.health,
-            healthLevelMax = PhaserManager.get('gabator').stats.healthMax,
-
-            organizationLevel = PhaserManager.get('gabator').stats.state.organization,
-            organizationLevelMax = PhaserManager.get('gabator').stats.organizationMax,
-
-            enterpriseLevel = PhaserManager.get('gabator').stats.state.enterprise,
-            enterpriseLevelMax = PhaserManager.get('gabator').stats.enterpriseMax,
-
-            maxLevel = healthLevel + organizationLevel + enterpriseLevel,
-            max = healthLevelMax + organizationLevelMax + enterpriseLevelMax;
-
         endInfoModal.toggle(true, {}, {
-            star1: true,
-            star2: maxLevel >= max / 2 ? true : false,
-            star3: maxLevel == max ? true : false
+            star1: maxLevel >= 5,
+            star2: maxLevel >= 10,
+            star3: maxLevel == 15
         }, {
-            health: PhaserManager.get('gabator').stats.state.health,
-            organization: PhaserManager.get('gabator').stats.state.organization,
-            enterprise: PhaserManager.get('gabator').stats.state.enterprise,
+            health: healthLevel,
+            organization: organizationLevel,
+            enterprise: enterpriseLevel,
         });
 
         //Et on envoie le score à l'API
         window.api.sendScore({
             exerciseId: game_id,
             time: Math.round((this._timeEnd - this._timeStart) / 1000),
-            health: PhaserManager.get('gabator').stats.state.health,
-            organization: PhaserManager.get('gabator').stats.state.organization,
-            business: PhaserManager.get('gabator').stats.state.enterprise
+            health: healthLevel,
+            organization: organizationLevel,
+            business: enterpriseLevel
         }, () => {
         });
     }

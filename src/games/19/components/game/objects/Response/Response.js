@@ -52,7 +52,9 @@ export default class Response extends BasicGameObject {
             } else if (Phaser.Rectangle.intersects(boundsA, boundsB) && !shapeToOverlap.data.correctAnswer.includes(currentSprite.link)) {
                 currentSprite.position.copyFrom(currentSprite.originalPosition);
                 PhaserManager.get('gabator').stats.changeValues({
-                    health: PhaserManager.get('gabator').stats.state.health - 1,
+                    health: PhaserManager.get('gabator').stats.state.health - 2,
+                    organization: PhaserManager.get('gabator').stats.state.organization - 2,
+                    enterprise: PhaserManager.get('gabator').stats.state.enterprise - 1,
                 });
             } else {
                 currentSprite.position.copyFrom(currentSprite.originalPosition);
