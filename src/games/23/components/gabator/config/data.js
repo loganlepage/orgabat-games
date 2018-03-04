@@ -3,16 +3,16 @@ export default {
     atlas: "gabator",
     stats: {
         health: {
-            max: 20,
-            default: 20
+            max: 14,
+            default: 14
         },
         organization: {
-            max: 0,
-            default: 0
+            max: 9,
+            default: 9
         },
         enterprise: {
-            max: 0,
-            default: 0
+            max: 1,
+            default: 1
         }
     },
     info: ""
